@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+class StaffController extends Controller
+{
+    public function index()
+{
+    $staffs = User::where('role', 'staff')->latest()->get();
+    return view('admin.staff.index', compact('staffs'));
+}
+
+
+    public function create()
+    {
+        return view('admin.staff.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => 'staff',
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('admin.staff.index')->with('status', 'Staff berhasil ditambahkan!');
+    }
+
+    public function edit(User $staff)
+{
+    return view('admin.staff.edit', compact('staff'));
+}
+
+    public function update(Request $request, User $staff)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => "required|email|unique:users,email,{$staff->id}",
+        'password' => 'nullable|string|min:8|confirmed',
+    ]);
+
+    $staff->name = $request->name;
+    $staff->email = $request->email;
+
+    if ($request->password) {
+        $staff->password = Hash::make($request->password);
+    }
+
+    $staff->save();
+
+    return redirect()->route('admin.staff.index')
+        ->with('status', 'Staff berhasil diupdate!');
+}
+
+    public function destroy(User $staff)
+{
+    $staff->delete();
+    return redirect()->route('admin.staff.index')
+        ->with('status', 'Staff berhasil dihapus!');
+}
+}
