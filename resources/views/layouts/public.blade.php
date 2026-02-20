@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>@yield('title', 'LPPMI - Universitas Gunung Kidul')</title>
     <meta name="description" content="Lembaga Pengendalian dan Penjaminan Mutu Internal Universitas Gunung Kidul. Meningkatkan kualitas pendidikan melalui sistem penjaminan mutu berkelanjutan.">
     
@@ -139,6 +139,8 @@
         .main-nav {
             background: #002244;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 999;
         }
 
         .nav-menu {
@@ -149,6 +151,7 @@
             padding-left: 0;
         }
 
+        /* PERBAIKAN NAVIGASI - SEMUA STATE */
         .nav-link {
             color: var(--white);
             text-decoration: none;
@@ -158,27 +161,49 @@
             justify-content: space-between;
             font-weight: 600;
             font-size: 15px;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
             border-right: 1px solid rgba(255,255,255,0.1);
             white-space: nowrap;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            background: rgba(255,255,255,0.1);
-            color: var(--white) !important;
+        /* Hover state */
+        .nav-link:hover {
+            background: var(--secondary);
+            color: var(--primary) !important;
         }
 
+        /* Active state (saat diklik) */
+        .nav-link:active {
+            background: #b8960f; /* Warna emas lebih gelap */
+            color: var(--primary) !important;
+        }
+
+        /* Focus state (setelah diklik) */
+        .nav-link:focus {
+            background: var(--secondary);
+            color: var(--primary) !important;
+            outline: none;
+        }
+
+        /* Current active page */
+        .nav-link.active {
+            background: var(--secondary);
+            color: var(--primary) !important;
+        }
+
+
+        /* Dropdown container */
         .dropdown {
             position: relative;
         }
 
+        /* Dropdown menu */
         .dropdown-menu {
             position: absolute;
             top: 100%;
             left: 0;
             background: white;
-            min-width: 220px;
+            min-width: 240px;
             display: none;
             list-style: none;
             padding: 8px 0;
@@ -189,31 +214,37 @@
             border: none;
         }
 
+        /* Dropdown items */
         .dropdown-menu li a {
             display: block;
-            padding: 10px 20px;
+            padding: 12px 20px;
             color: #333;
             text-decoration: none;
             white-space: nowrap;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            font-size: 14px;
         }
 
+        /* Dropdown hover */
         .dropdown-menu li a:hover {
-            background: #f1f5f9;
-            color: #333;
+            background: var(--secondary);
+            color: var(--primary) !important;
         }
 
-        .dropdown-toggle::after {
-            content: '';
-            font-size: 10px;
-            margin-left: 8px;
-            transition: transform 0.3s;
+        /* Dropdown active (saat diklik) */
+        .dropdown-menu li a:active {
+            background: #b8960f;
+            color: var(--primary) !important;
         }
 
-        .dropdown.active .dropdown-toggle::after {
-            transform: rotate(180deg);
+        /* Dropdown focus */
+        .dropdown-menu li a:focus {
+            background: var(--secondary);
+            color: var(--primary) !important;
+            outline: none;
         }
 
+        /* Desktop hover effect */
         @media (min-width: 769px) {
             .dropdown:hover .dropdown-menu {
                 display: block;
@@ -285,476 +316,227 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
 
-        /* ================= AGENDA 1 BARIS HORIZONTAL KECIL ================= */
+        /* ================= AGENDA SECTION ================= */
         .agenda-section {
-    background: linear-gradient(
-        180deg,
-        #f8fafc 0%,
-        #ffffff 100%
-    );
-    padding: 60px 0;
-    border-bottom: 1px solid var(--border);
-}
-/* ================= AGENDA SLIDER IMPROVED ================= */
-.agenda-slider-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 20px 0;
-}
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border);
+        }
 
-.slider-arrow {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: white;
-    border: 1px solid var(--border);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    box-shadow: var(--shadow-sm);
-    z-index: 2;
-}
+        .agenda-slider-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
 
-.slider-arrow:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-    transform: scale(1.1);
-}
+        .slider-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+            z-index: 2;
+        }
 
-.slider-arrow:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
+        .slider-arrow:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
 
-.agenda-horizontal-container {
-    flex: 1;
-    overflow: hidden;
-    position: relative;
-    border-radius: 12px;
-}
+        .slider-arrow:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
 
-.agenda-horizontal-wrapper {
-    display: flex;
-    gap: 20px;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: transform;
-}
+        .agenda-horizontal-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            border-radius: 12px;
+        }
 
-.agenda-card-small {
-    flex: 0 0 calc((100% - 40px) / 3);
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    height: 160px;
-}
+        .agenda-horizontal-wrapper {
+            display: flex;
+            gap: 20px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
 
-.agenda-card-small:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
-}
+        .agenda-card-small {
+            flex: 0 0 calc((100% - 40px) / 3);
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            height: 160px;
+        }
 
-.agenda-date-small {
-    background: var(--primary);
-    color: white;
-    padding: 15px 12px;
-    min-width: 85px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
+        .agenda-card-small:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
 
-.date-day-small {
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 4px;
-}
+        .agenda-date-small {
+            background: var(--primary);
+            color: white;
+            padding: 15px 12px;
+            min-width: 85px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
 
-.date-month-small {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.9;
-}
+        .date-day-small {
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
 
-.date-year-small {
-    font-size: 11px;
-    opacity: 0.8;
-    margin-top: 2px;
-}
+        .date-month-small {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.9;
+        }
 
-.agenda-content-small {
-    padding: 15px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: white;
-}
+        .date-year-small {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
 
-.agenda-title-small {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-dark);
-    line-height: 1.4;
-    margin-bottom: 10px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-height: 40px;
-}
+        .agenda-content-small {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
 
-.agenda-meta-small {
-    margin-bottom: 8px;
-}
+        .agenda-title-small {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.4;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 40px;
+        }
 
-.meta-item-small {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--text-light);
-    margin-bottom: 4px;
-}
+        .agenda-meta-small {
+            margin-bottom: 8px;
+        }
 
-.meta-item-small i {
-    color: var(--primary);
-    font-size: 10px;
-    width: 14px;
-}
+        .meta-item-small {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
 
-.agenda-status-small {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    align-self: flex-start;
-}
+        .meta-item-small i {
+            color: var(--primary);
+            font-size: 10px;
+            width: 14px;
+        }
 
-.status-upcoming {
-    background: #e3f2fd;
-    color: #1976d2;
-}
+        .agenda-status-small {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            align-self: flex-start;
+        }
 
-.status-ongoing {
-    background: #fff3e0;
-    color: #f57c00;
-}
+        .status-upcoming {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
 
-.status-completed {
-    background: #eeeeee;
-    color: #616161;
-}
+        .status-ongoing {
+            background: #fff3e0;
+            color: #f57c00;
+        }
 
-/* Slider Indicators */
-.slider-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-}
+        .status-completed {
+            background: #eeeeee;
+            color: #616161;
+        }
 
-.slider-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        .slider-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
 
-.slider-dot.active {
-    background: var(--primary);
-    width: 24px;
-    border-radius: 4px;
-}
+        .slider-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-/* Modal Improved */
-.agenda-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1100;
-    padding: 20px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
+        .slider-dot.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 4px;
+        }
 
-.agenda-modal-overlay.active {
-    display: flex;
-    opacity: 1;
-}
-
-.agenda-modal-content {
-    background: white;
-    border-radius: 24px;
-    max-width: 500px;
-    width: 100%;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    transform: translateY(20px) scale(0.95);
-    transition: all 0.3s ease;
-}
-
-.agenda-modal-overlay.active .agenda-modal-content {
-    transform: translateY(0) scale(1);
-}
-
-.modal-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--gray-light);
-    border: none;
-    font-size: 24px;
-    color: var(--text-light);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    z-index: 2;
-}
-
-.modal-close:hover {
-    background: var(--primary);
-    color: white;
-    transform: rotate(90deg);
-}
-
-.modal-header {
-    background: linear-gradient(135deg, var(--primary), #001a33);
-    color: white;
-    padding: 30px 25px 25px;
-    position: relative;
-}
-
-.modal-date-box {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    padding: 15px 20px;
-    border-radius: 16px;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.modal-day {
-    font-size: 36px;
-    font-weight: 700;
-    line-height: 1;
-}
-
-.modal-month-year {
-    font-size: 14px;
-    opacity: 0.9;
-    margin-top: 4px;
-}
-
-.modal-title {
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0;
-}
-
-.modal-body {
-    padding: 25px;
-}
-
-.modal-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background: var(--gray-light);
-    border-radius: 16px;
-}
-
-.modal-info-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-dark);
-    font-size: 14px;
-}
-
-.modal-info-item i {
-    color: var(--primary);
-    font-size: 16px;
-    width: 20px;
-}
-
-.modal-description {
-    line-height: 1.6;
-    color: var(--text-dark);
-}
-
-.modal-description p {
-    margin-bottom: 10px;
-}
-
-.modal-footer {
-    padding: 20px 25px;
-    background: var(--gray-light);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: flex-end;
-}
-
-.modal-status {
-    padding: 6px 16px;
-    border-radius: 30px;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-    .agenda-card-small {
-        flex: 0 0 calc((100% - 20px) / 2);
-    }
-}
-
-@media (max-width: 768px) {
-    .agenda-slider-container {
-        gap: 10px;
-    }
-    
-    .slider-arrow {
-        width: 32px;
-        height: 32px;
-        font-size: 12px;
-    }
-    
-    .agenda-card-small {
-        flex: 0 0 100%;
-        height: 140px;
-    }
-    
-    .agenda-date-small {
-        min-width: 70px;
-        padding: 12px 8px;
-    }
-    
-    .date-day-small {
-        font-size: 22px;
-    }
-    
-    .agenda-title-small {
-        font-size: 13px;
-        min-height: 36px;
-    }
-    
-    .agenda-modal-content {
-        margin: 10px;
-    }
-    
-    .modal-header {
-        padding: 25px 20px 20px;
-    }
-    
-    .modal-day {
-        font-size: 30px;
-    }
-    
-    .modal-title {
-        font-size: 18px;
-    }
-    
-    .modal-info {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .agenda-card-small {
-        height: 130px;
-    }
-    
-    .agenda-date-small {
-        min-width: 60px;
-        padding: 10px 5px;
-    }
-    
-    .date-day-small {
-        font-size: 20px;
-    }
-    
-    .date-month-small {
-        font-size: 10px;
-    }
-    
-    .agenda-content-small {
-        padding: 10px;
-    }
-    
-    .agenda-title-small {
-        font-size: 12px;
-        margin-bottom: 6px;
-    }
-    
-    .meta-item-small {
-        font-size: 10px;
-    }
-}
         .agenda-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 35px;
-}
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
 
         .agenda-title {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--primary);
-    margin: 0;
-}
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
 
-       .agenda-title i {
-    font-size: 22px;
-    color: var(--secondary);
-}
+        .agenda-title i {
+            font-size: 22px;
+            color: var(--secondary);
+        }
 
         .view-all-btn {
             background: none;
@@ -776,227 +558,15 @@
             color: var(--primary);
         }
 
-        /* Container untuk 1 baris horizontal */
-        .agenda-horizontal-container {
-                    overflow: hidden;
-    position: relative;
-            
-        }
-
-        .agenda-horizontal-wrapper {
-    display: flex;
-    gap: 25px;
-    transition: transform 0.5s ease;
-}
-
-        /* Agenda Card Kecil */
-        .agenda-card-small {
-    background: var(--white);
-    border-radius: 14px;
-    overflow: hidden;
-    width: 100%;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    height: 160px;
-    display: flex;
-    flex: 0 0 calc((100% - 50px) / 3);
-}
-
-        .agenda-card-small:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary);
-}
-
-        .agenda-date-small {
-    background: var(--primary);
-    color: var(--white);
-    padding: 18px;
-    min-width: 90px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-        .date-day-small {
-            font-size: 26px;
-            font-weight: 700;
-            text-transform: uppercase;
-            line-height: 1;
-            margin-bottom: 2px;
-            letter-spacing: 1px;
-        }
-
-        .date-month-small {
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.9;
-        }
-
-        .date-year-small {
-            font-size: 11px;
-            opacity: 0.8;
-            margin-top: 1px;
-        }
-
-        .agenda-content-small {
-            padding: 18px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .agenda-title-small {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-dark);
-            line-height: 1.4;
-            margin-bottom: 12px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .agenda-meta-small {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            margin-top: auto;
-        }
-
-        .meta-item-small {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            color: var(--text-light);
-        }
-
-        .meta-item-small i {
-            color: var(--primary);
-            font-size: 10px;
-            width: 12px;
-            flex-shrink: 0;
-        }
-
-        .agenda-status-small {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            border-radius: 14px;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-top: 5px;
-            align-self: flex-start;
-        }
-
-        .status-upcoming {
-            background: #e8f5e9;
-            color: #2e7d32;
-        }
-
-        .status-ongoing {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .status-completed {
-            background: #f5f5f5;
-            color: #616161;
-        }
-
-        /* No Agenda State */
-        .no-agenda-small {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-light);
-            font-size: 13px;
-            width: 100%;
-        }
-
-        /* Scrollbar Styling */
-        .agenda-horizontal-container::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .agenda-horizontal-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 2px;
-        }
-
-        .agenda-horizontal-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 2px;
-        }
-
-        .agenda-horizontal-container::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
-
-        /* Style untuk arrow navigation */
-        .agenda-nav-arrows {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .nav-arrow {
-            background: var(--white);
-            border: 1px solid var(--border);
-            color: var(--primary);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 12px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-arrow:hover {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
-        }
-
-        /* Style kosong jika tidak ada agenda */
-        .agenda-empty-state {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: var(--text-light);
-            font-size: 14px;
-            padding: 20px;
-            background: var(--gray-light);
-            border-radius: 8px;
-            border: 1px dashed var(--border);
-        }
-
-        .agenda-empty-state i {
-            font-size: 18px;
-        }
-
-        /* ================= AGENDA MODAL MINIMALIS ================= */
+        /* ================= AGENDA MODAL ================= */
         .agenda-modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
             display: none;
             align-items: center;
             justify-content: center;
@@ -1011,184 +581,135 @@
             opacity: 1;
         }
 
-        .agenda-modal-minimal {
-            background: var(--white);
-            border-radius: 12px;
+        .agenda-modal-content {
+            background: white;
+            border-radius: 24px;
             max-width: 500px;
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
             position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-
-        .agenda-modal-overlay.active .agenda-modal-minimal {
-            transform: translateY(0);
-        }
-
-        .modal-close-minimal {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-light);
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            z-index: 2;
+            transform: translateY(20px) scale(0.95);
             transition: all 0.3s ease;
         }
 
-        .modal-close-minimal:hover {
-            background: var(--gray-light);
-            color: var(--text-dark);
+        .agenda-modal-overlay.active .agenda-modal-content {
+            transform: translateY(0) scale(1);
         }
 
-        .modal-header-minimal {
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gray-light);
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .modal-close:hover {
             background: var(--primary);
-            color: var(--white);
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary), #001a33);
+            color: white;
+            padding: 30px 25px 25px;
             position: relative;
         }
 
-        .modal-date-minimal {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .modal-date-box-minimal {
+        .modal-date-box {
             background: rgba(255, 255, 255, 0.15);
-            padding: 10px 15px;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 80px;
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            border-radius: 16px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .modal-day-minimal {
-            font-size: 24px;
+        .modal-day {
+            font-size: 36px;
             font-weight: 700;
             line-height: 1;
         }
 
-        .modal-month-year-minimal {
-            font-size: 13px;
-            font-weight: 500;
+        .modal-month-year {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 4px;
         }
 
-        .modal-title-minimal {
-            font-size: 18px;
+        .modal-title {
+            font-size: 22px;
             font-weight: 600;
             line-height: 1.3;
-            margin-bottom: 5px;
+            margin: 0;
         }
 
-        .modal-meta-minimal {
-            display: flex;
-            flex-wrap: wrap;
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 15px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-meta-item-minimal {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-
-        .modal-meta-item-minimal i {
-            font-size: 14px;
-            width: 16px;
-        }
-
-        .modal-body-minimal {
-            padding: 20px;
-        }
-
-        .modal-section-minimal {
             margin-bottom: 20px;
+            padding: 15px;
+            background: var(--gray-light);
+            border-radius: 16px;
         }
 
-        .modal-section-minimal h4 {
-            font-size: 14px;
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-weight: 600;
+        .modal-info-item {
             display: flex;
             align-items: center;
-            gap: 6px;
-        }
-
-        .modal-section-minimal h4 i {
-            color: var(--secondary);
-            font-size: 12px;
-        }
-
-        .modal-description-minimal {
+            gap: 10px;
+            color: var(--text-dark);
             font-size: 14px;
+        }
+
+        .modal-info-item i {
+            color: var(--primary);
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .modal-description {
             line-height: 1.6;
             color: var(--text-dark);
         }
 
-        .modal-description-minimal p {
+        .modal-description p {
             margin-bottom: 10px;
         }
 
-        .modal-footer-minimal {
-            padding: 15px 20px;
+        .modal-footer {
+            padding: 20px 25px;
             background: var(--gray-light);
             border-top: 1px solid var(--border);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 0 0 12px 12px;
+            justify-content: flex-end;
         }
 
-        .modal-status-minimal {
-            display: inline-flex;
-            align-items: center;
-            padding: 5px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .modal-actions-minimal {
-            display: flex;
-            gap: 8px;
-        }
-
-        .modal-action-btn-small {
-            padding: 6px 12px;
-            border-radius: 4px;
+        .modal-status {
+            padding: 6px 16px;
+            border-radius: 30px;
             font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border);
-            background: var(--white);
-        }
-
-        .modal-action-btn-small:hover {
-            background: var(--primary);
-            color: var(--white);
-            border-color: var(--primary);
+            font-weight: 600;
         }
 
         /* ================= SURVEY SECTION ================= */
@@ -1202,11 +723,10 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            padding: 80px 0;
+            padding: 60px 0;
             margin: 0 !important;
             overflow: hidden;
             border-radius: 30px 30px 0 0;
-
         }
 
         .survey-container {
@@ -1276,28 +796,28 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 16px;
-            padding: 30px;
+            padding: 25px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .qr-box {
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .qr-image {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             display: block;
             margin: 0 auto;
         }
 
         .qr-caption {
             color: white;
-            font-size: 16px;
+            font-size: 15px;
             text-align: center;
             font-weight: 500;
             opacity: 0.95;
@@ -1310,12 +830,12 @@
             padding: 40px 0 20px;
             margin-top: 0 !important;
         }
-        .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
 
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
         .footer-grid {
             display: grid;
@@ -1392,161 +912,155 @@
 
         /* ================= RESPONSIVE DESIGN ================= */
         @media (max-width: 992px) {
+            .agenda-card-small {
+                flex: 0 0 calc((100% - 20px) / 2);
+            }
+            
             .survey-content {
                 grid-template-columns: 1fr;
                 gap: 40px;
                 text-align: center;
             }
-
-             .agenda-card-small {
-        flex: 0 0 calc((100% - 25px) / 2);
-    }
-               
-            .survey-title {
-                font-size: 28px;
-            }
             
-            .survey-description {
-                font-size: 16px;
+            .survey-left {
+                text-align: center;
             }
             
             .survey-qr {
-                max-width: 350px;
                 margin: 0 auto;
+                max-width: 280px;
             }
         }
 
         @media (max-width: 768px) {
-            .hero-section {
-                min-height: 40vh;
+            .agenda-slider-container {
+                gap: 8px;
+            }
+            .slider-arrow {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
             }
             .agenda-card-small {
-        flex: 0 0 100%;
-        height: auto;
-    }
-            
-            
-            .hero-title {
-                font-size: 1.5rem;
+                flex: 0 0 100%;
+                height: 130px;
             }
-            
-            
-            
             .agenda-date-small {
-                min-width: 60px;
-                padding: 10px;
+                min-width: 65px;
+                padding: 10px 6px;
             }
-            
             .date-day-small {
-                font-size: 18px;
+                font-size: 20px;
             }
-            
-            .date-month-small {
-                font-size: 10px;
-            }
-            
             .agenda-title-small {
                 font-size: 12px;
-                -webkit-line-clamp: 2;
+                min-height: 32px;
             }
-            
-            .agenda-modal-minimal {
-                max-width: 90%;
+            .agenda-modal-content {
+                margin: 10px;
             }
-            
-            .modal-title-minimal {
+            .modal-header {
+                padding: 20px 15px 15px;
+            }
+            .modal-day {
+                font-size: 28px;
+            }
+            .modal-title {
                 font-size: 16px;
             }
-            
-            .survey-section {
-                padding: 60px 0;
-                background-attachment: scroll;
+            .modal-info {
+                grid-template-columns: 1fr;
+                gap: 8px;
             }
-            
-            .survey-title {
-                font-size: 24px;
-                margin-bottom: 20px;
-            }
-            
-            .survey-description {
-                font-size: 15px;
-                margin-bottom: 25px;
-            }
-            
-            .survey-btn {
-                padding: 12px 30px;
-                font-size: 16px;
-            }
-            
-            .qr-image {
-                width: 160px;
-                height: 160px;
-            }
-            
-            .survey-qr {
-                padding: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
             .hero-section {
                 min-height: 35vh;
             }
-            
             .hero-title {
                 font-size: 1.3rem;
-            }
-            
-            .agenda-card-small {
-                flex: 0 0 100%;
-                height: auto;
-            }
-            
-            .agenda-date-small {
-                min-width: 55px;
-                padding: 8px;
-            }
-            
-            .date-day-small {
-                font-size: 16px;
-            }
-            
-            .agenda-content-small {
-                padding: 8px;
-            }
-            
-            .agenda-title-small {
-                font-size: 11px;
-                -webkit-line-clamp: 2;
-            }
-            
-            .meta-item-small {
-                font-size: 10px;
             }
             
             .survey-section {
                 padding: 50px 0;
             }
-            
             .survey-title {
-                font-size: 22px;
+                font-size: 28px;
             }
-            
             .survey-description {
-                font-size: 14px;
+                font-size: 18px;
             }
-            
+            .survey-qr {
+                padding: 25px;
+                max-width: 300px;
+            }
+            .qr-box {
+                padding: 15px;
+            }
             .qr-image {
-                width: 140px;
-                height: 140px;
+                width: 180px;
+                height: 180px;
+            }
+            .qr-caption {
+                font-size: 15px;
+            }
+            .survey-btn {
+                padding: 15px 40px;
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .agenda-card-small {
+                height: 120px;
+            }
+            .agenda-date-small {
+                min-width: 55px;
+                padding: 8px 4px;
+            }
+            .date-day-small {
+                font-size: 18px;
+            }
+            .date-month-small {
+                font-size: 9px;
+            }
+            .agenda-content-small {
+                padding: 8px;
+            }
+            .agenda-title-small {
+                font-size: 11px;
+                margin-bottom: 4px;
+                min-height: 28px;
+            }
+            .meta-item-small {
+                font-size: 9px;
+                gap: 4px;
+            }
+            .hero-section {
+                min-height: 30vh;
+            }
+            .hero-title {
+                font-size: 1.2rem;
             }
             
-            .qr-caption {
-                font-size: 14px;
+            .survey-section {
+                padding: 40px 0;
+            }
+            .survey-title {
+                font-size: 26px;
+            }
+            .survey-description {
+                font-size: 16px;
+            }
+            .survey-qr {
+                padding: 20px;
+                max-width: 280px;
+            }
+            .qr-image {
+                width: 160px;
+                height: 160px;
             }
             
             .main-footer {
-                padding: 30px 0 15px;
+                padding: 25px 0 15px;
             }
         }
 
@@ -1556,51 +1070,54 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                gap: 10px;
+                gap: 8px;
+                min-height: 70px;
+                padding: 8px 0;
             }
-
             .menu-toggle {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 order: 1;
+                font-size: 22px;
+                width: 40px;
+                height: 40px;
             }
-
             .logo {
                 order: 2;
-                width: 50px;
-                height: 50px;
+                width: 45px;
+                height: 45px;
             }
-
             .header-title {
                 order: 3;
-                padding-left: 10px;
+                padding-left: 8px;
                 border-left: 2px solid var(--secondary);
                 text-align: left;
                 flex: 1;
             }
-
             .header-title h1 {
-                font-size: 14px;
+                font-size: 13px;
                 line-height: 1.2;
+                margin-bottom: 2px;
             }
-
             .header-title span {
-                font-size: 12px;
+                font-size: 11px;
             }
 
+            /* Mobile Navigation Menu */
             .nav-menu {
                 position: fixed;
                 top: 0;
-                right: -100%;
-                width: 250px;
+                right: -280px;
+                width: 280px;
                 height: 100vh;
                 background: #002244;
                 flex-direction: column;
-                padding: 70px 0 20px;
+                padding: 80px 0 20px;
                 transition: right 0.3s ease;
                 overflow-y: auto;
                 z-index: 999;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
             }
 
             .nav-menu.active {
@@ -1608,20 +1125,32 @@
             }
 
             .nav-link {
-                padding: 12px 20px;
+                padding: 14px 20px;
                 border-bottom: 1px solid rgba(255,255,255,0.15);
                 font-size: 14px;
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            /* Mobile navigation states */
+            .nav-link:hover,
+            .nav-link:active,
+            .nav-link:focus,
+            .nav-link.active {
+                background: var(--secondary);
+                color: var(--primary) !important;
             }
 
             .dropdown-menu {
                 position: static;
                 display: none;
                 width: 100%;
-                background: rgba(0, 20, 45, 0.95);
+                background: rgba(0, 30, 60, 0.95);
                 box-shadow: none;
                 border-radius: 0;
                 margin: 0;
                 padding: 0;
+                border-top: 1px solid rgba(255,255,255,0.1);
             }
 
             .dropdown.active .dropdown-menu {
@@ -1632,7 +1161,25 @@
                 padding: 12px 30px;
                 font-size: 13px;
                 color: #fff;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            /* Mobile dropdown states */
+            .dropdown-menu li a:hover,
+            .dropdown-menu li a:active,
+            .dropdown-menu li a:focus {
+                background: var(--secondary);
+                color: var(--primary) !important;
+            }
+
+            .menu-overlay {
+                z-index: 998;
+            }
+
+            .menu-toggle[aria-expanded="true"] {
+                color: var(--secondary);
             }
         }
 
@@ -1640,36 +1187,29 @@
         .agenda-horizontal-container::-webkit-scrollbar {
             height: 4px;
         }
-
         .agenda-horizontal-container::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 2px;
         }
-
         .agenda-horizontal-container::-webkit-scrollbar-thumb {
             background: #c1c1c1;
             border-radius: 2px;
         }
-
         .agenda-horizontal-container::-webkit-scrollbar-thumb:hover {
             background: #a1a1a1;
         }
-
-        .agenda-modal-minimal::-webkit-scrollbar {
+        .agenda-modal-content::-webkit-scrollbar {
             width: 6px;
         }
-
-        .agenda-modal-minimal::-webkit-scrollbar-track {
+        .agenda-modal-content::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 3px;
         }
-
-        .agenda-modal-minimal::-webkit-scrollbar-thumb {
+        .agenda-modal-content::-webkit-scrollbar-thumb {
             background: #c1c1c1;
             border-radius: 3px;
         }
-
-        .agenda-modal-minimal::-webkit-scrollbar-thumb:hover {
+        .agenda-modal-content::-webkit-scrollbar-thumb:hover {
             background: #a1a1a1;
         }
     </style>
@@ -1723,8 +1263,8 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle">DOKUMEN</a>
                     <ul class="dropdown-menu">
-                        <li><a href="/sistem-penjamin">Sistem Penjamin Mutu Internal </a></li>
-                        <li><a href="/dokumen-penjamin">Dokumen Sistem Penjamin Mutu </a></li>
+                        <li><a href="/sistem-penjamin">Sistem Penjamin Mutu Internal</a></li>
+                        <li><a href="/dokumen-penjamin">Dokumen Sistem Penjamin Mutu</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -1738,8 +1278,8 @@
                 <li class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle">MUTU</a>
                     <ul class="dropdown-menu">
-                        <li><a href="/mutu-internal"> Mutu Internal </a></li>
-                        <li><a href="/mutu-eksternal">Mutu Eksternal </a></li>
+                        <li><a href="/mutu-internal">Mutu Internal</a></li>
+                        <li><a href="/mutu-eksternal">Mutu Eksternal</a></li>
                     </ul>
                 </li>
                 <li><a href="{{ route('kontak') }}" class="nav-link">KONTAK</a></li>
@@ -1793,118 +1333,113 @@
         @yield('content')
     </main>
 
-<!-- ================= AGENDA SECTION - 1 BARIS HORIZONTAL KECIL ================= -->
-@if(isset($agendas) && count($agendas) > 0)
-<section class="agenda-section">
-    <div class="site-container">
-        <div class="agenda-header">
-            <h2 class="agenda-title">
-                <i class="fas fa-calendar-alt"></i> Agenda Terbaru
-            </h2>
-        </div>
+    <!-- ================= AGENDA SECTION ================= -->
+    @if(isset($agendas) && count($agendas) > 0)
+    <section class="agenda-section">
+        <div class="site-container">
+            <div class="agenda-header">
+                <h2 class="agenda-title">
+                    <i class="fas fa-calendar-alt"></i> Agenda Terbaru
+                </h2>
+            </div>
 
-        <!-- Container dengan tombol navigasi -->
-        <div class="agenda-slider-container">
-            <button class="slider-arrow slider-arrow-left" id="agendaPrev">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
-            <div class="agenda-horizontal-container">
-                <div class="agenda-horizontal-wrapper" id="agendaWrapper">
-                    @foreach($agendas as $agenda)
-                    @php
-                        $agendaDate = \Carbon\Carbon::parse($agenda->date);
-                        $now = \Carbon\Carbon::now();
-                        
-                        if ($agendaDate->isToday()) {
-                            $status = 'ongoing';
-                            $statusText = 'Berlangsung';
-                        } elseif ($agendaDate->isPast()) {
-                            $status = 'completed';
-                            $statusText = 'Selesai';
-                        } else {
-                            $status = 'upcoming';
-                            $statusText = 'Akan Datang';
-                        }
-                    @endphp
-                    
-                    <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}">
-                        <div class="agenda-date-small">
-                            <span class="date-day-small">{{ $agendaDate->format('d') }}</span>
-                            <span class="date-month-small">{{ $agendaDate->translatedFormat('M') }}</span>
-                            <span class="date-year-small">{{ $agendaDate->format('Y') }}</span>
-                        </div>
-                        
-                        <div class="agenda-content-small">
-                            <h3 class="agenda-title-small">{{ $agenda->title }}</h3>
+            <div class="agenda-slider-container">
+                <button class="slider-arrow slider-arrow-left" id="agendaPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="agenda-horizontal-container">
+                    <div class="agenda-horizontal-wrapper" id="agendaWrapper">
+                        @foreach($agendas as $agenda)
+                        @php
+                            $agendaDate = \Carbon\Carbon::parse($agenda->date);
+                            $now = \Carbon\Carbon::now();
                             
-                            <div class="agenda-meta-small">
-                                <div class="meta-item-small">
-                                    <i class="fas fa-clock"></i>
-                                    <span>{{ $agenda->time }}</span>
-                                </div>
-                                <div class="meta-item-small">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ Str::limit($agenda->location, 25) }}</span>
-                                </div>
+                            if ($agendaDate->isToday()) {
+                                $status = 'ongoing';
+                                $statusText = 'Berlangsung';
+                            } elseif ($agendaDate->isPast()) {
+                                $status = 'completed';
+                                $statusText = 'Selesai';
+                            } else {
+                                $status = 'upcoming';
+                                $statusText = 'Akan Datang';
+                            }
+                        @endphp
+                        
+                        <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}">
+                            <div class="agenda-date-small">
+                                <span class="date-day-small">{{ $agendaDate->format('d') }}</span>
+                                <span class="date-month-small">{{ $agendaDate->translatedFormat('M') }}</span>
+                                <span class="date-year-small">{{ $agendaDate->format('Y') }}</span>
                             </div>
                             
-                            <span class="agenda-status-small status-{{ $status }}">
-                                {{ $statusText }}
-                            </span>
+                            <div class="agenda-content-small">
+                                <h3 class="agenda-title-small">{{ $agenda->title }}</h3>
+                                
+                                <div class="agenda-meta-small">
+                                    <div class="meta-item-small">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ $agenda->time }}</span>
+                                    </div>
+                                    <div class="meta-item-small">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>{{ Str::limit($agenda->location, 25) }}</span>
+                                    </div>
+                                </div>
+                                
+                                <span class="agenda-status-small status-{{ $status }}">
+                                    {{ $statusText }}
+                                </span>
+                            </div>
                         </div>
+                        @endforeach
                     </div>
-                    @endforeach
                 </div>
+                
+                <button class="slider-arrow slider-arrow-right" id="agendaNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="slider-indicators" id="sliderIndicators"></div>
+        </div>
+    </section>
+    @endif
+
+    <!-- ================= AGENDA MODAL ================= -->
+    <div class="agenda-modal-overlay" id="agendaModal">
+        <div class="agenda-modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            
+            <div class="modal-header">
+                <div class="modal-date-box">
+                    <span class="modal-day" id="modalDay"></span>
+                    <span class="modal-month-year" id="modalMonthYear"></span>
+                </div>
+                <h3 class="modal-title" id="modalTitle"></h3>
             </div>
             
-            <button class="slider-arrow slider-arrow-right" id="agendaNext">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-
-        <!-- Indikator slide untuk mobile -->
-        <div class="slider-indicators" id="sliderIndicators"></div>
-    </div>
-</section>
-@else
-<!-- Tampilan jika tidak ada agenda -->
-
-@endif
-
-<!-- ================= AGENDA MODAL ================= -->
-<div class="agenda-modal-overlay" id="agendaModal">
-    <div class="agenda-modal-content">
-        <button class="modal-close" id="modalClose">&times;</button>
-        
-        <div class="modal-header">
-            <div class="modal-date-box">
-                <span class="modal-day" id="modalDay"></span>
-                <span class="modal-month-year" id="modalMonthYear"></span>
-            </div>
-            <h3 class="modal-title" id="modalTitle"></h3>
-        </div>
-        
-        <div class="modal-body">
-            <div class="modal-info">
-                <div class="modal-info-item">
-                    <i class="fas fa-clock"></i>
-                    <span id="modalTime"></span>
+            <div class="modal-body">
+                <div class="modal-info">
+                    <div class="modal-info-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="modalTime"></span>
+                    </div>
+                    <div class="modal-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="modalLocation"></span>
+                    </div>
                 </div>
-                <div class="modal-info-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span id="modalLocation"></span>
-                </div>
+                
+                <div class="modal-description" id="modalDescription"></div>
             </div>
             
-            <div class="modal-description" id="modalDescription"></div>
-        </div>
-        
-        <div class="modal-footer">
-            <span class="modal-status" id="modalStatus"></span>
+            <div class="modal-footer">
+                <span class="modal-status" id="modalStatus"></span>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- ================= SURVEY SECTION ================= -->
     @if(isset($activeSurvey) && $activeSurvey)
@@ -1918,7 +1453,6 @@
                         Untuk meningkatkan kualitas layanan di lingkungan Universitas Gunung Kidul, 
                         kami mohon Bapak/Ibu/Sdr. mengisi Survey Kepuasan Layanan.
                     </p>
-                    
                     
                 </div>
                 
@@ -2063,7 +1597,6 @@
             const agendaCards = document.querySelectorAll('.agenda-card-small');
             const agendaData = @json($agendas ?? []);
 
-            // Format date for modal
             function formatModalDate(dateString) {
                 const date = new Date(dateString);
                 const day = date.getDate();
@@ -2072,7 +1605,6 @@
                 return { day, month, year };
             }
 
-            // Open modal when clicking agenda card
             agendaCards.forEach(card => {
                 card.addEventListener('click', function() {
                     const agendaId = this.getAttribute('data-agenda-id');
@@ -2084,13 +1616,11 @@
                 });
             });
 
-            // Open modal with agenda data
             function openAgendaModal(agenda) {
                 const date = formatModalDate(agenda.date);
                 const agendaDate = new Date(agenda.date);
                 const now = new Date();
                 
-                // Determine status
                 let status = 'completed';
                 let statusText = 'Selesai';
                 let statusClass = 'status-completed';
@@ -2105,14 +1635,12 @@
                     statusClass = 'status-upcoming';
                 }
 
-                // Set modal content
                 document.getElementById('modalDay').textContent = date.day;
                 document.getElementById('modalMonthYear').textContent = `${date.month} ${date.year}`;
                 document.getElementById('modalTitle').textContent = agenda.title;
                 document.getElementById('modalTime').textContent = agenda.time;
                 document.getElementById('modalLocation').textContent = agenda.location;
                 
-                // Set description
                 const descriptionElement = document.getElementById('modalDescription');
                 if (agenda.description && agenda.description.trim() !== '') {
                     descriptionElement.innerHTML = agenda.description;
@@ -2120,17 +1648,14 @@
                     descriptionElement.innerHTML = '<p style="color: var(--text-light); font-style: italic;">Tidak ada deskripsi tersedia.</p>';
                 }
                 
-                // Set status
                 const modalStatus = document.getElementById('modalStatus');
                 modalStatus.textContent = statusText;
-                modalStatus.className = `modal-status-minimal ${statusClass}`;
+                modalStatus.className = `modal-status ${statusClass}`;
 
-                // Show modal
                 agendaModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
 
-            // Close modal
             modalClose.addEventListener('click', closeModal);
             agendaModal.addEventListener('click', function(e) {
                 if (e.target === agendaModal) {
@@ -2138,7 +1663,6 @@
                 }
             });
 
-            // Close modal with ESC key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && agendaModal.classList.contains('active')) {
                     closeModal();
@@ -2150,169 +1674,75 @@
                 document.body.style.overflow = '';
             }
 
-            // Share functionality
-            document.getElementById('modalShare').addEventListener('click', function() {
-                const modalTitle = document.getElementById('modalTitle').textContent;
-                const modalDate = `${document.getElementById('modalDay').textContent} ${document.getElementById('modalMonthYear').textContent}`;
-                const text = `Agenda LPPMI: ${modalTitle} (${modalDate} - ${document.getElementById('modalTime').textContent})`;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: modalTitle,
-                        text: text,
-                        url: window.location.href,
-                    });
-                } else {
-                    navigator.clipboard.writeText(text).then(() => {
-                        alert('Informasi agenda telah disalin ke clipboard!');
-                    });
-                }
-            });
-
-            // Reminder functionality
-            document.getElementById('modalReminder').addEventListener('click', function() {
-                const agendaTitle = document.getElementById('modalTitle').textContent;
-                const agendaTime = document.getElementById('modalTime').textContent;
-                const agendaDate = `${document.getElementById('modalDay').textContent} ${document.getElementById('modalMonthYear').textContent}`;
-                
-                alert(`Pengingat untuk "${agendaTitle}" pada ${agendaDate} pukul ${agendaTime} telah disimpan.`);
-            });
-
-            // Horizontal scroll arrows
-            const scrollLeftBtn = document.getElementById('scrollLeft');
-            const scrollRightBtn = document.getElementById('scrollRight');
-            const horizontalContainer = document.querySelector('.agenda-horizontal-container');
-
-            if (scrollLeftBtn && scrollRightBtn && horizontalContainer) {
-                scrollLeftBtn.addEventListener('click', () => {
-                    horizontalContainer.scrollBy({
-                        left: -200,
-                        behavior: 'smooth'
-                    });
-                });
-
-                scrollRightBtn.addEventListener('click', () => {
-                    horizontalContainer.scrollBy({
-                        left: 200,
-                        behavior: 'smooth'
-                    });
-                });
-            }
-
-            // Keyboard navigation for agenda cards
-            document.addEventListener('keydown', function(e) {
-                const activeModal = agendaModal.classList.contains('active');
-                if (!activeModal) return;
-
-                if (e.key === 'ArrowLeft') {
-                    // Previous agenda
-                    const currentId = document.querySelector('.agenda-card-small[data-agenda-id]').getAttribute('data-agenda-id');
-                    const currentIndex = agendaData.findIndex(a => a.id == currentId);
-                    if (currentIndex > 0) {
-                        openAgendaModal(agendaData[currentIndex - 1]);
-                    }
-                } else if (e.key === 'ArrowRight') {
-                    // Next agenda
-                    const currentId = document.querySelector('.agenda-card-small[data-agenda-id]').getAttribute('data-agenda-id');
-                    const currentIndex = agendaData.findIndex(a => a.id == currentId);
-                    if (currentIndex < agendaData.length - 1) {
-                        openAgendaModal(agendaData[currentIndex + 1]);
-                    }
-                }
-            });
-
-            // View all button functionality
             const viewAllBtn = document.querySelector('.view-all-btn');
             if (viewAllBtn) {
                 viewAllBtn.addEventListener('click', function() {
-                    // Arahkan ke halaman agenda lengkap
                     window.location.href = '/agenda';
                 });
             }
 
-            // Smooth scrolling for horizontal agenda
-            const horizontalScroll = document.querySelector('.agenda-horizontal-container');
-            if (horizontalScroll) {
-                let isDown = false;
-                let startX;
-                let scrollLeft;
+            // Horizontal scroll slider
+            const wrapper = document.querySelector(".agenda-horizontal-wrapper");
+            const cards = document.querySelectorAll(".agenda-card-small");
+            const prev = document.getElementById("agendaPrev");
+            const next = document.getElementById("agendaNext");
 
-                horizontalScroll.addEventListener('mousedown', (e) => {
-                    isDown = true;
-                    startX = e.pageX - horizontalScroll.offsetLeft;
-                    scrollLeft = horizontalScroll.scrollLeft;
-                });
+            let visible = 3;
+            let index = 0;
 
-                horizontalScroll.addEventListener('mouseleave', () => {
-                    isDown = false;
-                });
+            function getVisibleCount() {
+                if (window.innerWidth <= 768) return 1;
+                if (window.innerWidth <= 992) return 2;
+                return 3;
+            }
 
-                horizontalScroll.addEventListener('mouseup', () => {
-                    isDown = false;
-                });
+            function updateSlide() {
+                visible = getVisibleCount();
+                if (cards.length === 0) return;
+                const cardWidth = cards[0].offsetWidth + 20;
+                wrapper.style.transform = `translateX(-${index * cardWidth}px)`;
+            }
 
-                horizontalScroll.addEventListener('mousemove', (e) => {
-                    if (!isDown) return;
-                    e.preventDefault();
-                    const x = e.pageX - horizontalScroll.offsetLeft;
-                    const walk = (x - startX) * 2;
-                    horizontalScroll.scrollLeft = scrollLeft - walk;
-                });
+            function nextSlide() {
+                visible = getVisibleCount();
+                if (index < cards.length - visible) {
+                    index++;
+                } else {
+                    index = 0;
+                }
+                updateSlide();
+            }
+
+            function prevSlide() {
+                visible = getVisibleCount();
+                if (index > 0) {
+                    index--;
+                } else {
+                    index = cards.length - visible;
+                }
+                updateSlide();
+            }
+
+            if (next && prev) {
+                next.addEventListener("click", nextSlide);
+                prev.addEventListener("click", prevSlide);
+                setInterval(nextSlide, 5000);
+                window.addEventListener("resize", updateSlide);
+            }
+
+            const indicators = document.getElementById('sliderIndicators');
+            if (indicators && cards.length > 0) {
+                function updateIndicators() {
+                    let dots = '';
+                    for (let i = 0; i < cards.length; i++) {
+                        dots += `<span class="slider-dot ${i === index ? 'active' : ''}"></span>`;
+                    }
+                    indicators.innerHTML = dots;
+                }
+                updateIndicators();
+                setInterval(updateIndicators, 100);
             }
         });
     </script>
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const wrapper = document.querySelector(".agenda-horizontal-wrapper");
-    const cards = document.querySelectorAll(".agenda-card-small");
-    const prev = document.getElementById("agendaPrev");
-    const next = document.getElementById("agendaNext");
-
-    let visible = 3;
-    let index = 0;
-
-    function getVisibleCount() {
-        if (window.innerWidth <= 768) return 1;
-        if (window.innerWidth <= 992) return 2;
-        return 3;
-    }
-
-    function updateSlide() {
-        visible = getVisibleCount();
-        const cardWidth = cards[0].offsetWidth + 25;
-        wrapper.style.transform = `translateX(-${index * cardWidth}px)`;
-    }
-
-    function nextSlide() {
-        visible = getVisibleCount();
-
-        if (index < cards.length - visible) {
-            index++;
-        } else {
-            index = 0; // loop kembali
-        }
-        updateSlide();
-    }
-
-    function prevSlide() {
-        visible = getVisibleCount();
-
-        if (index > 0) {
-            index--;
-        } else {
-            index = cards.length - visible;
-        }
-        updateSlide();
-    }
-
-    next.addEventListener("click", nextSlide);
-    prev.addEventListener("click", prevSlide);
-
-    // AUTO SLIDE tiap 5 detik
-    setInterval(nextSlide, 5000);
-
-    window.addEventListener("resize", updateSlide);
-});
-</script>
 </body>
 </html>

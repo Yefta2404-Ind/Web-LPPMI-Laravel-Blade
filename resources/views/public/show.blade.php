@@ -36,6 +36,7 @@
         background-color: var(--bg-light);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
     }
 
     a {
@@ -55,17 +56,19 @@
         display: block;
     }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 24px;
+    /* BREADCRUMB */
+    .breadcrumb-section {
+        background: var(--bg-white);
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.75rem 0;
+        width: 100%;
     }
 
-    /* BREADCRUMB */
-    .breadcrumb {
-        background: var(--bg-white);
-        padding: 1rem 0;
-        border-bottom: 1px solid var(--border-color);
+    .breadcrumb-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
     }
 
     .breadcrumb-list {
@@ -81,14 +84,17 @@
     .breadcrumb-item:not(:last-child)::after {
         content: '›';
         margin-left: 0.5rem;
+        color: var(--text-muted);
     }
 
     .breadcrumb-link {
         color: var(--text-muted);
+        transition: var(--transition);
     }
 
     .breadcrumb-link:hover {
         color: var(--primary-color);
+        text-decoration: none;
     }
 
     .breadcrumb-current {
@@ -96,37 +102,87 @@
         font-weight: 600;
     }
 
-    /* MAIN CONTENT */
+    /* MAIN CONTENT - PERBAIKAN POSISI */
     .main-content {
-        padding: 2rem 0 4rem;
-        min-height: calc(100vh - 200px);
+        padding: 1.5rem 0 3rem;
+        width: 100%;
+        min-height: auto;
+        position: relative;
     }
 
+    .main-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    /* BACK BUTTON */
+    .back-button-wrapper {
+        margin: 0 0 1.5rem 0;
+    }
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--bg-white);
+        color: var(--text-secondary);
+        padding: 0.6rem 1.25rem;
+        border-radius: var(--radius-md);
+        font-weight: 500;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        width: auto;
+        font-size: 0.95rem;
+    }
+
+    .back-button:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        text-decoration: none;
+        border-color: var(--primary-color);
+    }
+
+    .back-button span {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    /* ARTICLE LAYOUT */
     .article-layout {
         display: grid;
         grid-template-columns: 1fr 300px;
-        gap: 3rem;
+        gap: 2rem;
+        width: 100%;
+        align-items: start;
     }
 
-    /* ARTICLE STYLES */
+    /* ARTICLE CARD */
     .article-card {
         background: var(--bg-white);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-lg);
         overflow: hidden;
+        width: 100%;
+        margin-top: 0;
     }
 
     .article-header {
-        padding: 2.5rem 2.5rem 0;
+        padding: 2rem 2rem 0;
     }
 
     .article-title {
         font-size: 2.25rem;
         font-weight: 800;
-        line-height: 1.2;
+        line-height: 1.3;
         color: var(--primary-color);
         margin-bottom: 1.5rem;
         letter-spacing: -0.5px;
+        word-break: break-word;
     }
 
     .article-meta {
@@ -144,20 +200,25 @@
         gap: 0.5rem;
         color: var(--text-muted);
         font-size: 0.875rem;
+        flex-wrap: wrap;
     }
 
     .meta-icon {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
         opacity: 0.7;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .article-featured-image {
         position: relative;
-        margin: 0 2.5rem 2.5rem;
+        margin: 0 2rem 2rem;
         border-radius: var(--radius-md);
         overflow: hidden;
         aspect-ratio: 16/9;
+        width: calc(100% - 4rem);
     }
 
     .article-featured-image img {
@@ -191,17 +252,22 @@
     }
 
     .article-body {
-        padding: 0 2.5rem 2.5rem;
+        padding: 0 2rem 2rem;
         font-size: 1.0625rem;
         line-height: 1.8;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .article-body > * {
         margin-bottom: 1.5rem;
+        max-width: 100%;
     }
 
     .article-body p {
         text-align: justify;
+        width: 100%;
+        overflow-wrap: break-word;
     }
 
     .article-body h2 {
@@ -211,6 +277,7 @@
         margin: 2.5rem 0 1rem;
         padding-bottom: 0.5rem;
         border-bottom: 2px solid var(--border-color);
+        word-break: break-word;
     }
 
     .article-body h3 {
@@ -218,14 +285,17 @@
         font-weight: 600;
         color: var(--secondary-color);
         margin: 2rem 0 1rem;
+        word-break: break-word;
     }
 
     .article-body ul, .article-body ol {
         margin-left: 1.5rem;
+        padding-left: 0.5rem;
     }
 
     .article-body li {
         margin-bottom: 0.75rem;
+        word-break: break-word;
     }
 
     .article-body blockquote {
@@ -237,6 +307,8 @@
         font-style: italic;
         color: var(--text-secondary);
         position: relative;
+        width: 100%;
+        overflow-x: auto;
     }
 
     .article-body blockquote::before {
@@ -247,6 +319,7 @@
         top: -1rem;
         left: 1rem;
         font-family: Georgia, serif;
+        opacity: 0.5;
     }
 
     /* SIDEBAR */
@@ -254,6 +327,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        width: 100%;
     }
 
     .sidebar-widget {
@@ -261,6 +335,7 @@
         border-radius: var(--radius-lg);
         padding: 1.5rem;
         box-shadow: var(--shadow-lg);
+        width: 100%;
     }
 
     .widget-title {
@@ -271,6 +346,7 @@
         padding-bottom: 0.75rem;
         border-bottom: 2px solid var(--border-color);
         position: relative;
+        word-break: break-word;
     }
 
     .widget-title::after {
@@ -285,6 +361,7 @@
 
     .recent-articles {
         list-style: none;
+        width: 100%;
     }
 
     .recent-article {
@@ -303,6 +380,7 @@
         font-size: 0.9375rem;
         line-height: 1.4;
         transition: var(--transition);
+        word-break: break-word;
     }
 
     .recent-article-link:hover {
@@ -320,6 +398,7 @@
 
     .category-list {
         list-style: none;
+        width: 100%;
     }
 
     .category-item {
@@ -337,6 +416,7 @@
     .category-link {
         color: var(--text-secondary);
         transition: var(--transition);
+        word-break: break-word;
     }
 
     .category-link:hover {
@@ -351,6 +431,7 @@
         border-radius: var(--radius-sm);
         font-size: 0.75rem;
         font-weight: 500;
+        white-space: nowrap;
     }
 
     .btn-primary {
@@ -360,7 +441,7 @@
         gap: 0.5rem;
         background: var(--primary-color);
         color: white;
-        padding: 0.875rem 1.5rem;
+        padding: 0.75rem 1.25rem;
         border-radius: var(--radius-md);
         font-weight: 600;
         text-align: center;
@@ -368,7 +449,8 @@
         border: none;
         cursor: pointer;
         transition: var(--transition);
-        margin-top: 1rem;
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
     }
 
     .btn-primary:hover {
@@ -379,36 +461,12 @@
         color: white;
     }
 
-    /* BACK BUTTON */
-    .back-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: var(--bg-white);
-        color: var(--text-secondary);
-        padding: 0.75rem 1.25rem;
-        border-radius: var(--radius-md);
-        font-weight: 500;
-        margin-bottom: 2rem;
-        box-shadow: var(--shadow-sm);
-        transition: var(--transition);
-        border: 1px solid var(--border-color);
-    }
-
-    .back-button:hover {
-        background: var(--primary-color);
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-        text-decoration: none;
-        border-color: var(--primary-color);
-    }
-
     /* EMPTY STATE */
     .empty-state {
         text-align: center;
         padding: 2rem;
         color: var(--text-muted);
+        width: 100%;
     }
 
     .empty-state-icon {
@@ -424,65 +482,184 @@
             gap: 2rem;
         }
         
-        .article-title {
-            font-size: 2rem;
+        .sidebar {
+            order: 2;
+            margin-top: 0;
         }
         
-        .sidebar {
-            order: -1;
+        .article-card {
+            order: 1;
         }
     }
 
     @media (max-width: 768px) {
-        .container {
+        .breadcrumb-section {
+            padding: 0.5rem 0;
+        }
+        
+        .breadcrumb-container {
             padding: 0 16px;
         }
-
-        .article-header,
-        .article-featured-image,
-        .article-body {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
+        
+        .breadcrumb-list {
+            font-size: 0.8rem;
         }
-
+        
+        .main-content {
+            padding: 1rem 0 2rem;
+        }
+        
+        .main-container {
+            padding: 0 16px;
+        }
+        
+        .back-button-wrapper {
+            margin: 0 0 1rem 0;
+        }
+        
+        .back-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .article-header {
+            padding: 1.5rem 1.5rem 0;
+        }
+        
         .article-title {
             font-size: 1.75rem;
+            margin-bottom: 1rem;
         }
-
+        
         .article-meta {
             flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .main-content {
-            padding: 1.5rem 0 3rem;
+            gap: 0.5rem;
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
         }
         
         .article-featured-image {
             margin: 0 1.5rem 1.5rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .article-title {
-            font-size: 1.5rem;
+            width: calc(100% - 3rem);
         }
         
         .article-body {
+            padding: 0 1.5rem 1.5rem;
             font-size: 1rem;
-            padding: 1rem;
         }
         
         .article-body h2 {
             font-size: 1.5rem;
+            margin: 2rem 0 0.75rem;
         }
         
         .article-body h3 {
             font-size: 1.25rem;
+            margin: 1.5rem 0 0.75rem;
+        }
+        
+        .sidebar-widget {
+            padding: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .breadcrumb-container {
+            padding: 0 12px;
         }
         
         .breadcrumb-list {
             font-size: 0.75rem;
+            gap: 0.3rem;
+        }
+        
+        .main-content {
+            padding: 0.75rem 0 1.5rem;
+        }
+        
+        .main-container {
+            padding: 0 12px;
+        }
+        
+        .back-button-wrapper {
+            margin: 0 0 0.75rem 0;
+        }
+        
+        .back-button {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .article-header {
+            padding: 1.25rem 1.25rem 0;
+        }
+        
+        .article-title {
+            font-size: 1.35rem;
+            line-height: 1.4;
+        }
+        
+        .meta-item {
+            font-size: 0.8rem;
+        }
+        
+        .article-featured-image {
+            margin: 0 1.25rem 1.25rem;
+            width: calc(100% - 2.5rem);
+        }
+        
+        .image-caption {
+            opacity: 1;
+            transform: translateY(0);
+            font-size: 0.75rem;
+            padding: 0.5rem;
+        }
+        
+        .article-body {
+            padding: 0 1.25rem 1.25rem;
+            font-size: 0.95rem;
+        }
+        
+        .article-body h2 {
+            font-size: 1.35rem;
+        }
+        
+        .article-body h3 {
+            font-size: 1.15rem;
+        }
+        
+        .article-body blockquote {
+            padding: 1rem 1.25rem;
+        }
+        
+        .article-body blockquote::before {
+            font-size: 3rem;
+            top: -0.5rem;
+            left: 0.5rem;
+        }
+        
+        .sidebar-widget {
+            padding: 1rem;
+        }
+        
+        .widget-title {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .recent-article-link {
+            font-size: 0.85rem;
+        }
+        
+        .recent-article-date {
+            font-size: 0.75rem;
+        }
+        
+        .btn-primary {
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
         }
     }
 
@@ -503,89 +680,133 @@
         text-align: center;
     }
 
-    .mt-4 {
-        margin-top: 2rem;
+    /* Responsive table */
+    .article-body table {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        display: block;
+        border-collapse: collapse;
+        margin: 1rem 0;
     }
 
-    .mb-3 {
-        margin-bottom: 1.5rem;
+    .article-body table td,
+    .article-body table th {
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+        min-width: 100px;
     }
-    
-    .loading {
-        opacity: 0.7;
-        pointer-events: none;
+
+    /* Responsive iframe */
+    .article-body iframe {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        min-height: 315px;
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        .article-body iframe {
+            min-height: 250px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .article-body iframe {
+            min-height: 200px;
+        }
     }
 </style>
 @endsection
 
 @section('content')
-<!-- BREADCRUMB -->
-<nav class="breadcrumb" aria-label="Breadcrumb">
-    <div class="container">
-        <ol class="breadcrumb-list">
-            <li class="breadcrumb-item">
-                <a href="/" class="breadcrumb-link">Beranda</a>
+<!-- BREADCRUMB SECTION -->
+<section class="breadcrumb-section">
+    <div class="breadcrumb-container">
+        <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="/" class="breadcrumb-link" itemprop="item">
+                    <span itemprop="name">Beranda</span>
+                </a>
+                <meta itemprop="position" content="1" />
             </li>
-            <li class="breadcrumb-item">
-                <a href="{{ route('home') }}" class="breadcrumb-link">Berita</a>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a href="{{ route('public.news.index') }}" class="breadcrumb-link" itemprop="item">
+                    <span itemprop="name">Berita</span>
+                </a>
+                <meta itemprop="position" content="2" />
             </li>
-            <li class="breadcrumb-item">
-                <span class="breadcrumb-current">{{ \Illuminate\Support\Str::limit($news->title, 50) }}</span>
+            <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span class="breadcrumb-current" itemprop="name">
+                    {{ \Illuminate\Support\Str::limit($news->title, 50) }}
+                </span>
+                <meta itemprop="position" content="3" />
             </li>
         </ol>
     </div>
-</nav>
+</section>
 
-<!-- MAIN CONTENT -->
+<!-- MAIN CONTENT SECTION -->
 <main class="main-content">
-    <div class="container">
-        <a href="{{ route('home') }}" class="back-button" aria-label="Kembali ke halaman berita">
-            ← Kembali ke Daftar Berita
-        </a>
+    <div class="main-container">
+        <!-- BACK BUTTON -->
+        <div class="back-button-wrapper">
+            <a href="{{ route('public.news.index') }}" class="back-button" aria-label="Kembali ke halaman berita">
+                <span aria-hidden="true">←</span> Kembali ke Daftar Berita
+            </a>
+        </div>
 
+        <!-- ARTICLE LAYOUT -->
         <div class="article-layout">
-            <!-- ARTICLE CONTENT -->
-            <article class="article-card">
+            <!-- ARTICLE CONTENT (UTAMA) -->
+            <article class="article-card" itemscope itemtype="https://schema.org/NewsArticle">
+                <meta itemprop="datePublished" content="{{ $news->created_at->toIso8601String() }}">
+                <meta itemprop="dateModified" content="{{ $news->updated_at->toIso8601String() }}">
+                
                 <header class="article-header">
-                    <h1 class="article-title">{{ $news->title }}</h1>
+                    <h1 class="article-title" itemprop="headline">{{ $news->title }}</h1>
                     
                     <div class="article-meta">
-                        <div class="meta-item">
-                            <span class="meta-icon">📅</span>
+                        <div class="meta-item" itemprop="dateCreated">
+                            <span class="meta-icon" aria-hidden="true">📅</span>
                             <time datetime="{{ $news->created_at->toIso8601String() }}">
                                 {{ $news->created_at->translatedFormat('l, d F Y') }}
                             </time>
                         </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">👤</span>
-                            <span>{{ $news->user->name ?? 'Tim Redaksi LPM' }}</span>
+                        <div class="meta-item" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                            <span class="meta-icon" aria-hidden="true">👤</span>
+                            <span itemprop="name">{{ $news->user->name ?? 'Tim Redaksi LPM' }}</span>
                         </div>
                         <div class="meta-item">
-                            <span class="meta-icon">🏷️</span>
-                            <span>Berita Kampus</span>
+                            <span class="meta-icon" aria-hidden="true">🏷️</span>
+                            <span itemprop="articleSection">Berita Kampus</span>
                         </div>
+                        <div class="meta-item reading-time" id="readingTime"></div>
                     </div>
                 </header>
 
                 @if($news->image)
-                <figure class="article-featured-image">
+                <figure class="article-featured-image" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
                     <img src="{{ asset('storage/'.$news->image) }}" 
                          alt="{{ $news->title }}"
                          loading="lazy"
-                         onerror="this.src='https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'">
-                    <figcaption class="image-caption">
+                         itemprop="contentUrl"
+                         onerror="this.src='https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+                                  this.alt='Gambar tidak tersedia';">
+                    <figcaption class="image-caption" itemprop="caption">
                         {{ $news->title }}
                     </figcaption>
                 </figure>
                 @endif
 
-                <div class="article-body">
+                <div class="article-body" itemprop="articleBody">
                     {!! nl2br(e($news->content)) !!}
                 </div>
             </article>
 
-            <!-- SIDEBAR -->
-            <aside class="sidebar" aria-label="Sidebar">
+            <!-- SIDEBAR (KANAN) -->
+            <aside class="sidebar" aria-label="Sidebar Berita">
                 <!-- Berita Terbaru -->
                 <div class="sidebar-widget">
                     <h2 class="widget-title">Berita Terkini</h2>
@@ -596,7 +817,8 @@
                                 @if($recent->id != $news->id)
                                     <li class="recent-article">
                                         <a href="{{ route('public.news.show', $recent) }}" 
-                                           class="recent-article-link">
+                                           class="recent-article-link"
+                                           itemprop="relatedLink">
                                             {{ \Illuminate\Support\Str::limit($recent->title, 70) }}
                                             <time class="recent-article-date" datetime="{{ $recent->created_at->toIso8601String() }}">
                                                 {{ $recent->created_at->translatedFormat('d M Y') }}
@@ -606,14 +828,16 @@
                                 @endif
                             @endforeach
                         </ul>
+                        
+                        <a href="{{ route('public.news.index') }}" class="btn-primary">
+                            Lihat Semua Berita
+                        </a>
                     @else
                         <div class="empty-state">
-                            <div class="empty-state-icon">📰</div>
+                            <div class="empty-state-icon" aria-hidden="true">📰</div>
                             <p>Tidak ada berita lainnya</p>
                         </div>
                     @endif
-                    
-                    <a href="{{ route('public.news.index') }}" class="breadcrumb-link">Berita</a>
                 </div>
 
                 <!-- Kategori -->
@@ -623,7 +847,11 @@
                     <ul class="category-list">
                         @foreach($categories as $category)
                             <li class="category-item">
-                                <a href="{{ route('home', ['category' => $category->slug]) }}" class="category-link">{{ $category->name }}</a>
+                                <a href="{{ route('public.news.index', ['category' => $category->slug]) }}" 
+                                   class="category-link"
+                                   itemprop="genre">
+                                    {{ $category->name }}
+                                </a>
                                 <span class="category-count">{{ $category->news_count ?? 0 }}</span>
                             </li>
                         @endforeach
@@ -635,8 +863,11 @@
                 <div class="sidebar-widget text-center">
                     <h2 class="widget-title">Ikuti Kami</h2>
                     <p class="mb-3">Dapatkan update terbaru dari LPM Universitas Kampus</p>
-                    <a href="https://instagram.com/lpm_universitas" target="_blank" class="btn-primary">
-                        <span>📷</span> Follow Instagram
+                    <a href="https://instagram.com/lpm_universitas" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="btn-primary">
+                        <span aria-hidden="true">📷</span> Follow Instagram
                     </a>
                 </div>
             </aside>
@@ -648,90 +879,119 @@
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Calculate reading time
+        'use strict';
+
+        // Hitung waktu baca
         function calculateReadingTime() {
             const articleBody = document.querySelector('.article-body');
-            if (articleBody) {
-                const text = articleBody.textContent;
-                const wordCount = text.trim().split(/\s+/).length;
-                const readingTime = Math.ceil(wordCount / 200);
+            const readingTimeElement = document.getElementById('readingTime');
+            
+            if (articleBody && readingTimeElement) {
+                const text = articleBody.textContent || '';
+                const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                const wordCount = words.length;
+                const readingTime = Math.ceil(wordCount / 200); // 200 kata per menit
                 
-                const metaContainer = document.querySelector('.article-meta');
-                if (metaContainer && readingTime > 0) {
-                    const readingTimeElement = document.createElement('div');
-                    readingTimeElement.className = 'meta-item';
-                    readingTimeElement.innerHTML = `<span class="meta-icon">⏱️</span> ${readingTime} menit baca`;
-                    metaContainer.appendChild(readingTimeElement);
+                if (readingTime > 0) {
+                    readingTimeElement.innerHTML = `
+                        <span class="meta-icon" aria-hidden="true">⏱️</span>
+                        <span>${readingTime} menit baca</span>
+                    `;
                 }
             }
         }
 
-        // Lazy loading for images
+        // Lazy loading images
         function lazyLoadImages() {
             const images = document.querySelectorAll('img[loading="lazy"]');
             
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src || img.src;
-                        img.classList.remove('loading');
-                        observer.unobserve(img);
-                    }
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.classList.remove('loading');
+                            observer.unobserve(img);
+                        }
+                    });
+                }, {
+                    rootMargin: '50px 0px',
+                    threshold: 0.1
                 });
-            });
 
-            images.forEach(img => {
-                img.classList.add('loading');
-                imageObserver.observe(img);
+                images.forEach(img => {
+                    img.classList.add('loading');
+                    imageObserver.observe(img);
+                });
+            }
+        }
+
+        // Handle responsive tables
+        function handleResponsiveTables() {
+            const articleBody = document.querySelector('.article-body');
+            if (articleBody) {
+                const tables = articleBody.querySelectorAll('table');
+                tables.forEach(table => {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.cssText = `
+                        overflow-x: auto;
+                        max-width: 100%;
+                        margin: 1rem 0;
+                        -webkit-overflow-scrolling: touch;
+                    `;
+                    table.parentNode.insertBefore(wrapper, table);
+                    wrapper.appendChild(table);
+                });
+            }
+        }
+
+        // Handle image errors
+        function handleImageErrors() {
+            document.querySelectorAll('img').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = 'https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+                    this.alt = 'Gambar tidak tersedia';
+                });
             });
         }
 
-        // Add smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        // Handle responsive iframes
+        function handleResponsiveIframes() {
+            const articleBody = document.querySelector('.article-body');
+            if (articleBody) {
+                const iframes = articleBody.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    const wrapper = document.createElement('div');
+                    wrapper.style.cssText = `
+                        position: relative;
+                        width: 100%;
+                        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+                        height: 0;
+                        overflow: hidden;
+                        margin: 1rem 0;
+                    `;
+                    
+                    iframe.style.cssText = `
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: none;
+                    `;
+                    
+                    iframe.parentNode.insertBefore(wrapper, iframe);
+                    wrapper.appendChild(iframe);
+                });
+            }
+        }
 
-        // Initialize functions
+        // Initialize all functions
         calculateReadingTime();
         lazyLoadImages();
-
-        // Add copy link functionality
-        const shareButtons = document.querySelectorAll('.share-btn');
-        shareButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const url = window.location.href;
-                
-                if (navigator.share) {
-                    navigator.share({
-                        title: document.title,
-                        url: url
-                    });
-                } else {
-                    navigator.clipboard.writeText(url).then(() => {
-                        alert('Link berita berhasil disalin!');
-                    });
-                }
-            });
-        });
-
-        // Handle image error
-        document.querySelectorAll('img').forEach(img => {
-            img.addEventListener('error', function() {
-                this.src = 'https://images.unsplash.com/photo-1588681664899-f142ff2dc9b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-                this.alt = 'Gambar tidak tersedia';
-            });
-        });
+        handleResponsiveTables();
+        handleImageErrors();
+        handleResponsiveIframes();
     });
 </script>
 @endsection

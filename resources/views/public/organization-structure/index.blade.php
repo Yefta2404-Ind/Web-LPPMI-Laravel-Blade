@@ -6,20 +6,18 @@
 <div class="container py-5">
     <!-- Header -->
     <div class="mb-5 text-center">
-        <h1 class="fw-bold mb-3" style="color: #003366;">Struktur Organisasi LPPMI UGK</h1>
+        <h1 class="fw-bold mb-3" style="color: #003366;">Struktur Organisasi LPPMI</h1>
         <div style="height: 3px; width: 80px; background: #d4af37; margin: 0 auto;"></div>
     </div>
 
     <!-- Team Grid -->
-    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
-       @php
-    $allMembers = $structure ? $structure->members : [];
-@endphp
+    <div class="row g-4">
+        @php
+            $allMembers = $structure ? $structure->members : [];
+        @endphp
 
-
-        
         @forelse($allMembers as $member)
-        <div class="col">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
             <div class="team-card text-center h-100">
                 <!-- Avatar -->
                 <div class="avatar-wrapper mb-3">
@@ -46,13 +44,13 @@
                     <!-- Contact -->
                     <div class="contact-links">
                         @if($member->email)
-                        <a href="mailto:{{ $member->email }}" class="me-2">
+                        <a href="mailto:{{ $member->email }}" class="me-2" title="Email">
                             <i class="fas fa-envelope text-primary"></i>
                         </a>
                         @endif
                         
                         @if($member->phone)
-                        <a href="tel:{{ $member->phone }}">
+                        <a href="tel:{{ $member->phone }}" title="Telepon">
                             <i class="fas fa-phone text-success"></i>
                         </a>
                         @endif
@@ -75,7 +73,7 @@
 @section('styles')
 <style>
     .team-card {
-        padding: 1.5rem;
+        padding: 1.5rem 1rem;
         background: white;
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.05);
@@ -113,32 +111,73 @@
         font-size: 1.1rem;
         text-decoration: none;
         transition: transform 0.2s;
+        display: inline-block;
     }
     
     .contact-links a:hover {
         transform: scale(1.2);
     }
     
-    /* Responsive */
-    @media (max-width: 768px) {
-        .row-cols-2 {
-            --bs-columns: 2;
-        }
-        
-        .avatar, .avatar-placeholder {
-            width: 80px;
-            height: 80px;
-        }
-    }
+    /* Responsive Breakpoints */
     
-    @media (max-width: 576px) {
-        .row-cols-2 {
-            --bs-columns: 1;
+    /* Mobile (di bawah 576px) */
+    @media (max-width: 575.98px) {
+        .col-12 {
+            width: 100%;
         }
         
         .team-card {
-            max-width: 280px;
-            margin: 0 auto;
+            max-width: 100%;
+            margin: 0;
+            padding: 1.2rem;
+        }
+        
+        .avatar, .avatar-placeholder {
+            width: 90px;
+            height: 90px;
+        }
+        
+        .team-info h6 {
+            font-size: 1rem;
+        }
+        
+        .team-info p {
+            font-size: 0.9rem;
+        }
+    }
+    
+    /* Tablet (576px - 767px) */
+    @media (min-width: 576px) and (max-width: 767.98px) {
+        .col-sm-6 {
+            width: 50%;
+        }
+        
+        .team-card {
+            padding: 1.2rem;
+        }
+        
+        .avatar, .avatar-placeholder {
+            width: 90px;
+            height: 90px;
+        }
+    }
+    
+    /* Desktop kecil (768px - 991px) */
+    @media (min-width: 768px) and (max-width: 991.98px) {
+        .col-md-4 {
+            width: 33.333%;
+        }
+        
+        .avatar, .avatar-placeholder {
+            width: 95px;
+            height: 95px;
+        }
+    }
+    
+    /* Desktop besar (992px ke atas) */
+    @media (min-width: 992px) {
+        .col-lg-3 {
+            width: 25%;
         }
     }
 </style>
