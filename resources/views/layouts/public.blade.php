@@ -2,16 +2,21 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>@yield('title', 'LPPMI - Universitas Gunung Kidul')</title>
     <meta name="description" content="Lembaga Pengendalian dan Penjaminan Mutu Internal Universitas Gunung Kidul. Meningkatkan kualitas pendidikan melalui sistem penjaminan mutu berkelanjutan.">
     
     <!-- ========== EXTERNAL DEPENDENCIES ========== -->
-    <!-- Bootstrap 5 CSS (WAJIB) -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome (WAJIB) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts - Roboto Regular dan Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Page-specific styles -->
     @yield('styles')
@@ -19,17 +24,23 @@
     <!-- ========== CUSTOM GLOBAL STYLES ========== -->
     <style>
         :root {
-            --primary: #003366;
-            --secondary: #d4af37;
-            --accent: #2563eb;
-            --text-dark: #111827;
-            --text-light: #6b7280;
+            --primary: #0a2a44; /* Biru solid gelap */
+            --primary-light: #1e3a5f; /* Biru solid sedikit lebih terang */
+            --primary-dark: #051a2b; /* Biru solid sangat gelap */
+            --secondary: #f8f9fa;
+            --accent: #eef2f6;
+            --dark: #1e2a3a;
+            --text-dark: #1a2634;
+            --text-light: #55657b;
             --white: #ffffff;
-            --gray-light: #f8fafc;
-            --border: #e5e7eb;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-            --shadow-md: 0 3px 6px rgba(0,0,0,0.1);
-            --shadow-lg: 0 8px 20px rgba(0,0,0,0.12);
+            --gray-light: #f9fbfd;
+            --border: #dee6f0;
+            --shadow-sm: 0 4px 12px rgba(0,0,0,0.02);
+            --shadow-md: 0 8px 24px rgba(0,20,50,0.06);
+            --shadow-lg: 0 16px 40px rgba(0,20,50,0.08);
+            --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-roboto: 'Roboto', 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
         }
 
         * {
@@ -43,66 +54,161 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: var(--font-primary);
             line-height: 1.6;
             color: var(--text-dark);
-            background: var(--gray-light);
+            background: var(--white);
             overflow-x: hidden;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--primary);
         }
 
         .site-container {
             width: 100%;
-            max-width: 1400px;
+            max-width: 1440px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
-        /* ================= FIXED SITE HEADER ================= */
-        .site-header {
-            background: var(--primary);
-            border-bottom: 3px solid var(--secondary);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-md);
+        /* ================= TOP BAR ================= */
+        .top-bar {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 8px 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            letter-spacing: 0.02em;
         }
 
-        .header-container {
+        .top-bar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+
+        .top-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--white);
+            opacity: 0.9;
+        }
+
+        .top-bar-item i {
+            color: var(--white);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .top-bar-item span,
+        .top-bar-item a {
+            color: var(--white);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .top-bar-item a:hover {
+            opacity: 1;
+            color: var(--white);
+        }
+
+        .top-bar-right {
             display: flex;
             align-items: center;
             gap: 16px;
-            padding: 12px 0;
-            min-height: 80px;
         }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
+        .social-link {
             color: var(--white);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 8px;
-            width: 44px;
-            height: 44px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            flex-shrink: 0;
-            order: 1;
+            font-size: 1rem;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            opacity: 0.9;
         }
 
-        .menu-toggle:hover {
-            background-color: rgba(255,255,255,0.1);
+        .social-link:hover {
+            opacity: 1;
+            color: var(--white);
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 8px;
+            padding-left: 16px;
+            border-left: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .language-selector a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            opacity: 0.8;
+        }
+
+        .language-selector a:hover,
+        .language-selector a.active {
+            opacity: 1;
+            background: rgba(255,255,255,0.15);
+            color: var(--white);
+        }
+
+        /* ================= HEADER ================= */
+        .site-header {
+            background: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 80px;
+            padding: 10px 0;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .logo-title-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+            max-width: 70%;
         }
 
         .logo {
-            width: 60px;
-            height: 60px;
+            width: 55px;
+            height: 55px;
             flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            order: 2;
         }
 
         .logo svg {
@@ -112,154 +218,463 @@
         }
 
         .header-title {
-            flex: 1;
-            min-width: 0;
-            order: 3;
+            border-left: 1px solid rgba(255,255,255,0.2);
             padding-left: 16px;
-            border-left: 2px solid var(--secondary);
         }
 
         .header-title h1 {
             color: var(--white);
-            font-size: 16px;
-            font-weight: 700;
+            font-family: var(--font-roboto);
+            font-weight: 400;
+            font-size: 1rem;
             line-height: 1.3;
-            margin: 0 0 4px 0;
+            margin: 0 0 3px 0;
             text-transform: uppercase;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
         }
 
         .header-title span {
-            color: rgba(255,255,255,0.9);
-            font-size: 14px;
-            font-weight: 500;
+            color: var(--white);
+            font-family: var(--font-roboto);
+            font-weight: 400;
+            font-size: 0.75rem;
             display: block;
+            letter-spacing: 0.03em;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--white);
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 8px;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
         }
 
         /* ================= NAVIGATION ================= */
         .main-nav {
-            background: #002244;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 999;
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            flex-wrap: wrap;
-            margin-bottom: 0;
-            padding-left: 0;
+            margin: 0;
+            padding: 0;
+            gap: 2px;
+            align-items: center;
         }
 
-        /* PERBAIKAN NAVIGASI - SEMUA STATE */
         .nav-link {
             color: var(--white);
             text-decoration: none;
-            padding: 16px 20px;
+            padding: 8px 14px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-weight: 600;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            border-right: 1px solid rgba(255,255,255,0.1);
+            gap: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: background-color 0.2s, opacity 0.2s;
+            border-radius: 6px;
             white-space: nowrap;
+            letter-spacing: 0.02em;
+            background: transparent;
+            border: none;
+            opacity: 0.9;
         }
 
-        /* Hover state */
-        .nav-link:hover {
-            background: var(--secondary);
-            color: var(--primary) !important;
-        }
-
-        /* Active state (saat diklik) */
-        .nav-link:active {
-            background: #b8960f; /* Warna emas lebih gelap */
-            color: var(--primary) !important;
-        }
-
-        /* Focus state (setelah diklik) */
-        .nav-link:focus {
-            background: var(--secondary);
-            color: var(--primary) !important;
+        .nav-link:hover,
+        .nav-link:active,
+        .nav-link:focus,
+        .nav-link.active {
+            opacity: 1;
+            color: var(--white) !important;
+            background: rgba(255,255,255,0.1);
             outline: none;
         }
-
-        /* Current active page */
-        .nav-link.active {
-            background: var(--secondary);
-            color: var(--primary) !important;
-        }
-
 
         /* Dropdown container */
         .dropdown {
             position: relative;
         }
 
-        /* Dropdown menu */
         .dropdown-menu {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             left: 0;
-            background: white;
-            min-width: 240px;
+            background: var(--primary-light);
+            min-width: 220px;
             display: none;
             list-style: none;
-            padding: 8px 0;
+            padding: 6px 0;
             box-shadow: var(--shadow-lg);
-            border-radius: 6px;
+            border-radius: 10px;
             z-index: 1000;
             margin: 0;
-            border: none;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* Dropdown items */
         .dropdown-menu li a {
             display: block;
-            padding: 12px 20px;
-            color: #333;
+            padding: 10px 18px;
+            color: var(--white);
             text-decoration: none;
             white-space: nowrap;
-            transition: all 0.3s ease;
-            font-size: 14px;
+            transition: background-color 0.2s, opacity 0.2s;
+            font-size: 0.85rem;
+            font-weight: 400;
+            background: transparent;
+            border: none;
+            opacity: 0.9;
         }
 
-        /* Dropdown hover */
-        .dropdown-menu li a:hover {
-            background: var(--secondary);
-            color: var(--primary) !important;
-        }
-
-        /* Dropdown active (saat diklik) */
-        .dropdown-menu li a:active {
-            background: #b8960f;
-            color: var(--primary) !important;
-        }
-
-        /* Dropdown focus */
+        .dropdown-menu li a:hover,
+        .dropdown-menu li a:active,
         .dropdown-menu li a:focus {
-            background: var(--secondary);
-            color: var(--primary) !important;
+            opacity: 1;
+            color: var(--white) !important;
+            background: rgba(255,255,255,0.15);
             outline: none;
         }
 
-        /* Desktop hover effect */
-        @media (min-width: 769px) {
+        @media (min-width: 1025px) {
             .dropdown:hover .dropdown-menu {
                 display: block;
             }
         }
 
-        /* ================= HERO SECTION ================= */
+        /* ================= RESPONSIVE HEADER ================= */
+        
+        /* Large Desktop */
+        @media (min-width: 1400px) {
+            .header-title h1 { font-size: 1.1rem; }
+            .header-title span { font-size: 0.8rem; }
+            .nav-link { font-size: 0.9rem; padding: 10px 18px; }
+        }
+
+        /* Desktop */
+        @media (max-width: 1199px) {
+            .header-title h1 { font-size: 0.95rem; }
+            .header-title span { font-size: 0.7rem; }
+            .nav-link { font-size: 0.8rem; padding: 8px 12px; }
+            
+            .logo { width: 50px; height: 50px; }
+        }
+
+        /* Tablet Landscape */
+        @media (max-width: 991px) {
+            .top-bar-container { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 8px;
+            }
+            .top-bar-left { 
+                justify-content: center; 
+                gap: 20px;
+            }
+            .top-bar-right { 
+                justify-content: center; 
+            }
+            
+            .header-container { 
+                min-height: 70px; 
+                padding: 8px 0; 
+            }
+            
+            .logo-title-group { 
+                gap: 12px; 
+                max-width: 65%;
+            }
+            
+            .logo { 
+                width: 45px; 
+                height: 45px; 
+            }
+            
+            .header-title { 
+                padding-left: 12px; 
+            }
+            
+            .header-title h1 { 
+                font-size: 0.9rem; 
+                margin-bottom: 2px;
+            }
+            
+            .header-title span { 
+                font-size: 0.65rem; 
+            }
+            
+            .nav-link { 
+                padding: 6px 10px; 
+                font-size: 0.75rem; 
+            }
+        }
+
+        /* Tablet Portrait & Mobile */
+        @media (max-width: 767px) {
+            .site-container {
+                padding: 0 16px;
+            }
+            
+            .top-bar-left { 
+                flex-direction: column; 
+                gap: 6px; 
+                width: 100%;
+            }
+            
+            .top-bar-item { 
+                font-size: 0.75rem;
+                justify-content: center;
+                width: 100%;
+            }
+            
+            .top-bar-right {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            /* Header Mobile */
+            .header-container { 
+                flex-wrap: wrap; 
+                min-height: auto; 
+                padding: 10px 0;
+                gap: 10px;
+                position: relative;
+            }
+            
+            .logo-title-group { 
+                flex: 1;
+                min-width: 0;
+                max-width: calc(100% - 55px);
+                gap: 10px; 
+            }
+            
+            .logo { 
+                width: 42px; 
+                height: 42px; 
+                flex-shrink: 0;
+            }
+            
+            .header-title { 
+                padding-left: 10px; 
+                min-width: 0;
+                overflow: hidden;
+            }
+            
+            .header-title h1 { 
+                font-size: 0.85rem; 
+                white-space: normal;
+                line-height: 1.2;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+                margin-bottom: 2px;
+            }
+            
+            .header-title span { 
+                font-size: 0.6rem; 
+                white-space: normal;
+                line-height: 1.2;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+            }
+            
+            .menu-toggle { 
+                display: flex; 
+                align-items: center;
+                justify-content: center;
+                order: 1;
+                flex-shrink: 0;
+                width: 42px;
+                height: 42px;
+                padding: 0;
+                font-size: 1.2rem;
+            }
+            
+            /* Mobile Navigation Menu */
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 85%;
+                max-width: 300px;
+                height: 100vh;
+                background: var(--primary-light);
+                transition: right 0.3s ease;
+                z-index: 1001;
+                box-shadow: -5px 0 25px rgba(0,0,0,0.2);
+                display: block;
+                overflow-y: auto;
+            }
+            
+            .main-nav.active { 
+                right: 0; 
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                padding: 70px 0 20px;
+                overflow-y: auto;
+                height: auto;
+                min-height: 100%;
+                gap: 0;
+                width: 100%;
+                align-items: stretch;
+            }
+            
+            .nav-link {
+                padding: 14px 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+                font-size: 0.9rem;
+                white-space: normal;
+                border-radius: 0;
+                color: var(--white);
+                opacity: 1;
+                justify-content: space-between;
+                width: 100%;
+            }
+            
+            .nav-link i {
+                font-size: 0.75rem;
+                transition: transform 0.2s;
+            }
+            
+            .dropdown.active .nav-link i {
+                transform: rotate(180deg);
+            }
+            
+            .dropdown-menu {
+                position: static;
+                display: none;
+                width: 100%;
+                background: rgba(0,0,0,0.2);
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+                border: none;
+            }
+            
+            .dropdown.active .dropdown-menu { 
+                display: block; 
+            }
+            
+            .dropdown-menu li a {
+                padding: 12px 30px;
+                font-size: 0.85rem;
+                color: var(--white);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+                opacity: 0.9;
+                white-space: normal;
+                word-break: break-word;
+            }
+            
+            .menu-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                backdrop-filter: blur(3px);
+            }
+            
+            .menu-overlay.active {
+                display: block;
+                opacity: 1;
+            }
+            
+            body.menu-open {
+                overflow: hidden;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .logo-title-group { 
+                gap: 8px; 
+            }
+            
+            .logo { 
+                width: 38px; 
+                height: 38px; 
+            }
+            
+            .header-title { 
+                padding-left: 8px; 
+            }
+            
+            .header-title h1 { 
+                font-size: 0.8rem; 
+                -webkit-line-clamp: 2;
+            }
+            
+            .header-title span { 
+                font-size: 0.55rem; 
+            }
+            
+            .menu-toggle { 
+                width: 40px; 
+                height: 40px; 
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Very Small Mobile */
+        @media (max-width: 360px) {
+            .logo { 
+                width: 35px; 
+                height: 35px; 
+            }
+            
+            .header-title h1 { 
+                font-size: 0.75rem; 
+            }
+            
+            .header-title span { 
+                font-size: 0.5rem; 
+            }
+        }
+
+        /* ================= HERO ================= */
         .hero-section {
             position: relative;
             overflow: hidden;
-            color: #fff;
-            min-height: 50vh;
+            color: var(--white);
+            min-height: 60vh;
             display: flex;
             align-items: center;
-            margin-bottom: 0 !important;
+            margin-bottom: 0;
         }
 
         .hero-slider {
@@ -273,11 +688,10 @@
             position: absolute;
             inset: 0;
             background-size: cover;
-            background-position: center center;
+            background-position: center;
             background-repeat: no-repeat;
             opacity: 0;
-            transition: opacity 1s ease-in-out;
-            transform-origin: center center;
+            transition: opacity 1s ease;
         }
 
         .hero-slide.active {
@@ -288,12 +702,7 @@
             position: relative;
             z-index: 2;
             width: 100%;
-            padding: 40px 20px;
-            background: linear-gradient(
-                135deg,
-                rgba(0, 51, 102, 0.75) 0%,
-                rgba(0, 34, 68, 0.85) 100%
-            );
+            padding: 60px 24px;
             min-height: 100%;
             display: flex;
             align-items: center;
@@ -303,23 +712,25 @@
         .hero-content {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 24px;
             width: 100%;
             text-align: center;
         }
 
         .hero-title {
-            font-size: 1.8rem;
+            font-size: 2.8rem;
             font-weight: 700;
-            line-height: 1.3;
+            line-height: 1.2;
             margin-bottom: 0;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            color: var(--white);
+            letter-spacing: -0.02em;
         }
 
-        /* ================= AGENDA SECTION ================= */
+        /* ================= AGENDA ================= */
         .agenda-section {
-            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-            padding: 60px 0;
+            background: var(--white);
+            padding: 80px 0;
             border-bottom: 1px solid var(--border);
         }
 
@@ -327,36 +738,36 @@
             position: relative;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin: 20px 0;
+            gap: 16px;
+            margin: 32px 0;
         }
 
         .slider-arrow {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: white;
+            background: var(--white);
             border: 1px solid var(--border);
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             flex-shrink: 0;
             box-shadow: var(--shadow-sm);
             z-index: 2;
         }
 
         .slider-arrow:hover {
-            background: var(--primary);
-            color: white;
+            background: var(--accent);
             border-color: var(--primary);
-            transform: scale(1.1);
+            color: var(--primary);
+            transform: scale(1.05);
         }
 
         .slider-arrow:disabled {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
             pointer-events: none;
         }
@@ -365,40 +776,40 @@
             flex: 1;
             overflow: hidden;
             position: relative;
-            border-radius: 12px;
+            border-radius: 20px;
         }
 
         .agenda-horizontal-wrapper {
             display: flex;
-            gap: 20px;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 24px;
+            transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1);
             will-change: transform;
         }
 
         .agenda-card-small {
-            flex: 0 0 calc((100% - 40px) / 3);
-            background: white;
-            border-radius: 16px;
+            flex: 0 0 calc((100% - 48px) / 3);
+            background: var(--white);
+            border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            transition: all 0.25s;
             cursor: pointer;
             display: flex;
-            height: 160px;
+            height: 170px;
         }
 
         .agenda-card-small:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
             border-color: var(--primary);
+            transform: translateY(-4px);
         }
 
         .agenda-date-small {
             background: var(--primary);
-            color: white;
-            padding: 15px 12px;
-            min-width: 85px;
+            color: var(--white);
+            padding: 16px 12px;
+            min-width: 90px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -407,45 +818,46 @@
         }
 
         .date-day-small {
-            font-size: 28px;
+            font-size: 2rem;
             font-weight: 700;
             line-height: 1;
             margin-bottom: 4px;
+            font-family: var(--font-heading);
         }
 
         .date-month-small {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.06em;
             opacity: 0.9;
         }
 
         .date-year-small {
-            font-size: 11px;
-            opacity: 0.8;
+            font-size: 0.7rem;
+            opacity: 0.7;
             margin-top: 2px;
         }
 
         .agenda-content-small {
-            padding: 15px;
+            padding: 16px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: white;
+            background: var(--white);
         }
 
         .agenda-title-small {
-            font-size: 14px;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-dark);
             line-height: 1.4;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            min-height: 40px;
+            min-height: 44px;
         }
 
         .agenda-meta-small {
@@ -455,107 +867,99 @@
         .meta-item-small {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 12px;
+            gap: 8px;
+            font-size: 0.8rem;
             color: var(--text-light);
             margin-bottom: 4px;
         }
 
         .meta-item-small i {
             color: var(--primary);
-            font-size: 10px;
+            font-size: 0.7rem;
             width: 14px;
         }
 
         .agenda-status-small {
             display: inline-flex;
             align-items: center;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 10px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.04em;
             align-self: flex-start;
+            background: var(--accent);
+            color: var(--text-light);
         }
 
-        .status-upcoming {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .status-ongoing {
-            background: #fff3e0;
-            color: #f57c00;
-        }
-
-        .status-completed {
-            background: #eeeeee;
-            color: #616161;
-        }
+        .status-upcoming { background: #e8f0fe; color: var(--primary); }
+        .status-ongoing { background: #fff4e5; color: #b85e00; }
+        .status-completed { background: #edf2f7; color: var(--text-light); }
 
         .slider-indicators {
             display: flex;
             justify-content: center;
             gap: 8px;
-            margin-top: 20px;
+            margin-top: 24px;
         }
 
         .slider-dot {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--border);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
 
         .slider-dot.active {
             background: var(--primary);
             width: 24px;
-            border-radius: 4px;
+            border-radius: 12px;
         }
 
         .agenda-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
         .agenda-title {
             display: flex;
             align-items: center;
-            gap: 14px;
-            font-size: 26px;
+            gap: 12px;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--primary);
             margin: 0;
         }
 
         .agenda-title i {
-            font-size: 22px;
-            color: var(--secondary);
+            font-size: 1.6rem;
+            color: var(--primary);
+            opacity: 0.8;
         }
 
         .view-all-btn {
             background: none;
-            border: none;
+            border: 1px solid var(--border);
             color: var(--primary);
-            font-size: 13px;
+            font-size: 0.9rem;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 40px;
+            transition: all 0.2s;
         }
 
         .view-all-btn:hover {
-            background: rgba(0, 51, 102, 0.05);
-            color: var(--primary);
+            background: var(--accent);
+            border-color: var(--primary);
         }
 
         /* ================= AGENDA MODAL ================= */
@@ -565,15 +969,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1100;
             padding: 20px;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.25s;
         }
 
         .agenda-modal-overlay.active {
@@ -582,96 +986,97 @@
         }
 
         .agenda-modal-content {
-            background: white;
-            border-radius: 24px;
-            max-width: 500px;
+            background: var(--white);
+            border-radius: 32px;
+            max-width: 560px;
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
             position: relative;
-            transform: translateY(20px) scale(0.95);
-            transition: all 0.3s ease;
+            transform: scale(0.98);
+            transition: transform 0.25s;
         }
 
         .agenda-modal-overlay.active .agenda-modal-content {
-            transform: translateY(0) scale(1);
+            transform: scale(1);
         }
 
         .modal-close {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 36px;
-            height: 36px;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: var(--gray-light);
+            background: var(--accent);
             border: none;
-            font-size: 24px;
+            font-size: 1.5rem;
             color: var(--text-light);
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             z-index: 2;
         }
 
         .modal-close:hover {
             background: var(--primary);
-            color: white;
-            transform: rotate(90deg);
+            color: var(--white);
         }
 
         .modal-header {
-            background: linear-gradient(135deg, var(--primary), #001a33);
-            color: white;
-            padding: 30px 25px 25px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 32px 28px 28px;
             position: relative;
         }
 
         .modal-date-box {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 16px;
+            padding: 16px 20px;
+            border-radius: 20px;
             display: inline-flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .modal-day {
-            font-size: 36px;
+            font-size: 3rem;
             font-weight: 700;
             line-height: 1;
+            font-family: var(--font-heading);
         }
 
         .modal-month-year {
-            font-size: 14px;
+            font-size: 0.9rem;
             opacity: 0.9;
             margin-top: 4px;
         }
 
         .modal-title {
-            font-size: 22px;
+            font-size: 1.6rem;
             font-weight: 600;
             line-height: 1.3;
             margin: 0;
+            color: var(--white);
         }
 
         .modal-body {
-            padding: 25px;
+            padding: 28px;
         }
 
         .modal-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--gray-light);
-            border-radius: 16px;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--accent);
+            border-radius: 20px;
         }
 
         .modal-info-item {
@@ -679,111 +1084,103 @@
             align-items: center;
             gap: 10px;
             color: var(--text-dark);
-            font-size: 14px;
+            font-size: 0.95rem;
         }
 
         .modal-info-item i {
             color: var(--primary);
-            font-size: 16px;
+            font-size: 1rem;
             width: 20px;
         }
 
         .modal-description {
-            line-height: 1.6;
+            line-height: 1.7;
             color: var(--text-dark);
+            font-size: 0.95rem;
         }
 
         .modal-description p {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .modal-footer {
-            padding: 20px 25px;
-            background: var(--gray-light);
+            padding: 20px 28px;
+            background: var(--accent);
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
         }
 
         .modal-status {
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 12px;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.8rem;
             font-weight: 600;
+            background: var(--white);
         }
 
-        /* ================= SURVEY SECTION ================= */
+        /* ================= SURVEY ================= */
         .survey-section {
-            background: 
-                linear-gradient(
-                    rgba(0, 0, 0, 0.6), 
-                    rgba(0, 0, 0, 0.7)
-                ),
-                url("{{ asset('images/qr.jpg') }}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            padding: 60px 0;
-            margin: 0 !important;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 80px 0;
+            margin: 0;
             overflow: hidden;
-            border-radius: 30px 30px 0 0;
+            color: var(--white);
         }
 
         .survey-container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 2;
+            padding: 0 24px;
         }
 
         .survey-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
+            gap: 60px;
             align-items: center;
         }
 
         .survey-left {
-            color: white;
+            color: var(--white);
         }
 
         .survey-title {
-            font-size: 32px;
+            font-size: 2.8rem;
             font-weight: 700;
-            margin-bottom: 25px;
-            line-height: 1.3;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 24px;
+            line-height: 1.2;
+            color: var(--white);
         }
 
         .survey-description {
-            font-size: 18px;
+            font-size: 1.2rem;
             line-height: 1.6;
-            margin-bottom: 35px;
-            opacity: 0.95;
+            margin-bottom: 40px;
+            opacity: 0.9;
             font-weight: 300;
         }
 
         .survey-btn {
-            background: white;
-            color: #1b5e20;
-            padding: 15px 40px;
-            border-radius: 8px;
+            background: var(--white);
+            color: var(--primary);
+            padding: 16px 40px;
+            border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 1.1rem;
             display: inline-block;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
         .survey-btn:hover {
-            background: #f0f0f0;
-            transform: translateY(-3px);
-            color: #1b5e20;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.15);
         }
 
         .survey-right {
@@ -793,62 +1190,65 @@
         }
 
         .survey-qr {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.2);
         }
 
         .qr-box {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            background: var(--white);
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
         }
 
         .qr-image {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             display: block;
             margin: 0 auto;
         }
 
         .qr-caption {
-            color: white;
-            font-size: 15px;
+            color: var(--white);
+            font-size: 1rem;
             text-align: center;
-            font-weight: 500;
-            opacity: 0.95;
+            font-weight: 400;
+            opacity: 0.9;
         }
 
         /* ================= FOOTER ================= */
         .main-footer {
             background: var(--primary);
             color: var(--white);
-            padding: 40px 0 20px;
-            margin-top: 0 !important;
+            padding: 60px 0 30px;
+            margin-top: 0;
+            font-family: var(--font-primary);
         }
 
         .footer-container {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 24px;
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
         }
 
         .footer-col h3 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
             position: relative;
+            color: var(--white);
         }
 
         .footer-col h3::after {
@@ -856,26 +1256,27 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 30px;
+            width: 32px;
             height: 2px;
-            background: var(--secondary);
+            background: rgba(255,255,255,0.3);
         }
 
         .footer-col p {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             opacity: 0.9;
-            line-height: 1.5;
-            font-size: 14px;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: var(--white);
         }
 
         .footer-link {
             display: block;
             color: var(--white);
             text-decoration: none;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            transition: opacity 0.2s;
+            font-size: 0.95rem;
             opacity: 0.9;
-            transition: opacity 0.3s;
-            font-size: 14px;
         }
 
         .footer-link:hover {
@@ -885,486 +1286,147 @@
 
         .copyright {
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 12px;
-            opacity: 0.7;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            color: var(--white);
         }
 
-        /* ================= OVERLAY FOR MOBILE MENU ================= */
-        .menu-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 998;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .menu-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        /* ================= RESPONSIVE DESIGN ================= */
-        @media (max-width: 992px) {
-            .agenda-card-small {
-                flex: 0 0 calc((100% - 20px) / 2);
-            }
-            
-            .survey-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-                text-align: center;
-            }
-            
-            .survey-left {
-                text-align: center;
-            }
-            
-            .survey-qr {
-                margin: 0 auto;
-                max-width: 280px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .agenda-slider-container {
-                gap: 8px;
-            }
-            .slider-arrow {
-                width: 28px;
-                height: 28px;
-                font-size: 12px;
-            }
-            .agenda-card-small {
-                flex: 0 0 100%;
-                height: 130px;
-            }
-            .agenda-date-small {
-                min-width: 65px;
-                padding: 10px 6px;
-            }
-            .date-day-small {
-                font-size: 20px;
-            }
-            .agenda-title-small {
-                font-size: 12px;
-                min-height: 32px;
-            }
-            .agenda-modal-content {
-                margin: 10px;
-            }
-            .modal-header {
-                padding: 20px 15px 15px;
-            }
-            .modal-day {
-                font-size: 28px;
-            }
-            .modal-title {
-                font-size: 16px;
-            }
-            .modal-info {
-                grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            .hero-section {
-                min-height: 35vh;
-            }
-            .hero-title {
-                font-size: 1.3rem;
-            }
-            
-            .survey-section {
-                padding: 50px 0;
-            }
-            .survey-title {
-                font-size: 28px;
-            }
-            .survey-description {
-                font-size: 18px;
-            }
-            .survey-qr {
-                padding: 25px;
-                max-width: 300px;
-            }
-            .qr-box {
-                padding: 15px;
-            }
-            .qr-image {
-                width: 180px;
-                height: 180px;
-            }
-            .qr-caption {
-                font-size: 15px;
-            }
-            .survey-btn {
-                padding: 15px 40px;
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .agenda-card-small {
-                height: 120px;
-            }
-            .agenda-date-small {
-                min-width: 55px;
-                padding: 8px 4px;
-            }
-            .date-day-small {
-                font-size: 18px;
-            }
-            .date-month-small {
-                font-size: 9px;
-            }
-            .agenda-content-small {
-                padding: 8px;
-            }
-            .agenda-title-small {
-                font-size: 11px;
-                margin-bottom: 4px;
-                min-height: 28px;
-            }
-            .meta-item-small {
-                font-size: 9px;
-                gap: 4px;
-            }
-            .hero-section {
-                min-height: 30vh;
-            }
-            .hero-title {
-                font-size: 1.2rem;
-            }
-            
-            .survey-section {
-                padding: 40px 0;
-            }
-            .survey-title {
-                font-size: 26px;
-            }
-            .survey-description {
-                font-size: 16px;
-            }
-            .survey-qr {
-                padding: 20px;
-                max-width: 280px;
-            }
-            .qr-image {
-                width: 160px;
-                height: 160px;
-            }
-            
-            .main-footer {
-                padding: 25px 0 15px;
-            }
-        }
-
-        /* ================= MOBILE NAVIGATION ================= */
-        @media (max-width: 767px) {
-            .header-container {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 8px;
-                min-height: 70px;
-                padding: 8px 0;
-            }
-            .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                order: 1;
-                font-size: 22px;
-                width: 40px;
-                height: 40px;
-            }
-            .logo {
-                order: 2;
-                width: 45px;
-                height: 45px;
-            }
-            .header-title {
-                order: 3;
-                padding-left: 8px;
-                border-left: 2px solid var(--secondary);
-                text-align: left;
-                flex: 1;
-            }
-            .header-title h1 {
-                font-size: 13px;
-                line-height: 1.2;
-                margin-bottom: 2px;
-            }
-            .header-title span {
-                font-size: 11px;
-            }
-
-            /* Mobile Navigation Menu */
-            .nav-menu {
-                position: fixed;
-                top: 0;
-                right: -280px;
-                width: 280px;
-                height: 100vh;
-                background: #002244;
-                flex-direction: column;
-                padding: 80px 0 20px;
-                transition: right 0.3s ease;
-                overflow-y: auto;
-                z-index: 999;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.3);
-            }
-
-            .nav-menu.active {
-                right: 0;
-            }
-
-            .nav-link {
-                padding: 14px 20px;
-                border-bottom: 1px solid rgba(255,255,255,0.15);
-                font-size: 14px;
-                white-space: normal;
-                word-break: break-word;
-            }
-
-            /* Mobile navigation states */
-            .nav-link:hover,
-            .nav-link:active,
-            .nav-link:focus,
-            .nav-link.active {
-                background: var(--secondary);
-                color: var(--primary) !important;
-            }
-
-            .dropdown-menu {
-                position: static;
-                display: none;
-                width: 100%;
-                background: rgba(0, 30, 60, 0.95);
-                box-shadow: none;
-                border-radius: 0;
-                margin: 0;
-                padding: 0;
-                border-top: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .dropdown.active .dropdown-menu {
-                display: block;
-            }
-
-            .dropdown-menu li a {
-                padding: 12px 30px;
-                font-size: 13px;
-                color: #fff;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-                white-space: normal;
-                word-break: break-word;
-            }
-
-            /* Mobile dropdown states */
-            .dropdown-menu li a:hover,
-            .dropdown-menu li a:active,
-            .dropdown-menu li a:focus {
-                background: var(--secondary);
-                color: var(--primary) !important;
-            }
-
-            .menu-overlay {
-                z-index: 998;
-            }
-
-            .menu-toggle[aria-expanded="true"] {
-                color: var(--secondary);
-            }
-        }
-
-        /* Scrollbar Styling */
-        .agenda-horizontal-container::-webkit-scrollbar {
-            height: 4px;
-        }
-        .agenda-horizontal-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 2px;
-        }
-        .agenda-horizontal-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 2px;
-        }
-        .agenda-horizontal-container::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
-        .agenda-modal-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        .agenda-modal-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 3px;
-        }
-        .agenda-modal-content::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
-        }
-        .agenda-modal-content::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--accent); }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
 <body>
-    <!-- ================= FIXED SITE HEADER ================= -->
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="site-container">
+            <div class="top-bar-container">
+                <div class="top-bar-left">
+                    <div class="top-bar-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>{{ $settings->phone }}</span>
+                    </div>
+                    <div class="top-bar-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:{{ $settings->email }}">{{ $settings->email }}</a>
+                    </div>
+                    <div class="top-bar-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ $settings->address }}</span>
+                    </div>
+                </div>
+                <div class="top-bar-right">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <div class="language-selector">
+                        <a href="#" class="active">ID</a>
+                        <a href="#">EN</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
     <header class="site-header">
         <div class="site-container">
             <div class="header-container">
+                <!-- Logo and Title Group -->
+                <div class="logo-title-group">
+                    <div class="logo">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="45" fill="rgba(255,255,255,0.1)"/>
+                            <image href="{{ asset('images/logo ugk.png') }}" x="15" y="15" width="70" height="70" preserveAspectRatio="xMidYMid meet"/>
+                            <text x="50" y="95" text-anchor="middle" font-size="12" font-weight="400" fill="white" font-family="Roboto, sans-serif">LPPMI</text>
+                        </svg>
+                    </div>
+                    
+                    <div class="header-title">
+                        <h1>{{ strtoupper($settings->site_name) }}</h1>
+<span>{{ strtoupper($settings->site_subtitle) }}</span>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Toggle -->
                 <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
-                    ☰
+                    <i class="fas fa-bars"></i>
                 </button>
                 
-                <div class="logo">
-                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="50" cy="50" r="45" fill="#ffffff" opacity="0.1"/>
-                        <image
-                            href="{{ asset('images/logo ugk.png') }}"
-                            x="15"
-                            y="15"
-                            width="70"
-                            height="70"
-                            preserveAspectRatio="xMidYMid meet"
-                        />
-                        <text
-                            x="50"
-                            y="95"
-                            text-anchor="middle"
-                            font-size="12"
-                            font-weight="bold"
-                            fill="#ffffff"
-                        >
-                            LPPMI
-                        </text>
-                    </svg>
-                </div>
-                
-                <div class="header-title">
-                    <h1>UNIVERSITAS GUNUNG KIDUL</h1>
-                    <span>LEMBAGA PENGENDALIAN DAN PENJAMINAN MUTU INTERNAL</span>
-                </div>
+                <!-- Navigation Menu -->
+                <nav class="main-nav" id="mainNav">
+                    <ul class="nav-menu" id="navMenu">
+                        @foreach($menus as $menu)
+                            @if($menu->children->count() > 0)
+                                <li class="dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle">
+                                        {{ strtoupper($menu->title) }} <i class="fas fa-chevron-down ms-1" style="font-size: 0.75rem;"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        @foreach($menu->children as $child)
+                                            <li><a href="{{ menu_url($child) }}">{{ $child->title }}</a></li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                            @else
+                                <li><a href="{{ menu_url($menu) }}" class="nav-link">{{ strtoupper($menu->title) }}</a></li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </nav>
             </div>
         </div>
     </header>
 
-    <!-- ================= NAVIGATION ================= -->
-    <nav class="main-nav">
-        <div class="site-container">
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="/" class="nav-link active">BERANDA</a></li>
-                <li class="dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">DOKUMEN</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/sistem-penjamin">Sistem Penjamin Mutu Internal</a></li>
-                        <li><a href="/dokumen-penjamin">Dokumen Sistem Penjamin Mutu</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">PROFIL</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/uraian-tugas">Uraian Tugas</a></li>
-                        <li><a href="/visi-misi">Visi & Misi</a></li>
-                        <li><a href="/struktur-organisasi">Struktur Organisasi</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="nav-link dropdown-toggle">MUTU</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="/mutu-internal">Mutu Internal</a></li>
-                        <li><a href="/mutu-eksternal">Mutu Eksternal</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{ route('kontak') }}" class="nav-link">KONTAK</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Overlay for mobile menu -->
+    <!-- Mobile Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
 
-    @php
-        use Illuminate\Support\Facades\Storage;
-    @endphp
+    @php use Illuminate\Support\Facades\Storage; @endphp
+    
     @isset($heroBanners)
     <section class="hero-section" id="heroSection">
         <div class="hero-slider" id="heroSlider">
             @foreach ($heroBanners as $index => $banner)
-                <div
-                    class="hero-slide {{ $index === 0 ? 'active' : '' }}"
-                    style="
-                        background:
-                        linear-gradient(
-                            135deg,
-                            rgba(0, 51, 102, 0.45) 0%,
-                            rgba(0, 34, 68, 0.55) 100%
-                        ),
-                        url('{{ Storage::url($banner->image) }}');
-                        background-size: cover;
-                        background-position: center center;
-                        background-repeat: no-repeat;
-                    "
-                    data-bg-url="{{ Storage::url($banner->image) }}"
-                ></div>
+                <div class="hero-slide {{ $index === 0 ? 'active' : '' }}" style="background: linear-gradient(135deg, rgba(10,42,68,0.3) 0%, rgba(5,26,43,0.4) 100%), url('{{ Storage::url($banner->image) }}'); background-size: cover; background-position: center;"></div>
             @endforeach
         </div>
-
         <div class="hero-overlay">
             <div class="hero-content">
-                <h1 class="hero-title">
-                    LEMBAGA PENJAMIN MUTU 
-                </h1>
+                <h1 class="hero-title">LEMBAGA PENJAMINAN MUTU</h1>
             </div>
         </div>
     </section>
-    @else
-    
     @endisset
 
-    <!-- Main Content -->
     <main class="main-container">
         @yield('content')
     </main>
 
-    <!-- ================= AGENDA SECTION ================= -->
+    <!-- AGENDA -->
     @if(isset($agendas) && count($agendas) > 0)
     <section class="agenda-section">
         <div class="site-container">
             <div class="agenda-header">
-                <h2 class="agenda-title">
-                    <i class="fas fa-calendar-alt"></i> Agenda Terbaru
-                </h2>
+                <h2 class="agenda-title"><i class="fas fa-calendar-alt"></i> Agenda Terbaru</h2>
+                <button class="view-all-btn">Lihat Semua <i class="fas fa-arrow-right"></i></button>
             </div>
 
             <div class="agenda-slider-container">
-                <button class="slider-arrow slider-arrow-left" id="agendaPrev">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                
+                <button class="slider-arrow slider-arrow-left" id="agendaPrev" aria-label="Previous agenda"><i class="fas fa-chevron-left"></i></button>
                 <div class="agenda-horizontal-container">
                     <div class="agenda-horizontal-wrapper" id="agendaWrapper">
                         @foreach($agendas as $agenda)
                         @php
                             $agendaDate = \Carbon\Carbon::parse($agenda->date);
                             $now = \Carbon\Carbon::now();
-                            
-                            if ($agendaDate->isToday()) {
-                                $status = 'ongoing';
-                                $statusText = 'Berlangsung';
-                            } elseif ($agendaDate->isPast()) {
-                                $status = 'completed';
-                                $statusText = 'Selesai';
-                            } else {
-                                $status = 'upcoming';
-                                $statusText = 'Akan Datang';
-                            }
+                            if ($agendaDate->isToday()) { $status = 'ongoing'; $statusText = 'Berlangsung'; }
+                            elseif ($agendaDate->isPast()) { $status = 'completed'; $statusText = 'Selesai'; }
+                            else { $status = 'upcoming'; $statusText = 'Akan Datang'; }
                         @endphp
                         
                         <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}">
@@ -1376,42 +1438,27 @@
                             
                             <div class="agenda-content-small">
                                 <h3 class="agenda-title-small">{{ $agenda->title }}</h3>
-                                
                                 <div class="agenda-meta-small">
-                                    <div class="meta-item-small">
-                                        <i class="fas fa-clock"></i>
-                                        <span>{{ $agenda->time }}</span>
-                                    </div>
-                                    <div class="meta-item-small">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <span>{{ Str::limit($agenda->location, 25) }}</span>
-                                    </div>
+                                    <div class="meta-item-small"><i class="fas fa-clock"></i><span>{{ $agenda->time }}</span></div>
+                                    <div class="meta-item-small"><i class="fas fa-map-marker-alt"></i><span>{{ Str::limit($agenda->location, 25) }}</span></div>
                                 </div>
-                                
-                                <span class="agenda-status-small status-{{ $status }}">
-                                    {{ $statusText }}
-                                </span>
+                                <span class="agenda-status-small status-{{ $status }}">{{ $statusText }}</span>
                             </div>
                         </div>
                         @endforeach
                     </div>
                 </div>
-                
-                <button class="slider-arrow slider-arrow-right" id="agendaNext">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+                <button class="slider-arrow slider-arrow-right" id="agendaNext" aria-label="Next agenda"><i class="fas fa-chevron-right"></i></button>
             </div>
-
             <div class="slider-indicators" id="sliderIndicators"></div>
         </div>
     </section>
     @endif
 
-    <!-- ================= AGENDA MODAL ================= -->
+    <!-- MODAL AGENDA -->
     <div class="agenda-modal-overlay" id="agendaModal">
         <div class="agenda-modal-content">
-            <button class="modal-close" id="modalClose">&times;</button>
-            
+            <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
             <div class="modal-header">
                 <div class="modal-date-box">
                     <span class="modal-day" id="modalDay"></span>
@@ -1419,52 +1466,36 @@
                 </div>
                 <h3 class="modal-title" id="modalTitle"></h3>
             </div>
-            
             <div class="modal-body">
                 <div class="modal-info">
-                    <div class="modal-info-item">
-                        <i class="fas fa-clock"></i>
-                        <span id="modalTime"></span>
-                    </div>
-                    <div class="modal-info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span id="modalLocation"></span>
-                    </div>
+                    <div class="modal-info-item"><i class="fas fa-clock"></i><span id="modalTime"></span></div>
+                    <div class="modal-info-item"><i class="fas fa-map-marker-alt"></i><span id="modalLocation"></span></div>
                 </div>
-                
                 <div class="modal-description" id="modalDescription"></div>
             </div>
-            
             <div class="modal-footer">
                 <span class="modal-status" id="modalStatus"></span>
             </div>
         </div>
     </div>
 
-    <!-- ================= SURVEY SECTION ================= -->
+    <!-- SURVEY -->
     @if(isset($activeSurvey) && $activeSurvey)
     <section class="survey-section">
         <div class="survey-container">
             <div class="survey-content">
                 <div class="survey-left">
                     <h2 class="survey-title">SURVEY KEPUASAN LAYANAN</h2>
-                    
-                    <p class="survey-description">
-                        Untuk meningkatkan kualitas layanan di lingkungan Universitas Gunung Kidul, 
-                        kami mohon Bapak/Ibu/Sdr. mengisi Survey Kepuasan Layanan.
-                    </p>
-                    
+                    <p class="survey-description">Untuk meningkatkan kualitas layanan, kami mohon Bapak/Ibu/Sdr. mengisi Survey Kepuasan Layanan.</p>
+                    <a href="#" class="survey-btn">Isi Survey <i class="fas fa-arrow-right ms-2"></i></a>
                 </div>
-                
                 <div class="survey-right">
                     <div class="survey-qr">
                         <div class="qr-box">
                             @if($activeSurvey->qr_code)
                                 <img src="{{ asset('storage/' . $activeSurvey->qr_code) }}" alt="QR Code Survey" class="qr-image">
                             @else
-                                <div style="width: 200px; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px;">
-                                    <i class="fas fa-qrcode" style="font-size: 50px; color: #666;"></i>
-                                </div>
+                                <div style="width: 200px; height: 200px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 12px;"><i class="fas fa-qrcode" style="font-size: 3rem; color: var(--primary);"></i></div>
                             @endif
                         </div>
                         <p class="qr-caption">Scan untuk mengisi survey</p>
@@ -1475,50 +1506,44 @@
     </section>
     @endif
 
-    <!-- ================= FOOTER ================= -->
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h3>LPPMI Universitas Gunung Kidul</h3>
-                    <p>Lembaga strategis dalam menjamin dan meningkatkan mutu penyelenggaraan pendidikan tinggi.</p>
+                    <h3>{{ $settings->site_name }}</h3>
+                    <p>{{ $settings->footer_description }}</p>
                 </div>
-                
                 <div class="footer-col">
                     <h3>Kontak</h3>
-                    <p>📍 Gedung Rektorat Lt. 3</p>
-                    <p>📞 (0271) 1234-5678</p>
-                    <p>📧 lppmi@ungkid.ac.id</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> {{ $settings->footer_address }}</p>
+<p><i class="fas fa-phone-alt me-2"></i> {{ $settings->footer_phone }}</p>
+<p><i class="fas fa-envelope me-2"></i> {{ $settings->footer_email }}</p>
+<p><i class="fas fa-globe me-2"></i> {{ $settings->footer_website }}</p>
                 </div>
-                
                 <div class="footer-col">
-                    <h3>Tautan</h3>
-                    <a href="/" class="footer-link">Beranda</a>
-                    <a href="#" class="footer-link">Dokumen</a>
-                    <a href="#" class="footer-link">Profil</a>
-                    <a href="#" class="footer-link">Kontak</a>
+                    <h3>Tautan Cepat</h3>
+                    <a href="/" class="footer-link"><i class="fas fa-chevron-right me-2"></i>Beranda</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right me-2"></i>Dokumen Mutu</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right me-2"></i>Profil Lembaga</a>
+                    <a href="#" class="footer-link"><i class="fas fa-chevron-right me-2"></i>Kontak</a>
                 </div>
             </div>
-            
             <div class="copyright">
-                <small>© {{ date('Y') }} Lembaga Penjaminan Mutu - Universitas Gunung Kidul.</small>
+                <small>© {{ date('Y') }} Lembaga Penjaminan Mutu - Universitas Gunung Kidul. All rights reserved.</small>
             </div>
         </div>
     </footer>
 
-    <!-- ========== EXTERNAL JAVASCRIPT DEPENDENCIES ========== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
     @yield('scripts')
     
-    <!-- ========== GLOBAL SITE SCRIPT ========== -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Hero Slider
             const slides = document.querySelectorAll('.hero-slide');
-            let current = 0;
-
             if (slides.length > 1) {
+                let current = 0;
                 setInterval(() => {
                     slides[current].classList.remove('active');
                     current = (current + 1) % slides.length;
@@ -1528,39 +1553,58 @@
 
             // Mobile Navigation
             const menuToggle = document.getElementById('menuToggle');
-            const navMenu = document.getElementById('navMenu');
+            const mainNav = document.getElementById('mainNav');
             const menuOverlay = document.getElementById('menuOverlay');
+            const body = document.body;
             const dropdowns = document.querySelectorAll('.dropdown');
             
-            function toggleMobileMenu() {
-                const isActive = navMenu.classList.contains('active');
-                navMenu.classList.toggle('active');
+            function toggleMobileMenu(force) {
+                const isActive = mainNav.classList.contains('active');
+                
+                if (force !== undefined) {
+                    if (force === isActive) return;
+                }
+                
+                mainNav.classList.toggle('active');
                 menuOverlay.classList.toggle('active');
-                menuToggle.textContent = isActive ? '☰' : '✕';
+                body.classList.toggle('menu-open');
+                
+                // Update toggle icon
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.className = isActive ? 'fas fa-bars' : 'fas fa-times';
+                }
+                
                 menuToggle.setAttribute('aria-expanded', !isActive);
-                document.body.style.overflow = isActive ? '' : 'hidden';
             }
             
             if (menuToggle) {
-                menuToggle.addEventListener('click', toggleMobileMenu);
+                menuToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleMobileMenu();
+                });
             }
             
             if (menuOverlay) {
-                menuOverlay.addEventListener('click', toggleMobileMenu);
+                menuOverlay.addEventListener('click', () => {
+                    toggleMobileMenu(false);
+                });
             }
             
-            // Dropdown handling
+            // Dropdown mobile
             dropdowns.forEach(dropdown => {
                 const toggle = dropdown.querySelector('.dropdown-toggle');
                 if (toggle) {
                     toggle.addEventListener('click', function(e) {
-                        if (window.innerWidth <= 768) {
+                        if (window.innerWidth <= 767) {
                             e.preventDefault();
                             e.stopPropagation();
                             
-                            dropdowns.forEach(other => {
-                                if (other !== dropdown && other.classList.contains('active')) {
-                                    other.classList.remove('active');
+                            // Close other dropdowns
+                            dropdowns.forEach(d => {
+                                if (d !== dropdown && d.classList.contains('active')) {
+                                    d.classList.remove('active');
                                 }
                             });
                             
@@ -1570,28 +1614,27 @@
                 }
             });
             
+            // Close menu when clicking a link (except dropdown toggles)
+            document.querySelectorAll('.nav-menu a:not(.dropdown-toggle)').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 767 && mainNav.classList.contains('active')) {
+                        setTimeout(() => {
+                            toggleMobileMenu(false);
+                        }, 300);
+                    }
+                });
+            });
+            
             // Close dropdowns when clicking outside
             document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 768 && !e.target.closest('.dropdown')) {
+                if (window.innerWidth <= 767 && !e.target.closest('.dropdown')) {
                     dropdowns.forEach(dropdown => {
                         dropdown.classList.remove('active');
                     });
                 }
             });
-            
-            // Close menu when clicking link
-            const allNavLinks = document.querySelectorAll('.nav-menu a');
-            allNavLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (window.innerWidth <= 768 && !this.classList.contains('dropdown-toggle')) {
-                        setTimeout(() => {
-                            toggleMobileMenu();
-                        }, 300);
-                    }
-                });
-            });
 
-            // Agenda Modal Functionality
+            // Agenda Modal
             const agendaModal = document.getElementById('agendaModal');
             const modalClose = document.getElementById('modalClose');
             const agendaCards = document.querySelectorAll('.agenda-card-small');
@@ -1599,81 +1642,65 @@
 
             function formatModalDate(dateString) {
                 const date = new Date(dateString);
-                const day = date.getDate();
-                const month = date.toLocaleDateString('id-ID', { month: 'long' });
-                const year = date.getFullYear();
-                return { day, month, year };
+                return {
+                    day: date.getDate(),
+                    month: date.toLocaleDateString('id-ID', { month: 'long' }),
+                    year: date.getFullYear()
+                };
             }
 
             agendaCards.forEach(card => {
                 card.addEventListener('click', function() {
                     const agendaId = this.getAttribute('data-agenda-id');
                     const agenda = agendaData.find(a => a.id == agendaId);
-                    
                     if (agenda) {
-                        openAgendaModal(agenda);
+                        const date = formatModalDate(agenda.date);
+                        const agendaDate = new Date(agenda.date);
+                        const now = new Date();
+                        let statusText = 'Selesai', statusClass = 'status-completed';
+                        if (agendaDate.toDateString() === now.toDateString()) {
+                            statusText = 'Berlangsung';
+                            statusClass = 'status-ongoing';
+                        } else if (agendaDate > now) {
+                            statusText = 'Akan Datang';
+                            statusClass = 'status-upcoming';
+                        }
+
+                        document.getElementById('modalDay').textContent = date.day;
+                        document.getElementById('modalMonthYear').textContent = `${date.month} ${date.year}`;
+                        document.getElementById('modalTitle').textContent = agenda.title;
+                        document.getElementById('modalTime').textContent = agenda.time;
+                        document.getElementById('modalLocation').textContent = agenda.location;
+                        document.getElementById('modalDescription').innerHTML = agenda.description?.replace(/\n/g, '<br>') || '<p style="color: var(--text-light); font-style: italic;">Tidak ada deskripsi tersedia.</p>';
+                        
+                        const modalStatus = document.getElementById('modalStatus');
+                        modalStatus.textContent = statusText;
+                        modalStatus.className = `modal-status ${statusClass}`;
+
+                        agendaModal.classList.add('active');
+                        body.style.overflow = 'hidden';
                     }
                 });
             });
 
-            function openAgendaModal(agenda) {
-                const date = formatModalDate(agenda.date);
-                const agendaDate = new Date(agenda.date);
-                const now = new Date();
-                
-                let status = 'completed';
-                let statusText = 'Selesai';
-                let statusClass = 'status-completed';
-                
-                if (agendaDate.toDateString() === now.toDateString()) {
-                    status = 'ongoing';
-                    statusText = 'Berlangsung';
-                    statusClass = 'status-ongoing';
-                } else if (agendaDate > now) {
-                    status = 'upcoming';
-                    statusText = 'Akan Datang';
-                    statusClass = 'status-upcoming';
-                }
-
-                document.getElementById('modalDay').textContent = date.day;
-                document.getElementById('modalMonthYear').textContent = `${date.month} ${date.year}`;
-                document.getElementById('modalTitle').textContent = agenda.title;
-                document.getElementById('modalTime').textContent = agenda.time;
-                document.getElementById('modalLocation').textContent = agenda.location;
-                
-                const descriptionElement = document.getElementById('modalDescription');
-                if (agenda.description && agenda.description.trim() !== '') {
-                    descriptionElement.innerHTML = agenda.description;
-                } else {
-                    descriptionElement.innerHTML = '<p style="color: var(--text-light); font-style: italic;">Tidak ada deskripsi tersedia.</p>';
-                }
-                
-                const modalStatus = document.getElementById('modalStatus');
-                modalStatus.textContent = statusText;
-                modalStatus.className = `modal-status ${statusClass}`;
-
-                agendaModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            if (modalClose) {
+                modalClose.addEventListener('click', closeModal);
             }
-
-            modalClose.addEventListener('click', closeModal);
+            
             agendaModal.addEventListener('click', function(e) {
-                if (e.target === agendaModal) {
-                    closeModal();
-                }
+                if (e.target === agendaModal) closeModal();
             });
-
+            
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && agendaModal.classList.contains('active')) {
-                    closeModal();
-                }
+                if (e.key === 'Escape' && agendaModal.classList.contains('active')) closeModal();
             });
 
             function closeModal() {
                 agendaModal.classList.remove('active');
-                document.body.style.overflow = '';
+                body.style.overflow = '';
             }
 
+            // View all button
             const viewAllBtn = document.querySelector('.view-all-btn');
             if (viewAllBtn) {
                 viewAllBtn.addEventListener('click', function() {
@@ -1681,67 +1708,122 @@
                 });
             }
 
-            // Horizontal scroll slider
+            // Horizontal Slider
             const wrapper = document.querySelector(".agenda-horizontal-wrapper");
             const cards = document.querySelectorAll(".agenda-card-small");
             const prev = document.getElementById("agendaPrev");
             const next = document.getElementById("agendaNext");
-
-            let visible = 3;
             let index = 0;
 
             function getVisibleCount() {
-                if (window.innerWidth <= 768) return 1;
-                if (window.innerWidth <= 992) return 2;
+                if (window.innerWidth <= 767) return 1;
+                if (window.innerWidth <= 991) return 2;
                 return 3;
             }
 
             function updateSlide() {
-                visible = getVisibleCount();
-                if (cards.length === 0) return;
-                const cardWidth = cards[0].offsetWidth + 20;
-                wrapper.style.transform = `translateX(-${index * cardWidth}px)`;
+                const visible = getVisibleCount();
+                if (cards.length && visible) {
+                    const cardWidth = cards[0].offsetWidth + 24; // including gap
+                    const maxIndex = Math.max(0, cards.length - visible);
+                    if (index > maxIndex) index = maxIndex;
+                    wrapper.style.transform = `translateX(-${index * cardWidth}px)`;
+                }
             }
 
             function nextSlide() {
-                visible = getVisibleCount();
-                if (index < cards.length - visible) {
-                    index++;
-                } else {
-                    index = 0;
-                }
+                const visible = getVisibleCount();
+                const maxIndex = cards.length - visible;
+                index = index < maxIndex ? index + 1 : 0;
                 updateSlide();
             }
 
             function prevSlide() {
-                visible = getVisibleCount();
-                if (index > 0) {
-                    index--;
-                } else {
-                    index = cards.length - visible;
-                }
+                const visible = getVisibleCount();
+                const maxIndex = cards.length - visible;
+                index = index > 0 ? index - 1 : maxIndex;
                 updateSlide();
             }
 
-            if (next && prev) {
+            if (next && prev && cards.length) {
                 next.addEventListener("click", nextSlide);
                 prev.addEventListener("click", prevSlide);
-                setInterval(nextSlide, 5000);
-                window.addEventListener("resize", updateSlide);
+                
+                // Auto slide every 5 seconds
+                let autoSlide = setInterval(nextSlide, 5000);
+                
+                // Pause auto slide on hover
+                const sliderContainer = document.querySelector('.agenda-slider-container');
+                if (sliderContainer) {
+                    sliderContainer.addEventListener('mouseenter', () => {
+                        clearInterval(autoSlide);
+                    });
+                    sliderContainer.addEventListener('mouseleave', () => {
+                        autoSlide = setInterval(nextSlide, 5000);
+                    });
+                }
+                
+                window.addEventListener("resize", () => {
+                    updateSlide();
+                });
+                
+                // Initial update
+                updateSlide();
             }
 
+            // Indicators
             const indicators = document.getElementById('sliderIndicators');
-            if (indicators && cards.length > 0) {
+            if (indicators && cards.length) {
                 function updateIndicators() {
+                    const visible = getVisibleCount();
+                    const totalDots = Math.ceil(cards.length / visible);
                     let dots = '';
-                    for (let i = 0; i < cards.length; i++) {
-                        dots += `<span class="slider-dot ${i === index ? 'active' : ''}"></span>`;
+                    const currentPage = Math.floor(index / visible);
+                    
+                    for (let i = 0; i < totalDots; i++) {
+                        dots += `<span class="slider-dot ${i === currentPage ? 'active' : ''}" data-page="${i}"></span>`;
                     }
                     indicators.innerHTML = dots;
+                    
+                    // Add click handlers to dots
+                    document.querySelectorAll('.slider-dot').forEach(dot => {
+                        dot.addEventListener('click', function() {
+                            const page = parseInt(this.getAttribute('data-page'));
+                            const visible = getVisibleCount();
+                            index = page * visible;
+                            updateSlide();
+                        });
+                    });
                 }
+                
                 updateIndicators();
-                setInterval(updateIndicators, 100);
+                
+                // Update indicators on slide change
+                const originalUpdateSlide = updateSlide;
+                updateSlide = function() {
+                    originalUpdateSlide();
+                    updateIndicators();
+                };
+                
+                window.addEventListener('resize', updateIndicators);
             }
+
+            // Window resize cleanup
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 767) {
+                    // Close mobile menu if open
+                    if (mainNav.classList.contains('active')) {
+                        mainNav.classList.remove('active');
+                        menuOverlay.classList.remove('active');
+                        body.classList.remove('menu-open');
+                        const icon = menuToggle?.querySelector('i');
+                        if (icon) icon.className = 'fas fa-bars';
+                    }
+                    
+                    // Close all dropdowns
+                    dropdowns.forEach(d => d.classList.remove('active'));
+                }
+            });
         });
     </script>
 </body>

@@ -226,9 +226,9 @@
         <div class="login-header">
             <div class="logo">
                 <i class="fas fa-university"></i>
-                <h1>LPPMI UGK</h1>
+                <h1>LPM UGK</h1>
             </div>
-            <p>Lembaga Pengendalian dan Penjaminan Mutu Internal</p>
+            <p>Lembaga Penjaminan Mutu </p>
         </div>
 
         <!-- Body -->
@@ -286,11 +286,7 @@
                     </div>
                 </div>
 
-                <!-- Remember Me -->
-                <div class="checkbox">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Ingat saya</label>
-                </div>
+        
 
                 <!-- Submit Button -->
                 <button type="submit" class="btn">

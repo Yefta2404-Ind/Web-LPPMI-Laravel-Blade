@@ -15,15 +15,13 @@ use App\Http\Controllers\Admin\SpmiCategoryController;
 use App\Http\Controllers\PublicExternalQualityController;
 use App\Http\Controllers\Admin\InternalQualityController;
 use App\Http\Controllers\Admin\InternalCategoryController;
+use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SpmiDocumentController as AdminSpmi;
 use App\Models\Survey;
+use App\Models\Page;
 
 
-/*
-|--------------------------------------------------------------------------
-| PUBLIC AREA (TANPA LOGIN)
-|--------------------------------------------------------------------------
-*/
+
 
 // Homepage
 Route::get('/mutu-internal',
@@ -74,13 +72,7 @@ Route::get('/struktur-organisasi',
     [OrganizationStructureController::class, 'public']
 )->name('public.organization-structure');
 
-/*
-|--------------------------------------------------------------------------
-| STAFF AREA
-|--------------------------------------------------------------------------
-| URL SELALU DIAWALI /staff
-| AMAN DARI TABRAKAN news/{news}
-*/
+
 Route::middleware(['auth', 'role:staff'])
     ->prefix('staff')
     ->name('staff.')
@@ -96,8 +88,7 @@ Route::post('/spmi',
     [SpmiDocumentController::class, 'store']
 )->name('spmi.store');
 
- Route::resource('mutu-internal', 
-            \App\Http\Controllers\Staff\InternalQualityController::class);
+
     /* ================= NEWS (STAFF) ================= */
         Route::get('/news', [NewsController::class, 'staffIndex'])
             ->name('news.index');
@@ -125,47 +116,14 @@ Route::post('/spmi',
             ->name('surveys.create');
 
     /* ================= MUTU EKSTERNAL (STAFF) ================= */
+        Route::resource('mutu-eksternal',
+            \App\Http\Controllers\Staff\ExternalQualityController::class
+        );
 
-Route::get('/mutu-eksternal',
-    [\App\Http\Controllers\Staff\ExternalQualityController::class, 'index']
-)->name('mutu-eksternal.index');
-
-Route::get('/mutu-eksternal/create',
-    [\App\Http\Controllers\Staff\ExternalQualityController::class, 'create']
-)->name('mutu-eksternal.create');
-
-Route::post('/mutu-eksternal',
-    [\App\Http\Controllers\Staff\ExternalQualityController::class, 'store']
-)->name('mutu-eksternal.store');
-
-Route::get('/mutu-eksternal/{id}/edit',
-    [\App\Http\Controllers\Staff\ExternalQualityController::class, 'edit']
-)->name('mutu-eksternal.edit');
-
-Route::put('/mutu-eksternal/{id}',
-    [\App\Http\Controllers\Staff\ExternalQualityController::class, 'update']
-)->name('mutu-eksternal.update');
-
-Route::delete('/mutu-eksternal/{id}',
-    [\App\Http\Controllers\Staff\ExternalQualityController::class, 'destroy']
-)->name('mutu-eksternal.destroy');
-
-
-        Route::get('mutu-internal', 
-            [\App\Http\Controllers\staff\InternalQualityController::class,'index']
-        )->name('mutu-internal.index');
-
-        Route::patch('mutu-internal/{id}/approve',
-            [\App\Http\Controllers\staff\InternalQualityController::class,'approve']
-        )->name('mutu-internal.approve');
-
-        Route::patch('mutu-internal/{id}/reject',
-            [\App\Http\Controllers\Admin\InternalQualityController::class,'reject']
-        )->name('mutu-internal.reject');
-
-        Route::delete('mutu-internal/{id}',
-            [\App\Http\Controllers\staff\InternalQualityController::class,'destroy']
-        )->name('mutu-internal.destroy');
+        // MUTU INTERNAL (CRUD)
+        Route::resource('mutu-internal',
+            \App\Http\Controllers\Staff\InternalQualityController::class
+        );
 
 
     /* ================= HERO BANNER (STAFF) ================= */
@@ -261,8 +219,11 @@ Route::middleware(['auth', 'role:admin,superadmin'])
 
         Route::get('/dashboard', [NewsController::class, 'adminDashboard'])
             ->name('dashboard');
-            Route::get('/admin/agenda', [AgendaController::class, 'adminIndex'])
-    ->name('admin.agenda.index');
+        Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
+            
+
+            Route::get('/settings', [SiteSettingController::class, 'edit'])->name('admin.settings.edit');
+            Route::put('/settings', [SiteSettingController::class, 'update'])->name('admin.settings.update');
 
         /* ================= SPMI DOCUMENT (ADMIN) ================= */
 
@@ -271,8 +232,6 @@ Route::resource('spmi-categories', \App\Http\Controllers\Admin\SpmiCategoryContr
 Route::get('/spmi-categories', [SpmiCategoryController::class, 'index'])
     ->name('spmi_categories.index');
 
-Route::get('/spmi', [SpmiDocumentController::class, 'index'])
-    ->name('admin.spmi.index');
 
 
     Route::resource('internal_categories', InternalCategoryController::class);
@@ -292,17 +251,29 @@ Route::post('/spmi/{id}/reject',
 
 /* ================= MUTU EKSTERNAL (ADMIN) ================= */
 
-Route::get('/mutu-eksternal',
-    [\App\Http\Controllers\Admin\ExternalQualityController::class, 'index']
-)->name('mutu-eksternal.index');
+        Route::get('/mutu-eksternal',
+            [\App\Http\Controllers\Admin\ExternalQualityController::class,'index']
+        )->name('mutu-eksternal.index');
 
-Route::post('/mutu-eksternal/{id}/approve',
-    [\App\Http\Controllers\Admin\ExternalQualityController::class, 'approve']
-)->name('mutu-eksternal.approve');
+        Route::patch('/mutu-eksternal/{id}/approve',
+            [\App\Http\Controllers\Admin\ExternalQualityController::class,'approve']
+        )->name('mutu-eksternal.approve');
 
-Route::post('/mutu-eksternal/{id}/reject',
-    [\App\Http\Controllers\Admin\ExternalQualityController::class, 'reject']
-)->name('mutu-eksternal.reject');
+        Route::patch('/mutu-eksternal/{id}/reject',
+            [\App\Http\Controllers\Admin\ExternalQualityController::class,'reject']
+        )->name('mutu-eksternal.reject');
+
+        Route::get('/mutu-internal',
+            [\App\Http\Controllers\Admin\InternalQualityController::class,'index']
+        )->name('mutu-internal.index');
+
+        Route::patch('/mutu-internal/{id}/approve',
+            [\App\Http\Controllers\Admin\InternalQualityController::class,'approve']
+        )->name('mutu-internal.approve');
+
+        Route::patch('/mutu-internal/{id}/reject',
+            [\App\Http\Controllers\Admin\InternalQualityController::class,'reject']
+        )->name('mutu-internal.reject');
 
 
 
@@ -316,9 +287,7 @@ Route::post('/mutu-eksternal/{id}/reject',
             [OrganizationStructureController::class, 'chooseActive']
         )->name('organization-structure.choose-active');
 
-        // HAPUS YANG DUPLIKAT INI:
-        // Route::get('/admin/organization-structure/choose-active', ...)
-        // Route::post('/admin/organization-structure/approve/{id}', ...)
+
 
         Route::post('/organization-structure/{id}/approve',
             [OrganizationStructureController::class, 'approve']
@@ -387,6 +356,9 @@ Route::post('/mutu-eksternal/{id}/reject',
         // APPROVED (management)
         Route::delete('/videos/{video}/unfeature', [VideoController::class, 'unfeature'])
             ->name('videos.unfeature');
+
+       //SETTINGAN MENU 
+       Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class);
 });
 
 /*
@@ -400,9 +372,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
 /*
 |--------------------------------------------------------------------------
 | AUTH
 |--------------------------------------------------------------------------
 */
 require __DIR__ . '/auth.php';
+
+Route::get('/{slug}', function ($slug) {
+
+    $page = Page::where('slug', $slug)
+        ->where('is_active', true)
+        ->first();
+
+    if (!$page) {
+        abort(404);
+    }
+
+    return view('public.page', compact('page'));
+});

@@ -136,49 +136,7 @@
         </div>
     </div>
 
-    <!-- Area Kerja -->
-    <div class="area-section">
-        <div class="area-box">
-            <div class="area-title">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>Area Kerja LPPMI</h3>
-            </div>
-            <div class="area-content">
-                <div class="area-item">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Mutu Akademik</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-users"></i>
-                    <span>Mutu Sumber Daya Manusia</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-book"></i>
-                    <span>Mutu Kurikulum</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-flask"></i>
-                    <span>Mutu Penelitian</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-hands-helping"></i>
-                    <span>Mutu Pengabdian Masyarakat</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-building"></i>
-                    <span>Mutu Sarana Prasarana</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Mutu Administrasi</span>
-                </div>
-                <div class="area-item">
-                    <i class="fas fa-handshake"></i>
-                    <span>Mutu Kerjasama</span>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 <!-- CSS Minimal -->

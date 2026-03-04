@@ -5,38 +5,7 @@
 @section('content')
 <div class="lpm-container">
     
-    <!-- VIDEO SECTION (LEBAR SAMA, TINGGI DIKURANGI) -->
-    @if($featuredVideo)
-    <section class="video-section">
-        <div class="section-header">
-            <h2>Video Profil</h2>
-        </div>
-        
-        <div class="video-wrapper-reduced">
-            @php
-                $youtubeId = null;
-                if ($featuredVideo->url) {
-                    preg_match('%(?:youtube\.com/(?:.*v=|v/|embed/)|youtu\.be/)([^&\n?#]+)%', $featuredVideo->url, $matches);
-                    $youtubeId = $matches[1] ?? null;
-                }
-            @endphp
-            
-            @if($youtubeId)
-            <iframe
-                src="https://www.youtube.com/embed/{{ $youtubeId }}?autoplay=1&mute=1&playsinline=1&rel=0&modestbranding=1"
-                title="Video Profil LPM"
-                frameborder="0"
-                allow="autoplay; encrypted-media"
-                allowfullscreen>
-            </iframe>
-            @elseif($featuredVideo->video_path)
-            <video controls>
-                <source src="{{ asset('storage/'.$featuredVideo->video_path) }}" type="video/mp4">
-            </video>
-            @endif
-        </div>
-    </section>
-    @endif
+
 
     <!-- ================= BERITA SECTION ================= -->
     @if($news && count($news) > 0)

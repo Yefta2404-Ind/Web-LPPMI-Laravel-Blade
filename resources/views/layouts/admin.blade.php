@@ -970,12 +970,20 @@
         <i class="fas fa-file-alt"></i>
         <span>Kelola Dokumen</span>
     </a>
+
+    
 </div>
 
 <a href="{{ route('admin.staff.index') }}" 
                    class="lpm-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>
                     <span>Staff Settings</span>
+                </a>
+
+                <a href="{{ route('admin.menus.index') }}" 
+                   class="lpm-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-home"></i>
+                    <span>Pengaturan Menu</span>
                 </a>
 
                 
