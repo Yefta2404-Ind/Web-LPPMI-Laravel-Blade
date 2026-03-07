@@ -9,10 +9,16 @@ class Page extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+protected $fillable = [
     'title',
     'slug',
     'content',
-    'is_active',
+    'featured_image',
+    'status',
 ];
+
+public function scopePublished($query)
+{
+    return $query->where('status', 'published');
+}
 }

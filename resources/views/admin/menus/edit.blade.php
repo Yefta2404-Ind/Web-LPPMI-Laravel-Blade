@@ -5,8 +5,8 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 fw-bold mb-0">Tambah Menu</h1>
-            <p class="text-muted small mb-0">Tambahkan item menu baru ke navigasi</p>
+            <h1 class="h3 fw-bold mb-0">Edit Menu</h1>
+            <p class="text-muted small mb-0">{{ $menu->title }}</p>
         </div>
         <a href="{{ route('admin.menus.index') }}" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i> Kembali
@@ -17,32 +17,28 @@
         <div class="col-lg-7">
             <div class="card border-0 shadow-sm">
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.menus.store') }}" method="POST">
-                        @csrf
+                    <form action="{{ route('admin.menus.update', $menu) }}" method="POST">
+                        @csrf @method('PUT')
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Judul Menu <span class="text-danger">*</span></label>
-                            <input type="text" name="title" class="form-control @error('title') is-invalid @enderror"
-                                   value="{{ old('title') }}" placeholder="cth: Tentang Kami" required>
-                            @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                            <input type="text" name="title" class="form-control"
+                                   value="{{ old('title', $menu->title) }}" required>
                         </div>
 
-                        {{-- Tipe link --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Tipe Link</label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="link_type"
                                            id="typePage" value="page"
-                                           {{ old('link_type', 'page') === 'page' ? 'checked' : '' }}
-                                           onchange="toggleLinkType()">
+                                           {{ $menu->page_id ? 'checked' : '' }} onchange="toggleLinkType()">
                                     <label class="form-check-label" for="typePage">Halaman</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="link_type"
                                            id="typeUrl" value="url"
-                                           {{ old('link_type') === 'url' ? 'checked' : '' }}
-                                           onchange="toggleLinkType()">
+                                           {{ $menu->url ? 'checked' : '' }} onchange="toggleLinkType()">
                                     <label class="form-check-label" for="typeUrl">URL Custom</label>
                                 </div>
                             </div>
@@ -52,8 +48,9 @@
                             <label class="form-label fw-semibold">Pilih Halaman</label>
                             <select name="page_id" class="form-select">
                                 <option value="">-- Pilih Halaman --</option>
-                                @foreach($pages as $page)
-                                    <option value="{{ $page->id }}" {{ old('page_id') == $page->id ? 'selected' : '' }}>
+                                @foreach(\App\Models\Page::where('status','published')->get() as $page)
+                                    <option value="{{ $page->id }}"
+                                        {{ $menu->page_id == $page->id ? 'selected' : '' }}>
                                         {{ $page->title }}
                                     </option>
                                 @endforeach
@@ -63,40 +60,40 @@
                         <div id="urlInput" class="mb-3 d-none">
                             <label class="form-label fw-semibold">URL Custom</label>
                             <input type="text" name="url" class="form-control"
-                                   value="{{ old('url') }}" placeholder="https://... atau /path/halaman">
+                                   value="{{ old('url', $menu->url) }}" placeholder="https://...">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Parent Menu</label>
                             <select name="parent_id" class="form-select">
-                                <option value="">— Menu Utama (tidak ada parent) —</option>
+                                <option value="">— Menu Utama —</option>
                                 @foreach($parents as $parent)
-                                    <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
+                                    <option value="{{ $parent->id }}"
+                                        {{ $menu->parent_id == $parent->id ? 'selected' : '' }}>
                                         {{ $parent->title }}
                                     </option>
                                 @endforeach
                             </select>
-                            <div class="form-text">Pilih parent jika ini adalah sub-menu.</div>
                         </div>
 
                         <div class="row g-3 mb-4">
                             <div class="col-6">
                                 <label class="form-label fw-semibold">Urutan</label>
                                 <input type="number" name="order" class="form-control"
-                                       value="{{ old('order', 0) }}" min="0">
+                                       value="{{ old('order', $menu->order) }}" min="0">
                             </div>
                             <div class="col-6 d-flex align-items-end pb-1">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" name="is_active"
-                                           id="isActive" {{ old('is_active', true) ? 'checked' : '' }}>
-                                    <label class="form-check-label fw-semibold" for="isActive">Aktifkan Menu</label>
+                                           id="isActive" {{ $menu->is_active ? 'checked' : '' }}>
+                                    <label class="form-check-label fw-semibold" for="isActive">Aktif</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> Simpan Menu
+                                <i class="fas fa-save me-1"></i> Update Menu
                             </button>
                             <a href="{{ route('admin.menus.index') }}" class="btn btn-outline-secondary">Batal</a>
                         </div>

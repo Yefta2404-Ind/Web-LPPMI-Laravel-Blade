@@ -5,16 +5,16 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h1 class="h3 fw-bold mb-0">Tambah Halaman</h1>
-            <p class="text-muted small mb-0">Buat halaman baru untuk website</p>
+            <h1 class="h3 fw-bold mb-0">Edit Halaman</h1>
+            <p class="text-muted small mb-0">{{ $page->title }}</p>
         </div>
         <a href="{{ route('admin.pages.index') }}" class="btn btn-outline-secondary">
             <i class="fas fa-arrow-left me-1"></i> Kembali
         </a>
     </div>
 
-    <form action="{{ route('admin.pages.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    <form action="{{ route('admin.pages.update', $page) }}" method="POST" enctype="multipart/form-data">
+        @csrf @method('PUT')
         <div class="row g-4">
 
             {{-- Konten Utama --}}
@@ -27,7 +27,7 @@
                             <label class="form-label fw-semibold">Judul Halaman <span class="text-danger">*</span></label>
                             <input type="text" name="title" id="pageTitle"
                                    class="form-control form-control-lg @error('title') is-invalid @enderror"
-                                   value="{{ old('title') }}" placeholder="Masukkan judul halaman..." required>
+                                   value="{{ old('title', $page->title) }}" required>
                             @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -37,7 +37,7 @@
                             <div class="input-group">
                                 <span class="input-group-text text-muted small">/</span>
                                 <input type="text" id="slugPreview" class="form-control form-control-sm text-muted"
-                                       readonly placeholder="otomatis dari judul">
+                                       value="{{ $page->slug }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                         <h6 class="fw-semibold mb-0">Isi Konten</h6>
                     </div>
                     <div class="card-body">
-                        <textarea id="editor" name="content">{{ old('content') }}</textarea>
+                        <textarea id="editor" name="content">{!! old('content', $page->content) !!}</textarea>
                     </div>
                 </div>
 
@@ -67,20 +67,19 @@
                     <div class="card-body">
                         <div class="form-check form-switch mb-3">
                             <input class="form-check-input" type="checkbox" name="status"
-                                   id="statusToggle" {{ old('status') ? 'checked' : '' }}>
-                            <label class="form-check-label fw-semibold" for="statusToggle">
-                                Publish Sekarang
-                            </label>
+                                   id="statusToggle" {{ $page->status === 'published' ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold" for="statusToggle">Published</label>
                         </div>
                         <p class="text-muted small mb-3">
                             Jika tidak diaktifkan, halaman akan disimpan sebagai <strong>Draft</strong>.
                         </p>
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i> Simpan Halaman
+                                <i class="fas fa-save me-1"></i> Update Halaman
                             </button>
-                            <a href="{{ route('admin.pages.index') }}" class="btn btn-outline-secondary">
-                                Batal
+                            <a href="{{ url('/' . $page->slug) }}" target="_blank"
+                               class="btn btn-outline-secondary">
+                                <i class="fas fa-eye me-1"></i> Preview
                             </a>
                         </div>
                     </div>
@@ -92,22 +91,28 @@
                         <h6 class="fw-semibold mb-0">Gambar Unggulan</h6>
                     </div>
                     <div class="card-body">
-                        <div id="imagePreviewBox" class="mb-3 d-none">
-                            <img id="imagePreview" src="#" alt="Preview"
+                        @if($page->featured_image)
+                        <div id="imagePreviewBox" class="mb-3">
+                            <img id="imagePreview" src="{{ asset('storage/'.$page->featured_image) }}"
                                  class="img-fluid rounded" style="max-height:200px; width:100%; object-fit:cover;">
                         </div>
+                        @else
+                        <div id="imagePreviewBox" class="mb-3 d-none">
+                            <img id="imagePreview" src="#" class="img-fluid rounded"
+                                 style="max-height:200px; width:100%; object-fit:cover;">
+                        </div>
+                        @endif
+
                         <div id="imageDropzone"
-                             class="rounded text-center p-4"
+                             class="{{ $page->featured_image ? 'd-none' : '' }} rounded text-center p-4"
                              style="border: 2px dashed #dee2e6; cursor:pointer;">
                             <i class="fas fa-image fa-2x text-muted mb-2"></i>
-                            <p class="text-muted small mb-1">Klik atau drag & drop gambar</p>
-                            <p class="text-muted" style="font-size:0.75rem;">PNG, JPG, max 2MB</p>
+                            <p class="text-muted small mb-0">Klik atau drag gambar</p>
                         </div>
-                        <input type="file" name="featured_image" id="featuredImage"
-                               accept="image/*" class="d-none">
+                        <input type="file" name="featured_image" id="featuredImage" accept="image/*" class="d-none">
                         <button type="button" class="btn btn-outline-secondary btn-sm w-100 mt-2"
                                 onclick="document.getElementById('featuredImage').click()">
-                            <i class="fas fa-upload me-1"></i> Pilih Gambar
+                            <i class="fas fa-upload me-1"></i> Ganti Gambar
                         </button>
                     </div>
                 </div>
@@ -133,7 +138,7 @@ tinymce.init({
     toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image table | code',
     images_upload_url: '{{ route("admin.pages.upload-image") }}',
     automatic_uploads: true,
-    images_upload_handler: function (blobInfo) {
+images_upload_handler: function (blobInfo) {
     return new Promise((resolve, reject) => {
         let formData = new FormData();
         formData.append('upload', blobInfo.blob(), blobInfo.filename());

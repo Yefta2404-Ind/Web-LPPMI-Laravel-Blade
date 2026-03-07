@@ -36,10 +36,7 @@ class SecurityHeader
             'camera=(), microphone=(), geolocation=()'
         );
 
-        // Content Security Policy (no newline, production safe)
-       $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; media-src 'self'; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://cdn.jsdelivr.net; object-src 'none'; frame-ancestors 'self'; base-uri 'self';");
-
-
+        $response->headers->set('Content-Security-Policy',"default-src 'self';script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdn.tailwindcss.com https://cdn.tiny.cloud;style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdn.tiny.cloud;img-src 'self' data: https:;font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:;media-src 'self';frame-src https://www.youtube.com https://www.youtube-nocookie.com;connect-src 'self' https://cdn.jsdelivr.net https://cdn.tiny.cloud;object-src 'none';frame-ancestors 'self';base-uri 'self';");
 
 
         return $response;

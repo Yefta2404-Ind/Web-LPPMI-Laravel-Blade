@@ -16,6 +16,7 @@ use App\Http\Controllers\PublicExternalQualityController;
 use App\Http\Controllers\Admin\InternalQualityController;
 use App\Http\Controllers\Admin\InternalCategoryController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\SpmiDocumentController as AdminSpmi;
 use App\Models\Survey;
 use App\Models\Page;
@@ -219,7 +220,6 @@ Route::middleware(['auth', 'role:admin,superadmin'])
 
         Route::get('/dashboard', [NewsController::class, 'adminDashboard'])
             ->name('dashboard');
-        Route::resource('pages', \App\Http\Controllers\Admin\PageController::class);
             
 
             Route::get('/settings', [SiteSettingController::class, 'edit'])->name('admin.settings.edit');
@@ -232,6 +232,12 @@ Route::resource('spmi-categories', \App\Http\Controllers\Admin\SpmiCategoryContr
 Route::get('/spmi-categories', [SpmiCategoryController::class, 'index'])
     ->name('spmi_categories.index');
 
+/* ================= PAGES (ADMIN) ================= */
+Route::post('/pages/upload-image', [PageController::class, 'uploadImage'])
+    ->name('pages.upload-image');
+Route::patch('/pages/{page}/toggle-status', [PageController::class, 'toggleStatus'])
+    ->name('pages.toggle-status');
+Route::resource('pages', PageController::class);
 
 
     Route::resource('internal_categories', InternalCategoryController::class);
@@ -358,7 +364,9 @@ Route::post('/spmi/{id}/reject',
             ->name('videos.unfeature');
 
        //SETTINGAN MENU 
-       Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class);
+       Route::post('/menus/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder'])
+            ->name('menus.reorder');
+        Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class);
 });
 
 /*
@@ -382,9 +390,8 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::get('/{slug}', function ($slug) {
-
     $page = Page::where('slug', $slug)
-        ->where('is_active', true)
+        ->where('status', 'published')  // ← sesuai model
         ->first();
 
     if (!$page) {

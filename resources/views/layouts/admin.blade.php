@@ -4,7 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - @yield('title', 'LPMI')</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+<script src="https://cdn.tailwindcss.com"></script>
+    <style>
+/* Fix supaya TinyMCE tidak rusak karena Tailwind */
+.tox-tinymce {
+    border: 1px solid #ccc !important;
+    border-radius: 6px !important;
+}
+
+.tox .tox-toolbar,
+.tox .tox-toolbar__primary {
+    background-color: #fff !important;
+}
+
+.tox button {
+    all: unset;
+}
+</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -824,31 +843,7 @@
                     </a>
                 </div>
                 
-                <!-- Video -->
-                <div class="lpm-nav-item has-submenu" data-submenu="video-menu">
-                    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-                        <i class="fas fa-video"></i>
-                        <span>Video</span>
-                    </div>
-                    @if(isset($pendingVideosCount) && $pendingVideosCount > 0)
-                    <span class="lpm-badge">{{ $pendingVideosCount }}</span>
-                    @endif
-                </div>
-                <div class="lpm-submenu" id="video-menu">
-                    <a href="{{ route('admin.videos.pending') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.videos.pending') ? 'active' : '' }}">
-                        <i class="fas fa-clock"></i>
-                        <span>Pending Videos</span>
-                        @if(isset($pendingVideosCount) && $pendingVideosCount > 0)
-                        <span class="lpm-badge" style="margin-left: auto;">{{ $pendingVideosCount }}</span>
-                        @endif
-                    </a>
-                    <a href="{{ route('admin.videos.index') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.videos.index') ? 'active' : '' }}">
-                        <i class="fas fa-list"></i>
-                        <span>All Videos</span>
-                    </a>
-                </div>
+
                 
                 <!-- Hero Banner -->
                 <div class="lpm-nav-item has-submenu" data-submenu="banner-menu">
@@ -980,11 +975,29 @@
                     <span>Staff Settings</span>
                 </a>
 
-                <a href="{{ route('admin.menus.index') }}" 
-                   class="lpm-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-home"></i>
-                    <span>Pengaturan Menu</span>
-                </a>
+<!-- Menu & Pages -->
+<div class="lpm-nav-item has-submenu" data-submenu="menu-pages-menu">
+    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
+        <i class="fas fa-layer-group"></i>
+        <span>Menu & Halaman</span>
+    </div>
+</div>
+
+<div class="lpm-submenu" id="menu-pages-menu">
+
+    <a href="{{ route('admin.menus.index') }}" 
+       class="lpm-submenu-item {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
+        <i class="fas fa-bars"></i>
+        <span>Kelola Menu</span>
+    </a>
+
+    <a href="{{ route('admin.pages.index') }}" 
+       class="lpm-submenu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
+        <i class="fas fa-file-alt"></i>
+        <span>Kelola Halaman</span>
+    </a>
+
+</div>
 
                 
                 <!-- Logout Button -->

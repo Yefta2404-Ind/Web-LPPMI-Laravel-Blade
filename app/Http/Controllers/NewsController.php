@@ -72,7 +72,7 @@ public function show(News $news)
 
 public function publicHome()
 {
-    $news = News::approved()->latest()->take(5)->get();
+    $news = News::approved()->latest()->take(4)->get();
     $agendas = Agenda::approved()->latest()->take(10)->get();
 
     $featuredVideo = Video::where('is_featured', 1)

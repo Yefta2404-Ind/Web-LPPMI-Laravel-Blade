@@ -3,25 +3,18 @@
 @section('title', 'Lembaga Pengendalian dan Penjaminan Mutu Internal')
 
 @section('content')
-<div class="lpm-container">
-    
-
-
-    <!-- ================= BERITA SECTION ================= -->
-    @if($news && count($news) > 0)
-    <section class="news-section">
-        <div class="section-header">
-            <h2>Berita Terbaru</h2>
-            <a href="{{ route('public.news.index') }}" class="view-all">Lihat Semua</a>
-        </div>
+<section class="news-section">
+    <div class="lpm-container">
+        @if($news && count($news) > 0)
+        <div class="agenda-header">
+    <div class="agenda-header-left">
+        <div class="section-label">Informasi</div>
+        <h2 class="agenda-title">Berita Terbaru</h2>
+        <p class="agenda-subtitle">Informasi dan berita terkini dari LPPMI Universitas Gunung Kidul</p>
+    </div>
+</div>
 
         <div class="news-carousel">
-            <button class="nav-btn prev" aria-label="Slide sebelumnya">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-
             <div class="news-viewport">
                 <div class="news-track">
                     @foreach($news as $item)
@@ -32,70 +25,131 @@
                                 <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
                             </div>
                             @endif
-
                             <div class="news-content">
-                                <span class="news-date">
-                                    {{ $item->created_at->format('d M Y') }}
-                                </span>
-
+                                <span class="news-date">{{ $item->created_at->format('d M Y') }}</span>
                                 <h3>{{ Str::limit($item->title, 55) }}</h3>
                                 <p>{{ Str::limit(strip_tags($item->content), 70) }}</p>
-
-                                <a href="{{ route('public.news.show', $item) }}" class="read-more">
-                                    Baca Selengkapnya
-                                </a>
+                                <a href="{{ route('public.news.show', $item) }}" class="read-more">Baca Selengkapnya</a>
                             </div>
                         </div>
                     </div>
                     @endforeach
                 </div>
             </div>
-
-            <button class="nav-btn next" aria-label="Slide berikutnya">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
+<a href="{{ route('public.news.index') }}" class="view-all">Lihat Semua</a>
         </div>
-    </section>
-    @endif
-
-</div>
+        @endif
+    </div>
+</section>
 
 <style>
 /* ===== BASE STYLES ===== */
 .lpm-container {
-    max-width: 1200px !important;
-    margin: 0 auto !important;
-    padding: 40px 20px !important;
-    width: 100% !important;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+}
+
+.news-viewport {
+    overflow: hidden;
+    max-width: 1600px;
+    margin: auto;
 }
 
 .section-header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e5e7eb;
+    text-align: center;
+    margin-bottom: 48px;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .section-header h2 {
-    font-size: 28px;
-    color: #003366;
+    font-size: 2.2rem;
+    color: var(--primary);
     font-weight: 700;
+    margin: 0 0 8px 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+}
+
+.section-header .section-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    font-weight: 400;
     margin: 0;
 }
 
-.view-all {
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 500;
+.news-card h3{
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: #111827;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-card p{
     font-size: 15px;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.news-meta{
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.view-all {
+    display: flex;
+    margin: 40px auto 0;
+    background: var(--primary);
+    text-decoration: none;
+    border: none;
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 14px 36px;
+    border-radius: 40px;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+    width: fit-content;
+}
+
+.view-all-btn {
+    display: flex;
+    margin: 32px auto 0;
+    background: var(--primary);
+    border: none;
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 14px 36px;
+    border-radius: 40px;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
 }
 
 .view-all:hover {
-    text-decoration: underline;
+    background: var(--primary-light);
+    color: var(--white);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 section {
@@ -159,13 +213,13 @@ section {
 
 .news-track {
     display: flex;
-    gap: 16px;
+    gap: 40px;
     transition: transform 0.4s ease;
     will-change: transform;
 }
 
 .news-slide {
-    flex: 0 0 260px;
+    flex: 0 0 380px;
 }
 
 .news-card {
@@ -174,13 +228,14 @@ section {
     border: 1px solid #e5e7eb;
     overflow: hidden;
     height: 100%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     transition: transform 0.3s, box-shadow 0.3s;
-    max-width: 260px;
+    max-width: 100%;
 }
 
 .news-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .news-image {
@@ -191,17 +246,31 @@ section {
 
 .news-image img {
     width: 100%;
-    height: 140px;
+    height: 220px;
     object-fit: cover;
     transition: transform 0.3s;
 }
 
 .news-card:hover .news-image img {
     transform: scale(1.05);
+    transition: all 0.3s ease;
 }
 
 .news-content {
-    padding: 10px;
+    padding: 18px;
+}
+.news-content h3 {
+    font-size: 16px;
+}
+.news-section {
+    width: 100%;
+    background: #faf8f4;
+    padding: 60px 0;
+    border-top: 1px solid #ede8df;
+    border-bottom: 1px solid #ede8df;
+}
+.news-content p {
+    font-size: 13px;
 }
 
 .news-date {
@@ -212,7 +281,7 @@ section {
 }
 
 .news-content h3 {
-    font-size: 14px;
+    font-size: 18px;
     color: #111827;
     margin-bottom: 12px;
     line-height: 1.3;
