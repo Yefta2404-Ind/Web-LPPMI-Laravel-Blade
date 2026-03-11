@@ -5,6 +5,8 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ProfileController;
+use App\Models\News;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\HeroBannerController;
 use App\Http\Controllers\OrganizationStructureController;
@@ -24,22 +26,12 @@ use App\Models\Page;
 
 
 
-// Homepage
-Route::get('/mutu-internal',
-    [\App\Http\Controllers\Public\InternalQualityController::class,'index']
-)->name('public.mutu-internal');
 
 
-Route::get('/mutu-eksternal',
-    [\App\Http\Controllers\PublicExternalQualityController::class, 'index']
-)->name('public.mutu-eksternal');
 
-Route::view('/kontak', 'public.kontak')->name('kontak');
-Route::get('/', [NewsController::class, 'publicHome'])->name('home');
 
-Route::get('/visi-misi', function () {
-    return view('public.visi-misi');
-});
+
+
 Route::get('/uraian-tugas', function () {
     return view('public.uraian-tugas');
 });
@@ -222,8 +214,9 @@ Route::middleware(['auth', 'role:admin,superadmin'])
             ->name('dashboard');
             
 
-            Route::get('/settings', [SiteSettingController::class, 'edit'])->name('admin.settings.edit');
-            Route::put('/settings', [SiteSettingController::class, 'update'])->name('admin.settings.update');
+        // ✅ BENAR — nama jadi admin.settings.edit & admin.settings.update
+        Route::get('/settings', [SiteSettingController::class, 'edit'])->name('settings.edit');
+        Route::put('/settings', [SiteSettingController::class, 'update'])->name('settings.update');
 
         /* ================= SPMI DOCUMENT (ADMIN) ================= */
 
@@ -367,13 +360,10 @@ Route::post('/spmi/{id}/reject',
        Route::post('/menus/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder'])
             ->name('menus.reorder');
         Route::resource('menus', \App\Http\Controllers\Admin\MenuController::class);
+        Route::post('menus/{menu}/toggle', [MenuController::class, 'toggle'])->name('admin.menus.toggle');
 });
 
-/*
-|--------------------------------------------------------------------------
-| PROFILE
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -390,13 +380,19 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::get('/{slug}', function ($slug) {
+
     $page = Page::where('slug', $slug)
-        ->where('status', 'published')  // ← sesuai model
+        ->where('status', 'published')
         ->first();
 
     if (!$page) {
         abort(404);
     }
 
-    return view('public.page', compact('page'));
+    $latestNews = News::where('status','approved')
+        ->latest()
+        ->limit(5)
+        ->get();
+
+    return view('public.page', compact('page','latestNews'));
 });

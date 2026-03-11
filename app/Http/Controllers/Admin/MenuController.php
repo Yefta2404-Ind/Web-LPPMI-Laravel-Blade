@@ -9,42 +9,45 @@ use App\Models\Page;
 
 class MenuController extends Controller
 {
-    public function index()
-    {
-        $menus = Menu::with('parent')
-            ->orderBy('order')
-            ->get();
+public function index()
+{
+    // Yang sekarang — tidak load url di children
+$menus = Menu::whereNull('parent_id')
+    ->where('is_active', true)
+    ->with('children')  // ← children tidak difilter is_active dan tidak load relasi lengkap
+    ->orderBy('order')
+    ->get();
 
-        return view('admin.menus.index', compact('menus'));
+    return view('admin.menus.index', compact('menus'));
+}
+
+    public function create()
+    {
+        $pages   = Page::where('status', 'published')->get();
+        $parents = Menu::whereNull('parent_id')->get();
+
+        return view('admin.menus.create', compact('pages', 'parents'));
     }
 
-public function create()
-{
-    $pages = Page::where('status', 'published')->get();
-    $parents = Menu::whereNull('parent_id')->get();
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title'   => 'required',
+            'page_id' => 'nullable',
+            'url'     => 'nullable',
+        ]);
 
-    return view('admin.menus.create', compact('pages','parents'));
-}
+        Menu::create([
+            'title'     => $request->title,
+            'page_id'   => $request->page_id ?: null,
+            'url'       => $request->url,
+            'parent_id' => $request->parent_id ?: null,
+            'order'     => $request->order ?? 0,
+            'is_active' => $request->has('is_active'),
+        ]);
 
-public function store(Request $request)
-{
-    $request->validate([
-        'title'   => 'required',
-        'page_id' => 'nullable', // tidak wajib karena bisa custom URL
-        'url'     => 'nullable',
-    ]);
-
-    Menu::create([
-        'title'     => $request->title,
-        'page_id'   => $request->page_id ?: null,
-        'url'       => $request->url,
-        'parent_id' => $request->parent_id ?: null,
-        'order'     => $request->order ?? 0,
-        'is_active' => $request->has('is_active'),
-    ]);
-
-    return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil ditambahkan');
-}
+        return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil ditambahkan');
+    }
 
     public function edit(Menu $menu)
     {
@@ -55,36 +58,62 @@ public function store(Request $request)
         return view('admin.menus.edit', compact('menu', 'parents'));
     }
 
-public function update(Request $request, Menu $menu)
-{
-    $request->validate([
-        'title' => 'required',
-    ]);
+    public function update(Request $request, Menu $menu)
+    {
+        $request->validate(['title' => 'required']);
 
-    $menu->update([
-        'title'     => $request->title,
-        'page_id'   => $request->page_id ?: null,
-        'url'       => $request->url,
-        'parent_id' => $request->parent_id ?: null,
-        'order'     => $request->order ?? 0,
-        'is_active' => $request->has('is_active'),
-    ]);
+        $menu->update([
+            'title'     => $request->title,
+            'page_id'   => $request->page_id ?: null,
+            'url'       => $request->url,
+            'parent_id' => $request->parent_id ?: null,
+            'order'     => $request->order ?? 0,
+            'is_active' => $request->has('is_active'),
+        ]);
 
-    return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil diupdate');
-}
+        return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil diupdate');
+    }
 
     public function destroy(Menu $menu)
     {
+        $title         = $menu->title;
+        $childrenCount = $menu->children()->count();
+
+        if ($childrenCount > 0) {
+            $menu->children()->delete();
+        }
+
         $menu->delete();
 
-        return back()->with('success', 'Menu dihapus');
+        $message = $childrenCount > 0
+            ? "Menu \"{$title}\" beserta {$childrenCount} sub-menu berhasil dihapus."
+            : "Menu \"{$title}\" berhasil dihapus.";
+
+        return redirect()->route('admin.menus.index')->with('success', $message);
+    }
+
+    /**
+     * Toggle is_active via AJAX dari tabel langsung
+     */
+    public function toggle(Request $request, Menu $menu)
+    {
+        $menu->update([
+            'is_active' => $request->boolean('is_active'),
+        ]);
+
+        return response()->json([
+            'success'   => true,
+            'title'     => $menu->title,
+            'is_active' => $menu->is_active,
+        ]);
     }
 
     public function reorder(Request $request)
-{
-    foreach ($request->order as $index => $id) {
-        Menu::where('id', $id)->update(['order' => $index]);
+    {
+        foreach ($request->order as $index => $id) {
+            Menu::where('id', $id)->update(['order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
     }
-    return response()->json(['success' => true]);
-}
 }

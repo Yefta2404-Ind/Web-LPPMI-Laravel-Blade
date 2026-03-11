@@ -4,7 +4,11 @@ use Illuminate\Support\Facades\Route;
 
 function menu_url($menu)
 {
-    return $menu->page
-        ? url($menu->page->slug)
-        : url('/');
+    if ($menu->page) {
+        return url($menu->page->slug);
+    }
+    if (!empty($menu->url)) {
+        return $menu->url;
+    }
+    return url('/');
 }

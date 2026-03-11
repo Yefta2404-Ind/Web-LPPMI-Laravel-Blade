@@ -228,7 +228,7 @@ public function publicIndex(Request $request)
         });
     }
 
-    $news = $query->paginate(9);
+    $news = $query->paginate(5);
 
     $categories = Category::withCount([
         'news' => fn ($q) => $q->where('status', 'approved')

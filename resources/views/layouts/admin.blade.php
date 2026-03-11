@@ -998,7 +998,11 @@
     </a>
 
 </div>
-
+<a href="{{ route('admin.settings.edit') }}" 
+   class="lpm-nav-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+    <i class="fas fa-cog"></i>
+    <span>Pengaturan Situs</span>
+</a>
                 
                 <!-- Logout Button -->
                 <div class="lpm-nav-item logout" id="logoutTrigger" style="margin-top: 24px;">
