@@ -5,7 +5,7 @@
 @section('content')
 <section class="news-section">
     <div class="lpm-container">
-        @if($news && count($news) > 0)
+        @if(isset($news) && $news->count() > 0)
         <div class="agenda-header">
     <div class="agenda-header-left">
         <div class="section-label">Informasi</div>

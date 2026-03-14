@@ -3,7 +3,7 @@
 @section('page-title', 'Agenda Pending')
 @section('content')
 <style>
-    /* ===== VARIABLES ===== */
+    /* ===== VARIABLES - Mempertahankan warna asli ===== */
     :root {
         --primary: #2563eb;
         --primary-dark: #1d4ed8;
@@ -38,12 +38,31 @@
         box-sizing: border-box;
     }
 
-    /* ===== LAYOUT ===== */
+    /* ===== LAYOUT - Improved Responsive ===== */
     .admin-container {
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 24px;
         width: 100%;
+    }
+
+    /* Responsive padding */
+    @media (max-width: 1024px) {
+        .admin-container { 
+            padding: 0 20px; 
+        }
+    }
+
+    @media (max-width: 768px) {
+        .admin-container { 
+            padding: 0 16px; 
+        }
+    }
+
+    @media (max-width: 480px) {
+        .admin-container { 
+            padding: 0 12px; 
+        }
     }
 
     /* ===== HEADER ===== */
@@ -64,7 +83,26 @@
         font-size: 0.95rem;
     }
 
-    /* ===== STATUS TABS ===== */
+    /* Responsive header */
+    @media (max-width: 1024px) {
+        .page-title { 
+            font-size: 1.75rem; 
+        }
+    }
+
+    @media (max-width: 768px) {
+        .page-title { 
+            font-size: 1.5rem; 
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-title { 
+            font-size: 1.35rem; 
+        }
+    }
+
+    /* ===== STATUS TABS - Improved Responsive ===== */
     .status-tabs {
         display: flex;
         gap: 12px;
@@ -85,6 +123,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        white-space: nowrap;
     }
 
     .status-tab i {
@@ -106,7 +145,33 @@
         color: white;
     }
 
-    /* ===== STATS CARD ===== */
+    /* Responsive tabs */
+    @media (max-width: 768px) {
+        .status-tabs {
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .status-tab {
+            flex: 1;
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .status-tab {
+            padding: 8px 10px;
+            font-size: 0.8rem;
+        }
+        
+        .status-tab i {
+            font-size: 0.75rem;
+        }
+    }
+
+    /* ===== STATS CARD - Improved Grid ===== */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -174,7 +239,29 @@
         line-height: 1;
     }
 
-    /* ===== ALERTS ===== */
+    /* Responsive stats */
+    @media (max-width: 768px) {
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .stat-card {
+            padding: 20px;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            font-size: 1.1rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* ===== ALERTS - Improved ===== */
     .alert {
         padding: 16px 20px;
         border-radius: var(--radius-sm);
@@ -185,6 +272,18 @@
         font-size: 0.95rem;
         border-left: 4px solid;
         background: white;
+        animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .alert-success {
@@ -205,7 +304,7 @@
         color: var(--primary);
     }
 
-    /* ===== TABLE ===== */
+    /* ===== TABLE - Improved Responsive ===== */
     .table-container {
         background: white;
         border-radius: var(--radius);
@@ -213,11 +312,31 @@
         overflow: hidden;
         position: relative;
         margin-bottom: 32px;
+        box-shadow: var(--shadow);
     }
 
     .table-scroll {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gray-300) var(--gray-100);
+    }
+
+    .table-scroll::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-scroll::-webkit-scrollbar-track {
+        background: var(--gray-100);
+    }
+
+    .table-scroll::-webkit-scrollbar-thumb {
+        background: var(--gray-300);
+        border-radius: 20px;
+    }
+
+    .table-scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-400);
     }
 
     .table {
@@ -259,6 +378,13 @@
         background: var(--gray-50);
     }
 
+    /* Responsive table cells */
+    @media (max-width: 768px) {
+        .table td { 
+            padding: 20px; 
+        }
+    }
+
     /* ===== AGENDA INFO ===== */
     .agenda-info {
         max-width: 350px;
@@ -277,6 +403,10 @@
         color: var(--gray-500);
         margin-bottom: 12px;
         line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     .agenda-meta {
@@ -294,11 +424,60 @@
         border-radius: 20px;
         font-size: 0.75rem;
         color: var(--gray-600);
+        transition: var(--transition);
+    }
+
+    .meta-tag:hover {
+        background: var(--gray-200);
     }
 
     .meta-tag i {
         color: var(--gray-500);
         font-size: 0.7rem;
+    }
+
+    /* Responsive agenda info */
+    @media (max-width: 768px) {
+        .agenda-info {
+            max-width: 280px;
+        }
+    }
+
+    /* ===== IMAGE STYLES ===== */
+    .agenda-image {
+        width: 70px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid var(--gray-200);
+        transition: var(--transition);
+    }
+
+    .agenda-image:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow);
+    }
+
+    .agenda-image-placeholder {
+        width: 70px;
+        height: 50px;
+        background: var(--gray-100);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-400);
+        font-size: 1.2rem;
+        border: 1px solid var(--gray-200);
+    }
+
+    /* Responsive image */
+    @media (max-width: 480px) {
+        .agenda-image,
+        .agenda-image-placeholder {
+            width: 60px;
+            height: 45px;
+        }
     }
 
     /* ===== BADGES ===== */
@@ -333,7 +512,15 @@
         border: 1px solid rgba(239, 68, 68, 0.2);
     }
 
-    /* ===== ACTION BUTTONS - OPTIMIZED ===== */
+    /* Responsive badges */
+    @media (max-width: 480px) {
+        .badge {
+            padding: 4px 10px;
+            font-size: 0.7rem;
+        }
+    }
+
+    /* ===== ACTION BUTTONS - Improved Responsive ===== */
     .action-group {
         display: flex;
         gap: 8px;
@@ -369,6 +556,7 @@
     .btn-outline:hover {
         background: var(--gray-100);
         border-color: var(--gray-300);
+        transform: translateY(-1px);
     }
 
     .btn-approve {
@@ -393,12 +581,29 @@
         box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
     }
 
+    /* Responsive action buttons */
+    @media (max-width: 768px) {
+        .action-group {
+            flex-direction: column;
+            width: 100%;
+            min-width: 120px;
+        }
+
+        .action-group .btn {
+            width: 100%;
+        }
+    }
+
     /* ===== NO ACTIONS MESSAGE ===== */
     .no-actions {
         color: var(--gray-400);
         font-size: 0.85rem;
         font-style: italic;
         padding: 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
     }
 
     /* ===== EMPTY STATE ===== */
@@ -411,6 +616,12 @@
         font-size: 3.5rem;
         color: var(--gray-300);
         margin-bottom: 16px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
     }
 
     .empty-title {
@@ -425,24 +636,54 @@
         margin-bottom: 24px;
     }
 
+    /* Responsive empty state */
+    @media (max-width: 480px) {
+        .empty-state {
+            padding: 40px 16px;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+        }
+
+        .empty-title {
+            font-size: 1rem;
+        }
+    }
+
     /* ===== SCROLL HINT ===== */
     .scroll-hint {
         display: none;
-        position: absolute;
-        top: 12px;
-        right: 12px;
+        position: sticky;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
         background: var(--gray-800);
         color: white;
-        padding: 6px 14px;
+        padding: 8px 20px;
         border-radius: 30px;
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         z-index: 10;
         opacity: 0.9;
+        box-shadow: var(--shadow-md);
+        width: fit-content;
+        animation: bounce 2s infinite;
     }
 
-    /* ===== MODAL ===== */
+    @keyframes bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    @media (max-width: 768px) {
+        .scroll-hint {
+            display: flex;
+        }
+    }
+
+    /* ===== MODAL - Improved Responsive ===== */
     .modal {
         display: none;
         position: fixed;
@@ -467,6 +708,18 @@
         overflow-y: auto;
         padding: 32px;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        animation: modalSlideUp 0.3s ease;
+    }
+
+    @keyframes modalSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .modal-header {
@@ -474,6 +727,8 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 28px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--gray-200);
     }
 
     .modal-title {
@@ -489,10 +744,13 @@
         color: var(--gray-400);
         cursor: pointer;
         line-height: 1;
-        padding: 0;
+        padding: 0 8px;
+        border-radius: 50%;
+        transition: var(--transition);
     }
 
     .modal-close:hover {
+        background: var(--gray-100);
         color: var(--gray-600);
     }
 
@@ -514,6 +772,9 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
     .detail-value {
@@ -522,77 +783,65 @@
         line-height: 1.6;
     }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1024px) {
-        .admin-container { padding: 0 20px; }
-        .page-title { font-size: 1.75rem; }
-    }
-
+    /* Responsive modal */
     @media (max-width: 768px) {
-        .admin-container { padding: 0 16px; }
-        .page-title { font-size: 1.5rem; }
-        
-        .stats-grid {
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        .table td { 
-            padding: 20px; 
-        }
-
-        .agenda-info {
-            max-width: 280px;
-        }
-
-        .action-group {
-            flex-direction: column;
-            width: 100%;
-            min-width: 120px;
-        }
-
-        .action-group .btn {
-            width: 100%;
-        }
-
-        .scroll-hint {
-            display: flex;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .admin-container { padding: 0 12px; }
-        .page-title { font-size: 1.35rem; }
-        
-        .status-tabs {
-            gap: 8px;
-        }
-        
-        .status-tab {
-            padding: 8px 18px;
-            font-size: 0.85rem;
-        }
-
-        .stat-card {
-            padding: 20px;
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            font-size: 1.1rem;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-        }
-
         .modal-content {
             padding: 24px;
         }
 
         .modal-title {
+            font-size: 1.35rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .modal-content {
+            padding: 20px;
+        }
+
+        .modal-title {
             font-size: 1.25rem;
+        }
+
+        .detail-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+        }
+    }
+
+    /* ===== ADDITIONAL UTILITIES ===== */
+    .text-nowrap {
+        white-space: nowrap;
+    }
+
+    .d-inline-flex {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .w-100 {
+        width: 100%;
+    }
+
+    /* Print styles */
+    @media print {
+        .status-tabs,
+        .action-group,
+        .btn,
+        .modal,
+        .scroll-hint {
+            display: none !important;
+        }
+
+        .table-container {
+            border: 1px solid black;
+            box-shadow: none;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid black;
         }
     }
 </style>
@@ -600,34 +849,62 @@
 <div class="admin-container">
     <!-- Header -->
     <div class="page-header">
-        <h1 class="page-title">Manajemen Agenda</h1>
-        <p class="page-description">Kelola semua pengajuan agenda dari staff</p>
+        <h1 class="page-title">
+            <i class="fas fa-calendar-check" style="color: var(--primary); margin-right: 10px;"></i>
+            Manajemen Agenda
+        </h1>
+        <p class="page-description">
+            <i class="fas fa-info-circle" style="color: var(--gray-400);"></i>
+            Kelola semua pengajuan agenda dari staff
+            <span style="margin-left: 10px; padding: 4px 10px; background: var(--gray-100); border-radius: 30px; font-size: 0.8rem;">
+                <i class="fas fa-calendar"></i> {{ now()->format('d F Y') }}
+            </span>
+        </p>
     </div>
 
     <!-- Status Tabs - Active State Based on Current Route -->
     <div class="status-tabs">
         <a href="{{ route('admin.agenda.index', ['status' => 'pending']) }}" 
            class="status-tab {{ request('status') == 'pending' || !request('status') ? 'active' : '' }}">
-            <i class="fas fa-clock"></i> Pending
+            <i class="fas fa-clock"></i> 
+            <span>Pending</span>
+            @if(request('status') == 'pending' || !request('status'))
+                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 30px; font-size: 0.7rem;">
+                    {{ $agendas->count() }}
+                </span>
+            @endif
         </a>
         <a href="{{ route('admin.agenda.index', ['status' => 'approved']) }}" 
            class="status-tab {{ request('status') == 'approved' ? 'active' : '' }}">
-            <i class="fas fa-check-circle"></i> Approved
+            <i class="fas fa-check-circle"></i> 
+            <span>Approved</span>
+            @if(request('status') == 'approved')
+                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 30px; font-size: 0.7rem;">
+                    {{ $agendas->count() }}
+                </span>
+            @endif
         </a>
         <a href="{{ route('admin.agenda.index', ['status' => 'rejected']) }}" 
            class="status-tab {{ request('status') == 'rejected' ? 'active' : '' }}">
-            <i class="fas fa-times-circle"></i> Rejected
+            <i class="fas fa-times-circle"></i> 
+            <span>Rejected</span>
+            @if(request('status') == 'rejected')
+                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 30px; font-size: 0.7rem;">
+                    {{ $agendas->count() }}
+                </span>
+            @endif
         </a>
     </div>
 
     <!-- Dynamic Stats Based on Current Status -->
-    <div class="stats-grid">
-        @php
-            $currentStatus = request('status', 'pending');
-            $totalCount = $agendas->count();
-            $monthCount = $agendas->where('created_at', '>=', now()->startOfMonth())->count();
-        @endphp
+    @php
+        $currentStatus = request('status', 'pending');
+        $totalCount = $agendas->count();
+        $monthCount = $agendas->where('created_at', '>=', now()->startOfMonth())->count();
+        $weekCount = $agendas->where('created_at', '>=', now()->startOfWeek())->count();
+    @endphp
 
+    <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-icon {{ $currentStatus }}">
                 <i class="fas 
@@ -640,6 +917,22 @@
             <div class="stat-content">
                 <div class="stat-label">Total {{ ucfirst($currentStatus) }}</div>
                 <div class="stat-value">{{ $totalCount }}</div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 4px;">
+                    <i class="fas fa-database"></i> Semua waktu
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon {{ $currentStatus }}">
+                <i class="fas fa-calendar-week"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Minggu Ini</div>
+                <div class="stat-value">{{ $weekCount }}</div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 4px;">
+                    <i class="fas fa-chart-line"></i> {{ $weekCount > 0 ? '+' . $weekCount : '0' }} baru
+                </div>
             </div>
         </div>
 
@@ -650,6 +943,10 @@
             <div class="stat-content">
                 <div class="stat-label">Bulan Ini</div>
                 <div class="stat-value">{{ $monthCount }}</div>
+                <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 4px;">
+                    <i class="fas fa-percent"></i> 
+                    {{ $totalCount > 0 ? round(($monthCount / $totalCount) * 100) : 0 }}% dari total
+                </div>
             </div>
         </div>
     </div>
@@ -658,28 +955,31 @@
     @if(session('success'))
         <div class="alert alert-success">
             <i class="fas fa-check-circle"></i>
-            <span>{{ session('success') }}</span>
+            <div style="flex: 1;">{{ session('success') }}</div>
+            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     @endif
 
     @if(session('error'))
         <div class="alert alert-error">
             <i class="fas fa-exclamation-circle"></i>
-            <span>{{ session('error') }}</span>
+            <div style="flex: 1;">{{ session('error') }}</div>
+            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer;">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
     @endif
 
     <!-- Table Container -->
     <div class="table-container">
-        <div class="scroll-hint">
-            <i class="fas fa-arrows-alt-h"></i> Geser tabel
-        </div>
-        
         <div class="table-scroll">
             @if($agendas->count() > 0)
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Gambar</th>
                             <th>Agenda</th>
                             <th>Tanggal</th>
                             <th>Waktu</th>
@@ -691,6 +991,18 @@
                     <tbody>
                         @foreach($agendas as $agenda)
                             <tr>
+                                <td onclick="event.stopPropagation()">
+                                    @if($agenda->image)
+                                        <img src="{{ asset('storage/'.$agenda->image) }}" 
+                                             class="agenda-image"
+                                             alt="{{ $agenda->title }}">
+                                    @else
+                                        <div class="agenda-image-placeholder">
+                                            <i class="fas fa-image"></i>
+                                        </div>
+                                    @endif
+                                </td>
+                                
                                 <!-- Agenda Info -->
                                 <td>
                                     <div class="agenda-info">
@@ -714,7 +1026,8 @@
                                 <!-- Date -->
                                 <td>
                                     @if($agenda->date)
-                                        <span style="font-weight: 500; white-space: nowrap;">
+                                        <span class="d-inline-flex">
+                                            <i class="fas fa-calendar-day" style="color: var(--gray-400);"></i>
                                             {{ \Carbon\Carbon::parse($agenda->date)->format('d/m/Y') }}
                                         </span>
                                     @else
@@ -725,7 +1038,8 @@
                                 <!-- Time -->
                                 <td>
                                     @if($agenda->time)
-                                        <span style="white-space: nowrap;">
+                                        <span class="d-inline-flex">
+                                            <i class="fas fa-clock" style="color: var(--gray-400);"></i>
                                             {{ \Carbon\Carbon::parse($agenda->time)->format('H:i') }}
                                         </span>
                                     @else
@@ -736,7 +1050,10 @@
                                 <!-- Location -->
                                 <td>
                                     @if($agenda->location)
-                                        <span>{{ Str::limit($agenda->location, 20) }}</span>
+                                        <span class="d-inline-flex">
+                                            <i class="fas fa-map-marker-alt" style="color: var(--gray-400);"></i>
+                                            {{ Str::limit($agenda->location, 20) }}
+                                        </span>
                                     @else
                                         <span style="color: var(--gray-400);">-</span>
                                     @endif
@@ -759,7 +1076,7 @@
                                     @endif
                                 </td>
 
-                                <!-- Actions - OPTIMIZED: Only show actions for pending & rejected -->
+                                <!-- Actions -->
                                 <td>
                                     @if($agenda->status === 'pending')
                                         <!-- PENDING: Show all actions -->
@@ -796,14 +1113,13 @@
                                         </div>
 
                                     @elseif($agenda->status === 'approved')
-                                        <!-- APPROVED: HIDE ALL ACTIONS - Only show detail button -->
+                                        <!-- APPROVED: Only show detail -->
                                         <div class="action-group">
                                             <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm">
                                                 <i class="fas fa-eye"></i> Detail
                                             </button>
-                                            <!-- NO APPROVE/REJECT BUTTONS FOR APPROVED -->
                                             <span class="no-actions">
-                                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Terselesaikan
+                                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Selesai
                                             </span>
                                         </div>
                                     @endif
@@ -813,7 +1129,7 @@
                     </tbody>
                 </table>
             @else
-                <!-- Empty State - Dynamic Based on Status -->
+                <!-- Empty State -->
                 <div class="empty-state">
                     <div class="empty-icon">
                         <i class="fas 
@@ -844,13 +1160,24 @@
             @endif
         </div>
     </div>
+
+    <!-- Scroll Hint for Mobile -->
+    @if($agendas->count() > 0)
+        <div class="scroll-hint">
+            <i class="fas fa-arrows-alt-h"></i>
+            <span>Geser untuk lihat lebih banyak</span>
+        </div>
+    @endif
 </div>
 
 <!-- Modal -->
 <div id="agendaModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">Detail Agenda</h3>
+            <h3 class="modal-title">
+                <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                Detail Agenda
+            </h3>
             <button onclick="closeModal()" class="modal-close">&times;</button>
         </div>
         <div id="modalContent" class="modal-body"></div>
@@ -872,45 +1199,103 @@ function viewAgenda(id) {
         rejected: '<span class="badge badge-rejected"><i class="fas fa-times"></i> Rejected</span>'
     };
 
+    const formatDate = (date) => {
+        return new Date(date).toLocaleDateString('id-ID', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
     const content = document.getElementById('modalContent');
     content.innerHTML = `
         <div class="detail-item">
-            <div class="detail-label">Judul Agenda</div>
-            <div class="detail-value" style="font-weight: 600;">${agenda.title}</div>
-        </div>
-        <div class="detail-item">
-            <div class="detail-label">Deskripsi</div>
-            <div class="detail-value">${agenda.deskripsi || '-'}</div>
-        </div>
-        <div class="detail-item">
-            <div class="detail-label">Waktu & Tempat</div>
-            <div class="detail-value">
-                ${agenda.date ? new Date(agenda.date).toLocaleDateString('id-ID', { 
-                    day: 'numeric', 
-                    month: 'long', 
-                    year: 'numeric' 
-                }) : '-'}<br>
-                ${agenda.time ? agenda.time + ' WIB' : '-'}<br>
-                ${agenda.location || '-'}
+            <div class="detail-label">
+                <i class="fas fa-tag"></i> Judul Agenda
+            </div>
+            <div class="detail-value" style="font-weight: 600; font-size: 1.1rem;">
+                ${agenda.title}
             </div>
         </div>
+        
+        ${agenda.image ? `
         <div class="detail-item">
-            <div class="detail-label">Status</div>
-            <div class="detail-value">${statusBadge[agenda.status] || '-'}</div>
+            <div class="detail-label">
+                <i class="fas fa-image"></i> Gambar
+            </div>
+            <div class="detail-value">
+                <img src="{{ asset('storage') }}/${agenda.image}" 
+                     style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid var(--gray-200);">
+            </div>
         </div>
+        ` : ''}
+        
         <div class="detail-item">
-            <div class="detail-label">Dibuat Oleh</div>
-            <div class="detail-value">${agenda.user?.name || 'Unknown'}</div>
+            <div class="detail-label">
+                <i class="fas fa-align-left"></i> Deskripsi
+            </div>
+            <div class="detail-value">
+                ${agenda.deskripsi || '<span style="color: var(--gray-400);">Tidak ada deskripsi</span>'}
+            </div>
         </div>
+        
         <div class="detail-item">
-            <div class="detail-label">Dibuat Pada</div>
-            <div class="detail-value">${new Date(agenda.created_at).toLocaleString('id-ID', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })}</div>
+            <div class="detail-label">
+                <i class="fas fa-calendar-alt"></i> Waktu & Tempat
+            </div>
+            <div class="detail-value">
+                <div style="margin-bottom: 5px;">
+                    <i class="fas fa-calendar-day" style="color: var(--gray-500); width: 20px;"></i>
+                    ${agenda.date ? new Date(agenda.date).toLocaleDateString('id-ID', { 
+                        day: 'numeric', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    }) : '<span style="color: var(--gray-400);">Tanggal tidak ditentukan</span>'}
+                </div>
+                <div style="margin-bottom: 5px;">
+                    <i class="fas fa-clock" style="color: var(--gray-500); width: 20px;"></i>
+                    ${agenda.time ? agenda.time + ' WIB' : '<span style="color: var(--gray-400);">Waktu tidak ditentukan</span>'}
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt" style="color: var(--gray-500); width: 20px;"></i>
+                    ${agenda.location || '<span style="color: var(--gray-400);">Lokasi tidak ditentukan</span>'}
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-item">
+            <div class="detail-label">
+                <i class="fas fa-info-circle"></i> Status
+            </div>
+            <div class="detail-value">
+                ${statusBadge[agenda.status] || '-'}
+            </div>
+        </div>
+        
+        <div class="detail-item">
+            <div class="detail-label">
+                <i class="fas fa-user"></i> Dibuat Oleh
+            </div>
+            <div class="detail-value">
+                <div style="font-weight: 500;">${agenda.user?.name || 'Unknown'}</div>
+                <div style="font-size: 0.8rem; color: var(--gray-500);">${agenda.user?.email || ''}</div>
+            </div>
+        </div>
+        
+        <div class="detail-item">
+            <div class="detail-label">
+                <i class="fas fa-history"></i> Riwayat
+            </div>
+            <div class="detail-value">
+                <div style="margin-bottom: 3px; font-size: 0.9rem;">
+                    <span style="color: var(--gray-500);">Dibuat:</span> ${formatDate(agenda.created_at)}
+                </div>
+                <div style="font-size: 0.9rem;">
+                    <span style="color: var(--gray-500);">Diperbarui:</span> ${formatDate(agenda.updated_at)}
+                </div>
+            </div>
         </div>
     `;
 
@@ -939,17 +1324,20 @@ const tableScroll = document.querySelector('.table-scroll');
 const scrollHint = document.querySelector('.scroll-hint');
 
 if (tableScroll && scrollHint) {
-    function checkScroll() {
-        const hasScroll = tableScroll.scrollWidth > tableScroll.clientWidth;
-        scrollHint.style.display = hasScroll ? 'flex' : 'none';
-    }
-    
-    checkScroll();
-    window.addEventListener('resize', checkScroll);
-    
     tableScroll.addEventListener('scroll', function() {
         scrollHint.style.opacity = '0.5';
+        setTimeout(() => {
+            scrollHint.style.opacity = '0.9';
+        }, 1000);
     });
 }
+
+// Add animation on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.stat-card');
+    cards.forEach((card, index) => {
+        card.style.animation = `slideIn 0.3s ease ${index * 0.1}s both`;
+    });
+});
 </script>
 @endsection

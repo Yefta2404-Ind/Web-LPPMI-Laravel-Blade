@@ -72,7 +72,7 @@
 
     <h2 class="page-title">✏️ Edit Agenda</h2>
 
-    <form action="{{ route('staff.agenda.update', $agenda->id) }}" method="POST">
+    <form action="{{ route('staff.agenda.update', $agenda->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
 
@@ -107,6 +107,24 @@
         <input type="text" name="location"
             value="{{ old('location', $agenda->location) }}">
     </div>
+
+    {{-- GAMBAR AGENDA --}}
+<div class="form-group">
+    <label>Gambar Agenda</label>
+
+    @if($agenda->image)
+        <div style="margin-bottom:10px;">
+            <img src="{{ asset('storage/'.$agenda->image) }}" 
+                 style="width:200px;border-radius:6px;">
+        </div>
+    @endif
+
+    <input type="file" name="image" accept="image/*">
+
+    <small style="color:#6b7280">
+        Upload gambar baru jika ingin mengganti gambar agenda.
+    </small>
+</div>
 
     {{-- DESKRIPSI --}}
     <div class="form-group">

@@ -910,65 +910,7 @@
                         <i class="fas fa-list"></i>
                         <span>All Surveys</span>
                     </a>
-                </div>
-                <!-- Mutu Internal -->
-<div class="lpm-nav-item has-submenu" data-submenu="internal-mutu-menu">
-    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-        <i class="fas fa-clipboard-check"></i>
-        <span>Mutu Internal</span>
-    </div>
-</div>
-
-<div class="lpm-submenu" id="internal-mutu-menu">
-
-    <a href="{{ route('admin.internal_categories.index') }}" 
-       class="lpm-submenu-item {{ request()->routeIs('admin.internal_categories.*') ? 'active' : '' }}">
-        <i class="fas fa-tags"></i>
-        <span>Kategori</span>
-    </a>
-
-    <a href="{{ route('admin.internal_qualities.index') }}" 
-       class="lpm-submenu-item {{ !request()->query('category') && request()->routeIs('admin.internal_qualities.*') ? 'active' : '' }}">
-        <i class="fas fa-file-alt"></i>
-        <span>Semua Laporan RTM</span>
-    </a>
-
-    {{-- Tambahkan submenu kategori dinamis --}}
-    @foreach($internalCategories as $cat)
-        <a href="{{ route('admin.internal_qualities.index', ['category' => $cat->id]) }}"
-           class="lpm-submenu-item {{ request()->query('category') == $cat->id ? 'active' : '' }}">
-           <i class="fas fa-tag"></i>
-           <span>{{ $cat->name }}</span>
-        </a>
-    @endforeach
-
-</div>
-
-
-
-                <div class="lpm-nav-item has-submenu" data-submenu="dokumen-menu">
-    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-        <i class="fas fa-folder-open"></i>
-        <span>Halaman Dokumen</span>
-    </div>
-</div>
-
-<div class="lpm-submenu" id="dokumen-menu">
-    <a href="{{ route('admin.spmi_categories.index') }}" 
-       class="lpm-submenu-item {{ request()->routeIs('admin.spmi_categories.*') ? 'active' : '' }}">
-        <i class="fas fa-tags"></i>
-        <span>Pengaturan Kategori</span>
-    </a>
-
-    <a href="{{ route('admin.spmi.index') }}" 
-       class="lpm-submenu-item {{ request()->routeIs('admin.spmi.*') ? 'active' : '' }}">
-        <i class="fas fa-file-alt"></i>
-        <span>Kelola Dokumen</span>
-    </a>
-
-    
-</div>
-
+                </div>          
 <a href="{{ route('admin.staff.index') }}" 
                    class="lpm-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                     <i class="fas fa-home"></i>

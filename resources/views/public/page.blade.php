@@ -21,18 +21,23 @@
     --transition: all 0.3s ease;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 /* ===== CONTAINER ===== */
 .site-container {
     width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 20px;
-}
-
-@media (max-width: 640px) {
-    .site-container {
-        padding: 0 16px;
-    }
 }
 
 /* ===== HERO SECTION ===== */
@@ -43,10 +48,11 @@
     background-repeat: no-repeat;
     position: relative;
     overflow: hidden;
-    min-height: 420px;
+    width: 100%;
+    min-height: 250px;
     display: flex;
     align-items: center;
-    padding: 160px 0 80px;
+    padding: 80px 0 40px;
 }
 
 /* Overlay gelap */
@@ -80,7 +86,6 @@
     z-index: 1;
     width: 100%;
     text-align: left;
-    padding: 20px 0;
 }
 
 /* Breadcrumb */
@@ -89,31 +94,31 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
-    margin-bottom: 12px;
-    font-size: 0.78rem;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
     color: #ffffff !important;
-    font-weight: 500;
-    letter-spacing: 0.03em;
+    font-weight: 400;
+    letter-spacing: 0.02em;
 }
 
 .page-hero-breadcrumb a {
-    color: #ffffff !important;
+    color: rgba(255, 255, 255, 0.8) !important;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .page-hero-breadcrumb a:hover {
-    color: var(--gold-light);
+    color: var(--gold-light) !important;
 }
 
 .page-hero-breadcrumb .separator {
-    color: #ffffff !important;
-    opacity: 0.6;
+    color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .page-hero-breadcrumb .current {
-    color: #ffffff !important;
-    opacity: 0.85;
+    color: var(--gold-light) !important;
+    opacity: 1;
+    font-weight: 500;
 }
 
 /* Garis aksen kiri */
@@ -136,12 +141,12 @@
 
 .page-hero-title {
     color: #ffffff !important;
-    font-size: 1.9rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 600;
     margin: 0;
     letter-spacing: -0.01em;
-    line-height: 1.25;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    line-height: 1.2;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     word-break: break-word;
 }
 
@@ -150,6 +155,8 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 40px;
+    width: 100%;
+    padding: 30px 0;
 }
 
 @media (min-width: 992px) {
@@ -164,294 +171,131 @@
     width: 100%;
 }
 
-/* SIDEBAR */
-.page-sidebar {
-    position: relative;
-    width: 100%;
-}
-
-/* ===== PAGE CONTENT ===== */
+/* ===== PAGE CONTENT - MIRIP GAMBAR ===== */
 .page-content {
     font-size: 1rem;
-    line-height: 1.8;
+    line-height: 1.6;
     color: var(--text-dark);
     max-width: 100%;
     margin: 0 auto;
     word-wrap: break-word;
+    overflow-x: hidden;
 }
 
-/* ===== IMPROVED TABLE STYLES ===== */
+.page-content > * {
+    max-width: 100%;
+}
+
+/* Heading Utama - Laporan Tahunan */
+.page-content h2 {
+    color: var(--primary-dark);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 0 0 25px 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    letter-spacing: -0.01em;
+}
+
+/* ===== TABLE STYLE MIRIP GAMBAR ===== */
+.page-content .table-wrapper {
+    width: 100%;
+    margin: 0 0 30px 0;
+    border-radius: 5;
+    box-shadow: none;
+}
+
 .page-content table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    margin: 30px 0 !important;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    font-size: 0.95rem;
-}
-
-.page-content table th,
-.page-content table td {
-    border: 1px solid var(--gray-border) !important;
-    padding: 12px 15px !important;
-    vertical-align: top !important;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+    border: 1px solid var(--gray-border);
 }
 
 .page-content table th {
-    background-color: var(--primary) !important;
-    color: var(--white) !important;
+    background-color: #f9fafb !important;
+    color: var(--text-dark) !important;
     font-weight: 600 !important;
     font-size: 0.95rem;
     letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 16px 20px !important;
+    border: 1px solid var(--gray-border) !important;
     white-space: nowrap;
+    text-align: left;
 }
 
-/* Hapus styling khusus untuk baris pertama tbody */
-.page-content table tbody tr:first-child td {
-    background-color: transparent !important;
-    color: inherit !important;
-    font-weight: normal !important;
+.page-content table td {
+    padding: 14px 20px !important;
+    border: 1px solid var(--gray-border) !important;
+    vertical-align: middle !important;
+    color: var(--text-light);
+    font-size: 0.95rem;
 }
 
-/* Styling untuk baris genap */
-.page-content table tbody tr:nth-child(even) {
-    background-color: var(--off-white);
-}
-
-.page-content table tbody tr:hover {
-    background-color: #edf2f7 !important;
-    transition: var(--transition);
-}
-
-/* Styling untuk sel dengan alignment */
-.page-content table td[style*="text-align: center"],
-.page-content table th[style*="text-align: center"] {
-    text-align: center !important;
-}
-
-.page-content table td[style*="text-align: right"],
-.page-content table th[style*="text-align: right"] {
-    text-align: right !important;
-}
-
-.page-content table td[style*="text-align: left"],
-.page-content table th[style*="text-align: left"] {
-    text-align: left !important;
-}
-
-/* Table container untuk responsive */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 20px 0;
-    border-radius: 8px;
-}
-
-.table-responsive table {
-    margin: 0 !important;
-}
-
-/* Styling untuk tabel di mobile */
-@media (max-width: 768px) {
-    .page-content table {
-        font-size: 0.85rem;
-    }
-    
-    .page-content table th,
-    .page-content table td {
-        padding: 10px 12px !important;
-        white-space: normal;
-        min-width: 120px;
-    }
-    
-    /* Untuk tabel yang lebar, beri scroll horizontal */
-    .page-content table {
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
-    }
-    
-    .page-content table tbody,
-    .page-content table thead,
-    .page-content table tr,
-    .page-content table th,
-    .page-content table td {
-        white-space: nowrap;
-    }
-    
-    /* Tabel kecil tetap normal */
-    .page-content table:not(.wide-table) {
-        display: table;
-        white-space: normal;
-    }
-}
-
-@media (max-width: 576px) {
-    .page-content table th,
-    .page-content table td {
-        padding: 8px 10px !important;
-        font-size: 0.8rem;
-        min-width: 100px;
-    }
-}
-
-/* ===== IMAGES ===== */
-.page-content img {
-    max-width: 100% !important;
-    height: auto !important;
-    border-radius: 12px;
-    margin: 20px 0;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-@media (min-width: 768px) {
-    .page-content img.align-left {
-        margin-right: 20px;
-        float: left;
-        max-width: 50%;
-    }
-    
-    .page-content img.align-right {
-        margin-left: 20px;
-        float: right;
-        max-width: 50%;
-    }
-}
-
-@media (max-width: 767px) {
-    .page-content img.align-left,
-    .page-content img.align-right {
-        float: none;
-        margin: 20px 0;
-        width: 100%;
-        max-width: 100%;
-    }
-}
-
-/* ===== HEADINGS ===== */
-.page-content h1 {
-    color: var(--primary-dark);
-    font-size: 2.2rem;
-    margin-top: 40px;
-    margin-bottom: 16px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    word-break: break-word;
-}
-
-.page-content h2 {
-    color: var(--primary);
-    font-size: 1.8rem;
-    margin-top: 36px;
-    margin-bottom: 14px;
-    font-weight: 600;
-    padding-bottom: 8px;
-    border-bottom: 2px solid rgba(201, 168, 76, 0.3);
-    word-break: break-word;
-}
-
-.page-content h3 {
-    color: var(--primary-light);
-    font-size: 1.4rem;
-    margin-top: 28px;
-    margin-bottom: 12px;
-    font-weight: 600;
-    word-break: break-word;
-}
-
-.page-content h4 {
+/* Kolom Dokument */
+.page-content table td:first-child {
     color: var(--text-dark);
-    font-size: 1.2rem;
-    margin-top: 24px;
-    margin-bottom: 10px;
-    font-weight: 600;
-    word-break: break-word;
+    font-weight: 500;
 }
 
-/* ===== LINKS ===== */
-.page-content a {
+/* Kolom Lihat Dokumen */
+.page-content table td:last-child {
     color: var(--primary);
+    font-weight: 500;
     text-decoration: underline;
-    text-decoration-color: rgba(201, 168, 76, 0.4);
-    text-underline-offset: 2px;
+    text-decoration-color: rgba(201, 168, 76, 0.3);
+    text-underline-offset: 3px;
+    cursor: pointer;
     transition: var(--transition);
-    word-break: break-word;
 }
 
-.page-content a:hover {
+.page-content table td:last-child:hover {
     color: var(--gold-dark);
     text-decoration-color: var(--gold);
 }
 
-/* ===== LIST ===== */
-.page-content ul,
-.page-content ol {
-    padding-left: 28px;
-    margin-bottom: 20px;
+/* Hapus background baris genap */
+.page-content table tbody tr:nth-child(even) {
+    background-color: transparent;
 }
 
-.page-content li {
-    margin-bottom: 8px;
-    word-break: break-word;
-}
-
-.page-content ul li::marker {
-    color: var(--gold);
-}
-
-.page-content ol li::marker {
-    color: var(--primary);
-    font-weight: 600;
-}
-
-/* ===== BLOCKQUOTE ===== */
-.page-content blockquote {
-    margin: 30px 0;
-    padding: 20px 30px;
-    background: linear-gradient(to right, var(--off-white), transparent);
-    border-left: 5px solid var(--gold);
-    border-radius: 0 12px 12px 0;
-    font-style: italic;
-    color: var(--text-light);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    word-break: break-word;
-}
-
-@media (max-width: 576px) {
-    .page-content blockquote {
-        padding: 15px 20px;
-    }
+.page-content table tbody tr:hover {
+    background-color: #f9fafb !important;
 }
 
 /* ===== SIDEBAR NEWS ===== */
 .sidebar-news {
-    background: var(--gray-light);
-    padding: 24px;
-    border-radius: 8px;
+    background: var(--white);
+    padding: 0;
+    border-radius: 0;
     height: fit-content;
+    max-width: 100%;
+    border: 1px solid var(--gray-border);
 }
 
 .sidebar-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    border-bottom: 3px solid var(--primary);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--gray-border);
+    padding: 16px 20px;
+    margin: 0;
     color: var(--primary-dark);
     word-break: break-word;
+    background-color: #f9fafb;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
 }
 
 .sidebar-news-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    max-width: 100%;
 }
 
 .sidebar-news-list li {
-    padding: 12px 0;
+    padding: 14px 20px;
     border-bottom: 1px solid var(--gray-border);
 }
 
@@ -478,31 +322,21 @@
 .sidebar-news .text-muted {
     color: var(--text-light);
     font-style: italic;
-    padding: 12px 0;
+    padding: 16px 20px;
     margin: 0;
+    font-size: 0.95rem;
 }
 
 /* ===== SPACING UTILITIES ===== */
 .py-5 {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-}
-
-@media (max-width: 768px) {
-    .py-5 {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 @media (max-width: 1200px) {
     .page-hero-title {
-        font-size: 1.8rem;
-    }
-    
-    .page-content h1 {
-        font-size: 2rem;
+        font-size: 1.9rem;
     }
     
     .page-content h2 {
@@ -512,57 +346,58 @@
 
 @media (max-width: 992px) {
     .page-hero {
-        padding: 140px 0 70px;
-        min-height: 360px;
+        padding: 70px 0 35px;
+        min-height: 220px;
     }
     
     .page-hero-title {
-        font-size: 1.65rem;
+        font-size: 1.8rem;
     }
     
-    .page-content h1 {
-        font-size: 1.9rem;
+    .page-hero-title-wrap::before {
+        min-height: 34px;
     }
     
     .page-content h2 {
         font-size: 1.6rem;
     }
     
-    .sidebar-news {
-        padding: 20px;
+    .page-content table th,
+    .page-content table td {
+        padding: 12px 16px !important;
     }
 }
 
 @media (max-width: 768px) {
     .page-hero {
-        padding: 120px 0 60px;
-        min-height: 300px;
+        padding: 60px 0 30px;
+        min-height: 200px;
     }
     
     .page-hero-title {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
     
     .page-hero-title-wrap::before {
         min-height: 32px;
     }
     
-    .page-content {
-        font-size: 0.95rem;
-    }
-    
-    .page-content h1 {
-        font-size: 1.8rem;
-        margin-top: 30px;
+    .page-hero-breadcrumb {
+        font-size: 0.8rem;
     }
     
     .page-content h2 {
         font-size: 1.5rem;
-        margin-top: 28px;
+        margin-bottom: 20px;
     }
     
-    .page-content h3 {
-        font-size: 1.3rem;
+    .page-content table {
+        font-size: 0.9rem;
+    }
+    
+    .page-content table th,
+    .page-content table td {
+        padding: 10px 14px !important;
     }
     
     .page-layout {
@@ -571,17 +406,22 @@
     
     .sidebar-title {
         font-size: 1.1rem;
+        padding: 14px 16px;
+    }
+    
+    .sidebar-news-list li {
+        padding: 12px 16px;
     }
 }
 
 @media (max-width: 576px) {
     .page-hero {
-        padding: 100px 0 50px;
-        min-height: 240px;
+        padding: 50px 0 25px;
+        min-height: 180px;
     }
     
     .page-hero-title {
-        font-size: 1.35rem;
+        font-size: 1.4rem;
     }
     
     .page-hero-title-wrap::before {
@@ -590,61 +430,69 @@
     }
     
     .page-hero-breadcrumb {
-        font-size: 0.7rem;
-    }
-    
-    .page-content h1 {
-        font-size: 1.6rem;
+        font-size: 0.75rem;
     }
     
     .page-content h2 {
         font-size: 1.4rem;
     }
     
-    .page-content h3 {
-        font-size: 1.2rem;
+    .page-content table {
+        font-size: 0.85rem;
     }
     
-    .page-content h4 {
-        font-size: 1.1rem;
+    .page-content table th,
+    .page-content table td {
+        padding: 8px 12px !important;
     }
     
-    .sidebar-news {
-        padding: 16px;
+    .sidebar-title {
+        font-size: 1rem;
+        padding: 12px 14px;
+    }
+    
+    .sidebar-news-list li {
+        padding: 10px 14px;
     }
     
     .sidebar-news-list a {
         font-size: 0.9rem;
     }
-    
-    .sidebar-news-list li {
-        padding: 10px 0;
-    }
 }
 
 @media (max-width: 375px) {
     .page-hero-title {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     
     .page-hero-title-wrap::before {
         min-height: 24px;
     }
     
-    .page-content h1 {
-        font-size: 1.4rem;
-    }
-    
     .page-content h2 {
         font-size: 1.3rem;
     }
     
-    .page-content h3 {
-        font-size: 1.1rem;
+    .page-content table th,
+    .page-content table td {
+        padding: 6px 10px !important;
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== LANDSCAPE MODE ===== */
+@media (max-height: 600px) and (orientation: landscape) {
+    .page-hero {
+        min-height: 160px;
+        padding: 40px 0 20px;
     }
     
-    .page-content {
-        font-size: 0.9rem;
+    .page-hero-title {
+        font-size: 1.3rem;
+    }
+    
+    .page-hero-title-wrap::before {
+        min-height: 26px;
     }
 }
 
@@ -666,18 +514,13 @@
         text-shadow: none;
     }
     
-    .page-content {
-        color: #000;
-    }
-    
-    .page-content a {
-        text-decoration: none;
-        color: #000;
+    .page-content h2 {
+        color: var(--primary-dark);
     }
     
     .page-content table {
-        box-shadow: none;
         border: 1px solid #ddd;
+        box-shadow: none;
     }
     
     .page-content table th {
@@ -706,22 +549,10 @@
     }
 }
 
-/* Focus styles for better accessibility */
 a:focus-visible,
 button:focus-visible {
     outline: 2px solid var(--gold);
     outline-offset: 2px;
-}
-
-/* High contrast mode support */
-@media (forced-colors: active) {
-    .page-hero::before {
-        background: none;
-    }
-    
-    .page-hero-title-wrap::before {
-        background: CanvasText;
-    }
 }
 </style>
 @endsection
@@ -730,7 +561,7 @@ button:focus-visible {
 <div class="page-hero" style="background-image: url('{{ asset('images/hero.jpg') }}')">
     <div class="site-container">
         <div class="page-hero-content">
-            {{-- Breadcrumb dengan responsive wrap --}}
+            {{-- Breadcrumb --}}
             <div class="page-hero-breadcrumb">
                 <a href="/">BERANDA</a>
                 <span class="separator">›</span>

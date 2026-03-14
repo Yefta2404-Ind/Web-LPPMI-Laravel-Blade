@@ -792,7 +792,7 @@
 
         <!-- Form Container -->
         <div class="ac-form-card">
-            <form action="{{ route('staff.agenda.store') }}" method="POST" id="acAgendaForm">
+            <form action="{{ route('staff.agenda.store') }}" method="POST" enctype="multipart/form-data" id="acAgendaForm">
                 @csrf
                 
                 <!-- Form Header -->
@@ -832,6 +832,25 @@
                         @endif
                     </div>
                     
+                    <!-- Gambar Agenda -->
+<div class="ac-form-group">
+    <label class="ac-form-label">
+        <i class="fas fa-image"></i>
+        Gambar Agenda
+    </label>
+
+    <input 
+        type="file"
+        name="image"
+        accept="image/*"
+        class="ac-form-input"
+    >
+
+    <div class="ac-form-help">
+        <i class="fas fa-info-circle"></i>
+        Upload gambar kegiatan (jpg, png, jpeg)
+    </div>
+</div>
                     <!-- Tanggal dan Waktu -->
                     <div class="ac-form-row">
                         <div class="ac-form-group">

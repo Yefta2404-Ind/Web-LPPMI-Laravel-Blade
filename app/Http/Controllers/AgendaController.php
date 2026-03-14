@@ -26,7 +26,7 @@ class AgendaController extends Controller
         return view('agenda.create');
     }
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     $request->validate([
         'title' => 'required|string|max:200',
@@ -35,7 +35,14 @@ class AgendaController extends Controller
         'location' => 'nullable|string|max:100',
         'description' => 'nullable|string|max:1000',
         'status' => 'required|in:draft,pending',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
     ]);
+
+    $imagePath = null;
+
+    if ($request->hasFile('image')) {
+        $imagePath = $request->file('image')->store('agenda', 'public');
+    }
 
     Agenda::create([
         'title' => $request->title,
@@ -44,6 +51,7 @@ class AgendaController extends Controller
         'time' => $request->time,
         'location' => $request->location,
         'status' => $request->status,
+        'image' => $imagePath,
         'user_id' => auth()->id(),
     ]);
 
@@ -65,7 +73,7 @@ class AgendaController extends Controller
     return view('agenda.edit', compact('agenda'));
 }
 
-  public function update(Request $request, Agenda $agenda)
+public function update(Request $request, Agenda $agenda)
 {
     if (auth()->user()->role === 'staff' && $agenda->status === 'approved') {
         abort(403);
@@ -77,15 +85,22 @@ class AgendaController extends Controller
         'time' => 'required',
         'location' => 'nullable',
         'description' => 'nullable',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
     ]);
 
-    $agenda->update($request->only(
+    $data = $request->only(
         'title',
         'date',
         'time',
         'location',
         'description'
-    ));
+    );
+
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('agenda', 'public');
+    }
+
+    $agenda->update($data);
 
     return redirect()->route('staff.agenda.index')
         ->with('success', 'Agenda berhasil diperbarui.');

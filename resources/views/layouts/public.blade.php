@@ -250,7 +250,6 @@
             align-items: stretch;
         }
 
-        /* Setiap item menu level 1 */
         .nav-menu > li {
             position: relative;
             display: flex;
@@ -277,14 +276,17 @@
             border-radius: 0;
         }
 
-        /* Hapus pseudo-element lama */
-        .nav-link::after { display: none !important; }
-
         .nav-link:hover,
         .nav-link.active {
             color: var(--white);
             background: rgba(255,255,255,0.10);
             border-bottom-color: var(--gold-light);
+        }
+        
+        .nav-link:focus,
+        .nav-link:active {
+            color: var(--white) !important;
+            background: rgba(255,255,255,0.10);
         }
 
         .nav-link i {
@@ -293,12 +295,16 @@
             margin-left: 2px;
         }
 
-        /* Chevron rotate saat open */
         .nav-dropdown.open > .nav-link i { transform: rotate(180deg); }
+        
+        .nav-dropdown.open > .nav-link{
+            color: var(--gold) !important;
+            background: rgba(255,255,255,0.10);
+            border-bottom-color: var(--gold);
+        }
 
         .nav-dropdown { position: relative; display: flex; align-items: stretch; }
 
-        /* ===== DROPDOWN SUBMENU ===== */
         .nav-submenu {
             position: absolute;
             top: 100%;
@@ -315,8 +321,6 @@
             border-left: 1px solid rgba(255,255,255,0.07);
             border-right: 1px solid rgba(255,255,255,0.07);
             border-bottom: 1px solid rgba(255,255,255,0.07);
-
-            /* Animasi */
             opacity: 0;
             visibility: hidden;
             transform: translateY(-8px);
@@ -324,10 +328,6 @@
             pointer-events: none;
         }
 
-        /* Hapus ::before lama */
-        .nav-submenu::before { display: none !important; }
-
-        /* State terbuka */
         .nav-dropdown.open > .nav-submenu {
             opacity: 1;
             visibility: visible;
@@ -983,6 +983,311 @@
             background-color: #eef2f6 !important;
         }
 
+        /* ================= TAMBAHAN UNTUK RESPONSIVE LEBIH BAIK ================= */
+        
+        /* Memastikan semua konten tidak overflow */
+        .page-content {
+            max-width: 100%;
+            overflow-x: hidden;
+            word-wrap: break-word;
+        }
+
+        .page-content img,
+        .page-content table,
+        .page-content iframe,
+        .page-content video {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        /* ===== TABLES - FULL RESPONSIVE ===== */
+        .page-content .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .page-content table {
+            min-width: 100%;
+            width: 100% !important;
+            border-collapse: collapse !important;
+        }
+
+        /* Untuk tabel yang lebar, kasih scroll horizontal */
+        .page-content table.wide-table {
+            min-width: 800px;
+        }
+
+        @media (max-width: 768px) {
+            .page-content table {
+                font-size: 14px;
+            }
+            
+            .page-content table th,
+            .page-content table td {
+                padding: 8px 10px !important;
+                white-space: nowrap;
+            }
+            
+            /* Force horizontal scroll untuk tabel lebar */
+            .page-content .table-responsive {
+                margin: 15px -10px;
+                width: calc(100% + 20px);
+            }
+        }
+
+        /* ===== HEADINGS RESPONSIVE ===== */
+        .page-content h1 {
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+        }
+        
+        .page-content h2 {
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+        }
+        
+        .page-content h3 {
+            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+        }
+        
+        .page-content h4 {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+        }
+        
+        .page-content p {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            line-height: 1.6;
+        }
+
+        /* ===== LISTS RESPONSIVE ===== */
+        .page-content ul,
+        .page-content ol {
+            padding-left: clamp(20px, 4vw, 30px);
+        }
+        
+        .page-content li {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            margin-bottom: 5px;
+        }
+
+        /* ===== BLOCKQUOTE RESPONSIVE ===== */
+        .page-content blockquote {
+            padding: clamp(15px, 3vw, 25px) clamp(20px, 4vw, 30px);
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            margin: 20px 0;
+        }
+
+        /* ===== IMAGES RESPONSIVE ===== */
+        .page-content img {
+            border-radius: clamp(8px, 2vw, 12px);
+            margin: clamp(15px, 3vw, 25px) 0;
+        }
+
+        /* ===== SIDEBAR RESPONSIVE ===== */
+        .sidebar-news {
+            padding: clamp(15px, 3vw, 24px);
+        }
+        
+        .sidebar-title {
+            font-size: clamp(1.1rem, 3vw, 1.25rem);
+            padding-bottom: clamp(8px, 1.5vw, 12px);
+            margin-bottom: clamp(15px, 2.5vw, 20px);
+        }
+        
+        .sidebar-news-list a {
+            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+        }
+        
+        .sidebar-news-list li {
+            padding: clamp(8px, 1.5vw, 12px) 0;
+        }
+
+        /* ===== GRID LAYOUT RESPONSIVE ===== */
+        .page-layout {
+            gap: clamp(20px, 4vw, 40px);
+        }
+
+        @media (max-width: 991px) {
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-sidebar {
+                margin-top: 20px;
+            }
+        }
+
+        /* ===== HERO SECTION RESPONSIVE ===== */
+        .page-hero {
+            min-height: clamp(200px, 40vh, 350px);
+            padding: clamp(60px, 10vh, 100px) 0 clamp(30px, 5vh, 50px);
+        }
+        
+        .page-hero-title {
+            font-size: clamp(1.2rem, 5vw, 2rem);
+        }
+        
+        .page-hero-title-wrap::before {
+            min-height: clamp(24px, 5vw, 36px);
+            width: clamp(3px, 1vw, 4px);
+        }
+        
+        .page-hero-breadcrumb {
+            font-size: clamp(0.65rem, 2vw, 0.85rem);
+            gap: clamp(4px, 1vw, 8px);
+            margin-bottom: clamp(8px, 1.5vh, 15px);
+        }
+
+        /* ===== UTILITIES RESPONSIVE ===== */
+        .py-5 {
+            padding-top: clamp(1.5rem, 5vh, 3rem);
+            padding-bottom: clamp(1.5rem, 5vh, 3rem);
+        }
+
+        /* ===== FIX UNTUK DEVICE KECIL ===== */
+        @media (max-width: 576px) {
+            .site-container {
+                padding: 0 12px;
+            }
+            
+            .page-content {
+                font-size: 0.95rem;
+            }
+            
+            .page-content h1 {
+                margin-top: 20px;
+                margin-bottom: 10px;
+            }
+            
+            .page-content h2 {
+                margin-top: 20px;
+                margin-bottom: 8px;
+            }
+            
+            .sidebar-news {
+                padding: 12px;
+            }
+            
+            .sidebar-news-list a {
+                font-size: 0.9rem;
+            }
+            
+            .sidebar-news-list li {
+                padding: 8px 0;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .site-container {
+                padding: 0 10px;
+            }
+            
+            .page-content {
+                font-size: 0.9rem;
+            }
+            
+            .page-content h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-content h2 {
+                font-size: 1.3rem;
+            }
+            
+            .page-content h3 {
+                font-size: 1.2rem;
+            }
+            
+            .page-hero-title {
+                font-size: 1.2rem;
+            }
+            
+            .sidebar-title {
+                font-size: 1rem;
+            }
+            
+            .sidebar-news-list a {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ===== LANDSCAPE MODE ===== */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .page-hero {
+                min-height: 160px;
+                padding: 40px 0 20px;
+            }
+            
+            .page-hero-title {
+                font-size: 1.2rem;
+            }
+            
+            .page-hero-title-wrap::before {
+                min-height: 24px;
+            }
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .page-sidebar,
+            .page-hero::before,
+            .page-hero::after {
+                display: none;
+            }
+            
+            .page-hero {
+                background: none;
+                min-height: auto;
+                padding: 20px 0;
+            }
+            
+            .page-hero-title {
+                color: var(--primary-dark) !important;
+                text-shadow: none;
+            }
+            
+            .page-content {
+                color: #000;
+            }
+            
+            .page-content a {
+                text-decoration: none;
+                color: #000;
+            }
+            
+            .page-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ===== FIX UNTUK ELEMEN YANG OVERFLOW ===== */
+        .page-content * {
+            max-width: 100%;
+        }
+        
+        .page-content pre,
+        .page-content code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-x: auto;
+        }
+
+        /* ===== BETTER TOUCH SCROLLING ===== */
+        .table-responsive,
+        .page-content table {
+            -webkit-overflow-scrolling: touch;
+        }
+
         /* ================================================
            RESPONSIVE BREAKPOINTS
         ================================================ */
@@ -1116,11 +1421,23 @@
                 display: flex;
             }
 
+            .nav-link:focus,
+            .nav-link:active,
+            .nav-link.active {
+                color: var(--white) !important;
+                background: rgba(255,255,255,0.07);
+                outline: none;
+            }
+
             .nav-link:hover {
                 background: rgba(255,255,255,0.07);
                 color: var(--white);
                 border-bottom-color: rgba(255,255,255,0.07) !important;
                 padding-left: 24px;
+            }
+            
+            .nav-dropdown.open > .nav-link{
+                color: var(--gold) !important;
             }
 
             /* Mobile submenu — static, toggle */
@@ -1331,7 +1648,7 @@
     @php use Illuminate\Support\Facades\Storage; @endphp
 
     <!-- HERO -->
-    @isset($heroBanners)
+    @if(request()->is('/') && isset($heroBanners) && $heroBanners->count())
     <section class="hero-section" id="heroSection">
         <div class="hero-slider" id="heroSlider">
             @foreach ($heroBanners as $index => $banner)
@@ -1357,7 +1674,7 @@
     </main>
 
     <!-- AGENDA -->
-    @if(isset($agendas) && count($agendas) > 0)
+    @if(request()->is('/') && isset($agendas) && $agendas->count() > 0)
     <section class="agenda-section">
         <div class="lpm-container">
             <div class="agenda-header">
@@ -1427,7 +1744,7 @@
     </div>
 
     <!-- SURVEY -->
-    @if(isset($activeSurvey) && $activeSurvey)
+    @if(request()->is('/') && isset($activeSurvey) && $activeSurvey)
     <section class="survey-section">
         <div class="survey-container">
             <div class="survey-content">
@@ -1531,7 +1848,7 @@
         if (menuOverlay) menuOverlay.onclick = () => closeMobileMenu();
 
         /* ===== DROPDOWN — DESKTOP hover dengan delay, MOBILE klik ===== */
-        const LEAVE_DELAY = 150; // ms toleransi sebelum dropdown hilang
+        const LEAVE_DELAY = 500; 
 
         document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
             let leaveTimer = null;

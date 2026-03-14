@@ -8,6 +8,9 @@ use App\Models\InternalCategory;
 use Illuminate\Support\Facades\View;
 use App\Models\Menu;
 use App\Models\SiteSetting;
+use App\Models\HeroBanner;
+use App\Models\Agenda;
+use App\Models\Survey;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,8 +31,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with('settings', SiteSetting::first());
         });
 
-        // $menus untuk frontend (public) saja — TIDAK override halaman admin
 View::composer('layouts.public', function ($view) {
+
     $menus = Menu::whereNull('parent_id')
         ->where('is_active', true)
         ->with([
@@ -42,7 +45,23 @@ View::composer('layouts.public', function ($view) {
         ->orderBy('order')
         ->get();
 
-    $view->with('menus', $menus);
+    $heroBanners = HeroBanner::where('is_active',1)->get();
+
+    $agendas = Agenda::where('status','approved')
+        ->latest()
+        ->take(5)
+        ->get();
+
+    $activeSurvey = Survey::where('status','approved')
+        ->latest()
+        ->first();
+
+    $view->with(compact(
+        'menus',
+        'heroBanners',
+        'agendas',
+        'activeSurvey'
+    ));
 });
     }
 }
