@@ -53,49 +53,65 @@
 
             <div id="membersContainer">
                 @foreach($structure->members->sortBy('order') as $i => $member)
-                <div class="member-card" data-index="{{ $i }}">
-                    <div class="member-header">
-                        <span class="member-number">{{ $i + 1 }}</span>
-                        <button type="button" class="btn-remove-member" onclick="removeMember(this)">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="member-fields">
-                        <div class="form-group">
-                            <label class="form-label">Nama Lengkap <span class="required">*</span></label>
-                            <input type="text" name="members[{{ $i }}][name]" class="form-control"
-                                   value="{{ old('members.'.$i.'.name', $member->name) }}"
-                                   placeholder="Nama lengkap" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Jabatan <span class="required">*</span></label>
-                            <input type="text" name="members[{{ $i }}][position]" class="form-control"
-                                   value="{{ old('members.'.$i.'.position', $member->position) }}"
-                                   placeholder="Contoh: Ketua, Sekretaris" required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label class="form-label">Foto <span class="optional">(Opsional — kosongkan jika tidak ingin mengubah)</span></label>
-                            @if($member->photo)
-                            <div class="photo-preview" style="display:flex;">
-                                <img class="preview-img" src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}">
-                                <button type="button" class="btn-remove-photo" onclick="removePhoto(this)">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            @endif
-                            <div class="file-upload-area mt-2" onclick="this.querySelector('input').click()">
-                                <input type="file" name="members[{{ $i }}][photo]" accept="image/*"
-                                       class="file-input" onchange="previewPhoto(this)">
-                                <div class="upload-placeholder">
-                                    <i class="fas fa-camera"></i>
-                                    <span>Klik untuk ganti foto</span>
-                                    <small>JPG, PNG | Maks 2MB</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<div class="member-card" data-index="{{ $i }}">
+    <div class="member-header">
+        <span class="member-number">{{ $i + 1 }}</span>
+        <button type="button" class="btn-remove-member" onclick="removeMember(this)">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- IMPORTANT: ID MEMBER -->
+    <input type="hidden" name="members[{{ $i }}][id]" value="{{ $member->id }}">
+
+    <!-- IMPORTANT: EXISTING PHOTO -->
+    <input type="hidden" name="members[{{ $i }}][existing_photo]" value="{{ $member->photo }}">
+
+    <div class="member-fields">
+        <div class="form-group">
+            <label class="form-label">Nama Lengkap <span class="required">*</span></label>
+            <input type="text" name="members[{{ $i }}][name]" class="form-control"
+                   value="{{ old('members.'.$i.'.name', $member->name) }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Jabatan <span class="required">*</span></label>
+            <input type="text" name="members[{{ $i }}][position]" class="form-control"
+                   value="{{ old('members.'.$i.'.position', $member->position) }}"
+                   required>
+        </div>
+
+        <div class="form-group full-width">
+            <label class="form-label">
+                Foto <span class="optional">(Kosongkan jika tidak ingin mengubah)</span>
+            </label>
+
+            @if($member->photo)
+            <div class="photo-preview" style="display:flex;">
+                <img class="preview-img"
+                     src="{{ asset('storage/'.$member->photo) }}">
+                <button type="button" class="btn-remove-photo" onclick="removePhoto(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            @endif
+
+            <div class="file-upload-area mt-2" onclick="this.querySelector('input').click()">
+                <input type="file"
+                       name="members[{{ $i }}][photo]"
+                       class="file-input"
+                       accept="image/*"
+                       onchange="previewPhoto(this)">
+                <div class="upload-placeholder">
+                    <i class="fas fa-camera"></i>
+                    <span>Klik untuk ganti foto</span>
                 </div>
-                @endforeach
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
             </div>
 
             <button type="button" class="btn-add-member" onclick="addMember()">
@@ -125,12 +141,13 @@ function addMember() {
     card.className = 'member-card';
     card.setAttribute('data-index', memberIndex);
     card.innerHTML = `
-        <div class="member-header">
-            <span class="member-number">${memberIndex + 1}</span>
-            <button type="button" class="btn-remove-member" onclick="removeMember(this)">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+    <div class="member-header">
+        <span class="member-number">${memberIndex + 1}</span>
+        <button type="button" class="btn-remove-member" onclick="removeMember(this)">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <input type="hidden" name="members[${memberIndex}][existing_photo]" value="">
         <div class="member-fields">
             <div class="form-group">
                 <label class="form-label">Nama Lengkap <span class="required">*</span></label>
@@ -179,6 +196,13 @@ function removeMember(btn) {
 function renumber() {
     document.querySelectorAll('.member-card').forEach((card, i) => {
         card.querySelector('.member-number').textContent = i + 1;
+
+        // 🔥 update semua name attribute
+        card.querySelectorAll('input').forEach(input => {
+            if (input.name) {
+                input.name = input.name.replace(/members\[\d+\]/, `members[${i}]`);
+            }
+        });
     });
 }
 
@@ -203,8 +227,10 @@ function removePhoto(btn) {
     const card = btn.closest('.member-card');
     const preview = card.querySelector('.photo-preview');
     const fileInput = card.querySelector('.file-input');
-    preview.style.display = 'none';
+    const existingInput = card.querySelector('input[name*="[existing_photo]"]');
+    if (preview) preview.style.display = 'none';
     if (fileInput) fileInput.value = '';
+    if (existingInput) existingInput.remove();
 }
 </script>
 @endsection

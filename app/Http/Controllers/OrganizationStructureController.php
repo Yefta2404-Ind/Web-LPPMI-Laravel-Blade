@@ -75,49 +75,58 @@ class OrganizationStructureController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title'                  => 'required|string|max:255',
-            'members'                => 'required|array|min:1',
-            'members.*.name'         => 'required|string',
-            'members.*.position'     => 'required|string',
-            'members.*.photo'        => 'nullable|image|max:2048',
-        ]);
+{
+    $request->validate([
+        'title'                       => 'required|string|max:255',
+        'members'                     => 'required|array|min:1',
+        'members.*.name'              => 'required|string',
+        'members.*.position'          => 'required|string',
+        'members.*.photo'             => 'nullable|image|max:2048',
+        'members.*.existing_photo'    => 'nullable|string', // ← tambah ini
+    ]);
 
-        $structure = OrganizationStructure::findOrFail($id);
+    $structure = OrganizationStructure::findOrFail($id);
 
-        DB::transaction(function () use ($request, $structure) {
-            $structure->update(['name' => $request->title]);
+    DB::transaction(function () use ($request, $structure) {
+        $structure->update(['name' => $request->title]);
 
-            // Hapus anggota lama
-            foreach ($structure->members as $member) {
-                if ($member->photo) {
-                    Storage::disk('public')->delete($member->photo);
-                }
-                $member->delete();
+        // Kumpulkan foto lama yang TIDAK diganti, agar tidak dihapus
+        $existingPhotos = collect($request->members)
+            ->pluck('existing_photo')
+            ->filter()
+            ->values();
+
+        // Hapus hanya foto lama yang TIDAK dipakai lagi
+        foreach ($structure->members as $member) {
+            if ($member->photo && !$existingPhotos->contains($member->photo)) {
+                Storage::disk('public')->delete($member->photo);
+            }
+            $member->delete();
+        }
+
+        // Buat ulang member
+        foreach ($request->members as $index => $member) {
+            $photoPath = $member['existing_photo'] ?? null; // ← pakai foto lama dulu
+
+            // Kalau ada upload foto baru, timpa foto lama
+            if (isset($member['photo']) && $member['photo'] instanceof \Illuminate\Http\UploadedFile) {
+                $photoPath = $member['photo']->store('organization', 'public');
             }
 
-            // Buat anggota baru
-            foreach ($request->members as $index => $member) {
-                $photoPath = null;
-                if (isset($member['photo'])) {
-                    $photoPath = $member['photo']->store('organization', 'public');
-                }
+            OrganizationMember::create([
+                'organization_structure_id' => $structure->id,
+                'name'     => $member['name'],
+                'position' => $member['position'],
+                'photo'    => $photoPath,
+                'order'    => $index,
+            ]);
+        }
+    });
 
-                OrganizationMember::create([
-                    'organization_structure_id' => $structure->id,
-                    'name'     => $member['name'],
-                    'position' => $member['position'],
-                    'photo'    => $photoPath,
-                    'order'    => $index,
-                ]);
-            }
-        });
-
-        return redirect()
-            ->route('admin.organization-structure.index')
-            ->with('success', 'Struktur organisasi berhasil diperbarui');
-    }
+    return redirect()
+        ->route('admin.organization-structure.index')
+        ->with('success', 'Struktur organisasi berhasil diperbarui');
+}
 
     public function toggleActive($id)
     {

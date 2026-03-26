@@ -3,453 +3,760 @@
 @section('page-title', 'Struktur Organisasi')
 
 @section('content')
+<style>
+/* --- Simple & Clean CSS --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Alert */
+.alert-custom {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-bottom: 24px;
+    background: #f8fafc;
+}
+
+/* Main Card */
+.main-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* Header */
+.card-header-custom {
+    padding: 24px 28px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.header-left h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+
+.header-left p {
+    font-size: 13px;
+    color: #6c757d;
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.badge-stat {
+    padding: 6px 14px;
+    background: #f8f9fa;
+    border-radius: 30px;
+    font-size: 13px;
+    color: #495057;
+}
+
+.badge-stat i {
+    margin-right: 6px;
+    font-size: 12px;
+}
+
+.badge-stat.active {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.btn-add {
+    background: #1976d2;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-add:hover {
+    background: #1565c0;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Grid Layout - CENTERED HORIZONTALLY */
+.structures-grid {
+    padding: 32px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    background: #fafbfc;
+}
+
+/* Structure Card - Fixed Width */
+.structure-item {
+    background: white;
+    border-radius: 16px;
+    width: 380px;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    border: 1px solid #eef2f6;
+    flex-shrink: 0;
+}
+
+.structure-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+    border-color: #e0e7ed;
+}
+
+/* Card Content */
+.card-padding {
+    padding: 20px;
+}
+
+.card-header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.structure-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+}
+
+.structure-date {
+    font-size: 11px;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.status {
+    padding: 4px 10px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.status-active {
+    background: #e6f7e6;
+    color: #2e7d32;
+}
+
+.status-inactive {
+    background: #f5f5f5;
+    color: #757575;
+}
+
+/* Member Section */
+.member-info {
+    margin: 16px 0;
+    padding: 12px 0;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.member-count {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.count-badge {
+    background: #f0f7ff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #1976d2;
+}
+
+.count-badge i {
+    margin-right: 5px;
+    font-size: 11px;
+}
+
+.btn-view {
+    background: none;
+    border: none;
+    color: #1976d2;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-view:hover {
+    text-decoration: underline;
+}
+
+/* Member List Preview */
+.member-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.member-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+}
+
+.member-avatar-small {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9e9e9e;
+    font-size: 12px;
+    overflow: hidden;
+}
+
+.member-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-name-small {
+    font-size: 13px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.member-position-small {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.empty-members {
+    text-align: center;
+    padding: 20px;
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.btn-action {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #6b7280;
+}
+
+.btn-action:hover {
+    transform: translateY(-1px);
+}
+
+.btn-toggle-on {
+    color: #10b981;
+    border-color: #d1fae5;
+    background: #f0fdf4;
+}
+
+.btn-toggle-off {
+    color: #9ca3af;
+}
+
+.btn-edit:hover {
+    color: #f59e0b;
+    border-color: #fed7aa;
+    background: #fffbeb;
+}
+
+.btn-preview:hover {
+    color: #3b82f6;
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+
+.btn-delete:hover {
+    color: #ef4444;
+    border-color: #fecaca;
+    background: #fef2f2;
+}
+
+/* Pagination */
+.pagination-wrapper {
+    padding: 20px 28px;
+    border-top: 1px solid #f0f0f0;
+    background: white;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    margin: 0;
+    gap: 5px;
+}
+
+.page-link {
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: #5b6e8c;
+    font-size: 13px;
+}
+
+.page-item.active .page-link {
+    background: #1976d2;
+    color: white;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 28px;
+    background: #fafbfc;
+}
+
+.empty-state i {
+    font-size: 48px;
+    color: #cbd5e1;
+    margin-bottom: 16px;
+}
+
+.empty-state h5 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+/* Modal */
+.modal-simple .modal-content {
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-simple .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-simple .modal-body {
+    padding: 24px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.modal-simple .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #f0f0f0;
+    background: #fafbfc;
+}
+
+.member-grid-simple {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.member-card-simple {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+
+.member-card-simple:hover {
+    background: #fafbfc;
+    border-color: #e5e7eb;
+}
+
+.member-avatar-modal {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: #f5f5f5;
+}
+
+.member-info-modal h6 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+}
+
+.member-info-modal p {
+    font-size: 12px;
+    color: #6c757d;
+    margin: 0;
+}
+
+.preview-stats-simple {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-stat-simple {
+    font-size: 12px;
+    color: #6c757d;
+    background: #f8f9fa;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .structure-item {
+        width: 340px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-header-custom {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .structures-grid {
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    .structure-item {
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .card-padding {
+        padding: 16px;
+    }
+    
+    .action-buttons {
+        justify-content: flex-start;
+    }
+    
+    .pagination-wrapper {
+        padding: 16px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-header-custom {
+        padding: 16px;
+    }
+    
+    .header-left h3 {
+        font-size: 16px;
+    }
+    
+    .structures-grid {
+        padding: 16px;
+        gap: 16px;
+    }
+    
+    .structure-item {
+        width: 100%;
+    }
+    
+    .btn-action {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .member-row {
+        padding: 4px 0;
+    }
+    
+    .member-name-small {
+        font-size: 12px;
+    }
+}
+</style>
+
+{{-- Alert Messages --}}
 @if(session('success'))
-<div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+<div class="alert alert-custom alert-success alert-dismissible fade show" role="alert">
     <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 @endif
 
 @if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+<div class="alert alert-custom alert-danger alert-dismissible fade show" role="alert">
     <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 @endif
 
-<div class="org-container">
-    <div class="org-header">
-        <h3><i class="fas fa-sitemap org-icon"></i> Struktur Organisasi</h3>
+<div class="main-card">
+    {{-- Header --}}
+    <div class="card-header-custom">
+        <div class="header-left">
+            <h3>
+                <i class="fas fa-sitemap me-2" style="color: #1976d2;"></i>
+                Struktur Organisasi
+            </h3>
+            <p>Kelola struktur dan anggota organisasi</p>
+        </div>
         <div class="header-right">
-            <div class="header-stats">
-                <span class="stat-item">
-                    <i class="fas fa-layer-group"></i>
-                    Total: {{ $data->total() }}
-                </span>
-                <span class="stat-item">
-                    <i class="fas fa-toggle-on"></i>
-                    Aktif: {{ $data->where('is_active', true)->count() }}
-                </span>
-            </div>
+            <span class="badge-stat">
+                <i class="fas fa-layer-group"></i> Total: {{ $data->total() }}
+            </span>
+            <span class="badge-stat active">
+                <i class="fas fa-check-circle"></i> Aktif: {{ $data->where('is_active', true)->count() }}
+            </span>
             <a href="{{ route('admin.organization-structure.create') }}" class="btn-add">
-                <i class="fas fa-plus"></i> Tambah Struktur
+                <i class="fas fa-plus"></i> Tambah
             </a>
         </div>
     </div>
 
     @if($data->count() > 0)
-    <div class="table-responsive">
-        <table class="org-table">
-            <thead>
-                <tr>
-                    <th>Nama Struktur</th>
-                    <th width="100" class="text-center">Anggota</th>
-                    <th width="120" class="text-center">Status</th>
-                    <th width="160" class="text-end">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($data as $structure)
-                <tr class="{{ $structure->is_active ? 'row-active' : '' }}">
-                    <td>
-                        <div class="structure-info">
-                            <div class="status-dot {{ $structure->is_active ? 'dot-active' : 'dot-inactive' }}"></div>
+    {{-- Grid Cards - CENTERED HORIZONTALLY --}}
+    <div class="structures-grid">
+        @foreach($data as $structure)
+        @php
+            $members = $structure->members->sortBy('order');
+            $memberCount = $members->count();
+            $previewMembers = $members->take(2);
+        @endphp
+        <div class="structure-item">
+            <div class="card-padding">
+                {{-- Header Card --}}
+                <div class="card-header-info">
+                    <div>
+                        <div class="structure-title">{{ $structure->name }}</div>
+                        <div class="structure-date">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ $structure->created_at->translatedFormat('d F Y') }}
+                        </div>
+                    </div>
+                    <div>
+                        @if($structure->is_active)
+                        <span class="status status-active">Aktif</span>
+                        @else
+                        <span class="status status-inactive">Nonaktif</span>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Member Info --}}
+                <div class="member-info">
+                    <div class="member-count">
+                        <span class="count-badge">
+                            <i class="fas fa-users"></i> {{ $memberCount }} Anggota
+                        </span>
+                        <button type="button" class="btn-view" data-bs-toggle="modal" data-bs-target="#previewModal{{ $structure->id }}">
+                            Lihat Semua <i class="fas fa-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+
+                    {{-- Member Preview --}}
+                    <div class="member-list">
+                        @forelse($previewMembers as $member)
+                        <div class="member-row">
+                            <div class="member-avatar-small">
+                                @if($member->photo)
+                                <img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}">
+                                @else
+                                <i class="fas fa-user"></i>
+                                @endif
+                            </div>
                             <div>
-                                <div class="structure-name">{{ $structure->name }}</div>
-                                <div class="structure-meta">
-                                    <i class="far fa-calendar"></i>
-                                    {{ $structure->created_at->format('d M Y') }}
-                                </div>
+                                <div class="member-name-small">{{ Str::limit($member->name, 20) }}</div>
+                                <div class="member-position-small">{{ Str::limit($member->position, 25) }}</div>
                             </div>
                         </div>
-                    </td>
-                    <td class="text-center">
-                        <span class="member-badge">{{ $structure->members->count() }}</span>
-                    </td>
-                    <td class="text-center">
-                        @if($structure->is_active)
-                        <span class="badge-active">Aktif</span>
-                        @else
-                        <span class="badge-inactive">Nonaktif</span>
-                        @endif
-                    </td>
-                    <td class="text-end">
-                        <div class="action-buttons">
-                            <!-- Toggle Active -->
-                            <form method="POST" action="{{ route('admin.organization-structure.toggle-active', $structure->id) }}">
-                                @csrf
-                                <button type="submit"
-                                        class="btn-toggle {{ $structure->is_active ? 'btn-toggle-on' : 'btn-toggle-off' }}"
-                                        title="{{ $structure->is_active ? 'Nonaktifkan' : 'Aktifkan' }}"
-                                        @if(!$structure->is_active) onclick="return confirm('Aktifkan struktur ini? Struktur aktif sebelumnya akan dinonaktifkan.')" @endif>
-                                    <i class="fas {{ $structure->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
-                                </button>
-                            </form>
-
-                            <!-- Edit -->
-                            <a href="{{ route('admin.organization-structure.edit', $structure->id) }}"
-                               class="btn-action btn-edit" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </a>
-
-                            <!-- Delete -->
-                            <form method="POST" action="{{ route('admin.organization-structure.destroy', $structure->id) }}"
-                                  onsubmit="return confirm('Hapus struktur ini? Semua anggota akan ikut terhapus.')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-action btn-delete" title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
-
-                            <!-- Preview -->
-                            <button type="button" class="btn-action btn-preview"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#previewModal{{ $structure->id }}"
-                                    title="Preview">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                        @empty
+                        <div class="empty-members">
+                            <i class="fas fa-user-plus me-1"></i> Belum ada anggota
                         </div>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        @endforelse
+                        
+                        @if($memberCount > 2)
+                        <div class="member-row">
+                            <div class="member-avatar-small">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </div>
+                            <div>
+                                <div class="member-name-small">+ {{ $memberCount - 2 }} anggota lainnya</div>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Action Buttons --}}
+                <div class="action-buttons">
+                    <form method="POST" action="{{ route('admin.organization-structure.toggle-active', $structure->id) }}" class="d-inline">
+                        @csrf
+                        <button type="submit" 
+                                class="btn-action {{ $structure->is_active ? 'btn-toggle-on' : 'btn-toggle-off' }}"
+                                title="{{ $structure->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                            <i class="fas {{ $structure->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                        </button>
+                    </form>
+                    
+                    <button type="button" 
+                            class="btn-action btn-preview" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#previewModal{{ $structure->id }}"
+                            title="Preview">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    
+                    <a href="{{ route('admin.organization-structure.edit', $structure->id) }}" 
+                       class="btn-action btn-edit"
+                       title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    
+                    <form method="POST" action="{{ route('admin.organization-structure.destroy', $structure->id) }}" 
+                          class="d-inline"
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus struktur "{{ $structure->name }}"? Semua anggota di dalamnya juga akan terhapus secara permanen.')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-action btn-delete" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endforeach
     </div>
 
-    <div class="mt-4 px-2">
+    {{-- Pagination - CENTERED --}}
+    <div class="pagination-wrapper">
         {{ $data->links() }}
     </div>
 
     @else
+    {{-- Empty State --}}
     <div class="empty-state">
         <i class="fas fa-sitemap"></i>
-        <h4>Belum ada struktur organisasi</h4>
+        <h5>Belum ada struktur organisasi</h5>
         <p>Tambahkan struktur organisasi untuk ditampilkan di halaman publik</p>
-        <a href="{{ route('admin.organization-structure.create') }}" class="btn-add mt-3">
+        <a href="{{ route('admin.organization-structure.create') }}" class="btn-add">
             <i class="fas fa-plus"></i> Tambah Struktur
         </a>
     </div>
     @endif
 </div>
 
-<!-- Preview Modals -->
+{{-- Preview Modals --}}
 @foreach($data as $structure)
-<div class="modal fade" id="previewModal{{ $structure->id }}" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+@php
+    $members = $structure->members->sortBy('order');
+    $memberCount = $members->count();
+@endphp
+<div class="modal fade modal-simple" id="previewModal{{ $structure->id }}" tabindex="-1" aria-labelledby="previewModalLabel{{ $structure->id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="fas fa-sitemap me-2"></i>{{ $structure->name }}
+                <div>
+                    <h5 class="modal-title" id="previewModalLabel{{ $structure->id }}">{{ $structure->name }}</h5>
                     @if($structure->is_active)
-                    <span class="badge-active ms-2" style="font-size:11px;">Aktif</span>
+                    <span class="status status-active mt-1" style="display: inline-block; font-size: 10px;">Aktif</span>
                     @endif
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">
-                <p class="text-muted mb-3" style="font-size:13px;">
-                    {{ $structure->members->count() }} anggota
-                </p>
-                <div class="member-grid">
-                    @foreach($structure->members->sortBy('order') as $member)
-                    <div class="member-card">
-                        <div class="member-info">
-                            @if($member->photo)
-                            <img src="{{ asset('storage/'.$member->photo) }}"
-                                 class="member-avatar"
-                                 alt="{{ $member->name }}"
-                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&background=e9ecef&color=495057&size=50'">
-                            @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&background=e9ecef&color=495057&size=50"
-                                 class="member-avatar" alt="{{ $member->name }}">
-                            @endif
-                            <div class="member-details">
-                                <div class="member-name">{{ $member->name }}</div>
-                                <div class="member-position">{{ $member->position }}</div>
-                            </div>
+                <div class="preview-stats-simple">
+                    <span class="preview-stat-simple">
+                        <i class="fas fa-users"></i> {{ $memberCount }} Anggota
+                    </span>
+                    <span class="preview-stat-simple">
+                        <i class="far fa-calendar-alt"></i> {{ $structure->created_at->translatedFormat('d F Y') }}
+                    </span>
+                </div>
+
+                @if($memberCount > 0)
+                <div class="member-grid-simple">
+                    @foreach($members as $member)
+                    <div class="member-card-simple">
+                        @if($member->photo)
+                        <img src="{{ asset('storage/'.$member->photo) }}" class="member-avatar-modal" alt="{{ $member->name }}">
+                        @else
+                        <div class="member-avatar-modal d-flex align-items-center justify-content-center bg-light">
+                            <i class="fas fa-user text-secondary"></i>
+                        </div>
+                        @endif
+                        <div class="member-info-modal">
+                            <h6>{{ $member->name }}</h6>
+                            <p>{{ $member->position }}</p>
                         </div>
                     </div>
                     @endforeach
                 </div>
+                @else
+                <div class="text-center py-4">
+                    <i class="fas fa-user-friends fa-2x text-muted mb-2" style="opacity: 0.5;"></i>
+                    <p class="text-muted mb-0">Belum ada anggota</p>
+                </div>
+                @endif
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
-                <a href="{{ route('admin.organization-structure.edit', $structure->id) }}"
-                   class="btn btn-primary btn-sm">
-                    <i class="fas fa-edit me-1"></i> Edit
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Tutup</button>
+                <a href="{{ route('admin.organization-structure.edit', $structure->id) }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit"></i> Edit Struktur
                 </a>
             </div>
         </div>
     </div>
 </div>
 @endforeach
-
-<style>
-.org-container {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-.org-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.org-header h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.org-icon { color: #4361ee; }
-
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.header-stats {
-    display: flex;
-    gap: 12px;
-}
-
-.stat-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    color: #666;
-    padding: 6px 12px;
-    background: #f8f9fa;
-    border-radius: 6px;
-}
-
-.stat-item i { color: #28a745; }
-
-.btn-add {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    background: #4361ee;
-    color: white;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
-    transition: background 0.2s;
-}
-
-.btn-add:hover { background: #3651d4; color: white; }
-
-.org-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.org-table thead {
-    background: #f8f9fa;
-}
-
-.org-table th {
-    padding: 14px 16px;
-    font-weight: 600;
-    color: #495057;
-    font-size: 14px;
-    border-bottom: 2px solid #e9ecef;
-    text-align: left;
-}
-
-.org-table td {
-    padding: 16px;
-    border-bottom: 1px solid #f0f0f0;
-    vertical-align: middle;
-}
-
-.org-table tr:hover { background: #f8fafc; }
-
-.row-active { background: #f0fff4; }
-.row-active:hover { background: #e8fef0; }
-
-.structure-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.status-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.dot-active { background: #28a745; }
-.dot-inactive { background: #dee2e6; }
-
-.structure-name {
-    font-weight: 500;
-    color: #333;
-    font-size: 15px;
-}
-
-.structure-meta {
-    font-size: 12px;
-    color: #888;
-    margin-top: 3px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.member-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    background: #e7f5ff;
-    color: #0c63e4;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.badge-active {
-    display: inline-block;
-    padding: 4px 10px;
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.badge-inactive {
-    display: inline-block;
-    padding: 4px 10px;
-    background: #f8f9fa;
-    color: #6c757d;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    justify-content: flex-end;
-}
-
-.action-buttons form { margin: 0; }
-
-.btn-toggle {
-    padding: 7px 10px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.2s;
-    line-height: 1;
-}
-
-.btn-toggle-on { color: #28a745; background: #d4edda; border: 1px solid #c3e6cb; }
-.btn-toggle-on:hover { background: #c3e6cb; }
-.btn-toggle-off { color: #6c757d; background: #f8f9fa; border: 1px solid #dee2e6; }
-.btn-toggle-off:hover { background: #e2e6ea; }
-
-.btn-action {
-    padding: 7px 10px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid #dee2e6;
-    background: white;
-    color: #495057;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-}
-
-.btn-edit:hover { color: #856404; background: #fff3cd; border-color: #ffc107; }
-.btn-delete:hover { color: #fff; background: #dc3545; border-color: #dc3545; }
-.btn-preview:hover { color: #0c63e4; background: #e7f5ff; border-color: #0c63e4; }
-
-/* Modal */
-.member-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 12px;
-}
-
-.member-card {
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    padding: 12px;
-}
-
-.member-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.member-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-}
-
-.member-name {
-    font-weight: 500;
-    color: #212529;
-    font-size: 14px;
-}
-
-.member-position {
-    color: #6c757d;
-    font-size: 13px;
-    margin-top: 2px;
-}
-
-/* Empty state */
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.empty-state i {
-    font-size: 48px;
-    color: #adb5bd;
-    margin-bottom: 16px;
-}
-
-.empty-state h4 { margin: 0 0 8px; color: #666; font-size: 18px; }
-.empty-state p { margin: 0; color: #999; font-size: 14px; }
-
-@media (max-width: 768px) {
-    .org-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-    .header-right { width: 100%; flex-direction: column; align-items: flex-start; gap: 10px; }
-    .btn-add { width: 100%; justify-content: center; }
-    .org-container { padding: 16px; }
-}
-</style>
 @endsection
