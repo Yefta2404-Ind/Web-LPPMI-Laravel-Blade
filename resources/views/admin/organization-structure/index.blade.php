@@ -1,360 +1,455 @@
 @extends('layouts.admin')
 
+@section('page-title', 'Struktur Organisasi')
+
 @section('content')
-<div class="admin-content">
-    <div class="content-header">
-        <h1 class="page-title">Struktur Organisasi Aktif</h1>
-        <p class="page-subtitle">Daftar struktur organisasi yang telah disetujui</p>
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
+<div class="org-container">
+    <div class="org-header">
+        <h3><i class="fas fa-sitemap org-icon"></i> Struktur Organisasi</h3>
+        <div class="header-right">
+            <div class="header-stats">
+                <span class="stat-item">
+                    <i class="fas fa-layer-group"></i>
+                    Total: {{ $data->total() }}
+                </span>
+                <span class="stat-item">
+                    <i class="fas fa-toggle-on"></i>
+                    Aktif: {{ $data->where('is_active', true)->count() }}
+                </span>
+            </div>
+            <a href="{{ route('admin.organization-structure.create') }}" class="btn-add">
+                <i class="fas fa-plus"></i> Tambah Struktur
+            </a>
+        </div>
     </div>
 
-    <div class="content-card">
-        @if($members->isEmpty())
-            <div class="empty-state">
-                <div class="empty-icon">📊</div>
-                <h3>Belum Ada Struktur Organisasi</h3>
-                <p>Tidak ada struktur organisasi yang aktif saat ini.</p>
-            </div>
-        @else
-            <div class="table-container">
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Foto</th>
-                                <th>Nama</th>
-                                <th>Jabatan</th>
-                                <th class="text-center">Urutan</th>
-                                <th class="text-center">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($members as $item)
-                                <tr>
-                                    <td class="photo-cell">
-                                        @if($item->photo)
-                                            <div class="avatar">
-                                                <img src="{{ asset('storage/'.$item->photo) }}" alt="{{ $item->name }}">
-                                            </div>
-                                        @else
-                                            <div class="avatar placeholder">{{ substr($item->name, 0, 2) }}</div>
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->position }}</td>
-                                    <td class="text-center">{{ $item->order }}</td>
-                                    <td class="status-cell">
-                                        <span class="status active">Aktif</span>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        @endif
+    @if($data->count() > 0)
+    <div class="table-responsive">
+        <table class="org-table">
+            <thead>
+                <tr>
+                    <th>Nama Struktur</th>
+                    <th width="100" class="text-center">Anggota</th>
+                    <th width="120" class="text-center">Status</th>
+                    <th width="160" class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($data as $structure)
+                <tr class="{{ $structure->is_active ? 'row-active' : '' }}">
+                    <td>
+                        <div class="structure-info">
+                            <div class="status-dot {{ $structure->is_active ? 'dot-active' : 'dot-inactive' }}"></div>
+                            <div>
+                                <div class="structure-name">{{ $structure->name }}</div>
+                                <div class="structure-meta">
+                                    <i class="far fa-calendar"></i>
+                                    {{ $structure->created_at->format('d M Y') }}
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span class="member-badge">{{ $structure->members->count() }}</span>
+                    </td>
+                    <td class="text-center">
+                        @if($structure->is_active)
+                        <span class="badge-active">Aktif</span>
+                        @else
+                        <span class="badge-inactive">Nonaktif</span>
+                        @endif
+                    </td>
+                    <td class="text-end">
+                        <div class="action-buttons">
+                            <!-- Toggle Active -->
+                            <form method="POST" action="{{ route('admin.organization-structure.toggle-active', $structure->id) }}">
+                                @csrf
+                                <button type="submit"
+                                        class="btn-toggle {{ $structure->is_active ? 'btn-toggle-on' : 'btn-toggle-off' }}"
+                                        title="{{ $structure->is_active ? 'Nonaktifkan' : 'Aktifkan' }}"
+                                        @if(!$structure->is_active) onclick="return confirm('Aktifkan struktur ini? Struktur aktif sebelumnya akan dinonaktifkan.')" @endif>
+                                    <i class="fas {{ $structure->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                                </button>
+                            </form>
+
+                            <!-- Edit -->
+                            <a href="{{ route('admin.organization-structure.edit', $structure->id) }}"
+                               class="btn-action btn-edit" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <!-- Delete -->
+                            <form method="POST" action="{{ route('admin.organization-structure.destroy', $structure->id) }}"
+                                  onsubmit="return confirm('Hapus struktur ini? Semua anggota akan ikut terhapus.')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-action btn-delete" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+
+                            <!-- Preview -->
+                            <button type="button" class="btn-action btn-preview"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#previewModal{{ $structure->id }}"
+                                    title="Preview">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
+
+    <div class="mt-4 px-2">
+        {{ $data->links() }}
+    </div>
+
+    @else
+    <div class="empty-state">
+        <i class="fas fa-sitemap"></i>
+        <h4>Belum ada struktur organisasi</h4>
+        <p>Tambahkan struktur organisasi untuk ditampilkan di halaman publik</p>
+        <a href="{{ route('admin.organization-structure.create') }}" class="btn-add mt-3">
+            <i class="fas fa-plus"></i> Tambah Struktur
+        </a>
+    </div>
+    @endif
 </div>
 
-
-
+<!-- Preview Modals -->
+@foreach($data as $structure)
+<div class="modal fade" id="previewModal{{ $structure->id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-sitemap me-2"></i>{{ $structure->name }}
+                    @if($structure->is_active)
+                    <span class="badge-active ms-2" style="font-size:11px;">Aktif</span>
+                    @endif
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3" style="font-size:13px;">
+                    {{ $structure->members->count() }} anggota
+                </p>
+                <div class="member-grid">
+                    @foreach($structure->members->sortBy('order') as $member)
+                    <div class="member-card">
+                        <div class="member-info">
+                            @if($member->photo)
+                            <img src="{{ asset('storage/'.$member->photo) }}"
+                                 class="member-avatar"
+                                 alt="{{ $member->name }}"
+                                 onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&background=e9ecef&color=495057&size=50'">
+                            @else
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&background=e9ecef&color=495057&size=50"
+                                 class="member-avatar" alt="{{ $member->name }}">
+                            @endif
+                            <div class="member-details">
+                                <div class="member-name">{{ $member->name }}</div>
+                                <div class="member-position">{{ $member->position }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                <a href="{{ route('admin.organization-structure.edit', $structure->id) }}"
+                   class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit me-1"></i> Edit
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 
 <style>
-    /* Base Styles */
-    .admin-content {
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
+.org-container {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-    .content-header {
-        margin-bottom: 2rem;
-    }
+.org-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
 
-    .page-title {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-    }
+.org-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    .page-subtitle {
-        color: #666;
-        font-size: 1rem;
-    }
+.org-icon { color: #4361ee; }
 
-    /* Content Card */
-    .content-card {
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        overflow: hidden;
-    }
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
 
-    /* Empty State */
-    .empty-state {
-        padding: 4rem 2rem;
-        text-align: center;
-    }
+.header-stats {
+    display: flex;
+    gap: 12px;
+}
 
-    .empty-icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.5;
-    }
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #666;
+    padding: 6px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
 
-    .empty-state h3 {
-        color: #555;
-        margin-bottom: 0.5rem;
-        font-size: 1.25rem;
-    }
+.stat-item i { color: #28a745; }
 
-    .empty-state p {
-        color: #888;
-        font-size: 0.95rem;
-    }
+.btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #4361ee;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
 
-    /* Table Container */
-    .table-container {
-        padding: 1.5rem;
-    }
+.btn-add:hover { background: #3651d4; color: white; }
 
-    .table-responsive {
-        overflow-x: auto;
-    }
+.org-table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-    /* Data Table */
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 600px;
-    }
+.org-table thead {
+    background: #f8f9fa;
+}
 
-    .data-table thead {
-        background: #f8f9fa;
-        border-bottom: 2px solid #e9ecef;
-    }
+.org-table th {
+    padding: 14px 16px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 14px;
+    border-bottom: 2px solid #e9ecef;
+    text-align: left;
+}
 
-    .data-table th {
-        padding: 1rem 1.25rem;
-        text-align: left;
-        font-weight: 600;
-        color: #495057;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-    }
+.org-table td {
+    padding: 16px;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
 
-    .data-table th.text-center {
-        text-align: center;
-    }
+.org-table tr:hover { background: #f8fafc; }
 
-    .data-table tbody tr {
-        border-bottom: 1px solid #f1f3f4;
-        transition: background-color 0.2s ease;
-    }
+.row-active { background: #f0fff4; }
+.row-active:hover { background: #e8fef0; }
 
-    .data-table tbody tr:hover {
-        background-color: #f8f9fa;
-    }
+.structure-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-    .data-table td {
-        padding: 1rem 1.25rem;
-        vertical-align: middle;
-    }
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
 
-    /* Avatar Styles */
-    .avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.dot-active { background: #28a745; }
+.dot-inactive { background: #dee2e6; }
 
-    .avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.structure-name {
+    font-weight: 500;
+    color: #333;
+    font-size: 15px;
+}
 
-    .avatar.placeholder {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-weight: 600;
-        font-size: 0.875rem;
-    }
+.structure-meta {
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
-    .photo-cell {
-        width: 80px;
-        text-align: center;
-    }
+.member-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #e7f5ff;
+    color: #0c63e4;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+}
 
-    /* Name Cell */
-    .name-cell {
-        font-size: 1rem;
-        color: #1a1a1a;
-        min-width: 180px;
-    }
+.badge-active {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
 
-    /* Position Cell */
-    .position-cell {
-        min-width: 200px;
-    }
+.badge-inactive {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
 
-    .position {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        background: #e3f2fd;
-        color: #1976d2;
-        border-radius: 4px;
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+}
 
-    /* Order Cell */
-    .order-cell {
-        text-align: center;
-    }
+.action-buttons form { margin: 0; }
 
-    .order-badge {
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        line-height: 32px;
-        text-align: center;
-        background: #f0f0f0;
-        color: #555;
-        border-radius: 50%;
-        font-size: 0.875rem;
-        font-weight: 600;
-    }
+.btn-toggle {
+    padding: 7px 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+}
 
-    /* Status Cell */
-    .status-cell {
-        text-align: center;
-    }
+.btn-toggle-on { color: #28a745; background: #d4edda; border: 1px solid #c3e6cb; }
+.btn-toggle-on:hover { background: #c3e6cb; }
+.btn-toggle-off { color: #6c757d; background: #f8f9fa; border: 1px solid #dee2e6; }
+.btn-toggle-off:hover { background: #e2e6ea; }
 
-    .status {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
+.btn-action {
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid #dee2e6;
+    background: white;
+    color: #495057;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
 
-    .status.active {
-        background: #d4edda;
-        color: #155724;
-    }
+.btn-edit:hover { color: #856404; background: #fff3cd; border-color: #ffc107; }
+.btn-delete:hover { color: #fff; background: #dc3545; border-color: #dc3545; }
+.btn-preview:hover { color: #0c63e4; background: #e7f5ff; border-color: #0c63e4; }
 
-    /* Table Footer */
-    .table-footer {
-        padding: 1rem 1.25rem;
-        border-top: 1px solid #e9ecef;
-        background: #f8f9fa;
-    }
+/* Modal */
+.member-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
 
-    .footer-info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        color: #666;
-        font-size: 0.875rem;
-    }
+.member-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px;
+}
 
-    .count {
-        font-weight: 600;
-        color: #495057;
-    }
+.member-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-    .separator {
-        opacity: 0.5;
-    }
+.member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
 
-    .last-updated {
-        font-style: italic;
-    }
+.member-name {
+    font-weight: 500;
+    color: #212529;
+    font-size: 14px;
+}
 
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .admin-content {
-            padding: 1.5rem 1rem;
-        }
+.member-position {
+    color: #6c757d;
+    font-size: 13px;
+    margin-top: 2px;
+}
 
-        .page-title {
-            font-size: 1.5rem;
-        }
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .table-container {
-            padding: 1rem;
-        }
+.empty-state i {
+    font-size: 48px;
+    color: #adb5bd;
+    margin-bottom: 16px;
+}
 
-        .data-table th,
-        .data-table td {
-            padding: 0.875rem 1rem;
-        }
+.empty-state h4 { margin: 0 0 8px; color: #666; font-size: 18px; }
+.empty-state p { margin: 0; color: #999; font-size: 14px; }
 
-        .name-cell,
-        .position-cell {
-            min-width: 150px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .admin-content {
-            padding: 1rem 0.75rem;
-        }
-
-        .content-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .table-container {
-            padding: 0.75rem;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 0.75rem 0.875rem;
-            font-size: 0.875rem;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-        }
-
-        .order-badge {
-            width: 28px;
-            height: 28px;
-            line-height: 28px;
-        }
-
-        .footer-info {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.5rem;
-        }
-
-        .separator {
-            display: none;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .data-table {
-            min-width: 100%;
-        }
-        
-        .data-table th,
-        .data-table td {
-            padding: 0.5rem;
-        }
-    }
+@media (max-width: 768px) {
+    .org-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .header-right { width: 100%; flex-direction: column; align-items: flex-start; gap: 10px; }
+    .btn-add { width: 100%; justify-content: center; }
+    .org-container { padding: 16px; }
+}
 </style>
 @endsection

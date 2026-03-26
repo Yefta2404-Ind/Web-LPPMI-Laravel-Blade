@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Hero Banner - Approved')
+@section('page-title', 'Hero Banner')
 
 @section('content')
 @if(session('success'))
@@ -11,18 +11,31 @@
 </div>
 @endif
 
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    {{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@endif
+
 <div class="approved-banner-container">
     <div class="approved-header">
-        <h3><i class="fas fa-check-circle approved-icon"></i> Banner Disetujui</h3>
-        <div class="header-stats">
-            <span class="stat-item">
-                <i class="fas fa-layer-group"></i>
-                Total: {{ $banners->count() }}
-            </span>
-            <span class="stat-item">
-                <i class="fas fa-toggle-on"></i>
-                Aktif: {{ $banners->where('is_active', true)->count() }}
-            </span>
+        <h3><i class="fas fa-images approved-icon"></i> Hero Banner</h3>
+        <div class="header-right">
+            <div class="header-stats">
+                <span class="stat-item">
+                    <i class="fas fa-layer-group"></i>
+                    Total: {{ $banners->total() }}
+                </span>
+                <span class="stat-item">
+                    <i class="fas fa-toggle-on"></i>
+                    Aktif: {{ $banners->where('is_active', true)->count() }}
+                </span>
+            </div>
+            <a href="{{ route('admin.hero-banners.create') }}" class="btn-add">
+                <i class="fas fa-plus"></i> Tambah Banner
+            </a>
         </div>
     </div>
 
@@ -35,14 +48,15 @@
                     <th>Judul Banner</th>
                     <th width="100">Urutan</th>
                     <th width="120">Status</th>
+                    <th width="80">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($banners->sortBy('order') as $banner)
+                @foreach($banners as $banner)
                 <tr class="banner-row {{ !$banner->is_active ? 'inactive' : '' }}">
                     <td>
                         <div class="banner-preview">
-                            <img src="{{ asset('storage/'.$banner->image) }}" 
+                            <img src="{{ asset('storage/'.$banner->image) }}"
                                  alt="{{ $banner->title ?? 'Banner' }}">
                             @if($banner->is_active)
                             <span class="active-badge">AKTIF</span>
@@ -52,38 +66,51 @@
                     <td>
                         <div class="banner-title">
                             <strong>{{ $banner->title ?? 'Tanpa Judul' }}</strong>
+                            @if($banner->link)
                             <div class="banner-meta">
                                 <span class="meta-item">
-                                    <i class="fas fa-sort-numeric-up"></i>
-                                    Order: {{ $banner->order }}
+                                    <i class="fas fa-link"></i>
+                                    {{ $banner->link }}
                                 </span>
                             </div>
+                            @endif
                         </div>
                     </td>
                     <td>
-                        <form method="POST" 
+                        <form method="POST"
                               action="{{ route('admin.hero-banners.order', $banner) }}"
                               class="order-form">
                             @csrf
                             @method('PATCH')
-                            <input type="number" 
-                                   name="order" 
-                                   value="{{ $banner->order }}" 
+                            <input type="number"
+                                   name="order"
+                                   value="{{ $banner->order }}"
                                    class="order-input"
-                                   min="1"
+                                   min="0"
                                    onchange="this.form.submit()">
                         </form>
                     </td>
                     <td>
-                        <form method="POST" 
+                        <form method="POST"
                               action="{{ route('admin.hero-banners.toggle-active', $banner) }}"
                               class="status-form">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" 
+                            <button type="submit"
                                     class="status-toggle {{ $banner->is_active ? 'active' : 'inactive' }}">
                                 <i class="fas {{ $banner->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
                                 {{ $banner->is_active ? 'Aktif' : 'Nonaktif' }}
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST"
+                              action="{{ route('admin.hero-banners.destroy', $banner) }}"
+                              onsubmit="return confirm('Hapus banner ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </form>
                     </td>
@@ -92,11 +119,19 @@
             </tbody>
         </table>
     </div>
+
+    <div class="mt-4">
+        {{ $banners->links() }}
+    </div>
+
     @else
     <div class="empty-state">
         <i class="fas fa-images"></i>
-        <h4>Belum ada banner disetujui</h4>
-        <p>Setujui banner dari halaman pending terlebih dahulu</p>
+        <h4>Belum ada banner</h4>
+        <p>Tambahkan banner pertama untuk ditampilkan di halaman utama</p>
+        <a href="{{ route('admin.hero-banners.create') }}" class="btn-add mt-3">
+            <i class="fas fa-plus"></i> Tambah Banner
+        </a>
     </div>
     @endif
 </div>
@@ -129,12 +164,18 @@
 }
 
 .approved-icon {
-    color: #28a745;
+    color: #4361ee;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .header-stats {
     display: flex;
-    gap: 20px;
+    gap: 12px;
 }
 
 .stat-item {
@@ -150,6 +191,25 @@
 
 .stat-item i {
     color: #28a745;
+}
+
+.btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: #4361ee;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-add:hover {
+    background: #3651d4;
+    color: white;
 }
 
 .banner-table-container {
@@ -239,12 +299,17 @@
     align-items: center;
     gap: 5px;
     font-size: 12px;
-    color: #666;
+    color: #888;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .meta-item i {
-    color: #888;
+    color: #aaa;
     font-size: 11px;
+    flex-shrink: 0;
 }
 
 .order-form {
@@ -263,8 +328,8 @@
 
 .order-input:focus {
     outline: none;
-    border-color: #28a745;
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    border-color: #4361ee;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
 }
 
 .status-form {
@@ -306,9 +371,28 @@
     background: #e2e6ea;
 }
 
+.btn-delete {
+    padding: 8px 12px;
+    background: white;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-delete:hover {
+    background: #dc3545;
+    color: white;
+}
+
 .empty-state {
     text-align: center;
     padding: 60px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .empty-state i {
@@ -335,16 +419,28 @@
         align-items: flex-start;
         gap: 12px;
     }
-    
+
+    .header-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
     .header-stats {
         width: 100%;
         justify-content: space-between;
     }
-    
+
+    .btn-add {
+        width: 100%;
+        justify-content: center;
+    }
+
     .approved-banner-container {
         padding: 16px;
     }
-    
+
     .banner-table th,
     .banner-table td {
         padding: 12px;

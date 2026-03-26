@@ -1,27 +1,15 @@
-@extends('layouts.cms')
+@extends('layouts.admin')
 
-@section('title', 'Upload Hero Banner')
+@section('page-title', 'Tambah Hero Banner')
 
 @section('content')
 <div class="upload-banner-container">
     <div class="upload-header">
-        <h2><i class="fas fa-cloud-upload-alt"></i> Upload Hero Banner</h2>
-        <div class="upload-steps">
-            <span class="step">1. Upload</span>
-            <i class="fas fa-chevron-right"></i>
-            <span class="step">2. Review</span>
-            <i class="fas fa-chevron-right"></i>
-            <span class="step active">3. Approval</span>
-        </div>
+        <h2><i class="fas fa-cloud-upload-alt"></i> Tambah Hero Banner</h2>
+        <a href="{{ route('admin.hero-banners.index') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
     </div>
-
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle me-2"></i>
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
 
     @if($errors->any())
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -37,27 +25,28 @@
     @endif
 
     <div class="upload-card">
-        <form action="{{ route('staff.hero-banners.store') }}" 
-              method="POST" 
+        <form action="{{ route('admin.hero-banners.store') }}"
+              method="POST"
               enctype="multipart/form-data"
               class="upload-form">
             @csrf
 
+            {{-- UPLOAD GAMBAR --}}
             <div class="upload-section">
                 <div class="section-header">
                     <i class="fas fa-image"></i>
                     <h4>Upload Gambar</h4>
                 </div>
                 <div class="file-upload-area" id="dropArea">
-                    <div class="upload-placeholder">
+                    <div class="upload-placeholder" id="uploadPlaceholder">
                         <i class="fas fa-cloud-upload-alt fa-2x"></i>
                         <p>Drag & drop gambar atau klik untuk memilih</p>
                         <span class="file-types">Format: JPG, PNG, GIF</span>
                     </div>
-                    <input type="file" 
-                           name="image" 
-                           id="fileInput" 
-                           class="file-input" 
+                    <input type="file"
+                           name="image"
+                           id="fileInput"
+                           class="file-input"
                            accept=".jpg,.jpeg,.png,.gif"
                            required>
                 </div>
@@ -69,11 +58,12 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-weight-hanging"></i>
-                        <span>Maksimum ukuran file: <strong>5 MB</strong></span>
+                        <span>Maksimum ukuran file: <strong>2 MB</strong></span>
                     </div>
                 </div>
             </div>
 
+            {{-- INFORMASI BANNER --}}
             <div class="upload-section">
                 <div class="section-header">
                     <i class="fas fa-info-circle"></i>
@@ -85,8 +75,8 @@
                         Judul Banner
                         <span class="optional">(Opsional)</span>
                     </label>
-                    <input type="text" 
-                           name="title" 
+                    <input type="text"
+                           name="title"
                            class="form-control"
                            placeholder="Masukkan judul banner"
                            value="{{ old('title') }}">
@@ -98,8 +88,8 @@
                         Tautan
                         <span class="optional">(Opsional)</span>
                     </label>
-                    <input type="url" 
-                           name="link" 
+                    <input type="url"
+                           name="link"
                            class="form-control"
                            placeholder="https://example.com"
                            value="{{ old('link') }}">
@@ -107,48 +97,13 @@
                 </div>
             </div>
 
-            <div class="upload-note">
-                <div class="note-header">
-                    <i class="fas fa-clock"></i>
-                    <h5>Proses Approval</h5>
-                </div>
-                <div class="note-content">
-                    <p>Banner yang diupload akan masuk ke daftar <strong>Pending</strong> dan membutuhkan persetujuan Admin sebelum ditampilkan.</p>
-                    <div class="process-flow">
-                        <div class="flow-step">
-                            <div class="step-icon pending">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <span>Menunggu</span>
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="flow-step">
-                            <div class="step-icon reviewing">
-                                <i class="fas fa-eye"></i>
-                            </div>
-                            <span>Review</span>
-                        </div>
-                        <div class="flow-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
-                        <div class="flow-step">
-                            <div class="step-icon approved">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <span>Disetujui</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            {{-- ACTIONS --}}
             <div class="form-actions">
                 <button type="submit" class="btn-submit">
-                    Submit untuk Approval
+                    <i class="fas fa-save"></i> Simpan Banner
                 </button>
-                <a href="{{ route('dashboard') }}" class="btn-cancel">
-                    Kembali ke Dashboard
+                <a href="{{ route('admin.hero-banners.index') }}" class="btn-cancel">
+                    Batal
                 </a>
             </div>
         </form>
@@ -166,51 +121,43 @@
 }
 
 .upload-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 32px;
 }
 
 .upload-header h2 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 600;
     color: #333;
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 16px;
+    margin: 0;
 }
 
 .upload-header h2 i {
     color: #4361ee;
 }
 
-.upload-steps {
-    display: flex;
+.btn-back {
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
     color: #666;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
     font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
 }
 
-.step {
-    padding: 6px 12px;
-    border-radius: 20px;
+.btn-back:hover {
     background: #f8f9fa;
-    color: #999;
-}
-
-.step.active {
-    background: #4361ee;
-    color: white;
-}
-
-.upload-steps i {
-    color: #dee2e6;
-    font-size: 12px;
-}
-
-.upload-card {
-    background: #fff;
-    border-radius: 10px;
+    color: #333;
 }
 
 .upload-section {
@@ -260,10 +207,6 @@
     background: #e8f4ff;
 }
 
-.upload-placeholder {
-    pointer-events: none;
-}
-
 .upload-placeholder i {
     font-size: 48px;
     color: #adb5bd;
@@ -308,7 +251,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 12px;
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .info-item {
@@ -331,13 +274,12 @@
 }
 
 .form-label {
-    display: block;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 8px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
 }
 
 .form-label i {
@@ -357,6 +299,7 @@
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.2s;
+    box-sizing: border-box;
 }
 
 .form-control:focus {
@@ -371,93 +314,10 @@
     margin-top: 6px;
 }
 
-.upload-note {
-    background: #fff9e6;
-    border: 1px solid #ffeaa7;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 32px;
-}
-
-.note-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.note-header i {
-    color: #ffb300;
-    font-size: 18px;
-}
-
-.note-header h5 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
-    margin: 0;
-}
-
-.note-content p {
-    color: #666;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-.process-flow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-}
-
-.flow-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-}
-
-.step-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
-
-.step-icon.pending {
-    background: #ffb300;
-    color: white;
-}
-
-.step-icon.reviewing {
-    background: #3498db;
-    color: white;
-}
-
-.step-icon.approved {
-    background: #28a745;
-    color: white;
-}
-
-.flow-step span {
-    font-size: 12px;
-    color: #666;
-    font-weight: 500;
-}
-
-.flow-arrow {
-    color: #dee2e6;
-}
-
 .form-actions {
     display: flex;
     gap: 16px;
-    padding-top: 24px;
-    border-top: 1px solid #f0f0f0;
+    padding-top: 8px;
 }
 
 .btn-submit {
@@ -473,6 +333,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     transition: background 0.2s;
 }
 
@@ -507,11 +368,6 @@
     padding: 16px 20px;
 }
 
-.alert-success {
-    background: #d4edda;
-    color: #155724;
-}
-
 .alert-danger {
     background: #f8d7da;
     color: #721c24;
@@ -525,25 +381,17 @@
     .upload-banner-container {
         padding: 20px;
     }
-    
-    .upload-steps {
-        font-size: 12px;
-        gap: 8px;
-    }
-    
-    .process-flow {
+
+    .upload-header {
         flex-direction: column;
-        gap: 12px;
+        align-items: flex-start;
+        gap: 16px;
     }
-    
-    .flow-arrow {
-        transform: rotate(90deg);
-    }
-    
+
     .form-actions {
         flex-direction: column;
     }
-    
+
     .upload-info {
         grid-template-columns: 1fr;
     }
@@ -551,87 +399,46 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const dropArea = document.getElementById('dropArea');
     const fileInput = document.getElementById('fileInput');
     const previewContainer = document.getElementById('previewContainer');
 
-    // Drag and drop functionality
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, preventDefaults, false);
+        dropArea.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); });
     });
 
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
+    ['dragenter', 'dragover'].forEach(e => dropArea.addEventListener(e, () => dropArea.classList.add('drag-over')));
+    ['dragleave', 'drop'].forEach(e => dropArea.addEventListener(e, () => dropArea.classList.remove('drag-over')));
 
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropArea.addEventListener(eventName, highlight, false);
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropArea.addEventListener(eventName, unhighlight, false);
-    });
-
-    function highlight() {
-        dropArea.classList.add('drag-over');
-    }
-
-    function unhighlight() {
-        dropArea.classList.remove('drag-over');
-    }
-
-    dropArea.addEventListener('drop', handleDrop, false);
-    fileInput.addEventListener('change', handleFileSelect, false);
-
-    function handleDrop(e) {
-        const dt = e.dataTransfer;
-        const files = dt.files;
-        handleFiles(files);
-    }
-
-    function handleFileSelect() {
-        const files = this.files;
-        handleFiles(files);
-    }
+    dropArea.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+    fileInput.addEventListener('change', function () { handleFiles(this.files); });
 
     function handleFiles(files) {
-        if (files.length > 0) {
-            const file = files[0];
-            
-            // Validasi tipe file
-            const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-            if (!validTypes.includes(file.type)) {
-                alert('Format file tidak didukung. Silakan upload gambar JPG, PNG, atau GIF.');
-                return;
-            }
-            
-            // Validasi ukuran file (5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Ukuran file terlalu besar. Maksimal 5MB.');
-                return;
-            }
-            
-            // Preview gambar
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewContainer.innerHTML = `
-                    <img src="${e.target.result}" class="preview-image" alt="Preview">
-                    <div class="mt-2 text-center text-muted">
-                        <small>${file.name} (${(file.size / 1024).toFixed(0)} KB)</small>
-                    </div>
-                `;
-                previewContainer.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    }
+        if (!files.length) return;
+        const file = files[0];
 
-    // Click pada drop area untuk trigger file input
-    dropArea.addEventListener('click', () => {
-        fileInput.click();
-    });
+        if (!['image/jpeg', 'image/png', 'image/gif'].includes(file.type)) {
+            alert('Format tidak didukung. Gunakan JPG, PNG, atau GIF.');
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Ukuran file terlalu besar. Maksimal 2MB.');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            previewContainer.innerHTML = `
+                <img src="${e.target.result}" class="preview-image" alt="Preview">
+                <div class="mt-2 text-center text-muted">
+                    <small>${file.name} (${(file.size / 1024).toFixed(0)} KB)</small>
+                </div>`;
+            previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
 });
 </script>
 @endsection

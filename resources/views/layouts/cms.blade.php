@@ -958,10 +958,6 @@
                 <span>Agenda</span>
             </a>
 
-            <a href="{{ route('staff.hero-banners.create') }}" class="lpm-nav-item">
-                <i class="fas fa-images"></i>
-                <span>Hero Banner</span>
-            </a>
 
             <a href="{{ route('staff.organization-structure.index') }}" class="lpm-nav-item">
                 <i class="fas fa-sitemap"></i>

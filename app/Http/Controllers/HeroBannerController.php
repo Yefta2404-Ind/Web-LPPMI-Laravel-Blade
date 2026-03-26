@@ -2,119 +2,66 @@
 
 namespace App\Http\Controllers;
 use App\Models\HeroBanner;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Http\Request;
 
 class HeroBannerController extends Controller
 {
+    public function index()
+    {
+        $banners = HeroBanner::orderBy('order')->paginate(10);
+        return view('admin.hero.index', compact('banners'));
+    }
+
+    public function create()
+    {
+        return view('admin.hero.create');
+    }
+
     public function store(Request $request)
-{
-    $request->validate([
-        'image' => 'required|image|max:2048',
-        'title' => 'nullable|string|max:255',
-        'link'  => 'nullable|url',
-    ]);
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048',
+            'title' => 'nullable|string|max:255',
+            'link'  => 'nullable|url',
+        ]);
 
-    $path = $request->file('image')->store('hero', 'public');
+        $path = $request->file('image')->store('hero', 'public');
 
-    HeroBanner::create([
-        'title'      => $request->title,
-        'image'      => $path,
-        'link'       => $request->link,
-        'created_by' => auth()->id(),
-        'status'     => 'pending',
-        'is_active'  => 0, // KUNCI
-        'order'      => 0,
-    ]);
+        HeroBanner::create([
+            'title'       => $request->title,
+            'image'       => $path,
+            'link'        => $request->link,
+            'created_by'  => auth()->id(),
+            'approved_by' => auth()->id(),
+            'approved_at' => now(),
+            'status'      => 'approved',
+            'is_active'   => 0,
+            'order'       => (HeroBanner::max('order') ?? 0) + 1,
+        ]);
 
-    return back()->with('success','Banner dikirim, menunggu approval admin');
-}
+        return redirect()->route('admin.hero.index')
+                         ->with('success', 'Banner berhasil ditambahkan');
+    }
 
-public function pending()
-{
-     $banners = HeroBanner::where('status', 'pending')
-                ->orderBy('created_at', 'desc')
-                ->paginate(10);
-
-    return view('admin.hero.pending', compact('banners'));
-}
-
-
-public function approve(HeroBanner $banner)
-{
-    if ($banner->status !== 'pending') {
+    public function toggleActive(HeroBanner $banner)
+    {
+        $banner->update(['is_active' => !$banner->is_active]);
         return back();
     }
 
-    $banner->update([
-        'status'      => 'approved',
-        'approved_by' => auth()->id(),
-        'approved_at' => now(),
-        'is_active'   => 0, // belum tampil
-    ]);
-
-    return back()->with('success','Banner di-approve');
-}
-
-public function reject(HeroBanner $banner)
-{
-    if ($banner->status !== 'pending') {
+    public function updateOrder(Request $request, HeroBanner $banner)
+    {
+        $request->validate(['order' => 'required|integer|min:0']);
+        $banner->update(['order' => $request->order]);
         return back();
     }
 
-    $banner->update([
-        'status'      => 'rejected',
-        'approved_by' => auth()->id(),
-        'approved_at' => now(),
-        'is_active'   => 0,
-    ]);
-
-    return back()->with('success','Banner ditolak');
-}
-
-public function approved()
-{
-    $banners = HeroBanner::where('status','approved')
-                ->orderBy('order')
-                ->get();
-
-    return view('admin.hero.approved', compact('banners'));
-}
-
-
-public function toggleActive(HeroBanner $banner)
-{
-    if ($banner->status !== 'approved') {
-        return back()->with('error','Banner belum di-approve');
+    public function destroy(HeroBanner $banner)
+    {
+        Storage::disk('public')->delete($banner->image);
+        $banner->delete();
+        return back()->with('success', 'Banner berhasil dihapus');
     }
-
-    $banner->update([
-        'is_active' => ! $banner->is_active
-    ]);
-
-    return back();
-}
-
-
-
-public function updateOrder(Request $request, HeroBanner $banner)
-{
-    $request->validate([
-        'order' => 'required|integer|min:0'
-    ]);
-
-    $banner->update([
-        'order' => $request->order
-    ]);
-
-    return back();
-}
-
-
-public function create()
-{
-    return view('staff.hero.create');
-}
-
-
 }

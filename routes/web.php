@@ -118,34 +118,7 @@ Route::post('/spmi',
             \App\Http\Controllers\Staff\InternalQualityController::class
         );
 
-
-    /* ================= HERO BANNER (STAFF) ================= */
-        Route::post('/hero-banners', [HeroBannerController::class, 'store'])
-        ->name('hero-banners.store');
-        Route::get('/hero-banners/create', [HeroBannerController::class, 'create'])
-            ->name('hero-banners.create');
-
-        /* ================= STRUKTUR ORGANISASI (STAFF) ================= */
-        Route::get('/organization-structure', [OrganizationStructureController::class, 'index'])
-            ->name('organization-structure.index');
-
-        Route::get('/organization-structure/create', [OrganizationStructureController::class, 'create'])
-            ->name('organization-structure.create');
-
-        Route::post('/organization-structure', [OrganizationStructureController::class, 'store'])
-            ->name('organization-structure.store');
-
-        Route::get('/organization-structure/{id}/edit',
-        [OrganizationStructureController::class, 'edit']
-        )->name('organization-structure.edit');
-
-        Route::put('/organization-structure/{id}',
-        [OrganizationStructureController::class, 'update']
-        )->name('organization-structure.update');
-
-        Route::delete('/organization-structure/{id}', [OrganizationStructureController::class, 'destroy'])
-            ->name('organization-structure.destroy');
-         
+       
         /* ================= AGENDA (STAFF) ================= */
         Route::get('/agenda', [AgendaController::class, 'index'])->name('agenda.index');
         Route::get('/agenda/create', [AgendaController::class, 'create'])->name('agenda.create');
@@ -274,31 +247,14 @@ Route::post('/spmi/{id}/reject',
             [\App\Http\Controllers\Admin\InternalQualityController::class,'reject']
         )->name('mutu-internal.reject');
 
-
-
-        /* ================= STRUKTUR ORGANISASI (ADMIN) ================= */
-        Route::get('/organization-structure/pending',
-            [OrganizationStructureController::class, 'pendingView']
-        )->name('organization-structure.pending');
-
-        // TAMBAHKAN INI: Route untuk choose-active
-        Route::get('/organization-structure/choose-active',
-            [OrganizationStructureController::class, 'chooseActive']
-        )->name('organization-structure.choose-active');
-
-
-
-        Route::post('/organization-structure/{id}/approve',
-            [OrganizationStructureController::class, 'approve']
-        )->name('organization-structure.approve');
-
-        Route::post('/organization-structure/{id}/reject',
-            [OrganizationStructureController::class, 'reject']
-        )->name('organization-structure.reject');
-
-        Route::get('/organization-structure',
-            [OrganizationStructureController::class, 'approved']
-        )->name('organization-structure.index');
+/* ================= STRUKTUR ORGANISASI (ADMIN) ================= */
+Route::get('/organization-structure',                      [OrganizationStructureController::class, 'index'])->name('organization-structure.index');
+Route::get('/organization-structure/create',               [OrganizationStructureController::class, 'create'])->name('organization-structure.create');
+Route::post('/organization-structure',                     [OrganizationStructureController::class, 'store'])->name('organization-structure.store');
+Route::get('/organization-structure/{id}/edit',            [OrganizationStructureController::class, 'edit'])->name('organization-structure.edit');
+Route::put('/organization-structure/{id}',                 [OrganizationStructureController::class, 'update'])->name('organization-structure.update');
+Route::post('/organization-structure/{id}/toggle-active',  [OrganizationStructureController::class, 'toggleActive'])->name('organization-structure.toggle-active');
+Route::delete('/organization-structure/{id}',              [OrganizationStructureController::class, 'destroy'])->name('organization-structure.destroy');
 
         /* ================= NEWS (ADMIN) ================= */
         Route::post('/news/{news}/approve', [NewsController::class, 'approve'])
@@ -332,25 +288,13 @@ Route::post('/spmi/{id}/reject',
         Route::get('/surveys', [SurveyController::class, 'adminIndex'])
             ->name('surveys.index');
 
-        /* ================= HERO BANNER (ADMIN) ================= */
-        Route::get('/hero-banners', [HeroBannerController::class, 'approved'])
-            ->name('hero-banners.index');
-
-        Route::post('/hero-banners/{banner}/approve', [HeroBannerController::class, 'approve'])
-            ->name('hero-banners.approve');
-
-        Route::post('/hero-banners/{banner}/reject', [HeroBannerController::class, 'reject'])
-            ->name('hero-banners.reject');
-
-        Route::patch('/hero-banners/{banner}/toggle-active', [HeroBannerController::class, 'toggleActive'])
-            ->name('hero-banners.toggle-active');
-
-        Route::patch('/hero-banners/{banner}/order', [HeroBannerController::class, 'updateOrder'])
-            ->name('hero-banners.order');
-        
-        // PENDING
-        Route::get('/hero-banners/pending', [HeroBannerController::class, 'pending'])
-            ->name('hero-banners.pending');
+       /* ================= HERO BANNER (ADMIN) ================= */
+Route::get('/hero-banners',                        [HeroBannerController::class, 'index'])->name('hero-banners.index');
+Route::get('/hero-banners/create',                 [HeroBannerController::class, 'create'])->name('hero-banners.create');
+Route::post('/hero-banners',                       [HeroBannerController::class, 'store'])->name('hero-banners.store');
+Route::patch('/hero-banners/{banner}/toggle-active',[HeroBannerController::class, 'toggleActive'])->name('hero-banners.toggle-active');
+Route::patch('/hero-banners/{banner}/order',       [HeroBannerController::class, 'updateOrder'])->name('hero-banners.order');
+Route::delete('/hero-banners/{banner}',            [HeroBannerController::class, 'destroy'])->name('hero-banners.destroy');
 
         // APPROVED (management)
         Route::delete('/videos/{video}/unfeature', [VideoController::class, 'unfeature'])

@@ -846,30 +846,12 @@
 
                 
                 <!-- Hero Banner -->
-                <div class="lpm-nav-item has-submenu" data-submenu="banner-menu">
-                    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-                        <i class="fas fa-images"></i>
-                        <span>Hero Banner</span>
-                    </div>
-                    @if(isset($pendingBannerCount) && $pendingBannerCount > 0)
-                    <span class="lpm-badge">{{ $pendingBannerCount }}</span>
-                    @endif
-                </div>
-                <div class="lpm-submenu" id="banner-menu">
-                    <a href="{{ route('admin.hero-banners.pending') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.hero-banners.pending') ? 'active' : '' }}">
-                        <i class="fas fa-clock"></i>
-                        <span>Pending Banners</span>
-                        @if(isset($pendingBannerCount) && $pendingBannerCount > 0)
-                        <span class="lpm-badge" style="margin-left: auto;">{{ $pendingBannerCount }}</span>
-                        @endif
-                    </a>
-                    <a href="{{ route('admin.hero-banners.index') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.hero-banners.index') ? 'active' : '' }}">
-                        <i class="fas fa-list"></i>
-                        <span>Active Banners</span>
-                    </a>
-                </div>
+                <!-- Hero Banner -->
+<a href="{{ route('admin.hero-banners.index') }}"
+   class="lpm-nav-item {{ request()->routeIs('admin.hero-banners.*') ? 'active' : '' }}">
+    <i class="fas fa-images"></i>
+    <span>Hero Banner</span>
+</a>
                 
                 <!-- Organization -->
                 <div class="lpm-nav-item has-submenu" data-submenu="org-menu">
@@ -877,19 +859,8 @@
                         <i class="fas fa-sitemap"></i>
                         <span>Organization</span>
                     </div>
-                    @if(isset($pendingOrgCount) && $pendingOrgCount > 0)
-                    <span class="lpm-badge">{{ $pendingOrgCount }}</span>
-                    @endif
                 </div>
                 <div class="lpm-submenu" id="org-menu">
-                    <a href="{{ route('admin.organization-structure.pending') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.organization-structure.pending') ? 'active' : '' }}">
-                        <i class="fas fa-clock"></i>
-                        <span>Pending Structures</span>
-                        @if(isset($pendingOrgCount) && $pendingOrgCount > 0)
-                        <span class="lpm-badge" style="margin-left: auto;">{{ $pendingOrgCount }}</span>
-                        @endif
-                    </a>
                     <a href="{{ route('admin.organization-structure.index') }}" 
                        class="lpm-submenu-item {{ request()->routeIs('admin.organization-structure.index') ? 'active' : '' }}">
                         <i class="fas fa-list"></i>
@@ -977,7 +948,6 @@
                             ($pendingAgendaCount ?? 0) + 
                             ($pendingVideosCount ?? 0) + 
                             ($pendingBannerCount ?? 0) + 
-                            ($pendingOrgCount ?? 0) + 
                             ($pendingSurveysCount ?? 0);
                     @endphp
                     @if($totalPending > 0)
