@@ -11,15 +11,27 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class SurveyController extends Controller
 {
-    /* ===================== STAFF ===================== */
+    /* ===================== ADMIN ===================== */
+
+    public function index()
+    {
+        abort_unless(auth()->user()->role === 'admin', 403);
+
+        $surveys = Survey::latest()->get();
+        return view('admin.surveys.index', compact('surveys'));
+    }
 
     public function create()
     {
-        return view('staff.surveys.create');
+        abort_unless(auth()->user()->role === 'admin', 403);
+
+        return view('admin.surveys.create');
     }
 
     public function store(Request $request)
     {
+        abort_unless(auth()->user()->role === 'admin', 403);
+
         $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -46,37 +58,35 @@ class SurveyController extends Controller
         ]);
 
         return redirect()
-            ->route('dashboard')
+            ->route('admin.surveys.index')
             ->with('success', 'Survey berhasil dibuat & QR otomatis dibuat.');
     }
-
-    /* ===================== ADMIN ===================== */
-
-    public function index()
-    {
-        abort_unless(auth()->user()->role === 'admin', 403);
-
-        $surveys = Survey::latest()->get();
-        return view('admin.surveys.index', compact('surveys'));
-    }
-
-   public function approve(Survey $survey)
+    
+    public function activate(Survey $survey)
 {
     abort_unless(auth()->user()->role === 'admin', 403);
 
     DB::transaction(function () use ($survey) {
-
-        // Archive survey yang sedang aktif
-        Survey::where('status', 'approved')
-            ->update(['status' => 'archived']);
-
-        // Approve survey yang dipilih
+        Survey::where('status', 'approved')->update(['status' => 'archived']);
         $survey->update(['status' => 'approved']);
     });
 
-    return back()->with('success', 'Survey disetujui & ditampilkan ke public.');
+    return back()->with('success', 'Survey berhasil diaktifkan.');
 }
 
+    public function approve(Survey $survey)
+    {
+        abort_unless(auth()->user()->role === 'admin', 403);
+
+        DB::transaction(function () use ($survey) {
+            Survey::where('status', 'approved')
+                ->update(['status' => 'archived']);
+
+            $survey->update(['status' => 'approved']);
+        });
+
+        return back()->with('success', 'Survey disetujui & ditampilkan ke public.');
+    }
 
     public function destroy(Survey $survey)
     {
@@ -101,12 +111,4 @@ class SurveyController extends Controller
 
         return view('public.home', compact('survey'));
     }
-
-    public function adminIndex()
-{
-    $surveys = Survey::latest()->get();
-
-    return view('admin.surveys.index', compact('surveys'));
-}
-
 }

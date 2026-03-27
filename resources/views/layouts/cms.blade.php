@@ -959,31 +959,11 @@
             </a>
 
 
-            <a href="{{ route('staff.organization-structure.index') }}" class="lpm-nav-item">
-                <i class="fas fa-sitemap"></i>
-                <span>Struktur Organisasi</span>
-            </a>
-
             <a href="{{ route('staff.password.edit') }}" class="lpm-nav-item">
                 <i class="fas fa-sitemap"></i>
                 <span>Reset Password</span>
             </a>
 
-            <a href="{{ route('staff.spmi.create') }}" class="lpm-nav-item">
-                <i class="fas fa-sitemap"></i>
-                <span>Input Dokumen (Halaman Dokumen)</span>
-            </a>
-
-            <a href="{{ route('staff.mutu-eksternal.create') }}" class="lpm-nav-item">
-                <i class="fas fa-sitemap"></i>
-                <span>Input Mutu Eksternal </span>
-            </a>
-
-            <a href="{{ route('staff.mutu-internal.index') }}" class="lpm-nav-item">
-                <i class="fas fa-sitemap"></i>
-                <span>Input Mutu Internal </span>
-            </a>
-            
             <!-- Logout Button - Tidak menggunakan form langsung -->
             <a href="#" class="lpm-nav-item logout" id="logoutTrigger">
                 <i class="fas fa-sign-out-alt"></i>

@@ -1,23 +1,21 @@
 @extends('layouts.admin')
 
 @section('page-title', 'Manajemen Survey')
+
 @section('content')
 <style>
-    /* Variables - Konsisten dengan layout admin */
     :root {
-        --primary-color: #2563eb;
+        --primary: #2563eb;
         --primary-dark: #1d4ed8;
         --primary-light: #dbeafe;
-        --success-color: #10b981;
+        --success: #10b981;
         --success-light: #d1fae5;
-        --warning-color: #f59e0b;
+        --warning: #f59e0b;
         --warning-light: #fef3c7;
-        --danger-color: #ef4444;
+        --danger: #ef4444;
         --danger-light: #fee2e2;
-        --info-color: #8b5cf6;
-        --info-light: #ede9fe;
-        --archive-color: #6b7280;
-        --archive-light: #f3f4f6;
+        --purple: #8b5cf6;
+        --purple-light: #ede9fe;
         --gray-50: #f9fafb;
         --gray-100: #f3f4f6;
         --gray-200: #e5e7eb;
@@ -28,761 +26,522 @@
         --gray-700: #374151;
         --gray-800: #1f2937;
         --gray-900: #111827;
-        --border-radius: 8px;
-        --border-radius-sm: 6px;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-        --transition: 200ms ease;
-    }
-
-    .admin-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0 16px;
     }
 
     .page-header {
-        margin-bottom: 32px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 28px;
         padding-bottom: 20px;
         border-bottom: 1px solid var(--gray-200);
     }
 
-    .page-title {
-        font-size: 1.75rem;
+    .page-header-left h1 {
+        font-size: 1.625rem;
         font-weight: 700;
         color: var(--gray-900);
-        margin-bottom: 8px;
+        margin: 0 0 4px;
     }
 
-    .page-description {
-        color: var(--gray-600);
-        font-size: 0.9375rem;
-        line-height: 1.5;
+    .page-header-left p {
+        font-size: 0.9rem;
+        color: var(--gray-500);
+        margin: 0;
     }
 
-    /* Alerts */
+    .btn-create {
+        padding: 10px 18px;
+        background: var(--primary);
+        color: #fff;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        transition: background 0.15s;
+        white-space: nowrap;
+    }
+    .btn-create:hover { background: var(--primary-dark); color: #fff; }
+
+    /* Alert */
     .alert {
-        padding: 16px 20px;
-        border-radius: var(--border-radius-sm);
-        margin-bottom: 24px;
+        padding: 14px 18px;
+        border-radius: 8px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 0.9375rem;
+        gap: 10px;
+        font-size: 0.9rem;
+        border-left: 4px solid transparent;
     }
+    .alert-success { background: var(--success-light); color: #065f46; border-color: var(--success); }
+    .alert-error   { background: var(--danger-light);  color: #991b1b; border-color: var(--danger); }
 
-    .alert-success {
-        background-color: var(--success-light);
-        color: var(--success-color);
-        border-left: 4px solid var(--success-color);
-    }
-
-    .alert-error {
-        background-color: var(--danger-light);
-        color: var(--danger-color);
-        border-left: 4px solid var(--danger-color);
-    }
-
-    .alert-warning {
-        background-color: var(--warning-light);
-        color: var(--warning-color);
-        border-left: 4px solid var(--warning-color);
-    }
-
-    .alert-icon {
-        font-size: 1.125rem;
-        flex-shrink: 0;
-    }
-
-    /* Stats Cards */
+    /* Stats */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(1, 1fr);
-        gap: 16px;
-        margin-bottom: 32px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 28px;
     }
-
-    @media (min-width: 640px) {
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (min-width: 768px) {
-        .stats-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    @media (min-width: 1024px) {
-        .stats-grid { grid-template-columns: repeat(4, 1fr); }
-    }
+    @media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .stats-grid { grid-template-columns: repeat(1, 1fr); } }
 
     .stat-card {
-        background: white;
-        border-radius: var(--border-radius);
+        background: #fff;
         border: 1px solid var(--gray-200);
-        padding: 20px;
-        transition: all var(--transition);
-    }
-
-    .stat-card:hover {
-        border-color: var(--primary-color);
-        box-shadow: var(--shadow-md);
-        transform: translateY(-2px);
-    }
-
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
+        border-radius: 10px;
+        padding: 18px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        margin-bottom: 16px;
-        font-size: 1.25rem;
+        gap: 14px;
+        transition: box-shadow 0.15s, transform 0.15s;
     }
+    .stat-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-1px); }
 
-    .stat-icon.total { background-color: var(--primary-light); color: var(--primary-color); }
-    .stat-icon.active { background-color: var(--info-light); color: var(--info-color); }
-    .stat-icon.archive { background-color: var(--archive-light); color: var(--archive-color); }
-    .stat-icon.pending { background-color: var(--warning-light); color: var(--warning-color); }
-
-    .stat-label {
-        font-size: 0.8125rem;
-        color: var(--gray-600);
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 4px;
+    .stat-icon {
+        width: 44px; height: 44px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.1rem; flex-shrink: 0;
     }
+    .stat-icon.blue   { background: var(--primary-light); color: var(--primary); }
+    .stat-icon.green  { background: var(--success-light); color: var(--success); }
+    .stat-icon.yellow { background: var(--warning-light); color: var(--warning); }
+    .stat-icon.gray   { background: var(--gray-100);      color: var(--gray-500); }
 
-    .stat-value {
-        font-size: 1.75rem;
-        font-weight: 700;
-        color: var(--gray-900);
-        line-height: 1.2;
-    }
+    .stat-label { font-size: 0.775rem; color: var(--gray-500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+    .stat-value { font-size: 1.625rem; font-weight: 700; color: var(--gray-900); line-height: 1.2; }
 
-    /* Info Banner */
+    /* Info banner */
     .info-banner {
-        background: linear-gradient(135deg, var(--primary-light) 0%, #eff6ff 100%);
-        border: 1px solid var(--primary-color);
-        border-radius: var(--border-radius);
-        padding: 16px 24px;
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border: 1px solid #bfdbfe;
+        border-radius: 10px;
+        padding: 14px 20px;
         margin-bottom: 24px;
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 14px;
         color: var(--primary-dark);
+        font-size: 0.9rem;
     }
+    .info-banner i { font-size: 1.25rem; flex-shrink: 0; }
 
-    .info-banner i {
-        font-size: 1.5rem;
-    }
-
-    .info-banner-content {
-        flex: 1;
-    }
-
-    .info-banner-title {
-        font-weight: 600;
-        margin-bottom: 4px;
-    }
-
-    .info-banner-text {
-        font-size: 0.875rem;
-        opacity: 0.9;
-    }
-
-    /* Table Container */
-    .table-container {
-        background: white;
-        border-radius: var(--border-radius);
+    /* Table */
+    .table-card {
+        background: #fff;
         border: 1px solid var(--gray-200);
-        box-shadow: var(--shadow-sm);
+        border-radius: 10px;
         overflow: hidden;
-        margin-bottom: 40px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
 
-    .responsive-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+    .responsive-table { width: 100%; border-collapse: collapse; }
 
     .responsive-table thead {
-        background-color: var(--gray-50);
+        background: var(--gray-50);
         border-bottom: 2px solid var(--gray-200);
     }
-
     .responsive-table th {
-        padding: 16px 20px;
+        padding: 13px 18px;
         text-align: left;
-        font-size: 0.8125rem;
+        font-size: 0.775rem;
         font-weight: 600;
-        color: var(--gray-600);
+        color: var(--gray-500);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         white-space: nowrap;
     }
-
     .responsive-table td {
-        padding: 20px;
-        font-size: 0.9375rem;
+        padding: 18px;
+        font-size: 0.9rem;
         color: var(--gray-700);
         border-bottom: 1px solid var(--gray-100);
         vertical-align: middle;
     }
-
     .responsive-table tbody tr:last-child td { border-bottom: none; }
-    .responsive-table tbody tr:hover { background-color: var(--gray-50); }
-    
-    /* Row Styling */
-    .row-active {
-        background-color: rgba(139, 92, 246, 0.05);
-        border-left: 4px solid var(--info-color);
-    }
-    
-    .row-pending {
-        background-color: rgba(245, 158, 11, 0.05);
-        border-left: 4px solid var(--warning-color);
-    }
-    
-    .row-archived {
-        background-color: rgba(107, 114, 128, 0.05);
-        border-left: 4px solid var(--archive-color);
-    }
+    .responsive-table tbody tr:hover { background: var(--gray-50); }
 
-    /* Survey Info */
-    .survey-title {
+    .row-active   { border-left: 4px solid var(--purple); background: rgba(139,92,246,0.03); }
+    .row-pending  { border-left: 4px solid var(--warning); background: rgba(245,158,11,0.03); }
+    .row-archived { border-left: 4px solid var(--gray-300); background: rgba(107,114,128,0.03); }
+
+    /* Survey info */
+    .survey-name {
         font-weight: 600;
         color: var(--gray-900);
         margin-bottom: 4px;
-        line-height: 1.4;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
         gap: 8px;
     }
+    .survey-name.is-active { color: var(--purple); }
 
-    .active-survey-title {
-        color: var(--info-color);
+    .badge-active-inline {
+        font-size: 0.65rem;
         font-weight: 700;
-    }
-
-    .active-badge-small {
-        display: inline-block;
-        background-color: var(--info-light);
-        color: var(--info-color);
-        font-size: 0.6875rem;
-        font-weight: 600;
         padding: 2px 8px;
-        border-radius: 12px;
+        border-radius: 20px;
+        background: var(--purple-light);
+        color: var(--purple);
+        border: 1px solid var(--purple);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        border: 1px solid var(--info-color);
+        letter-spacing: 0.04em;
     }
 
-    .survey-description {
+    .survey-desc {
         font-size: 0.8125rem;
-        color: var(--gray-600);
+        color: var(--gray-500);
+        margin-top: 4px;
         line-height: 1.5;
-        margin-top: 6px;
     }
 
     .survey-meta {
         display: flex;
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
         margin-top: 8px;
-        font-size: 0.8125rem;
-        color: var(--gray-600);
-    }
-
-    .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .meta-icon {
+        font-size: 0.8rem;
         color: var(--gray-500);
-        font-size: 0.875rem;
     }
+    .meta-item { display: flex; align-items: center; gap: 5px; }
 
-    /* Status Badge - Sederhana & Jelas */
+    /* Status badge */
     .status-badge {
         display: inline-flex;
         align-items: center;
-        padding: 8px 16px;
+        gap: 6px;
+        padding: 6px 14px;
         border-radius: 20px;
-        font-size: 0.8125rem;
+        font-size: 0.8rem;
         font-weight: 600;
-        gap: 8px;
         border: 1px solid transparent;
+        white-space: nowrap;
     }
+    .badge-active   { background: var(--purple-light); color: var(--purple);   border-color: var(--purple); }
+    .badge-pending  { background: var(--warning-light); color: #92400e;         border-color: var(--warning); }
+    .badge-archived { background: var(--gray-100);      color: var(--gray-500); border-color: var(--gray-300); }
 
-    .status-active {
-        background-color: var(--info-light);
-        color: var(--info-color);
-        border: 1px solid var(--info-color);
-    }
-
-    .status-archived {
-        background-color: var(--archive-light);
-        color: var(--archive-color);
-        border: 1px solid var(--archive-color);
-    }
-
-    .status-pending {
-        background-color: var(--warning-light);
-        color: var(--warning-color);
-        border: 1px solid var(--warning-color);
-    }
-
-    /* QR Code */
-    .qr-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .qr-image {
-        width: 80px;
-        height: 80px;
+    /* QR */
+    .qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .qr-img {
+        width: 72px; height: 72px;
         border: 1px solid var(--gray-200);
-        border-radius: var(--border-radius-sm);
-        padding: 4px;
-        background: white;
-        transition: transform var(--transition);
+        border-radius: 6px;
+        padding: 3px;
+        background: #fff;
         cursor: pointer;
+        transition: transform 0.15s;
     }
+    .qr-img:hover { transform: scale(1.08); }
+    .qr-dl { font-size: 0.75rem; color: var(--primary); text-decoration: none; font-weight: 500; }
+    .qr-dl:hover { text-decoration: underline; }
 
-    .qr-image:hover { transform: scale(1.1); }
-    .qr-action {
-        font-size: 0.75rem;
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 500;
-    }
-    .qr-action:hover { text-decoration: underline; }
-
-    /* Action Buttons */
-    .action-buttons {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        min-width: 140px;
-    }
+    /* Action buttons */
+    .action-col { display: flex; flex-direction: column; gap: 7px; min-width: 130px; }
 
     .btn {
-        padding: 8px 16px;
-        border-radius: var(--border-radius-sm);
+        padding: 7px 14px;
+        border-radius: 7px;
         font-size: 0.8125rem;
         font-weight: 500;
-        text-decoration: none;
         cursor: pointer;
         border: 1px solid transparent;
-        transition: all var(--transition);
+        transition: all 0.15s;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
         white-space: nowrap;
+        text-decoration: none;
+        font-family: inherit;
+        width: 100%;
     }
+    .btn-view     { background: #fff; color: var(--gray-700); border-color: var(--gray-300); }
+    .btn-view:hover { background: var(--gray-50); }
+    .btn-activate { background: var(--purple); color: #fff; border-color: var(--purple); }
+    .btn-activate:hover { background: #7c3aed; }
+    .btn-approve  { background: var(--success); color: #fff; border-color: var(--success); }
+    .btn-approve:hover { background: #059669; }
+    .btn-danger   { background: var(--danger); color: #fff; border-color: var(--danger); }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-disabled { background: var(--purple-light); color: var(--purple); border-color: var(--purple); cursor: default; opacity: 0.8; }
 
-    .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
-    .btn-view { background-color: white; color: var(--gray-700); border-color: var(--gray-300); }
-    .btn-view:hover { background-color: var(--gray-50); border-color: var(--gray-400); }
-    
-    .btn-activate {
-        background-color: var(--info-color);
-        color: white;
-        border-color: var(--info-color);
-    }
-    .btn-activate:hover { background-color: #7c3aed; border-color: #7c3aed; }
-    
-    .btn-approve {
-        background-color: var(--success-color);
-        color: white;
-        border-color: var(--success-color);
-    }
-    .btn-approve:hover { background-color: #0da271; border-color: #0da271; }
-    
-    .btn-archive-action {
-        background-color: var(--archive-color);
-        color: white;
-        border-color: var(--archive-color);
-    }
-    .btn-archive-action:hover { background-color: #4b5563; border-color: #4b5563; }
-    
-    .btn-pending {
-        background-color: var(--warning-color);
-        color: white;
-        border-color: var(--warning-color);
-    }
-    .btn-pending:hover { background-color: #d97706; border-color: #d97706; }
-    
-    .btn-danger {
-        background-color: var(--danger-color);
-        color: white;
-        border-color: var(--danger-color);
-    }
-    .btn-danger:hover { background-color: #dc2626; border-color: #dc2626; }
-    
-    .btn-outline {
-        background-color: white;
-        color: var(--gray-700);
-        border-color: var(--gray-300);
-    }
-    .btn-outline:hover { background-color: var(--gray-50); }
+    .form-inline { display: contents; }
 
-    .form-inline { display: inline; }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        color: var(--gray-500);
-    }
-    .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }
-    .empty-text { font-size: 1rem; color: var(--gray-600); margin-bottom: 8px; }
-    .empty-subtext { font-size: 0.875rem; color: var(--gray-500); margin-bottom: 24px; }
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-500); }
+    .empty-state i { font-size: 2.5rem; opacity: 0.35; margin-bottom: 14px; display: block; }
+    .empty-state p { font-size: 0.95rem; margin: 0 0 6px; color: var(--gray-600); }
+    .empty-state small { font-size: 0.85rem; color: var(--gray-400); }
 
     /* Modal */
-    .modal {
+    .modal-overlay {
         display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.45);
         z-index: 1000;
         align-items: center;
         justify-content: center;
         padding: 16px;
     }
-    .modal-content {
-        background: white;
-        border-radius: var(--border-radius);
+    .modal-box {
+        background: #fff;
+        border-radius: 12px;
         width: 100%;
-        max-width: 500px;
-        max-height: 90vh;
-        overflow-y: auto;
-        animation: modalSlide 0.3s ease;
+        max-width: 420px;
+        animation: modalIn 0.2s ease;
+        overflow: hidden;
     }
-    @keyframes modalSlide {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
+    @keyframes modalIn {
+        from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+        to   { opacity: 1; transform: scale(1) translateY(0); }
     }
-    .modal-header {
-        padding: 24px 24px 16px;
-        border-bottom: 1px solid var(--gray-200);
+    .modal-head {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--gray-100);
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    .modal-title { font-size: 1.25rem; font-weight: 600; color: var(--gray-900); }
-    .modal-close {
-        background: none; border: none; font-size: 1.5rem; color: var(--gray-500);
-        cursor: pointer; line-height: 1; padding: 4px;
-    }
-    .modal-close:hover { color: var(--gray-700); }
-    .modal-body { padding: 24px; }
+    .modal-head h3 { font-size: 1.1rem; font-weight: 600; color: var(--gray-900); margin: 0; }
+    .modal-close-btn { background: none; border: none; font-size: 1.4rem; color: var(--gray-400); cursor: pointer; line-height: 1; padding: 2px; }
+    .modal-close-btn:hover { color: var(--gray-700); }
+    .modal-body-inner { padding: 24px; text-align: center; }
 
-    /* Responsive */
     @media (max-width: 768px) {
-        .admin-container { padding: 0 12px; }
-        .page-header { margin-bottom: 24px; }
-        .page-title { font-size: 1.5rem; }
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-        .responsive-table {
-            display: block;
-            overflow-x: auto;
-        }
-        .action-buttons {
-            width: 100%;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        .row-active, .row-pending, .row-archived {
-            border-left-width: 2px;
-        }
-    }
-    @media (max-width: 480px) {
-        .page-title { font-size: 1.25rem; }
-        .stats-grid { grid-template-columns: repeat(1, 1fr); }
-        .action-buttons { flex-direction: column; }
-        .action-buttons .btn { width: 100%; justify-content: center; }
+        .responsive-table { display: block; overflow-x: auto; }
+        .action-col { flex-direction: row; flex-wrap: wrap; }
+        .action-col .btn { width: auto; flex: 1; min-width: 100px; }
     }
 </style>
 
-<div class="admin-container">
-    <!-- Page Header -->
+<div>
+    {{-- Page Header --}}
     <div class="page-header">
-        <h1 class="page-title">Manajemen Survey</h1>
-        <p class="page-description">
-            <strong>Aturan Survey:</strong> Hanya <strong>1 (satu) survey</strong> yang dapat berstatus <span class="status-badge status-active" style="padding: 4px 12px; font-size: 0.75rem;">AKTIF</span> dalam satu waktu. 
-            Anda dapat memilih dan mengaktifkan survey manapun yang sedang tidak aktif.
-        </p>
+        <div class="page-header-left">
+            <h1>Manajemen Survey</h1>
+            <p>Kelola dan aktifkan survey yang akan ditampilkan ke publik</p>
+        </div>
+        <a href="{{ route('admin.surveys.create') }}" class="btn-create">
+            <i class="fas fa-plus"></i> Buat Survey Baru
+        </a>
     </div>
 
-    <!-- Info Banner - Menjelaskan Logika -->
-    <div class="info-banner">
-        <i class="fas fa-info-circle"></i>
-        <div class="info-banner-content">
-            <div class="info-banner-title">⚡ Pilih Survey yang Akan Aktif</div>
-            <div class="info-banner-text">
-                Klik tombol <strong>"Aktifkan"</strong> pada survey yang ingin dijadikan aktif. 
-                Survey yang sedang aktif akan otomatis diarsipkan dan digantikan oleh survey yang baru Anda pilih.
-            </div>
-        </div>
-    </div>
-
-    <!-- Stats Cards -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="stat-icon total">
-                <i class="fas fa-poll"></i>
-            </div>
-            <div class="stat-content">
-                <div class="stat-label">Total Survey</div>
-                <div class="stat-value">{{ $surveys->count() }}</div>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon active">
-                <i class="fas fa-play-circle"></i>
-            </div>
-            <div class="stat-content">
-                <div class="stat-label">Aktif Saat Ini</div>
-                <div class="stat-value">
-                    {{ $surveys->where('status', 'approved')->where('archive', false)->count() }}
-                </div>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon pending">
-                <i class="fas fa-clock"></i>
-            </div>
-            <div class="stat-content">
-                <div class="stat-label">Menunggu Approval</div>
-                <div class="stat-value">{{ $surveys->where('status', 'pending')->count() }}</div>
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon archive">
-                <i class="fas fa-archive"></i>
-            </div>
-            <div class="stat-content">
-                <div class="stat-label">Diarsipkan</div>
-                <div class="stat-value">{{ $surveys->where('archive', true)->count() }}</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Alerts -->
+    {{-- Alerts --}}
     @if(session('success'))
         <div class="alert alert-success">
-            <i class="fas fa-check-circle alert-icon"></i>
-            {{ session('success') }}
+            <i class="fas fa-check-circle"></i> {{ session('success') }}
         </div>
     @endif
-
-    @if(session('error'))
+    @if(session('error') || $errors->any())
         <div class="alert alert-error">
-            <i class="fas fa-exclamation-circle alert-icon"></i>
-            {{ session('error') }}
+            <i class="fas fa-exclamation-circle"></i>
+            {{ session('error') ?? $errors->first() }}
         </div>
     @endif
 
-    @if(session('warning'))
-        <div class="alert alert-warning">
-            <i class="fas fa-exclamation-triangle alert-icon"></i>
-            {{ session('warning') }}
-        </div>
-    @endif
+    {{-- Stats --}}
+    @php
+        $totalSurveys    = $surveys->count();
+        $activeSurveys   = $surveys->where('status', 'approved')->count();
+        $pendingSurveys  = $surveys->where('status', 'pending')->count();
+        $archivedSurveys = $surveys->where('status', 'archived')->count();
+    @endphp
 
-    <!-- Table Container -->
-    <div class="table-container">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-poll"></i></div>
+            <div>
+                <div class="stat-label">Total Survey</div>
+                <div class="stat-value">{{ $totalSurveys }}</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-play-circle"></i></div>
+            <div>
+                <div class="stat-label">Aktif</div>
+                <div class="stat-value">{{ $activeSurveys }}</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon yellow"><i class="fas fa-clock"></i></div>
+            <div>
+                <div class="stat-label">Pending</div>
+                <div class="stat-value">{{ $pendingSurveys }}</div>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon gray"><i class="fas fa-archive"></i></div>
+            <div>
+                <div class="stat-label">Diarsipkan</div>
+                <div class="stat-value">{{ $archivedSurveys }}</div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Info banner --}}
+    <div class="info-banner">
+        <i class="fas fa-info-circle"></i>
+        <div>
+            <strong>Cara kerja:</strong> Klik <strong>"Aktifkan"</strong> untuk menampilkan survey ke publik.
+            Survey aktif sebelumnya akan otomatis diarsipkan. Hanya 1 survey yang bisa aktif pada satu waktu.
+        </div>
+    </div>
+
+    {{-- Table --}}
+    <div class="table-card">
         @if($surveys->count() > 0)
+            @php
+                $activeSurvey = $surveys->where('status', 'approved')->first();
+            @endphp
+
             <table class="responsive-table">
                 <thead>
                     <tr>
                         <th>Informasi Survey</th>
-                        <th>Status Saat Ini</th>
+                        <th>Status</th>
                         <th>QR Code</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $activeSurvey = $surveys->where('status', 'approved')->where('archive', false)->first();
-                    @endphp
-
                     @foreach($surveys as $survey)
                         @php
-                            $rowClass = '';
-                            if ($survey->id === optional($activeSurvey)->id) {
-                                $rowClass = 'row-active';
-                            } elseif ($survey->status === 'pending') {
-                                $rowClass = 'row-pending';
-                            } elseif ($survey->archive) {
-                                $rowClass = 'row-archived';
-                            }
+                            $isActive = $activeSurvey && $survey->id === $activeSurvey->id;
+                            $rowClass = $isActive ? 'row-active'
+                                      : ($survey->status === 'pending' ? 'row-pending'
+                                      : ($survey->status === 'archived' ? 'row-archived' : ''));
                         @endphp
-                        
+
                         <tr class="{{ $rowClass }}">
-                            <td data-label="Informasi Survey">
-                                <div class="survey-title {{ $survey->id === optional($activeSurvey)->id ? 'active-survey-title' : '' }}">
+                            {{-- Info --}}
+                            <td>
+                                <div class="survey-name {{ $isActive ? 'is-active' : '' }}">
                                     {{ $survey->title }}
-                                    
-                                    @if($survey->id === optional($activeSurvey)->id)
-                                        <span class="active-badge-small">
-                                            <i class="fas fa-play-circle"></i> AKTIF
+                                    @if($isActive)
+                                        <span class="badge-active-inline">
+                                            <i class="fas fa-circle" style="font-size:0.5rem"></i> AKTIF
                                         </span>
                                     @endif
                                 </div>
-                                
+
                                 @if($survey->description)
-                                    <div class="survey-description">
-                                        {{ Str::limit($survey->description, 100) }}
-                                    </div>
+                                    <div class="survey-desc">{{ Str::limit($survey->description, 90) }}</div>
                                 @endif
-                                
+
                                 <div class="survey-meta">
                                     <div class="meta-item">
-                                        <i class="fas fa-user meta-icon"></i>
-                                        <span>{{ $survey->user->name ?? 'Unknown' }}</span>
+                                        <i class="fas fa-user"></i>
+                                        {{ $survey->user->name ?? 'Admin' }}
                                     </div>
-                                    
                                     <div class="meta-item">
-                                        <i class="fas fa-calendar meta-icon"></i>
-                                        <span>{{ $survey->created_at->format('d/m/Y') }}</span>
+                                        <i class="fas fa-calendar-alt"></i>
+                                        {{ $survey->created_at->format('d M Y') }}
                                     </div>
-                                    
-                                    @if($survey->questions_count ?? false)
+                                    @if($survey->survey_url)
                                         <div class="meta-item">
-                                            <i class="fas fa-question-circle meta-icon"></i>
-                                            <span>{{ $survey->questions_count }} pertanyaan</span>
-                                        </div>
-                                    @endif
-                                    
-                                    @if($survey->archive && $survey->archived_at)
-                                        <div class="meta-item">
-                                            <i class="fas fa-clock meta-icon"></i>
-                                            <span>Diarsipkan: {{ \Carbon\Carbon::parse($survey->archived_at)->diffForHumans() }}</span>
-                                        </div>
-                                    @endif
-                                    
-                                    @if($survey->status === 'pending')
-                                        <div class="meta-item">
-                                            <i class="fas fa-hourglass-half meta-icon"></i>
-                                            <span>Menunggu approval</span>
+                                            <a href="{{ $survey->survey_url }}" target="_blank" style="color: var(--primary); font-size:0.8rem;">
+                                                <i class="fas fa-external-link-alt"></i> Buka Form
+                                            </a>
                                         </div>
                                     @endif
                                 </div>
                             </td>
-                            
-                            <td data-label="Status Saat Ini">
-                                @if($survey->status === 'pending')
-                                    <span class="status-badge status-pending">
+
+                            {{-- Status --}}
+                            <td>
+                                @if($isActive)
+                                    <span class="status-badge badge-active">
+                                        <i class="fas fa-play-circle"></i> Aktif
+                                    </span>
+                                @elseif($survey->status === 'pending')
+                                    <span class="status-badge badge-pending">
                                         <i class="fas fa-clock"></i> Pending
                                     </span>
-                                @elseif($survey->status === 'approved')
-                                    @if(!$survey->archive)
-                                        <span class="status-badge status-active">
-                                            <i class="fas fa-play-circle"></i> AKTIF
-                                        </span>
-                                    @else
-                                        <span class="status-badge status-archived">
-                                            <i class="fas fa-archive"></i> Diarsipkan
-                                        </span>
-                                    @endif
+                                @elseif($survey->status === 'archived')
+                                    <span class="status-badge badge-archived">
+                                        <i class="fas fa-archive"></i> Diarsipkan
+                                    </span>
+                                @else
+                                    <span class="status-badge badge-archived">
+                                        <i class="fas fa-minus-circle"></i> {{ ucfirst($survey->status) }}
+                                    </span>
                                 @endif
                             </td>
-                            
-                            <td data-label="QR Code">
+
+                            {{-- QR --}}
+                            <td>
                                 @if($survey->qr_code)
-                                    <div class="qr-container">
+                                    <div class="qr-wrap">
                                         <img src="{{ asset('storage/' . $survey->qr_code) }}"
-                                             alt="QR Code Survey"
-                                             class="qr-image"
-                                             onclick="viewQrCode('{{ asset('storage/' . $survey->qr_code) }}', '{{ $survey->title }}')">
-                                        <a href="{{ asset('storage/' . $survey->qr_code) }}" 
-                                           download="qr-code-{{ Str::slug($survey->title) }}.png"
-                                           class="qr-action">
+                                             alt="QR Code"
+                                             class="qr-img"
+                                             onclick="openQrModal('{{ asset('storage/' . $survey->qr_code) }}', '{{ addslashes($survey->title) }}')">
+                                        <a href="{{ asset('storage/' . $survey->qr_code) }}"
+                                           download="qr-{{ Str::slug($survey->title) }}.svg"
+                                           class="qr-dl">
                                             <i class="fas fa-download"></i> Download
                                         </a>
                                     </div>
                                 @else
-                                    <div style="color: var(--gray-400); font-size: 0.875rem;">
-                                        <i class="fas fa-qrcode"></i> Tidak tersedia
-                                    </div>
+                                    <span style="font-size:0.8rem; color: var(--gray-400);">
+                                        <i class="fas fa-qrcode"></i> Tidak ada
+                                    </span>
                                 @endif
                             </td>
-                            
-                            <td data-label="Aksi">
-                                <div class="action-buttons">
-                                    <!-- BUTTON DETAIL - Selalu Ada untuk Semua Survey -->
-                                    <button type="button" 
-                                            class="btn btn-view btn-sm"
-                                            onclick="viewSurveyDetails({{ $survey->id }})">
-                                        <i class="fas fa-eye"></i> Detail
-                                    </button>
 
-                                    @if($survey->id === optional($activeSurvey)->id)
-                                        <!-- ========== SURVEY SEDANG AKTIF ========== -->
-                                        <span class="btn btn-sm" style="background: var(--info-light); color: var(--info-color); border: 1px solid var(--info-color); cursor: default; width: 100%;">
+                            {{-- Aksi --}}
+                            <td>
+                                <div class="action-col">
+                                    @if($isActive)
+                                        {{-- Sedang aktif --}}
+                                        <span class="btn btn-disabled">
                                             <i class="fas fa-check-circle"></i> Sedang Aktif
                                         </span>
-                                        
-                                    @else
-                                        <!-- ========== SURVEY TIDAK AKTIF ========== -->
-                                        @if($survey->status === 'approved')
-    <form method="POST" 
-          action="{{ route('admin.surveys.activate', $survey) }}" 
-          class="form-inline w-full">
-        @csrf
-        <button type="submit" 
-                class="btn btn-activate btn-sm" 
-                style="width: 100%;"
-                onclick="return confirm('Aktifkan survey \"{{ addslashes($survey->title) }}\"?\n\nSurvey aktif saat ini akan diarsipkan.')">
-            <i class="fas fa-play-circle"></i> Aktifkan
-        </button>
-    </form>
-@endif
 
-                                        <!-- SEMUA SURVEY YANG TIDAK AKTIF BISA DIAKTIFKAN -->
-                                        
-                                        @if($survey->status === 'pending')
-                                            <!-- Untuk Pending: Approve Sekaligus Aktifkan -->
-                                            <form method="POST" 
-                                                  action="{{ route('admin.surveys.approve', $survey) }}" 
-                                                  class="form-inline w-full">
-                                                @csrf
-                                                <button type="submit" class="btn btn-approve btn-sm" style="width: 100%;"
-                                                        onclick="return confirm('Setujui dan aktifkan survey \"{{ addslashes($survey->title) }}\"?\n\nSurvey yang sedang aktif akan otomatis diarsipkan.')">
-                                                    <i class="fas fa-check-circle"></i> Approve & Aktifkan
-                                                </button>
-                                            </form>
-                                        @else
-                                        
-                                        @endif
-                                        
-                                        <!-- Tombol Hapus hanya untuk yang sudah diarsipkan -->
-                                        @if($survey->archive)
-                                            <form method="POST" 
-                                                  action="{{ route('admin.surveys.destroy', $survey) }}" 
-                                                  class="form-inline w-full">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" style="width: 100%;"
-                                                        onclick="return confirm('Hapus permanen survey \"{{ addslashes($survey->title) }}\"? Tindakan ini tidak dapat dibatalkan.')">
-                                                    <i class="fas fa-trash"></i> Hapus
-                                                </button>
-                                            </form>
-                                        @endif
+                                    @elseif($survey->status === 'pending')
+                                        {{-- Approve & aktifkan --}}
+                                        <form method="POST" action="{{ route('admin.surveys.approve', $survey) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-approve"
+                                                    onclick="return confirm('Setujui dan aktifkan survey ini?\nSurvey aktif saat ini akan diarsipkan.')">
+                                                <i class="fas fa-check"></i> Approve & Aktifkan
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ route('admin.surveys.destroy', $survey) }}">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Hapus survey ini?')">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </button>
+                                        </form>
+
+                                    @elseif($survey->status === 'archived')
+                                        {{-- Aktifkan kembali --}}
+                                        <form method="POST" action="{{ route('admin.surveys.activate', $survey) }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-activate"
+                                                    onclick="return confirm('Aktifkan survey ini?\nSurvey aktif saat ini akan diarsipkan.')">
+                                                <i class="fas fa-play-circle"></i> Aktifkan
+                                            </button>
+                                        </form>
+                                        <form method="POST" action="{{ route('admin.surveys.destroy', $survey) }}">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Hapus permanen survey ini? Tidak dapat dibatalkan.')">
+                                                <i class="fas fa-trash"></i> Hapus
+                                            </button>
+                                        </form>
                                     @endif
                                 </div>
                             </td>
@@ -792,40 +551,25 @@
             </table>
         @else
             <div class="empty-state">
-                <div class="empty-icon">
-                    <i class="fas fa-poll-h"></i>
-                </div>
-                <p class="empty-text">Belum ada survey</p>
-                <p class="empty-subtext">Survey yang diajukan oleh staff akan muncul di sini</p>
+                <i class="fas fa-poll-h"></i>
+                <p>Belum ada survey</p>
+                <small>Klik tombol "Buat Survey Baru" untuk membuat survey pertama</small>
             </div>
         @endif
     </div>
 </div>
 
-<!-- Modal for Survey Details -->
-<div id="surveyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Detail Survey</h2>
-            <button class="modal-close" onclick="closeModal()">&times;</button>
+{{-- QR Modal --}}
+<div class="modal-overlay" id="qrModal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3 id="qrModalTitle">QR Code</h3>
+            <button class="modal-close-btn" onclick="closeQrModal()">&times;</button>
         </div>
-        <div class="modal-body" id="modalContent">
-            <!-- Content will be loaded here -->
-        </div>
-    </div>
-</div>
-
-<!-- Modal for QR Code -->
-<div id="qrModal" class="modal">
-    <div class="modal-content" style="max-width: 400px;">
-        <div class="modal-header">
-            <h2 class="modal-title" id="qrModalTitle">QR Code</h2>
-            <button class="modal-close" onclick="closeQrModal()">&times;</button>
-        </div>
-        <div class="modal-body" style="text-align: center; padding: 32px;">
-            <img id="qrModalImage" src="" alt="QR Code" style="max-width: 100%; height: auto;">
-            <div style="margin-top: 20px;">
-                <a id="qrDownloadLink" href="#" download class="btn btn-activate" style="width: 100%;">
+        <div class="modal-body-inner">
+            <img id="qrModalImg" src="" alt="QR Code" style="max-width:100%; border-radius:8px; border:1px solid #e5e7eb; padding:8px;">
+            <div style="margin-top:16px;">
+                <a id="qrDownloadBtn" href="#" download class="btn-create" style="justify-content:center; display:flex;">
                     <i class="fas fa-download"></i> Download QR Code
                 </a>
             </div>
@@ -834,89 +578,34 @@
 </div>
 
 <script>
-// View Survey Details
-function viewSurveyDetails(id) {
-    const modal = document.getElementById('surveyModal');
-    const content = document.getElementById('modalContent');
-    
-    content.innerHTML = `
-        <div style="text-align: center; padding: 40px 20px;">
-            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color); margin-bottom: 16px;"></i>
-            <p style="color: var(--gray-600);">Memuat detail survey...</p>
-        </div>
-    `;
-    
-    modal.style.display = 'flex';
+function openQrModal(src, title) {
+    document.getElementById('qrModalImg').src = src;
+    document.getElementById('qrModalTitle').textContent = 'QR: ' + title;
+    document.getElementById('qrDownloadBtn').href = src;
+    document.getElementById('qrDownloadBtn').download = 'qr-' + title.replace(/\s+/g,'-').toLowerCase() + '.svg';
+    document.getElementById('qrModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    
-    // Simulasi AJAX
-    setTimeout(() => {
-        content.innerHTML = `
-            <div style="margin-bottom: 24px;">
-                <div style="font-size: 1.125rem; font-weight: 600; color: var(--gray-900); margin-bottom: 16px;">
-                    Detail Survey #${id}
-                </div>
-                <div style="background: var(--gray-50); padding: 20px; border-radius: var(--border-radius-sm);">
-                    <p style="color: var(--gray-600); margin-bottom: 12px;">
-                        <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
-                        Fitur detail survey akan segera tersedia.
-                    </p>
-                </div>
-            </div>
-        `;
-    }, 500);
-}
-
-// View QR Code
-function viewQrCode(imageSrc, title) {
-    const modal = document.getElementById('qrModal');
-    const qrImage = document.getElementById('qrModalImage');
-    const qrTitle = document.getElementById('qrModalTitle');
-    const qrDownloadLink = document.getElementById('qrDownloadLink');
-    
-    qrImage.src = imageSrc;
-    qrTitle.textContent = `QR Code: ${title}`;
-    qrDownloadLink.href = imageSrc;
-    qrDownloadLink.download = `qr-code-${title.replace(/\s+/g, '-').toLowerCase()}.png`;
-    
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-
-// Close modals
-function closeModal() {
-    document.getElementById('surveyModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
 }
 
 function closeQrModal() {
     document.getElementById('qrModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
 }
 
-// Close modals when clicking outside
-document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal')) {
-        e.target.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
+document.getElementById('qrModal').addEventListener('click', function(e) {
+    if (e.target === this) closeQrModal();
 });
 
-// Close modals with Escape key
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        closeModal();
-        closeQrModal();
-    }
+    if (e.key === 'Escape') closeQrModal();
 });
 
-// Auto-hide alerts after 5 seconds
-setTimeout(() => {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => {
-        alert.style.transition = 'opacity 0.3s ease';
-        alert.style.opacity = '0';
-        setTimeout(() => alert.remove(), 300);
+// Auto-dismiss alerts
+setTimeout(function() {
+    document.querySelectorAll('.alert').forEach(function(el) {
+        el.style.transition = 'opacity 0.4s';
+        el.style.opacity = '0';
+        setTimeout(function() { el.remove(); }, 400);
     });
 }, 5000);
 </script>

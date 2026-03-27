@@ -102,11 +102,6 @@ Route::post('/spmi',
         Route::delete('/news/{news}', [NewsController::class, 'destroy'])
             ->name('news.destroy');
 
-    /* ================= Survey (STAFF) ================= */
-        Route::post('/surveys', [SurveyController::class, 'store'])
-            ->name('surveys.store');
-        Route::get('/surveys/create', [SurveyController::class, 'create'])
-            ->name('surveys.create');
 
     /* ================= MUTU EKSTERNAL (STAFF) ================= */
         Route::resource('mutu-eksternal',
@@ -220,6 +215,14 @@ Route::post('/spmi/{id}/reject',
     [AdminSpmi::class, 'reject']
 )->name('spmi.reject');
 
+/* ================= SURVEY (ADMIN) ================= */
+Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
+Route::get('/surveys/create', [SurveyController::class, 'create'])->name('surveys.create');
+Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
+Route::post('/surveys/{survey}/approve', [SurveyController::class, 'approve'])->name('surveys.approve');
+Route::post('/surveys/{survey}/activate', [SurveyController::class, 'activate'])->name('surveys.activate'); // ← tambahkan ini
+Route::delete('/surveys/{survey}', [SurveyController::class, 'destroy'])->name('surveys.destroy');
+
 
 /* ================= MUTU EKSTERNAL (ADMIN) ================= */
 
@@ -283,10 +286,6 @@ Route::delete('/organization-structure/{id}',              [OrganizationStructur
             ->name('videos.toggle-publish');
         Route::post('/videos/{video}/featured', [VideoController::class, 'setFeatured'])
             ->name('videos.featured');
-        Route::post('/surveys/{survey}/approve', [SurveyController::class, 'approve'])
-            ->name('surveys.approve');
-        Route::get('/surveys', [SurveyController::class, 'adminIndex'])
-            ->name('surveys.index');
 
        /* ================= HERO BANNER (ADMIN) ================= */
 Route::get('/hero-banners',                        [HeroBannerController::class, 'index'])->name('hero-banners.index');

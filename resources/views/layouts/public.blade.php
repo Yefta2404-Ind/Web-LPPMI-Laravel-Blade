@@ -1795,7 +1795,6 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="copyright">© {{ date('Y') }} Lembaga Penjaminan Mutu — Universitas Gunung Kidul. All rights reserved.</p>
             </div>
         </div>
     </footer>
