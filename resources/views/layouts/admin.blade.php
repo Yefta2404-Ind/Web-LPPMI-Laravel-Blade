@@ -1,1236 +1,1109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - @yield('title', 'LPMI')</title>
+    <title>Panel Admin - @yield('title', 'LPMI')</title>
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-<script src="https://cdn.tailwindcss.com"></script>
-    <style>
-/* Fix supaya TinyMCE tidak rusak karena Tailwind */
-.tox-tinymce {
-    border: 1px solid #ccc !important;
-    border-radius: 6px !important;
-}
-
-.tox .tox-toolbar,
-.tox .tox-toolbar__primary {
-    background-color: #fff !important;
-}
-
-.tox button {
-    all: unset;
-}
-</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
     <style>
+        /* ============================================================
+           VARIABEL DESAIN
+        ============================================================ */
         :root {
-            --lpm-primary: #0f2a44;
-            --lpm-primary-light: #1e3a5c;
-            --lpm-secondary: #2563eb;
-            --lpm-accent: #059669;
-            --lpm-light: #f8fafc;
-            --lpm-dark: #1e293b;
-            --lpm-gray: #64748b;
-            --lpm-gray-light: #e2e8f0;
-            --lpm-gray-border: #cbd5e1;
-            --lpm-danger: #dc2626;
-            --lpm-warning: #d97706;
-            --lpm-info: #0ea5e9;
-            --lpm-sidebar-width: 280px;
-            --lpm-topbar-height: 64px;
-            --lpm-border-radius: 8px;
-            --lpm-border-radius-sm: 6px;
-            --lpm-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --lpm-shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            --lpm-shadow-xl: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
-            --lpm-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --lpm-transition-slow: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --warna-utama:          #1a3a5c;
+            --warna-utama-gelap:    #0f2440;
+            --warna-utama-cerah:    #2a5080;
+            --warna-aksen:          #2d7dd2;
+            --warna-aksen-hover:    #1e5fa8;
+            --warna-sukses:         #0d9e6e;
+            --warna-bahaya:         #e03e3e;
+            --warna-peringatan:     #d68910;
+            --warna-info:           #1a8fe0;
+
+            --bg-halaman:           #f0f4f8;
+            --bg-kartu:             #ffffff;
+            --bg-sidebar-atas:      #1a3a5c;
+            --bg-sidebar-bawah:     #102a44;
+
+            --teks-utama:           #1a2535;
+            --teks-kedua:           #4a5568;
+            --teks-lemah:           #8898aa;
+            --teks-sangat-lemah:    rgba(255,255,255,0.45);
+            --teks-sidebar:         rgba(255,255,255,0.82);
+
+            --garis:                #dde3ec;
+            --garis-sidebar:        rgba(255,255,255,0.1);
+
+            --lebar-sidebar:        272px;
+            --tinggi-topbar:        68px;
+            --radius-sm:            6px;
+            --radius:               10px;
+            --radius-lg:            14px;
+            --bayangan:             0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.05);
+            --bayangan-md:          0 4px 20px rgba(0,0,0,0.1);
+            --bayangan-xl:          0 12px 40px rgba(0,0,0,0.14);
+            --transisi:             all 0.22s cubic-bezier(0.4,0,0.2,1);
         }
 
-        /* Reset */
+        /* ============================================================
+           RESET & DASAR
+        ============================================================ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: var(--lpm-light);
-            color: var(--lpm-dark);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-halaman);
+            color: var(--teks-utama);
+            line-height: 1.65;
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Layout */
-        .lpm-layout {
+        a { text-decoration: none; color: inherit; }
+        ul, ol { list-style: none; }
+
+        /* ============================================================
+           TATA LETAK UTAMA
+        ============================================================ */
+        .layout-utama {
             display: flex;
             min-height: 100vh;
-            position: relative;
         }
 
-        /* SIDEBAR - SPACING DIPERBAIKI */
-        .lpm-sidebar {
-            width: var(--lpm-sidebar-width);
-            background: linear-gradient(180deg, var(--lpm-primary) 0%, #0c2238 100%);
-            color: white;
+        /* ============================================================
+           SIDEBAR
+        ============================================================ */
+        .sidebar {
+            width: var(--lebar-sidebar);
+            background: linear-gradient(175deg, var(--bg-sidebar-atas) 0%, var(--bg-sidebar-bawah) 100%);
+            color: var(--teks-sidebar);
             display: flex;
             flex-direction: column;
             position: fixed;
+            inset: 0 auto 0 0;
             height: 100vh;
             z-index: 1100;
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .lpm-sidebar-header {
-            padding: 24px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            height: var(--lpm-topbar-height);
-            display: flex;
-            align-items: center;
-            gap: 16px; /* SPACING DIPERLEBAR */
-        }
-
-        .lpm-sidebar-logo {
-            display: flex;
-            align-items: center;
-            gap: 16px; /* SPACING DIPERLEBAR */
-            text-decoration: none;
-            color: white;
-        }
-
-        .lpm-sidebar-logo-icon {
-            font-size: 1.5rem;
-            color: var(--lpm-accent);
-            background: rgba(5, 150, 105, 0.15);
-            width: 44px; /* DIPERBESAR SEDIKIT */
-            height: 44px; /* DIPERBESAR SEDIKIT */
-            border-radius: var(--lpm-border-radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lpm-sidebar-logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-
-        .lpm-sidebar-nav {
-            flex: 1;
-            padding: 24px 16px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-        }
-
-        .lpm-sidebar-nav::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .lpm-sidebar-nav::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .lpm-sidebar-nav::-webkit-scrollbar-thumb {
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-
-        /* Navigation Items - SPACING DIPERBAIKI */
-        .lpm-nav-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.6);
-            padding: 0 20px 12px; /* SPACING DIPERLEBAR */
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .lpm-nav-item {
-            display: flex;
-            align-items: center;
-            padding: 16px 20px; /* SPACING DIPERLEBAR (16px vertical, 20px horizontal) */
-            color: rgba(255, 255, 255, 0.75);
-            text-decoration: none;
-            border-radius: var(--lpm-border-radius-sm);
-            margin-bottom: 6px;
-            font-weight: 500;
-            font-size: 0.9375rem;
-            position: relative;
+            border-right: 1px solid var(--garis-sidebar);
+            box-shadow: 3px 0 12px rgba(0,0,0,0.12);
             overflow: hidden;
-            cursor: pointer;
-            transition: var(--lpm-transition);
-            gap: 16px; /* SPACING ICON DAN TEKS DIPERLEBAR */
         }
 
-        .lpm-nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            transform: translateX(2px);
-        }
-
-        .lpm-nav-item.active {
-            background: linear-gradient(90deg, rgba(37, 99, 235, 0.25) 0%, rgba(37, 99, 235, 0.15) 100%);
-            color: white;
-            border-left: 3px solid var(--lpm-secondary);
-        }
-
-        .lpm-nav-item.active::before {
+        /* Ornamen latar belakang sidebar */
+        .sidebar::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: var(--lpm-secondary);
-        }
-
-        .lpm-nav-item i {
-            width: 24px; /* ICON LEBAR DIPERBESAR */
-            text-align: center;
-            font-size: 1.25rem; /* ICON SIZE DIPERBESAR */
-            flex-shrink: 0; /* AGAR ICON TIDAK SHRINK */
-        }
-
-        /* Nested Menu Fix */
-        .lpm-nav-item.has-submenu {
-            justify-content: space-between;
-            padding-right: 16px; /* SPACING UNTUK CHEVRON */
-        }
-
-        .lpm-nav-item.has-submenu::after {
-            content: '\f078';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            font-size: 12px;
-            transition: transform 0.3s;
-            opacity: 0.7;
-            margin-left: 4px; /* SPACING DARI TEKS */
-        }
-
-        .lpm-nav-item.has-submenu.expanded::after {
-            transform: rotate(180deg);
-        }
-
-        .lpm-submenu {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: var(--lpm-border-radius-sm);
-            margin: 4px 0 8px 0;
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.3s ease-out;
-        }
-
-        .lpm-submenu.expanded {
-            max-height: 500px;
-        }
-
-        .lpm-submenu-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 20px 14px 64px; /* SPACING DIPERLEBAR (20px left, 64px total left) */
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            font-size: 0.875rem;
-            transition: var(--lpm-transition);
-            position: relative;
-            gap: 12px; /* SPACING ICON DAN TEKS */
-        }
-
-        .lpm-submenu-item:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: white;
-        }
-
-        .lpm-submenu-item.active {
-            color: white;
-            background-color: rgba(37, 99, 235, 0.2);
-        }
-
-        .lpm-submenu-item i {
-            font-size: 0.875rem; /* ICON SIZE DIPERBESAR */
-            width: 16px; /* ICON WIDTH */
-            text-align: center;
-        }
-
-        /* Badge */
-        .lpm-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--lpm-danger);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 10px;
-            min-width: 22px; /* DIPERBESAR SEDIKIT */
-            height: 22px; /* DIPERBESAR SEDIKIT */
-            padding: 0 6px;
-            margin-left: 12px; /* SPACING DARI TEKS */
-        }
-
-        .lpm-sidebar-footer {
-            padding: 20px;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            line-height: 1.4;
-        }
-
-        /* MAIN CONTENT */
-        .lpm-main {
-            flex: 1;
-            margin-left: var(--lpm-sidebar-width);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* TOPBAR */
-        .lpm-topbar {
-            background: white;
-            height: var(--lpm-topbar-height);
-            border-bottom: 1px solid var(--lpm-gray-border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: var(--lpm-shadow);
-            backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.95);
-        }
-
-        .lpm-page-title-container {
-            display: flex;
-            align-items: center;
-            gap: 20px; /* SPACING DIPERLEBAR */
-        }
-
-        .lpm-menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--lpm-gray);
-            font-size: 1.25rem;
-            cursor: pointer;
-            padding: 10px; /* SPACING DIPERLEBAR */
-            border-radius: var(--lpm-border-radius-sm);
-            transition: var(--lpm-transition);
-            width: 44px; /* DIPERBESAR */
-            height: 44px; /* DIPERBESAR */
-            align-items: center;
-            justify-content: center;
-        }
-
-        .lpm-menu-toggle:hover {
-            background-color: var(--lpm-gray-light);
-            color: var(--lpm-dark);
-        }
-
-        .lpm-page-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--lpm-dark);
-            letter-spacing: -0.3px;
-        }
-
-        /* USER INFO */
-        .lpm-user-info {
-            display: flex;
-            align-items: center;
-            gap: 16px; /* SPACING DIPERLEBAR */
-            position: relative;
-        }
-
-        .lpm-user-avatar {
-            width: 44px; /* DIPERBESAR */
-            height: 44px; /* DIPERBESAR */
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--lpm-secondary), var(--lpm-accent));
+            background: radial-gradient(circle, rgba(45,125,210,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* --- Header Sidebar --- */
+        .sidebar-header {
+            padding: 0 20px;
+            height: var(--tinggi-topbar);
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--garis-sidebar);
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: white;
+        }
+
+        .sidebar-logo-ikon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, var(--warna-aksen), #3d9fe0);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 1.1rem;
             color: white;
-            font-weight: 600;
-            font-size: 1rem; /* DIPERBESAR */
-            border: 2px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: var(--lpm-transition);
-            cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(45,125,210,0.4);
         }
 
-        .lpm-user-avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .lpm-user-details {
-            display: flex;
-            flex-direction: column;
-            gap: 4px; /* SPACING DIPERLEBAR */
-        }
-
-        .lpm-user-name {
-            font-weight: 600;
-            color: var(--lpm-dark);
-            font-size: 0.9375rem; /* DIPERBESAR SEDIKIT */
-            line-height: 1.3;
-        }
-
-        .lpm-user-role {
-            font-size: 0.8125rem; /* DIPERBESAR SEDIKIT */
-            color: var(--lpm-gray);
-            line-height: 1.3;
-        }
-
-        /* Stats Badge */
-        .lpm-stats-badge {
-            background: linear-gradient(135deg, var(--lpm-secondary), var(--lpm-accent));
+        .sidebar-logo-nama {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
             color: white;
-            padding: 10px 18px; /* SPACING DIPERLEBAR */
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px; /* SPACING DIPERLEBAR */
-            margin-right: 20px; /* SPACING DIPERLEBAR */
-        }
-
-        .lpm-stats-badge i {
-            font-size: 0.875rem;
-        }
-
-        /* CONTENT AREA */
-        .lpm-content {
-            padding: 32px;
-            flex: 1;
-        }
-
-        /* Breadcrumb */
-        .lpm-breadcrumb {
-            display: flex;
-            align-items: center;
-            color: var(--lpm-gray);
-            font-size: 0.875rem;
-            margin-bottom: 28px; /* SPACING DIPERLEBAR */
-            gap: 12px; /* SPACING DIPERLEBAR */
-        }
-
-        .lpm-breadcrumb a {
-            color: var(--lpm-secondary);
-            text-decoration: none;
-        }
-
-        .lpm-breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .lpm-breadcrumb-separator {
-            color: var(--lpm-gray-light);
-        }
-
-        /* Content Header */
-        .lpm-content-header {
-            margin-bottom: 32px;
-        }
-
-        .lpm-content-title {
-            font-size: 1.875rem; /* DIPERBESAR SEDIKIT */
-            font-weight: 700;
-            color: var(--lpm-dark);
-            margin-bottom: 12px; /* SPACING DIPERLEBAR */
-            letter-spacing: -0.5px;
             line-height: 1.2;
         }
 
-        .lpm-content-subtitle {
-            color: var(--lpm-gray);
-            font-size: 1rem; /* DIPERBESAR SEDIKIT */
-            line-height: 1.6; /* SPACING DIPERLEBAR */
-            max-width: 600px;
+        .sidebar-logo-label {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
-        /* Alerts */
-        .lpm-alert {
-            padding: 20px; /* SPACING DIPERLEBAR */
-            border-radius: var(--lpm-border-radius);
-            margin-bottom: 24px;
+        /* --- Navigasi Sidebar --- */
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 12px;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        .sidebar-nav::-webkit-scrollbar { display: none; }
+
+        /* Judul kelompok menu */
+        .nav-judul-kelompok {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,0.38);
+            padding: 0 12px 8px;
+            margin-top: 20px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .nav-judul-kelompok:first-child { margin-top: 0; }
+
+        /* Item navigasi */
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            color: var(--teks-sidebar);
+            border-radius: var(--radius-sm);
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transisi);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(255,255,255,0.09);
+            color: white;
+        }
+
+        .nav-item.aktif {
+            background: linear-gradient(90deg, rgba(45,125,210,0.3) 0%, rgba(45,125,210,0.12) 100%);
+            color: white;
+        }
+
+        .nav-item.aktif::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            height: 60%;
+            width: 3px;
+            background: var(--warna-aksen);
+            border-radius: 0 3px 3px 0;
+        }
+
+        /* Ikon nav item */
+        .nav-item .nav-ikon {
+            width: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            opacity: 0.85;
+        }
+        .nav-item.aktif .nav-ikon,
+        .nav-item:hover .nav-ikon { opacity: 1; }
+
+        /* Teks nav item */
+        .nav-item .nav-teks { flex: 1; line-height: 1; }
+
+        /* Item dengan submenu */
+        .nav-item.ada-submenu::after {
+            content: '\f078';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.65rem;
+            opacity: 0.5;
+            transition: transform 0.25s ease, opacity 0.2s;
+            margin-left: 2px;
+        }
+        .nav-item.ada-submenu.terbuka::after {
+            transform: rotate(180deg);
+            opacity: 0.8;
+        }
+
+        /* Submenu */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            margin-bottom: 2px;
+        }
+        .submenu.terbuka { max-height: 400px; }
+
+        .submenu-kontainer {
+            background: rgba(0,0,0,0.18);
+            border-radius: var(--radius-sm);
+            padding: 4px 0;
+            margin: 2px 0 4px;
+        }
+
+        .submenu-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 14px 9px 44px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.865rem;
+            font-weight: 500;
+            transition: var(--transisi);
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+
+        .submenu-item:hover {
+            background: rgba(255,255,255,0.06);
+            color: white;
+        }
+
+        .submenu-item.aktif {
+            color: white;
+            background: rgba(45,125,210,0.22);
+        }
+
+        .submenu-item i {
+            font-size: 0.78rem;
+            width: 14px;
+            text-align: center;
+            opacity: 0.7;
+        }
+        .submenu-item.aktif i,
+        .submenu-item:hover i { opacity: 1; }
+
+        /* Pemisah */
+        .nav-pemisah {
+            height: 1px;
+            background: var(--garis-sidebar);
+            margin: 14px 12px;
+        }
+
+        /* Lencana angka */
+        .lencana {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--warna-bahaya);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 10px;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 5px;
+            margin-left: auto;
+        }
+
+        /* --- Footer Sidebar --- */
+        .sidebar-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--garis-sidebar);
+            flex-shrink: 0;
+        }
+        .sidebar-footer-teks {
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.32);
+            line-height: 1.5;
+        }
+        .sidebar-footer-versi {
+            font-weight: 600;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 2px;
+        }
+
+        /* ============================================================
+           KONTEN UTAMA
+        ============================================================ */
+        .konten-utama {
+            flex: 1;
+            margin-left: var(--lebar-sidebar);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+           BILAH ATAS (TOPBAR)
+        ============================================================ */
+        .topbar {
+            background: white;
+            height: var(--tinggi-topbar);
+            border-bottom: 1px solid var(--garis);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 0 var(--garis), 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .topbar-kiri {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Tombol buka/tutup sidebar (mobile) */
+        .tombol-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--teks-kedua);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-sm);
+            transition: var(--transisi);
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+        }
+        .tombol-menu:hover {
+            background: var(--bg-halaman);
+            color: var(--teks-utama);
+        }
+
+        .judul-halaman {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--teks-utama);
+            letter-spacing: -0.2px;
+        }
+
+        /* Kanan topbar: informasi pengguna */
+        .topbar-kanan {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Notifikasi pending */
+        .notifikasi-pending {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fff5e6, #fff0d6);
+            border: 1px solid #f5c97a;
+            color: #94650a;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 0.825rem;
+            font-weight: 600;
+        }
+        .notifikasi-pending i { color: var(--warna-peringatan); }
+
+        /* Informasi pengguna */
+        .info-pengguna {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-pengguna { text-align: right; }
+        .nama-pengguna {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--teks-utama);
+            line-height: 1.3;
+        }
+        .jabatan-pengguna {
+            font-size: 0.75rem;
+            color: var(--teks-lemah);
+            line-height: 1.3;
+        }
+
+        .avatar-pengguna {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--warna-aksen), #3d9fe0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(45,125,210,0.3);
+            cursor: pointer;
+            transition: var(--transisi);
+            flex-shrink: 0;
+        }
+        .avatar-pengguna:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 14px rgba(45,125,210,0.4);
+        }
+
+        /* ============================================================
+           AREA KONTEN
+        ============================================================ */
+        .area-konten {
+            padding: 28px 32px;
+            flex: 1;
+        }
+
+        /* ============================================================
+           NOTIFIKASI / PESAN KILAT
+        ============================================================ */
+        .kontainer-notif { margin-bottom: 20px; }
+
+        .notif {
             display: flex;
             align-items: flex-start;
-            gap: 16px; /* SPACING DIPERLEBAR */
-            animation: lpmFadeIn 0.3s ease-out;
+            gap: 14px;
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            animation: masuk 0.35s ease-out;
+            border: 1px solid transparent;
         }
 
-        .lpm-alert-success {
-            background-color: #d1fae5;
-            border-left: 4px solid #059669;
-            color: #065f46;
+        @keyframes masuk {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        .lpm-alert-error {
-            background-color: #fee2e2;
-            border-left: 4px solid var(--lpm-danger);
-            color: #991b1b;
+        .notif-sukses {
+            background: #edfaf4;
+            border-color: #b3e8d3;
+            color: #145a3a;
+        }
+        .notif-error {
+            background: #fef2f2;
+            border-color: #fccaca;
+            color: #8b1a1a;
+        }
+        .notif-peringatan {
+            background: #fffbeb;
+            border-color: #fde68a;
+            color: #7c4b00;
+        }
+        .notif-info {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1e3a8a;
         }
 
-        .lpm-alert-warning {
-            background-color: #fef3c7;
-            border-left: 4px solid var(--lpm-warning);
-            color: #92400e;
-        }
-
-        .lpm-alert-info {
-            background-color: #e0f2fe;
-            border-left: 4px solid var(--lpm-info);
-            color: #0c4a6e;
-        }
-
-        .lpm-alert-icon {
-            font-size: 1.5rem; /* DIPERBESAR */
+        .notif-ikon {
+            font-size: 1.2rem;
             flex-shrink: 0;
-            margin-top: 2px; /* ALIGNMENT DIPERBAIKI */
+            margin-top: 1px;
         }
+        .notif-judul { font-weight: 700; margin-bottom: 2px; font-size: 0.9rem; }
+        .notif-pesan { font-size: 0.875rem; line-height: 1.5; }
 
-        /* MODAL */
-        .lpm-modal-overlay {
+        .notif ul {
+            margin-top: 8px;
+            padding-left: 18px;
+            list-style: disc;
+        }
+        .notif ul li { margin-bottom: 3px; font-size: 0.875rem; }
+
+        /* ============================================================
+           OVERLAY (mobile)
+        ============================================================ */
+        .overlay {
+            display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 1050;
+            backdrop-filter: blur(2px);
+        }
+        .overlay.aktif { display: block; }
+
+        /* ============================================================
+           MODAL KONFIRMASI KELUAR
+        ============================================================ */
+        .lapisan-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 9999;
             backdrop-filter: blur(4px);
         }
+        .lapisan-modal.aktif { display: flex; }
 
-        .lpm-modal-overlay.active {
-            display: flex;
-        }
-
-        .lpm-modal {
+        .modal {
             background: white;
-            border-radius: var(--lpm-border-radius);
-            box-shadow: var(--lpm-shadow-xl);
-            max-width: 500px; /* DIPERLEBAR SEDIKIT */
+            border-radius: var(--radius-lg);
+            box-shadow: var(--bayangan-xl);
+            max-width: 440px;
             width: 90%;
             overflow: hidden;
-            animation: lpmModalSlideIn 0.3s ease-out;
+            animation: modalMasuk 0.28s cubic-bezier(0.34,1.56,0.64,1);
         }
 
-        @keyframes lpmModalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        @keyframes modalMasuk {
+            from { opacity: 0; transform: scale(0.9) translateY(16px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        .lpm-modal-header {
-            padding: 28px; /* SPACING DIPERLEBAR */
-            background: var(--lpm-light);
-            border-bottom: 1px solid var(--lpm-gray-border);
+        .modal-header {
+            padding: 28px 28px 20px;
             display: flex;
-            align-items: center;
-            gap: 16px; /* SPACING DIPERLEBAR */
+            align-items: flex-start;
+            gap: 16px;
         }
 
-        .lpm-modal-icon {
-            width: 48px; /* DIPERBESAR */
-            height: 48px; /* DIPERBESAR */
-            border-radius: 50%;
+        .modal-ikon {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem; /* DIPERBESAR */
+            font-size: 1.4rem;
             flex-shrink: 0;
         }
-
-        .lpm-modal-icon.warning {
-            background-color: #fef3c7;
-            color: var(--lpm-warning);
+        .modal-ikon.peringatan {
+            background: #fef3c7;
+            color: var(--warna-peringatan);
         }
 
-        .lpm-modal-title {
-            font-size: 1.5rem; /* DIPERBESAR */
-            font-weight: 600;
-            color: var(--lpm-dark);
-            line-height: 1.3;
+        .modal-info { flex: 1; }
+        .modal-judul {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--teks-utama);
+            margin-bottom: 6px;
         }
-
-        .lpm-modal-body {
-            padding: 28px; /* SPACING DIPERLEBAR */
-        }
-
-        .lpm-modal-message {
-            color: var(--lpm-gray);
-            font-size: 1rem; /* DIPERBESAR */
+        .modal-deskripsi {
+            font-size: 0.9rem;
+            color: var(--teks-kedua);
             line-height: 1.6;
-            margin-bottom: 24px;
         }
 
-        .lpm-modal-actions {
+        .modal-tindakan {
             display: flex;
-            gap: 16px; /* SPACING DIPERLEBAR */
+            gap: 12px;
             justify-content: flex-end;
-            padding: 20px 28px 28px; /* SPACING DIPERLEBAR */
-            border-top: 1px solid var(--lpm-gray-border);
+            padding: 20px 28px;
+            border-top: 1px solid var(--garis);
+            background: #fafbfc;
         }
 
-        .lpm-modal-btn {
-            padding: 12px 28px; /* SPACING DIPERLEBAR */
-            border-radius: var(--lpm-border-radius-sm);
+        .tombol-modal {
+            padding: 10px 24px;
+            border-radius: var(--radius-sm);
             font-weight: 600;
-            font-size: 0.9375rem; /* DIPERBESAR */
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: var(--lpm-transition);
+            transition: var(--transisi);
             border: 1px solid transparent;
-            min-width: 120px; /* DIPERLEBAR */
+            min-width: 110px;
+            font-family: inherit;
         }
 
-        .lpm-modal-btn-cancel {
-            background-color: var(--lpm-gray-light);
-            color: var(--lpm-dark);
-            border-color: var(--lpm-gray-border);
+        .tombol-batal {
+            background: white;
+            color: var(--teks-kedua);
+            border-color: var(--garis);
+        }
+        .tombol-batal:hover {
+            background: var(--bg-halaman);
+            color: var(--teks-utama);
         }
 
-        .lpm-modal-btn-cancel:hover {
-            background-color: var(--lpm-gray);
+        .tombol-konfirmasi {
+            background: var(--warna-bahaya);
             color: white;
         }
-
-        .lpm-modal-btn-confirm {
-            background-color: var(--lpm-secondary);
-            color: white;
-            border-color: var(--lpm-secondary);
-        }
-
-        .lpm-modal-btn-confirm:hover {
-            background-color: #1d4ed8;
+        .tombol-konfirmasi:hover {
+            background: #c0392b;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 4px 12px rgba(224,62,62,0.3);
         }
 
-        /* OVERLAY */
-        .lpm-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1050;
-            backdrop-filter: blur(3px);
+        /* ============================================================
+           RESPONSIF
+        ============================================================ */
+        @media (max-width: 1024px) {
+            .area-konten { padding: 24px; }
         }
 
-        .lpm-overlay.active {
-            display: block;
-        }
-
-        /* ANIMATIONS */
-        @keyframes lpmFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .lpm-fade-in {
-            animation: lpmFadeIn 0.4s ease-out;
-        }
-
-        /* RESPONSIVE DESIGN */
-        @media (max-width: 1200px) {
-            .lpm-content {
-                padding: 28px;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .lpm-sidebar {
+        @media (max-width: 991px) {
+            .sidebar {
                 transform: translateX(-100%);
-                transition: transform 0.3s ease;
-                box-shadow: var(--lpm-shadow-xl);
+                transition: transform 0.28s ease;
             }
-
-            .lpm-sidebar.active {
-                transform: translateX(0);
-            }
-
-            .lpm-main {
-                margin-left: 0;
-            }
-
-            .lpm-menu-toggle {
-                display: flex;
-            }
+            .sidebar.aktif { transform: translateX(0); }
+            .konten-utama { margin-left: 0; }
+            .tombol-menu { display: flex; }
         }
 
-        @media (max-width: 768px) {
-            .lpm-content {
-                padding: 24px;
-            }
-            
-            .lpm-topbar {
-                padding: 0 24px;
-            }
-            
-            .lpm-modal {
-                width: 95%;
-                margin: 0 16px;
-            }
-            
-            .lpm-modal-actions {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .lpm-modal-btn {
-                width: 100%;
-                min-width: auto;
-            }
-            
-            .lpm-stats-badge {
-                margin-right: 12px;
-                padding: 8px 14px;
-            }
+        @media (max-width: 767px) {
+            .area-konten { padding: 20px; }
+            .topbar { padding: 0 20px; }
+            .modal-tindakan { flex-direction: column; }
+            .tombol-modal { width: 100%; min-width: auto; }
         }
 
-        @media (max-width: 640px) {
-            .lpm-user-details {
-                display: none;
-            }
-            
-            .lpm-content {
-                padding: 20px;
-            }
-            
-            .lpm-content-title {
-                font-size: 1.5rem;
-            }
-            
-            .lpm-modal-header {
-                padding: 24px;
-            }
-            
-            .lpm-modal-body {
-                padding: 24px;
-            }
-            
-            .lpm-stats-badge {
-                display: none;
-            }
+        @media (max-width: 639px) {
+            .detail-pengguna { display: none; }
+            .notifikasi-pending span { display: none; }
+            .notifikasi-pending { padding: 8px 10px; }
         }
 
-        @media (max-width: 480px) {
-            .lpm-topbar {
-                padding: 0 20px;
-            }
-            
-            .lpm-sidebar {
-                width: 280px; /* TETAP LEBAR UNTUK READABILITY */
-            }
-            
-            .lpm-content {
-                padding: 16px;
-            }
-            
-            .lpm-nav-item {
-                padding: 16px;
-                gap: 14px;
-            }
-            
-            .lpm-submenu-item {
-                padding: 14px 20px 14px 60px;
-            }
+        /* ============================================================
+           UTILITAS UMUM
+        ============================================================ */
+        .animasi-masuk {
+            animation: masuk 0.35s ease-out;
         }
+
+        /* Fix TinyMCE */
+        .tox-tinymce { border: 1px solid var(--garis) !important; border-radius: var(--radius-sm) !important; }
+        .tox .tox-toolbar, .tox .tox-toolbar__primary { background-color: #fff !important; }
+        .tox button { all: unset; }
     </style>
 </head>
 <body>
-    <!-- Overlay -->
-    <div class="lpm-overlay" id="lpmOverlay"></div>
-    
-    <!-- Logout Modal -->
-    <div class="lpm-modal-overlay" id="logoutModal">
-        <div class="lpm-modal">
-            <div class="lpm-modal-header">
-                <div class="lpm-modal-icon warning">
+    <!-- Overlay (mobile) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Modal Konfirmasi Keluar -->
+    <div class="lapisan-modal" id="modalKeluar">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-ikon peringatan">
                     <i class="fas fa-sign-out-alt"></i>
                 </div>
-                <div class="lpm-modal-title">Confirm Logout</div>
+                <div class="modal-info">
+                    <div class="modal-judul">Konfirmasi Keluar</div>
+                    <div class="modal-deskripsi">
+                        Apakah Anda yakin ingin keluar dari sesi ini? Pastikan semua perubahan sudah tersimpan sebelum keluar.
+                    </div>
+                </div>
             </div>
-            
-            <div class="lpm-modal-body">
-                <p class="lpm-modal-message">
-                    Are you sure you want to logout from your account?
-                </p>
-            </div>
-            
-            <div class="lpm-modal-actions">
-                <button type="button" class="lpm-modal-btn lpm-modal-btn-cancel" id="logoutCancelBtn">
-                    Cancel
+            <div class="modal-tindakan">
+                <button type="button" class="tombol-modal tombol-batal" id="batalKeluar">
+                    Batal
                 </button>
-                <form method="POST" action="{{ route('logout') }}" id="logoutForm">
+                <form method="POST" action="{{ route('logout') }}" id="formKeluar">
                     @csrf
-                    <button type="submit" class="lpm-modal-btn lpm-modal-btn-confirm">
-                        Logout
+                    <button type="submit" class="tombol-modal tombol-konfirmasi">
+                        <i class="fas fa-sign-out-alt" style="margin-right:6px;"></i>Keluar
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <div class="lpm-layout">
-        <!-- SIDEBAR DENGAN SPACING YANG DIPERBAIKI -->
-        <div class="lpm-sidebar" id="lpmSidebar">
-            <div class="lpm-sidebar-header">
-                <a href="{{ route('admin.dashboard') }}" class="lpm-sidebar-logo">
-                    <div class="lpm-sidebar-logo-icon">
-                        <i class="fas fa-chart-line"></i>
+    <!-- Tata letak utama -->
+    <div class="layout-utama">
+
+        <!-- ========================
+             SIDEBAR
+        ======================== -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Header -->
+            <div class="sidebar-header">
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-logo">
+                    <div class="sidebar-logo-ikon">
+                        <i class="fas fa-layer-group"></i>
                     </div>
                     <div>
-                        <div class="lpm-sidebar-logo-text">LPMI Admin</div>
-                        <div style="font-size: 0.75rem; opacity: 0.8;">Control Panel</div>
+                        <div class="sidebar-logo-nama">LPMI Admin</div>
+                        <div class="sidebar-logo-label">Panel Kontrol</div>
                     </div>
                 </a>
             </div>
-            
-            <div class="lpm-sidebar-nav">
-                <!-- Main Menu -->
-                <div class="lpm-nav-title">Main Menu</div>
-                <a href="{{ route('admin.dashboard') }}" 
-                   class="lpm-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+
+            <!-- Navigasi -->
+            <nav class="sidebar-nav">
+
+                <!-- MENU UTAMA -->
+                <div class="nav-judul-kelompok">Menu Utama</div>
+
+                <a href="{{ route('admin.dashboard') }}"
+                   class="nav-item {{ request()->routeIs('admin.dashboard') ? 'aktif' : '' }}">
+                    <i class="fas fa-gauge-high nav-ikon"></i>
+                    <span class="nav-teks">Dasbor</span>
                 </a>
-                
-                <!-- Content Management -->
-                <div class="lpm-nav-title" style="margin-top: 24px;">Content Management</div>
-                
+
+                <div class="nav-pemisah"></div>
+
+                <!-- PENGELOLAAN KONTEN -->
+                <div class="nav-judul-kelompok">Pengelolaan Konten</div>
+
                 <!-- Agenda -->
-                <div class="lpm-nav-item has-submenu" data-submenu="agenda-menu">
-                    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Agenda</span>
+                <div class="nav-item ada-submenu {{ request()->routeIs('admin.agenda.*') ? 'aktif terbuka' : '' }}"
+                     data-submenu="submenu-agenda">
+                    <i class="fas fa-calendar-days nav-ikon"></i>
+                    <span class="nav-teks">Agenda</span>
+                </div>
+                <div class="submenu {{ request()->routeIs('admin.agenda.*') ? 'terbuka' : '' }}" id="submenu-agenda">
+                    <div class="submenu-kontainer">
+                        <a href="{{ route('admin.agenda.index') }}"
+                           class="submenu-item {{ request()->routeIs('admin.agenda.index') ? 'aktif' : '' }}">
+                            <i class="fas fa-list"></i>
+                            <span>Semua Agenda</span>
+                        </a>
                     </div>
                 </div>
-                <div class="lpm-submenu" id="agenda-menu">
-                    <a href="{{ route('admin.agenda.index') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.agenda.index') ? 'active' : '' }}">
-                        <i class="fas fa-list"></i>
-                        <span>All Agenda</span>
-                    </a>
-                </div>
-                
 
-                
-                <!-- Hero Banner -->
-                <!-- Hero Banner -->
-<a href="{{ route('admin.hero-banners.index') }}"
-   class="lpm-nav-item {{ request()->routeIs('admin.hero-banners.*') ? 'active' : '' }}">
-    <i class="fas fa-images"></i>
-    <span>Hero Banner</span>
-</a>
-                
-                <!-- Organization -->
-                <div class="lpm-nav-item has-submenu" data-submenu="org-menu">
-                    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-                        <i class="fas fa-sitemap"></i>
-                        <span>Organization</span>
-                    </div>
-                </div>
-                <div class="lpm-submenu" id="org-menu">
-                    <a href="{{ route('admin.organization-structure.index') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.organization-structure.index') ? 'active' : '' }}">
-                        <i class="fas fa-list"></i>
-                        <span>All Structures</span>
-                    </a>
-                </div>
-                
-                <!-- Surveys -->
-                <div class="lpm-nav-item has-submenu" data-submenu="survey-menu">
-                    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-                        <i class="fas fa-poll"></i>
-                        <span>Surveys</span>
-                    </div>
-                </div>
-                <div class="lpm-submenu" id="survey-menu">
-                    <a href="{{ route('admin.surveys.index') }}" 
-                       class="lpm-submenu-item {{ request()->routeIs('admin.surveys.index') ? 'active' : '' }}">
-                        <i class="fas fa-list"></i>
-                        <span>All Surveys</span>
-                    </a>
-                </div>          
-<a href="{{ route('admin.staff.index') }}" 
-                   class="lpm-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-home"></i>
-                    <span>Staff Settings</span>
+                <!-- Spanduk Utama -->
+                <a href="{{ route('admin.hero-banners.index') }}"
+                   class="nav-item {{ request()->routeIs('admin.hero-banners.*') ? 'aktif' : '' }}">
+                    <i class="fas fa-image nav-ikon"></i>
+                    <span class="nav-teks">Spanduk Utama</span>
                 </a>
 
-<!-- Menu & Pages -->
-<div class="lpm-nav-item has-submenu" data-submenu="menu-pages-menu">
-    <div style="display: flex; align-items: center; flex: 1; gap: 16px;">
-        <i class="fas fa-layer-group"></i>
-        <span>Menu & Halaman</span>
-    </div>
-</div>
-
-<div class="lpm-submenu" id="menu-pages-menu">
-
-    <a href="{{ route('admin.menus.index') }}" 
-       class="lpm-submenu-item {{ request()->routeIs('admin.menus.*') ? 'active' : '' }}">
-        <i class="fas fa-bars"></i>
-        <span>Kelola Menu</span>
-    </a>
-
-    <a href="{{ route('admin.pages.index') }}" 
-       class="lpm-submenu-item {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}">
-        <i class="fas fa-file-alt"></i>
-        <span>Kelola Halaman</span>
-    </a>
-
-</div>
-<a href="{{ route('admin.settings.edit') }}" 
-   class="lpm-nav-item {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
-    <i class="fas fa-cog"></i>
-    <span>Pengaturan Situs</span>
-</a>
-                
-                <!-- Logout Button -->
-                <div class="lpm-nav-item logout" id="logoutTrigger" style="margin-top: 24px;">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
+                <!-- Struktur Organisasi -->
+                <div class="nav-item ada-submenu {{ request()->routeIs('admin.organization-structure.*') ? 'aktif terbuka' : '' }}"
+                     data-submenu="submenu-org">
+                    <i class="fas fa-sitemap nav-ikon"></i>
+                    <span class="nav-teks">Organisasi</span>
                 </div>
-            </div>
-            
-            <div class="lpm-sidebar-footer">
-                <div style="margin-bottom: 8px;">
-                    <strong>LPMI Admin v1.0</strong>
+                <div class="submenu {{ request()->routeIs('admin.organization-structure.*') ? 'terbuka' : '' }}" id="submenu-org">
+                    <div class="submenu-kontainer">
+                        <a href="{{ route('admin.organization-structure.index') }}"
+                           class="submenu-item {{ request()->routeIs('admin.organization-structure.index') ? 'aktif' : '' }}">
+                            <i class="fas fa-list"></i>
+                            <span>Semua Struktur</span>
+                        </a>
+                    </div>
                 </div>
-                <div>© {{ date('Y') }} Lembaga Pers Mahasiswa Indonesia</div>
+
+                <!-- Survei -->
+                <div class="nav-item ada-submenu {{ request()->routeIs('admin.surveys.*') ? 'aktif terbuka' : '' }}"
+                     data-submenu="submenu-survei">
+                    <i class="fas fa-chart-bar nav-ikon"></i>
+                    <span class="nav-teks">Survei</span>
+                </div>
+                <div class="submenu {{ request()->routeIs('admin.surveys.*') ? 'terbuka' : '' }}" id="submenu-survei">
+                    <div class="submenu-kontainer">
+                        <a href="{{ route('admin.surveys.index') }}"
+                           class="submenu-item {{ request()->routeIs('admin.surveys.index') ? 'aktif' : '' }}">
+                            <i class="fas fa-list"></i>
+                            <span>Semua Survei</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-pemisah"></div>
+
+                <!-- PENGATURAN -->
+                <div class="nav-judul-kelompok">Pengaturan</div>
+
+                <!-- Pengaturan Staf -->
+                <a href="{{ route('admin.staff.index') }}"
+                   class="nav-item {{ request()->routeIs('admin.staff.*') ? 'aktif' : '' }}">
+                    <i class="fas fa-users nav-ikon"></i>
+                    <span class="nav-teks">Pengelolaan Staf</span>
+                </a>
+
+                <!-- Menu & Halaman -->
+                <div class="nav-item ada-submenu {{ request()->routeIs('admin.menus.*') || request()->routeIs('admin.pages.*') ? 'aktif terbuka' : '' }}"
+                     data-submenu="submenu-menu-halaman">
+                    <i class="fas fa-th-large nav-ikon"></i>
+                    <span class="nav-teks">Menu & Halaman</span>
+                </div>
+                <div class="submenu {{ request()->routeIs('admin.menus.*') || request()->routeIs('admin.pages.*') ? 'terbuka' : '' }}" id="submenu-menu-halaman">
+                    <div class="submenu-kontainer">
+                        <a href="{{ route('admin.menus.index') }}"
+                           class="submenu-item {{ request()->routeIs('admin.menus.*') ? 'aktif' : '' }}">
+                            <i class="fas fa-bars"></i>
+                            <span>Kelola Menu</span>
+                        </a>
+                        <a href="{{ route('admin.pages.index') }}"
+                           class="submenu-item {{ request()->routeIs('admin.pages.*') ? 'aktif' : '' }}">
+                            <i class="fas fa-file-lines"></i>
+                            <span>Kelola Halaman</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pengaturan Situs -->
+                <a href="{{ route('admin.settings.edit') }}"
+                   class="nav-item {{ request()->routeIs('admin.settings.*') ? 'aktif' : '' }}">
+                    <i class="fas fa-sliders nav-ikon"></i>
+                    <span class="nav-teks">Pengaturan Situs</span>
+                </a>
+
+                <div class="nav-pemisah"></div>
+
+                <!-- Tombol Keluar -->
+                <div class="nav-item" id="picu-keluar" style="color: rgba(255,180,180,0.85);">
+                    <i class="fas fa-right-from-bracket nav-ikon"></i>
+                    <span class="nav-teks">Keluar</span>
+                </div>
+
+            </nav>
+
+            <!-- Footer -->
+            <div class="sidebar-footer">
+                <div class="sidebar-footer-versi">LPMI Admin v1.0</div>
+                <div class="sidebar-footer-teks">© {{ date('Y') }} Lembaga Pers Mahasiswa Indonesia</div>
             </div>
-        </div>
-        
-        <!-- MAIN CONTENT -->
-        <div class="lpm-main">
-            <div class="lpm-topbar">
-                <div class="lpm-page-title-container">
-                    <button class="lpm-menu-toggle" id="lpmMenuToggle">
+        </aside>
+
+        <!-- ========================
+             KONTEN UTAMA
+        ======================== -->
+        <div class="konten-utama">
+
+            <!-- Bilah Atas -->
+            <header class="topbar">
+                <div class="topbar-kiri">
+                    <button class="tombol-menu" id="tombol-menu" aria-label="Buka menu">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="lpm-page-title">@yield('page-title', 'Dashboard')</div>
+                    <h1 class="judul-halaman">@yield('judul-halaman', 'Dasbor')</h1>
                 </div>
-                
-                <div class="lpm-user-info">
+
+                <div class="topbar-kanan">
                     @php
-                        $totalPending = 
-                            ($pendingAgendaCount ?? 0) + 
-                            ($pendingVideosCount ?? 0) + 
-                            ($pendingBannerCount ?? 0) + 
+                        $totalPending =
+                            ($pendingAgendaCount ?? 0) +
+                            ($pendingVideosCount ?? 0) +
+                            ($pendingBannerCount ?? 0) +
                             ($pendingSurveysCount ?? 0);
                     @endphp
+
                     @if($totalPending > 0)
-                    <div class="lpm-stats-badge">
+                    <div class="notifikasi-pending">
                         <i class="fas fa-bell"></i>
-                        {{ $totalPending }} Pending
+                        <span>{{ $totalPending }} Menunggu</span>
                     </div>
                     @endif
-                    
-                    <div class="lpm-user-details">
-                        <div class="lpm-user-name">{{ Auth::user()->name ?? 'Admin User' }}</div>
-                        <div class="lpm-user-role">Administrator</div>
-                    </div>
-                    <div class="lpm-user-avatar">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+
+                    <div class="info-pengguna">
+                        <div class="detail-pengguna">
+                            <div class="nama-pengguna">{{ Auth::user()->name ?? 'Pengguna Admin' }}</div>
+                            <div class="jabatan-pengguna">Administrator</div>
+                        </div>
+                        <div class="avatar-pengguna" title="{{ Auth::user()->name ?? 'Admin' }}">
+                            {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            </header>
 
-            <div class="lpm-content">
-                <!-- Breadcrumb -->
-                
-                
-                
-                
-                <!-- Alerts -->
-                <div class="lpm-alerts-container">
+            <!-- Area Konten -->
+            <main class="area-konten">
+
+                <!-- Notifikasi / Pesan Kilat -->
+                <div class="kontainer-notif">
                     @if(session('success'))
-                    <div class="lpm-alert lpm-alert-success lpm-fade-in">
-                        <i class="fas fa-check-circle lpm-alert-icon"></i>
+                    <div class="notif notif-sukses animasi-masuk">
+                        <i class="fas fa-circle-check notif-ikon"></i>
                         <div>
-                            <strong>Success!</strong> {{ session('success') }}
+                            <div class="notif-judul">Berhasil!</div>
+                            <div class="notif-pesan">{{ session('success') }}</div>
                         </div>
                     </div>
                     @endif
-                    
+
                     @if(session('error'))
-                    <div class="lpm-alert lpm-alert-error lpm-fade-in">
-                        <i class="fas fa-exclamation-circle lpm-alert-icon"></i>
+                    <div class="notif notif-error animasi-masuk">
+                        <i class="fas fa-circle-xmark notif-ikon"></i>
                         <div>
-                            <strong>Error!</strong> {{ session('error') }}
+                            <div class="notif-judul">Terjadi Kesalahan!</div>
+                            <div class="notif-pesan">{{ session('error') }}</div>
                         </div>
                     </div>
                     @endif
-                    
+
                     @if(session('warning'))
-                    <div class="lpm-alert lpm-alert-warning lpm-fade-in">
-                        <i class="fas fa-exclamation-triangle lpm-alert-icon"></i>
+                    <div class="notif notif-peringatan animasi-masuk">
+                        <i class="fas fa-triangle-exclamation notif-ikon"></i>
                         <div>
-                            <strong>Warning!</strong> {{ session('warning') }}
+                            <div class="notif-judul">Perhatian!</div>
+                            <div class="notif-pesan">{{ session('warning') }}</div>
                         </div>
                     </div>
                     @endif
-                    
+
                     @if(session('info'))
-                    <div class="lpm-alert lpm-alert-info lpm-fade-in">
-                        <i class="fas fa-info-circle lpm-alert-icon"></i>
+                    <div class="notif notif-info animasi-masuk">
+                        <i class="fas fa-circle-info notif-ikon"></i>
                         <div>
-                            <strong>Info!</strong> {{ session('info') }}
+                            <div class="notif-judul">Informasi</div>
+                            <div class="notif-pesan">{{ session('info') }}</div>
                         </div>
                     </div>
                     @endif
-                    
+
                     @if($errors->any())
-                    <div class="lpm-alert lpm-alert-error lpm-fade-in">
-                        <i class="fas fa-exclamation-circle lpm-alert-icon"></i>
+                    <div class="notif notif-error animasi-masuk">
+                        <i class="fas fa-circle-xmark notif-ikon"></i>
                         <div>
-                            <strong>Validation Errors:</strong>
-                            <ul style="margin-top: 12px; padding-left: 20px; list-style-type: disc;">
-                                @foreach($errors->all() as $error)
-                                <li style="margin-bottom: 4px;">{{ $error }}</li>
+                            <div class="notif-judul">Validasi Gagal</div>
+                            <div class="notif-pesan">Mohon perbaiki kesalahan berikut ini:</div>
+                            <ul>
+                                @foreach($errors->all() as $kesalahan)
+                                <li>{{ $kesalahan }}</li>
                                 @endforeach
                             </ul>
                         </div>
                     </div>
                     @endif
                 </div>
-                
-                <!-- Main Content -->
-                <div class="lpm-fade-in">
+
+                <!-- Konten Halaman -->
+                <div class="animasi-masuk">
                     @yield('content')
                 </div>
-            </div>
-        </div>
-    </div>
+
+            </main>
+        </div><!-- /.konten-utama -->
+    </div><!-- /.layout-utama -->
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('lpmMenuToggle');
-            const sidebar = document.getElementById('lpmSidebar');
-            const overlay = document.getElementById('lpmOverlay');
-            const logoutModal = document.getElementById('logoutModal');
-            const logoutTrigger = document.getElementById('logoutTrigger');
-            const logoutCancelBtn = document.getElementById('logoutCancelBtn');
-            const logoutForm = document.getElementById('logoutForm');
-            
-            // Mobile menu toggle
-            if (menuToggle && sidebar && overlay) {
-                menuToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('active');
-                    overlay.classList.toggle('active');
-                    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-                });
-                
-                overlay.addEventListener('click', function() {
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-                
-                // Close sidebar when clicking outside on mobile
-                document.addEventListener('click', function(event) {
-                    const isClickInsideSidebar = sidebar.contains(event.target);
-                    const isClickOnMenuToggle = menuToggle.contains(event.target);
-                    
-                    if (window.innerWidth <= 992 && 
-                        !isClickInsideSidebar && 
-                        !isClickOnMenuToggle && 
-                        sidebar.classList.contains('active')) {
-                        sidebar.classList.remove('active');
-                        overlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
+        document.addEventListener('DOMContentLoaded', function () {
+
+            /* --- Elemen --- */
+            const tombolMenu   = document.getElementById('tombol-menu');
+            const sidebar      = document.getElementById('sidebar');
+            const overlay      = document.getElementById('overlay');
+            const modalKeluar  = document.getElementById('modalKeluar');
+            const picuKeluar   = document.getElementById('picu-keluar');
+            const batalKeluar  = document.getElementById('batalKeluar');
+            const formKeluar   = document.getElementById('formKeluar');
+
+            /* --- Fungsi buka/tutup sidebar (mobile) --- */
+            function bukaSidebar() {
+                sidebar.classList.add('aktif');
+                overlay.classList.add('aktif');
+                document.body.style.overflow = 'hidden';
             }
-            
-            // Nested menu functionality - FIXED
-            document.querySelectorAll('.lpm-nav-item.has-submenu').forEach(item => {
-                item.addEventListener('click', function(e) {
+
+            function tutupSidebar() {
+                sidebar.classList.remove('aktif');
+                overlay.classList.remove('aktif');
+                document.body.style.overflow = '';
+            }
+
+            if (tombolMenu) tombolMenu.addEventListener('click', function () {
+                sidebar.classList.contains('aktif') ? tutupSidebar() : bukaSidebar();
+            });
+
+            if (overlay) overlay.addEventListener('click', tutupSidebar);
+
+            /* --- Submenu (toggle buka/tutup) --- */
+            document.querySelectorAll('.nav-item.ada-submenu').forEach(function (item) {
+                item.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
-                    const submenuId = this.getAttribute('data-submenu');
-                    const submenu = document.getElementById(submenuId);
-                    
-                    // Toggle current submenu
-                    this.classList.toggle('expanded');
-                    submenu.classList.toggle('expanded');
-                    
-                    // Close other submenus
-                    document.querySelectorAll('.lpm-nav-item.has-submenu').forEach(otherItem => {
-                        if (otherItem !== this) {
-                            const otherSubmenuId = otherItem.getAttribute('data-submenu');
-                            const otherSubmenu = document.getElementById(otherSubmenuId);
-                            otherItem.classList.remove('expanded');
-                            if (otherSubmenu) otherSubmenu.classList.remove('expanded');
+
+                    const idSubmenu = this.getAttribute('data-submenu');
+                    const submenu   = document.getElementById(idSubmenu);
+                    const sedangTerbuka = this.classList.contains('terbuka');
+
+                    /* Tutup semua submenu lain */
+                    document.querySelectorAll('.nav-item.ada-submenu').forEach(function (lain) {
+                        if (lain !== item) {
+                            lain.classList.remove('terbuka');
+                            const idLain = lain.getAttribute('data-submenu');
+                            const submenuLain = document.getElementById(idLain);
+                            if (submenuLain) submenuLain.classList.remove('terbuka');
                         }
                     });
+
+                    /* Toggle submenu saat ini */
+                    this.classList.toggle('terbuka', !sedangTerbuka);
+                    if (submenu) submenu.classList.toggle('terbuka', !sedangTerbuka);
                 });
             });
-            
-            // Close submenus when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.lpm-nav-item.has-submenu') && !e.target.closest('.lpm-submenu')) {
-                    document.querySelectorAll('.lpm-nav-item.has-submenu').forEach(item => {
-                        const submenuId = item.getAttribute('data-submenu');
-                        const submenu = document.getElementById(submenuId);
-                        item.classList.remove('expanded');
-                        if (submenu) submenu.classList.remove('expanded');
-                    });
-                }
-            });
-            
-            // Set active nav items based on current URL
-            function setActiveMenu() {
-                const currentPath = window.location.pathname;
-                
-                // Check regular nav items
-                document.querySelectorAll('.lpm-nav-item[href]').forEach(item => {
+
+            /* --- Aktifkan menu/submenu sesuai URL saat ini --- */
+            function tandaiMenuAktif() {
+                const path = window.location.pathname;
+
+                document.querySelectorAll('.submenu-item').forEach(function (item) {
                     const href = item.getAttribute('href');
-                    if (href && (currentPath === href || currentPath.startsWith(href + '/'))) {
-                        item.classList.add('active');
-                    } else {
-                        item.classList.remove('active');
-                    }
-                });
-                
-                // Check submenu items
-                document.querySelectorAll('.lpm-submenu-item').forEach(item => {
-                    const href = item.getAttribute('href');
-                    if (href && (currentPath === href || currentPath.startsWith(href + '/'))) {
-                        item.classList.add('active');
-                        
-                        // Expand parent submenu
-                        const parentMenu = item.closest('.lpm-submenu');
-                        if (parentMenu) {
-                            const parentTrigger = document.querySelector(`[data-submenu="${parentMenu.id}"]`);
-                            if (parentTrigger) {
-                                parentTrigger.classList.add('expanded');
-                                parentMenu.classList.add('expanded');
-                            }
+                    if (href && (path === href || path.startsWith(href + '/'))) {
+                        item.classList.add('aktif');
+                        const kontainerSubmenu = item.closest('.submenu');
+                        if (kontainerSubmenu) {
+                            kontainerSubmenu.classList.add('terbuka');
+                            const idSubmenu = kontainerSubmenu.getAttribute('id');
+                            const picu = document.querySelector('[data-submenu="' + idSubmenu + '"]');
+                            if (picu) picu.classList.add('aktif', 'terbuka');
                         }
-                    } else {
-                        item.classList.remove('active');
                     }
                 });
             }
-            
-            // Initial active state setup
-            setActiveMenu();
-            
-            // Logout confirmation
-            if (logoutTrigger && logoutModal && logoutCancelBtn) {
-                logoutTrigger.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    logoutModal.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
-                
-                logoutCancelBtn.addEventListener('click', function() {
-                    logoutModal.classList.remove('active');
-                    document.body.style.overflow = '';
-                });
-                
-                logoutModal.addEventListener('click', function(e) {
-                    if (e.target === logoutModal) {
-                        logoutModal.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
-                
-                // Handle logout form submission
-                if (logoutForm) {
-                    logoutForm.addEventListener('submit', function(e) {
-                        const confirmBtn = logoutForm.querySelector('button[type="submit"]');
-                        const originalText = confirmBtn.textContent;
-                        
-                        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out...';
-                        confirmBtn.disabled = true;
-                    });
-                }
-                
-                // Close modal with Escape key
-                document.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape' && logoutModal.classList.contains('active')) {
-                        logoutModal.classList.remove('active');
-                        document.body.style.overflow = '';
-                    }
-                });
+            tandaiMenuAktif();
+
+            /* --- Modal Keluar --- */
+            if (picuKeluar) picuKeluar.addEventListener('click', function () {
+                modalKeluar.classList.add('aktif');
+                document.body.style.overflow = 'hidden';
+            });
+
+            function tutupModalKeluar() {
+                modalKeluar.classList.remove('aktif');
+                document.body.style.overflow = '';
             }
-            
-            // Handle responsive behavior
-            function handleResize() {
-                const isMobile = window.innerWidth <= 992;
-                
-                if (menuToggle) {
-                    menuToggle.style.display = isMobile ? 'flex' : 'none';
+
+            if (batalKeluar) batalKeluar.addEventListener('click', tutupModalKeluar);
+
+            if (modalKeluar) modalKeluar.addEventListener('click', function (e) {
+                if (e.target === modalKeluar) tutupModalKeluar();
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modalKeluar.classList.contains('aktif')) tutupModalKeluar();
+            });
+
+            /* Indikator loading saat submit form keluar */
+            if (formKeluar) formKeluar.addEventListener('submit', function () {
+                const tombol = this.querySelector('button[type="submit"]');
+                if (tombol) {
+                    tombol.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Sedang keluar…';
+                    tombol.disabled = true;
                 }
-                
-                // Auto-close sidebar when resizing to desktop
-                if (!isMobile && sidebar && sidebar.classList.contains('active')) {
-                    sidebar.classList.remove('active');
-                    if (overlay) overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-                
-                // Update sidebar width on small screens
-                if (sidebar) {
-                    if (window.innerWidth <= 480) {
-                        sidebar.style.width = '280px';
-                    } else {
-                        sidebar.style.width = '280px';
-                    }
-                }
-            }
-            
-            // Initial responsive setup
-            handleResize();
-            
-            // Listen for resize events
-            window.addEventListener('resize', handleResize);
-            
-            // Auto-hide alerts after 5 seconds
-            setTimeout(function() {
-                document.querySelectorAll('.lpm-alert').forEach(alert => {
-                    alert.style.opacity = '0';
-                    alert.style.transition = 'opacity 0.3s ease';
-                    setTimeout(() => alert.remove(), 300);
+            });
+
+            /* --- Responsif: tutup sidebar saat layar diperbesar --- */
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 991) tutupSidebar();
+            });
+
+            /* --- Sembunyikan notifikasi otomatis setelah 6 detik --- */
+            setTimeout(function () {
+                document.querySelectorAll('.notif').forEach(function (el) {
+                    el.style.transition = 'opacity 0.4s ease, margin-bottom 0.4s ease, padding 0.4s ease, max-height 0.4s ease';
+                    el.style.opacity   = '0';
+                    el.style.overflow  = 'hidden';
+                    setTimeout(function () { el.remove(); }, 420);
                 });
-            }, 5000);
+            }, 6000);
         });
     </script>
-    
+
     @stack('scripts')
 </body>
 </html>

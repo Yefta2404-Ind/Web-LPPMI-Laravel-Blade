@@ -3,760 +3,1180 @@
 @section('page-title', 'Struktur Organisasi')
 
 @section('content')
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-/* --- Simple & Clean CSS --- */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+    --font-main: 'Plus Jakarta Sans', sans-serif;
+    --blue-50: #EFF6FF;
+    --blue-100: #DBEAFE;
+    --blue-200: #BFDBFE;
+    --blue-600: #2563EB;
+    --blue-700: #1D4ED8;
+    --blue-900: #1E3A8A;
+    --slate-50: #F8FAFC;
+    --slate-100: #F1F5F9;
+    --slate-200: #E2E8F0;
+    --slate-300: #CBD5E1;
+    --slate-400: #94A3B8;
+    --slate-500: #64748B;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1E293B;
+    --slate-900: #0F172A;
+    --green-50: #F0FDF4;
+    --green-100: #DCFCE7;
+    --green-600: #16A34A;
+    --green-700: #15803D;
+    --red-50: #FFF1F2;
+    --red-600: #E11D48;
+    --amber-50: #FFFBEB;
+    --amber-600: #D97706;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --shadow-xs: 0 1px 2px rgba(15,23,42,0.04);
+    --shadow-sm: 0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
+    --shadow-md: 0 4px 12px rgba(15,23,42,0.08), 0 2px 4px rgba(15,23,42,0.04);
+    --shadow-lg: 0 12px 28px rgba(15,23,42,0.10), 0 4px 8px rgba(15,23,42,0.04);
 }
 
-/* Alert */
-.alert-custom {
-    border: none;
-    border-radius: 12px;
-    padding: 12px 20px;
+body, .os-page * { font-family: var(--font-main); }
+
+/* ── Animation ── */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ── Alert ── */
+.alert-os {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius-lg);
+    font-size: 13.5px;
+    font-weight: 500;
     margin-bottom: 24px;
-    background: #f8fafc;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(8px);
+}
+.alert-os.success { 
+    background: linear-gradient(135deg, var(--green-50), #ECFDF5);
+    color: var(--green-700); 
+    border-left: 4px solid var(--green-600);
+}
+.alert-os.error { 
+    background: linear-gradient(135deg, var(--red-50), #FFF5F5);
+    color: var(--red-600); 
+    border-left: 4px solid var(--red-600);
+}
+.alert-os .close-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    font-size: 18px;
+    line-height: 1;
+    padding: 0 4px;
+    transition: opacity 0.2s;
+}
+.alert-os .close-btn:hover { opacity: 1; }
+
+/* ── Page Shell ── */
+.os-page {
+    background: var(--slate-50);
+    min-height: 100vh;
+    padding: 0;
 }
 
-/* Main Card */
-.main-card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    overflow: hidden;
-}
-
-/* Header */
-.card-header-custom {
-    padding: 24px 28px;
-    border-bottom: 1px solid #f0f0f0;
+/* ── Top Bar ── */
+.os-topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--slate-100);
+    padding: 24px 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    background: rgba(255,255,255,0.95);
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
     gap: 16px;
 }
 
-.header-left h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1a1a2e;
-    margin-bottom: 4px;
-}
-
-.header-left p {
-    font-size: 13px;
-    color: #6c757d;
-    margin: 0;
-}
-
-.header-right {
+.topbar-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
     display: flex;
-    gap: 12px;
     align-items: center;
+    justify-content: center;
+    color: var(--blue-600);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.topbar-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--slate-900);
+    letter-spacing: -0.3px;
+    line-height: 1.2;
+}
+
+.topbar-sub {
+    font-size: 13px;
+    color: var(--slate-500);
+    margin-top: 2px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
-.badge-stat {
-    padding: 6px 14px;
-    background: #f8f9fa;
-    border-radius: 30px;
-    font-size: 13px;
-    color: #495057;
-}
-
-.badge-stat i {
-    margin-right: 6px;
-    font-size: 12px;
-}
-
-.badge-stat.active {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-.btn-add {
-    background: #1976d2;
-    color: white;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 30px;
+/* Pill stats */
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
     font-size: 13px;
     font-weight: 500;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.pill-neutral {
+    background: var(--slate-100);
+    color: var(--slate-600);
+}
+.pill-neutral i { color: var(--slate-400); font-size: 12px; }
+.pill-blue {
+    background: var(--blue-50);
+    color: var(--blue-700);
+}
+.pill-blue i { font-size: 12px; }
+.pill:hover {
+    transform: translateY(-1px);
+}
+
+/* Add button */
+.btn-os-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+    color: #fff !important;
+    border: none;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+    letter-spacing: -0.1px;
+}
+.btn-os-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37,99,235,0.35);
+    color: #fff !important;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--blue-700), var(--blue-800));
+}
+.btn-os-add i { font-size: 12px; }
+
+/* ── Filter Bar ── */
+.os-filterbar {
+    padding: 20px 32px 0 32px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--slate-200);
+    background: #fff;
+    color: var(--slate-600);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.filter-btn:hover {
+    border-color: var(--blue-600);
+    color: var(--blue-600);
+}
+.filter-btn.active {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: #fff;
+}
+
+.search-box {
+    position: relative;
+}
+.search-box i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--slate-400);
+    font-size: 12px;
+}
+.search-box input {
+    padding: 6px 12px 6px 32px;
+    border: 1px solid var(--slate-200);
+    border-radius: 999px;
+    font-size: 13px;
+    width: 240px;
+    transition: all 0.2s;
+}
+.search-box input:focus {
+    outline: none;
+    border-color: var(--blue-600);
+    box-shadow: 0 0 0 3px var(--blue-100);
+}
+
+/* ── Grid ── */
+.os-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+    padding: 28px 32px;
+}
+
+/* ── Card ── */
+.os-card {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--slate-100);
+    box-shadow: var(--shadow-xs);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 0.5s ease-out;
+}
+.os-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--slate-200);
+}
+
+/* Card top stripe */
+.os-card-stripe {
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue-600), #60a5fa, #93c5fd);
+    transition: all 0.3s;
+}
+.os-card-stripe.inactive {
+    background: linear-gradient(90deg, var(--slate-300), var(--slate-400));
+}
+
+.os-card-body {
+    padding: 20px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Card header row */
+.os-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.os-card-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--slate-900);
+    letter-spacing: -0.2px;
+    line-height: 1.3;
+    margin-bottom: 6px;
+}
+
+.os-card-date {
+    font-size: 11px;
+    color: var(--slate-400);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.os-card-date i { font-size: 10px; }
+
+/* Status badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+    flex-shrink: 0;
+}
+.status-active {
+    background: var(--green-50);
+    color: var(--green-700);
+    border: 1px solid var(--green-100);
+}
+.status-active::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green-600);
+    animation: pulse 2s infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.2); }
+}
+.status-inactive {
+    background: var(--slate-100);
+    color: var(--slate-500);
+    border: 1px solid var(--slate-200);
+}
+.status-inactive::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--slate-300);
+}
+
+/* Member section */
+.os-members {
+    flex: 1;
+    border: 1px solid var(--slate-100);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: var(--slate-50);
+}
+
+.os-members-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #fff;
+    border-bottom: 1px solid var(--slate-100);
+}
+
+.members-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--slate-500);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.members-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue-600);
+    background: var(--blue-50);
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+.members-count i { font-size: 10px; }
+
+.os-member-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--slate-100);
+    transition: all 0.2s;
+    background: #fff;
+}
+.os-member-row:last-child { border-bottom: none; }
+.os-member-row:hover { 
+    background: var(--slate-50);
+    transform: translateX(4px);
+}
+
+.member-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--slate-100), var(--slate-200));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--slate-400);
+    font-size: 14px;
+    flex-shrink: 0;
+    border: 1px solid var(--slate-100);
+}
+.member-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-text {
+    flex: 1;
+}
+.member-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--slate-800);
+    line-height: 1.3;
+}
+.member-pos {
+    font-size: 11px;
+    color: var(--slate-500);
+    margin-top: 2px;
+}
+
+/* More members row */
+.more-members-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--slate-50);
+    border-top: 1px solid var(--slate-100);
+}
+.more-label {
+    font-size: 12px;
+    color: var(--slate-500);
+    font-weight: 500;
+}
+.btn-see-all {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--blue-600);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+    font-family: var(--font-main);
+}
+.btn-see-all:hover { 
+    background: var(--blue-50);
+    transform: translateX(-2px);
+}
+
+/* Empty members */
+.empty-members-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    color: var(--slate-300);
+    gap: 10px;
+    background: #fff;
+}
+.empty-members-box i { font-size: 28px; color: var(--slate-200); }
+.empty-members-box span { font-size: 12px; color: var(--slate-400); }
+
+/* Action bar */
+.os-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--slate-200);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--slate-500);
+    transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-icon:hover { 
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-icon-toggle-on  { 
+    color: var(--green-600); 
+    border-color: var(--green-100); 
+    background: var(--green-50);
+}
+.btn-icon-toggle-on:hover {
+    background: var(--green-100);
+    color: var(--green-700);
+}
+.btn-icon-toggle-off { 
+    color: var(--slate-400);
+    background: var(--slate-50);
+}
+
+.btn-icon-edit:hover   { 
+    color: var(--amber-600); 
+    border-color: #FDE68A; 
+    background: var(--amber-50);
+}
+.btn-icon-eye:hover    { 
+    color: var(--blue-600);  
+    border-color: var(--blue-100); 
+    background: var(--blue-50);
+}
+.btn-icon-delete:hover { 
+    color: var(--red-600);   
+    border-color: #FECDD3; 
+    background: var(--red-50);
+}
+
+/* Divider before actions */
+.actions-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--slate-200), transparent);
+    margin-bottom: 16px;
+}
+
+/* ── Pagination ── */
+.os-pagination {
+    display: flex;
+    justify-content: center;
+    padding: 0 32px 32px;
+}
+.os-pagination .pagination { margin: 0; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.os-pagination .page-link {
+    border: 1px solid var(--slate-200);
+    color: var(--slate-600);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 13px;
+    font-family: var(--font-main);
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.os-pagination .page-item.active .page-link {
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+    border-color: var(--blue-600);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+}
+.os-pagination .page-link:hover:not(.active) {
+    background: var(--slate-100);
+    border-color: var(--slate-300);
+    transform: translateY(-1px);
+}
+
+/* ── Empty State ── */
+.os-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+    gap: 16px;
+    animation: fadeIn 0.5s ease-out;
+}
+.os-empty-icon {
+    width: 88px;
+    height: 88px;
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(135deg, var(--slate-100), var(--slate-200));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--slate-400);
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+.os-empty h5 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--slate-800);
+    letter-spacing: -0.2px;
+}
+.os-empty p {
+    font-size: 14px;
+    color: var(--slate-500);
+    max-width: 320px;
+    line-height: 1.5;
+}
+
+/* ── Modal ── */
+.modal-os .modal-content {
+    border-radius: var(--radius-2xl);
+    border: none;
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-main);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease-out;
+}
+.modal-os .modal-header {
+    padding: 24px 28px 20px;
+    border-bottom: 1px solid var(--slate-100);
+    background: linear-gradient(135deg, #fff, var(--slate-50));
+}
+.modal-os .modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--slate-900);
+    letter-spacing: -0.2px;
+}
+.modal-os .modal-header .modal-sub {
+    font-size: 12px;
+    color: var(--slate-500);
+    margin-top: 4px;
+}
+.modal-os .modal-body {
+    padding: 24px 28px;
+    max-height: 520px;
+    overflow-y: auto;
+    background: #fff;
+}
+.modal-os .modal-footer {
+    padding: 16px 28px;
+    border-top: 1px solid var(--slate-100);
+    background: var(--slate-50);
+    gap: 12px;
+}
+
+.modal-meta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--slate-100);
+}
+
+.modal-member-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--slate-50);
+    border: 1px solid var(--slate-100);
+    border-radius: var(--radius-lg);
+    margin-bottom: 10px;
+    transition: all 0.2s;
+}
+.modal-member-card:hover { 
+    transform: translateX(4px);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+}
+.modal-member-card:last-child { margin-bottom: 0; }
+
+.modal-member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--slate-100), var(--slate-200));
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--slate-400);
+    font-size: 18px;
+    border: 1px solid var(--slate-100);
+    overflow: hidden;
+}
+.modal-member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal-member-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--slate-800);
+}
+.modal-member-pos {
+    font-size: 12px;
+    color: var(--slate-500);
+    margin-top: 2px;
+}
+
+.btn-modal-close {
+    background: var(--slate-100);
+    color: var(--slate-600);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-modal-close:hover { 
+    background: var(--slate-200);
+    transform: translateY(-1px);
+}
+
+.btn-modal-edit {
+    background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-main);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 8px;
     transition: all 0.2s;
 }
-
-.btn-add:hover {
-    background: #1565c0;
-    color: white;
+.btn-modal-edit:hover { 
+    background: linear-gradient(135deg, var(--blue-700), var(--blue-800));
     transform: translateY(-1px);
+    color: #fff; 
+    text-decoration: none;
 }
 
-/* Grid Layout - CENTERED HORIZONTALLY */
-.structures-grid {
-    padding: 32px 28px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
-    background: #fafbfc;
+/* ── Tooltip ── */
+[data-tooltip] {
+    position: relative;
 }
-
-/* Structure Card - Fixed Width */
-.structure-item {
-    background: white;
-    border-radius: 16px;
-    width: 380px;
-    transition: all 0.2s;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-    border: 1px solid #eef2f6;
-    flex-shrink: 0;
-}
-
-.structure-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transform: translateY(-2px);
-    border-color: #e0e7ed;
-}
-
-/* Card Content */
-.card-padding {
-    padding: 20px;
-}
-
-.card-header-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 16px;
-}
-
-.structure-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #1a1a2e;
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: var(--slate-800);
+    color: #fff;
+    font-size: 11px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
     margin-bottom: 6px;
 }
-
-.structure-date {
-    font-size: 11px;
-    color: #94a3b8;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+[data-tooltip]:hover:before {
+    opacity: 1;
 }
 
-.status {
-    padding: 4px 10px;
-    border-radius: 30px;
-    font-size: 11px;
-    font-weight: 500;
-}
-
-.status-active {
-    background: #e6f7e6;
-    color: #2e7d32;
-}
-
-.status-inactive {
-    background: #f5f5f5;
-    color: #757575;
-}
-
-/* Member Section */
-.member-info {
-    margin: 16px 0;
-    padding: 12px 0;
-    border-top: 1px solid #f0f0f0;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.member-count {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-}
-
-.count-badge {
-    background: #f0f7ff;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    color: #1976d2;
-}
-
-.count-badge i {
-    margin-right: 5px;
-    font-size: 11px;
-}
-
-.btn-view {
-    background: none;
-    border: none;
-    color: #1976d2;
-    font-size: 12px;
-    cursor: pointer;
-    padding: 0;
-}
-
-.btn-view:hover {
-    text-decoration: underline;
-}
-
-/* Member List Preview */
-.member-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.member-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 0;
-}
-
-.member-avatar-small {
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #9e9e9e;
-    font-size: 12px;
-    overflow: hidden;
-}
-
-.member-avatar-small img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.member-name-small {
-    font-size: 13px;
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-.member-position-small {
-    font-size: 11px;
-    color: #94a3b8;
-}
-
-.empty-members {
-    text-align: center;
-    padding: 20px;
-    color: #94a3b8;
-    font-size: 13px;
-}
-
-/* Action Buttons */
-.action-buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 16px;
-}
-
-.btn-action {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-    background: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: #6b7280;
-}
-
-.btn-action:hover {
-    transform: translateY(-1px);
-}
-
-.btn-toggle-on {
-    color: #10b981;
-    border-color: #d1fae5;
-    background: #f0fdf4;
-}
-
-.btn-toggle-off {
-    color: #9ca3af;
-}
-
-.btn-edit:hover {
-    color: #f59e0b;
-    border-color: #fed7aa;
-    background: #fffbeb;
-}
-
-.btn-preview:hover {
-    color: #3b82f6;
-    border-color: #bfdbfe;
-    background: #eff6ff;
-}
-
-.btn-delete:hover {
-    color: #ef4444;
-    border-color: #fecaca;
-    background: #fef2f2;
-}
-
-/* Pagination */
-.pagination-wrapper {
-    padding: 20px 28px;
-    border-top: 1px solid #f0f0f0;
-    background: white;
-    display: flex;
-    justify-content: center;
-}
-
-.pagination {
-    margin: 0;
-    gap: 5px;
-}
-
-.page-link {
-    border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
-    color: #5b6e8c;
-    font-size: 13px;
-}
-
-.page-item.active .page-link {
-    background: #1976d2;
-    color: white;
-}
-
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 60px 28px;
-    background: #fafbfc;
-}
-
-.empty-state i {
-    font-size: 48px;
-    color: #cbd5e1;
-    margin-bottom: 16px;
-}
-
-.empty-state h5 {
-    font-size: 16px;
-    font-weight: 500;
-    color: #334155;
-    margin-bottom: 8px;
-}
-
-.empty-state p {
-    font-size: 13px;
-    color: #64748b;
-    margin-bottom: 20px;
-}
-
-/* Modal */
-.modal-simple .modal-content {
-    border-radius: 20px;
-    border: none;
-}
-
-.modal-simple .modal-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.modal-simple .modal-body {
-    padding: 24px;
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-.modal-simple .modal-footer {
-    padding: 16px 24px;
-    border-top: 1px solid #f0f0f0;
-    background: #fafbfc;
-}
-
-.member-grid-simple {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.member-card-simple {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    border: 1px solid #f0f0f0;
-    border-radius: 12px;
-    transition: all 0.2s;
-}
-
-.member-card-simple:hover {
-    background: #fafbfc;
-    border-color: #e5e7eb;
-}
-
-.member-avatar-modal {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    object-fit: cover;
-    background: #f5f5f5;
-}
-
-.member-info-modal h6 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #1a1a2e;
-    margin-bottom: 4px;
-}
-
-.member-info-modal p {
-    font-size: 12px;
-    color: #6c757d;
-    margin: 0;
-}
-
-.preview-stats-simple {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.preview-stat-simple {
-    font-size: 12px;
-    color: #6c757d;
-    background: #f8f9fa;
-    padding: 4px 12px;
-    border-radius: 20px;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-    .structure-item {
-        width: 340px;
-    }
-}
-
+/* ── Responsive ── */
 @media (max-width: 768px) {
-    .card-header-custom {
-        padding: 20px;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .header-right {
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .structures-grid {
+    .os-topbar { padding: 20px 20px; }
+    .os-filterbar { padding: 16px 20px 0 20px; }
+    .os-grid { 
+        grid-template-columns: 1fr; 
         padding: 20px;
         gap: 20px;
     }
-    
-    .structure-item {
-        width: 100%;
-        max-width: 400px;
-    }
-    
-    .card-padding {
-        padding: 16px;
-    }
-    
-    .action-buttons {
-        justify-content: flex-start;
-    }
-    
-    .pagination-wrapper {
-        padding: 16px 20px;
-    }
+    .os-pagination { padding: 0 20px 24px; }
+    .topbar-icon { width: 40px; height: 40px; font-size: 16px; }
+    .topbar-title { font-size: 18px; }
+    .search-box input { width: 180px; }
 }
 
 @media (max-width: 480px) {
-    .card-header-custom {
-        padding: 16px;
-    }
-    
-    .header-left h3 {
-        font-size: 16px;
-    }
-    
-    .structures-grid {
-        padding: 16px;
-        gap: 16px;
-    }
-    
-    .structure-item {
-        width: 100%;
-    }
-    
-    .btn-action {
-        width: 32px;
-        height: 32px;
-    }
-    
-    .member-row {
-        padding: 4px 0;
-    }
-    
-    .member-name-small {
-        font-size: 12px;
-    }
+    .topbar-title { font-size: 16px; }
+    .topbar-sub { font-size: 11px; }
+    .pill { font-size: 11px; padding: 6px 12px; }
+    .btn-os-add { padding: 6px 16px; font-size: 12px; }
+    .filter-group { width: 100%; justify-content: center; }
+    .search-box { width: 100%; }
+    .search-box input { width: 100%; }
 }
 </style>
 
-{{-- Alert Messages --}}
+{{-- Alerts with auto-dismiss --}}
 @if(session('success'))
-<div class="alert alert-custom alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<div class="alert-os success" id="alert-success">
+    <i class="fas fa-check-circle"></i>
+    {{ session('success') }}
+    <button class="close-btn" onclick="this.parentElement.remove()">×</button>
 </div>
 @endif
-
 @if(session('error'))
-<div class="alert alert-custom alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+<div class="alert-os error" id="alert-error">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ session('error') }}
+    <button class="close-btn" onclick="this.parentElement.remove()">×</button>
 </div>
 @endif
 
-<div class="main-card">
-    {{-- Header --}}
-    <div class="card-header-custom">
-        <div class="header-left">
-            <h3>
-                <i class="fas fa-sitemap me-2" style="color: #1976d2;"></i>
-                Struktur Organisasi
-            </h3>
-            <p>Kelola struktur dan anggota organisasi</p>
+<div class="os-page">
+
+    {{-- ── Top Bar ── --}}
+    <div class="os-topbar">
+        <div class="topbar-left">
+            <div class="topbar-icon">
+                <i class="fas fa-sitemap"></i>
+            </div>
+            <div>
+                <div class="topbar-title">Struktur Organisasi</div>
+                <div class="topbar-sub">Kelola struktur dan keanggotaan organisasi</div>
+            </div>
         </div>
-        <div class="header-right">
-            <span class="badge-stat">
-                <i class="fas fa-layer-group"></i> Total: {{ $data->total() }}
+        <div class="topbar-right">
+            <span class="pill pill-neutral" data-tooltip="Total struktur organisasi">
+                <i class="fas fa-layer-group"></i> {{ $data->total() }} Total
             </span>
-            <span class="badge-stat active">
-                <i class="fas fa-check-circle"></i> Aktif: {{ $data->where('is_active', true)->count() }}
+            <span class="pill pill-blue" data-tooltip="Struktur yang aktif ditampilkan">
+                <i class="fas fa-check-circle"></i> {{ $data->where('is_active', true)->count() }} Aktif
             </span>
-            <a href="{{ route('admin.organization-structure.create') }}" class="btn-add">
-                <i class="fas fa-plus"></i> Tambah
+            <a href="{{ route('admin.organization-structure.create') }}" class="btn-os-add">
+                <i class="fas fa-plus"></i> Tambah Struktur
             </a>
         </div>
     </div>
 
+    {{-- ── Filter & Search ── --}}
     @if($data->count() > 0)
-    {{-- Grid Cards - CENTERED HORIZONTALLY --}}
-    <div class="structures-grid">
+    <div class="os-filterbar">
+        <div class="filter-group">
+            <button class="filter-btn {{ request('filter') == 'all' || !request('filter') ? 'active' : '' }}" data-filter="all">Semua</button>
+            <button class="filter-btn {{ request('filter') == 'active' ? 'active' : '' }}" data-filter="active">Aktif</button>
+            <button class="filter-btn {{ request('filter') == 'inactive' ? 'active' : '' }}" data-filter="inactive">Nonaktif</button>
+        </div>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-structure" placeholder="Cari struktur..." value="{{ request('search') }}">
+        </div>
+    </div>
+    @endif
+
+    @if($data->count() > 0)
+
+    {{-- ── Grid ── --}}
+    <div class="os-grid" id="structure-grid">
         @foreach($data as $structure)
         @php
             $members = $structure->members->sortBy('order');
             $memberCount = $members->count();
-            $previewMembers = $members->take(2);
+            $previewMembers = $members->take(3);
         @endphp
-        <div class="structure-item">
-            <div class="card-padding">
-                {{-- Header Card --}}
-                <div class="card-header-info">
-                    <div>
-                        <div class="structure-title">{{ $structure->name }}</div>
-                        <div class="structure-date">
+        <div class="os-card" data-name="{{ strtolower($structure->name) }}" data-active="{{ $structure->is_active ? 'active' : 'inactive' }}">
+            <div class="os-card-stripe {{ $structure->is_active ? '' : 'inactive' }}"></div>
+            <div class="os-card-body">
+
+                {{-- Header --}}
+                <div class="os-card-header">
+                    <div style="flex: 1; min-width: 0; padding-right: 12px;">
+                        <div class="os-card-name">{{ $structure->name }}</div>
+                        <div class="os-card-date">
                             <i class="far fa-calendar-alt"></i>
                             {{ $structure->created_at->translatedFormat('d F Y') }}
                         </div>
                     </div>
-                    <div>
-                        @if($structure->is_active)
-                        <span class="status status-active">Aktif</span>
-                        @else
-                        <span class="status status-inactive">Nonaktif</span>
-                        @endif
-                    </div>
+                    @if($structure->is_active)
+                        <span class="status-badge status-active">Aktif</span>
+                    @else
+                        <span class="status-badge status-inactive">Nonaktif</span>
+                    @endif
                 </div>
 
-                {{-- Member Info --}}
-                <div class="member-info">
-                    <div class="member-count">
-                        <span class="count-badge">
-                            <i class="fas fa-users"></i> {{ $memberCount }} Anggota
+                {{-- Members --}}
+                <div class="os-members">
+                    <div class="os-members-header">
+                        <span class="members-label">Anggota</span>
+                        <span class="members-count">
+                            <i class="fas fa-users"></i> {{ $memberCount }}
                         </span>
-                        <button type="button" class="btn-view" data-bs-toggle="modal" data-bs-target="#previewModal{{ $structure->id }}">
-                            Lihat Semua <i class="fas fa-arrow-right ms-1"></i>
+                    </div>
+
+                    @forelse($previewMembers as $member)
+                    <div class="os-member-row">
+                        <div class="member-avatar">
+                            @if($member->photo)
+                                <img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}">
+                            @else
+                                <i class="fas fa-user"></i>
+                            @endif
+                        </div>
+                        <div class="member-text">
+                            <div class="member-name">{{ Str::limit($member->name, 28) }}</div>
+                            <div class="member-pos">{{ Str::limit($member->position, 35) }}</div>
+                        </div>
+                    </div>
+                    @empty
+                    <div class="empty-members-box">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Belum ada anggota</span>
+                    </div>
+                    @endforelse
+
+                    @if($memberCount > 3)
+                    <div class="more-members-row">
+                        <span class="more-label">+{{ $memberCount - 3 }} anggota lainnya</span>
+                        <button type="button" class="btn-see-all"
+                                data-bs-toggle="modal"
+                                data-bs-target="#previewModal{{ $structure->id }}">
+                            Lihat semua <i class="fas fa-arrow-right" style="font-size: 10px;"></i>
                         </button>
                     </div>
-
-                    {{-- Member Preview --}}
-                    <div class="member-list">
-                        @forelse($previewMembers as $member)
-                        <div class="member-row">
-                            <div class="member-avatar-small">
-                                @if($member->photo)
-                                <img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}">
-                                @else
-                                <i class="fas fa-user"></i>
-                                @endif
-                            </div>
-                            <div>
-                                <div class="member-name-small">{{ Str::limit($member->name, 20) }}</div>
-                                <div class="member-position-small">{{ Str::limit($member->position, 25) }}</div>
-                            </div>
-                        </div>
-                        @empty
-                        <div class="empty-members">
-                            <i class="fas fa-user-plus me-1"></i> Belum ada anggota
-                        </div>
-                        @endforelse
-                        
-                        @if($memberCount > 2)
-                        <div class="member-row">
-                            <div class="member-avatar-small">
-                                <i class="fas fa-ellipsis-h"></i>
-                            </div>
-                            <div>
-                                <div class="member-name-small">+ {{ $memberCount - 2 }} anggota lainnya</div>
-                            </div>
-                        </div>
-                        @endif
-                    </div>
+                    @endif
                 </div>
 
-                {{-- Action Buttons --}}
-                <div class="action-buttons">
+                {{-- Actions --}}
+                <div class="actions-divider"></div>
+                <div class="os-actions">
                     <form method="POST" action="{{ route('admin.organization-structure.toggle-active', $structure->id) }}" class="d-inline">
                         @csrf
-                        <button type="submit" 
-                                class="btn-action {{ $structure->is_active ? 'btn-toggle-on' : 'btn-toggle-off' }}"
-                                title="{{ $structure->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
-                            <i class="fas {{ $structure->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}"></i>
+                        <button type="submit"
+                                class="btn-icon {{ $structure->is_active ? 'btn-icon-toggle-on' : 'btn-icon-toggle-off' }}"
+                                data-tooltip="{{ $structure->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                            <i class="fas {{ $structure->is_active ? 'fa-toggle-on' : 'fa-toggle-off' }}" style="font-size: 16px;"></i>
                         </button>
                     </form>
-                    
-                    <button type="button" 
-                            class="btn-action btn-preview" 
-                            data-bs-toggle="modal" 
+
+                    <button type="button"
+                            class="btn-icon btn-icon-eye"
+                            data-bs-toggle="modal"
                             data-bs-target="#previewModal{{ $structure->id }}"
-                            title="Preview">
+                            data-tooltip="Preview">
                         <i class="fas fa-eye"></i>
                     </button>
-                    
-                    <a href="{{ route('admin.organization-structure.edit', $structure->id) }}" 
-                       class="btn-action btn-edit"
-                       title="Edit">
-                        <i class="fas fa-edit"></i>
+
+                    <a href="{{ route('admin.organization-structure.edit', $structure->id) }}"
+                       class="btn-icon btn-icon-edit" data-tooltip="Edit">
+                        <i class="fas fa-pencil-alt"></i>
                     </a>
-                    
-                    <form method="POST" action="{{ route('admin.organization-structure.destroy', $structure->id) }}" 
+
+                    <form method="POST"
+                          action="{{ route('admin.organization-structure.destroy', $structure->id) }}"
                           class="d-inline"
-                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus struktur "{{ $structure->name }}"? Semua anggota di dalamnya juga akan terhapus secara permanen.')">
+                          onsubmit="return confirm('Apakah Anda yakin ingin menghapus struktur \"{{ $structure->name }}\"?\\nSemua anggota di dalamnya juga akan terhapus permanen.')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-action btn-delete" title="Hapus">
+                        <button type="submit" class="btn-icon btn-icon-delete" data-tooltip="Hapus">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </form>
                 </div>
+
             </div>
         </div>
         @endforeach
     </div>
 
-    {{-- Pagination - CENTERED --}}
-    <div class="pagination-wrapper">
-        {{ $data->links() }}
+    {{-- Pagination --}}
+    <div class="os-pagination">
+        {{ $data->appends(request()->query())->links() }}
     </div>
 
     @else
-    {{-- Empty State --}}
-    <div class="empty-state">
-        <i class="fas fa-sitemap"></i>
+
+    {{-- Empty state with illustration --}}
+    <div class="os-empty">
+        <div class="os-empty-icon">
+            <i class="fas fa-sitemap"></i>
+        </div>
         <h5>Belum ada struktur organisasi</h5>
-        <p>Tambahkan struktur organisasi untuk ditampilkan di halaman publik</p>
-        <a href="{{ route('admin.organization-structure.create') }}" class="btn-add">
+        <p>Mulai dengan menambahkan struktur organisasi pertama untuk ditampilkan di halaman publik.</p>
+        <a href="{{ route('admin.organization-structure.create') }}" class="btn-os-add" style="margin-top: 8px;">
             <i class="fas fa-plus"></i> Tambah Struktur
         </a>
     </div>
-    @endif
-</div>
 
-{{-- Preview Modals --}}
+    @endif
+
+</div>{{-- .os-page --}}
+
+
+{{-- ── Preview Modals ── --}}
 @foreach($data as $structure)
 @php
     $members = $structure->members->sortBy('order');
     $memberCount = $members->count();
 @endphp
-<div class="modal fade modal-simple" id="previewModal{{ $structure->id }}" tabindex="-1" aria-labelledby="previewModalLabel{{ $structure->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade modal-os" id="previewModal{{ $structure->id }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <h5 class="modal-title" id="previewModalLabel{{ $structure->id }}">{{ $structure->name }}</h5>
-                    @if($structure->is_active)
-                    <span class="status status-active mt-1" style="display: inline-block; font-size: 10px;">Aktif</span>
-                    @endif
+                    <div class="modal-title">{{ $structure->name }}</div>
+                    <div class="modal-sub">
+                        <i class="far fa-calendar-alt me-1"></i> Dibuat {{ $structure->created_at->translatedFormat('d F Y') }}
+                    </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">
-                <div class="preview-stats-simple">
-                    <span class="preview-stat-simple">
-                        <i class="fas fa-users"></i> {{ $memberCount }} Anggota
+                <div class="modal-meta-row">
+                    <span class="pill pill-neutral" style="font-size: 12px;">
+                        <i class="fas fa-users" style="font-size: 11px;"></i> {{ $memberCount }} Anggota
                     </span>
-                    <span class="preview-stat-simple">
-                        <i class="far fa-calendar-alt"></i> {{ $structure->created_at->translatedFormat('d F Y') }}
-                    </span>
+                    @if($structure->is_active)
+                        <span class="status-badge status-active" style="font-size: 11px;">Aktif</span>
+                    @else
+                        <span class="status-badge status-inactive" style="font-size: 11px;">Nonaktif</span>
+                    @endif
                 </div>
 
                 @if($memberCount > 0)
-                <div class="member-grid-simple">
                     @foreach($members as $member)
-                    <div class="member-card-simple">
-                        @if($member->photo)
-                        <img src="{{ asset('storage/'.$member->photo) }}" class="member-avatar-modal" alt="{{ $member->name }}">
-                        @else
-                        <div class="member-avatar-modal d-flex align-items-center justify-content-center bg-light">
-                            <i class="fas fa-user text-secondary"></i>
+                    <div class="modal-member-card">
+                        <div class="modal-member-avatar">
+                            @if($member->photo)
+                                <img src="{{ asset('storage/'.$member->photo) }}" alt="{{ $member->name }}">
+                            @else
+                                <i class="fas fa-user"></i>
+                            @endif
                         </div>
-                        @endif
-                        <div class="member-info-modal">
-                            <h6>{{ $member->name }}</h6>
-                            <p>{{ $member->position }}</p>
+                        <div>
+                            <div class="modal-member-name">{{ $member->name }}</div>
+                            <div class="modal-member-pos">{{ $member->position }}</div>
                         </div>
                     </div>
                     @endforeach
-                </div>
                 @else
-                <div class="text-center py-4">
-                    <i class="fas fa-user-friends fa-2x text-muted mb-2" style="opacity: 0.5;"></i>
-                    <p class="text-muted mb-0">Belum ada anggota</p>
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 48px 20px; color: var(--slate-300); gap: 12px;">
+                    <i class="fas fa-user-friends" style="font-size: 36px;"></i>
+                    <span style="font-size: 13px; color: var(--slate-400);">Belum ada anggota dalam struktur ini</span>
                 </div>
                 @endif
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">Tutup</button>
-                <a href="{{ route('admin.organization-structure.edit', $structure->id) }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-edit"></i> Edit Struktur
+            <div class="modal-footer" style="justify-content: flex-end;">
+                <button type="button" class="btn-modal-close" data-bs-dismiss="modal">Tutup</button>
+                <a href="{{ route('admin.organization-structure.edit', $structure->id) }}" class="btn-modal-edit">
+                    <i class="fas fa-pencil-alt" style="font-size: 12px;"></i> Edit Struktur
                 </a>
             </div>
         </div>
     </div>
 </div>
 @endforeach
+
+<script>
+// Auto-dismiss alerts after 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('.alert-os');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            if (alert && alert.remove) {
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 5000);
+    });
+
+    // Search functionality
+    const searchInput = document.getElementById('search-structure');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.os-card');
+            
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name') || '';
+                if (name.includes(searchTerm)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active state
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter cards
+            const cards = document.querySelectorAll('.os-card');
+            cards.forEach(card => {
+                const isActive = card.getAttribute('data-active');
+                if (filter === 'all' || isActive === filter) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Update URL without reload
+            const url = new URL(window.location.href);
+            if (filter === 'all') {
+                url.searchParams.delete('filter');
+            } else {
+                url.searchParams.set('filter', filter);
+            }
+            window.history.pushState({}, '', url);
+        });
+    });
+    
+    // Preserve filter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentFilter = urlParams.get('filter');
+    if (currentFilter && currentFilter !== 'all') {
+        const filterBtn = document.querySelector(`.filter-btn[data-filter="${currentFilter}"]`);
+        if (filterBtn) filterBtn.click();
+    }
+    
+    const searchQuery = urlParams.get('search');
+    if (searchQuery && searchInput) {
+        searchInput.value = searchQuery;
+        searchInput.dispatchEvent(new Event('input'));
+    }
+});
+</script>
+
 @endsection

@@ -79,12 +79,6 @@
             padding: 0 var(--container-pad);
         }
 
-        .lpm-container {
-            width: 100%;
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 0 var(--container-pad);
-        }
 
         /* ================= TOP BAR ================= */
         .top-bar {
@@ -282,7 +276,7 @@
             background: rgba(255,255,255,0.10);
             border-bottom-color: var(--gold-light);
         }
-        
+
         .nav-link:focus,
         .nav-link:active {
             color: var(--white) !important;
@@ -296,7 +290,7 @@
         }
 
         .nav-dropdown.open > .nav-link i { transform: rotate(180deg); }
-        
+
         .nav-dropdown.open > .nav-link{
             color: var(--gold) !important;
             background: rgba(255,255,255,0.10);
@@ -560,6 +554,7 @@
             gap: 28px;
         }
 
+        /* ===== AGENDA CARD ===== */
         .agenda-card-small {
             border-radius: var(--radius-lg);
             overflow: hidden;
@@ -579,11 +574,33 @@
             box-shadow: var(--shadow-xl);
         }
 
+        /* ===== AGENDA BACKGROUND IMAGE ===== */
+        .agenda-card-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            z-index: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .agenda-card-small:hover .agenda-card-bg {
+            transform: scale(1.06);
+        }
+
+        /* overlay gelap di atas gambar agar teks tetap terbaca */
         .agenda-card-small::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 40%, rgba(5,26,43,0.88) 100%);
+            background: linear-gradient(
+                to bottom,
+                rgba(5,26,43,0.15) 0%,
+                rgba(5,26,43,0.35) 40%,
+                rgba(5,26,43,0.88) 100%
+            );
             z-index: 1;
         }
 
@@ -750,6 +767,32 @@
             z-index: 2;
         }
 
+        /* ===== MODAL IMAGE ===== */
+        .modal-image-wrap {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            position: relative;
+        }
+
+        .modal-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-image-wrap .modal-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 40%,
+                rgba(5,26,43,0.7) 100%
+            );
+        }
+
         .modal-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: var(--white);
@@ -757,6 +800,11 @@
             position: relative;
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
             overflow: hidden;
+        }
+
+        /* Saat ada gambar, header tidak perlu border-radius atas */
+        .modal-image-wrap + .modal-header {
+            border-radius: 0;
         }
 
         .modal-header::before {
@@ -983,9 +1031,7 @@
             background-color: #eef2f6 !important;
         }
 
-        /* ================= TAMBAHAN UNTUK RESPONSIVE LEBIH BAIK ================= */
-        
-        /* Memastikan semua konten tidak overflow */
+        /* ================= RESPONSIVE KONTEN ================= */
         .page-content {
             max-width: 100%;
             overflow-x: hidden;
@@ -1000,7 +1046,6 @@
             height: auto !important;
         }
 
-        /* ===== TABLES - FULL RESPONSIVE ===== */
         .page-content .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -1009,284 +1054,88 @@
             border-radius: 8px;
         }
 
-        .page-content table {
-            min-width: 100%;
-            width: 100% !important;
-            border-collapse: collapse !important;
-        }
-
-        /* Untuk tabel yang lebar, kasih scroll horizontal */
-        .page-content table.wide-table {
-            min-width: 800px;
-        }
+        .page-content table { min-width: 100%; width: 100% !important; border-collapse: collapse !important; }
+        .page-content table.wide-table { min-width: 800px; }
 
         @media (max-width: 768px) {
-            .page-content table {
-                font-size: 14px;
-            }
-            
+            .page-content table { font-size: 14px; }
             .page-content table th,
-            .page-content table td {
-                padding: 8px 10px !important;
-                white-space: nowrap;
-            }
-            
-            /* Force horizontal scroll untuk tabel lebar */
-            .page-content .table-responsive {
-                margin: 15px -10px;
-                width: calc(100% + 20px);
-            }
+            .page-content table td { padding: 8px 10px !important; white-space: nowrap; }
+            .page-content .table-responsive { margin: 15px -10px; width: calc(100% + 20px); }
         }
 
-        /* ===== HEADINGS RESPONSIVE ===== */
-        .page-content h1 {
-            font-size: clamp(1.5rem, 5vw, 2.2rem);
-        }
-        
-        .page-content h2 {
-            font-size: clamp(1.3rem, 4vw, 1.8rem);
-        }
-        
-        .page-content h3 {
-            font-size: clamp(1.1rem, 3.5vw, 1.4rem);
-        }
-        
-        .page-content h4 {
-            font-size: clamp(1rem, 3vw, 1.2rem);
-        }
-        
-        .page-content p {
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            line-height: 1.6;
-        }
+        .page-content h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); }
+        .page-content h2 { font-size: clamp(1.3rem, 4vw, 1.8rem); }
+        .page-content h3 { font-size: clamp(1.1rem, 3.5vw, 1.4rem); }
+        .page-content h4 { font-size: clamp(1rem, 3vw, 1.2rem); }
+        .page-content p  { font-size: clamp(0.9rem, 2.5vw, 1rem); line-height: 1.6; }
 
-        /* ===== LISTS RESPONSIVE ===== */
-        .page-content ul,
-        .page-content ol {
-            padding-left: clamp(20px, 4vw, 30px);
-        }
-        
-        .page-content li {
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            margin-bottom: 5px;
-        }
+        .page-content ul, .page-content ol { padding-left: clamp(20px, 4vw, 30px); }
+        .page-content li { font-size: clamp(0.9rem, 2.5vw, 1rem); margin-bottom: 5px; }
+        .page-content blockquote { padding: clamp(15px,3vw,25px) clamp(20px,4vw,30px); font-size: clamp(0.9rem,2.5vw,1rem); margin: 20px 0; }
+        .page-content img { border-radius: clamp(8px,2vw,12px); margin: clamp(15px,3vw,25px) 0; }
 
-        /* ===== BLOCKQUOTE RESPONSIVE ===== */
-        .page-content blockquote {
-            padding: clamp(15px, 3vw, 25px) clamp(20px, 4vw, 30px);
-            font-size: clamp(0.9rem, 2.5vw, 1rem);
-            margin: 20px 0;
-        }
-
-        /* ===== IMAGES RESPONSIVE ===== */
-        .page-content img {
-            border-radius: clamp(8px, 2vw, 12px);
-            margin: clamp(15px, 3vw, 25px) 0;
-        }
-
-        /* ===== SIDEBAR RESPONSIVE ===== */
-        .sidebar-news {
-            padding: clamp(15px, 3vw, 24px);
-        }
-        
-        .sidebar-title {
-            font-size: clamp(1.1rem, 3vw, 1.25rem);
-            padding-bottom: clamp(8px, 1.5vw, 12px);
-            margin-bottom: clamp(15px, 2.5vw, 20px);
-        }
-        
-        .sidebar-news-list a {
-            font-size: clamp(0.85rem, 2.5vw, 0.95rem);
-        }
-        
-        .sidebar-news-list li {
-            padding: clamp(8px, 1.5vw, 12px) 0;
-        }
-
-        /* ===== GRID LAYOUT RESPONSIVE ===== */
-        .page-layout {
-            gap: clamp(20px, 4vw, 40px);
-        }
+        .sidebar-news { padding: clamp(15px,3vw,24px); }
+        .sidebar-title { font-size: clamp(1.1rem,3vw,1.25rem); padding-bottom: clamp(8px,1.5vw,12px); margin-bottom: clamp(15px,2.5vw,20px); }
+        .sidebar-news-list a { font-size: clamp(0.85rem,2.5vw,0.95rem); }
+        .sidebar-news-list li { padding: clamp(8px,1.5vw,12px) 0; }
+        .page-layout { gap: clamp(20px,4vw,40px); }
 
         @media (max-width: 991px) {
-            .page-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-sidebar {
-                margin-top: 20px;
-            }
+            .page-layout { grid-template-columns: 1fr; }
+            .page-sidebar { margin-top: 20px; }
         }
 
-        /* ===== HERO SECTION RESPONSIVE ===== */
-        .page-hero {
-            min-height: clamp(200px, 40vh, 350px);
-            padding: clamp(60px, 10vh, 100px) 0 clamp(30px, 5vh, 50px);
-        }
-        
-        .page-hero-title {
-            font-size: clamp(1.2rem, 5vw, 2rem);
-        }
-        
-        .page-hero-title-wrap::before {
-            min-height: clamp(24px, 5vw, 36px);
-            width: clamp(3px, 1vw, 4px);
-        }
-        
-        .page-hero-breadcrumb {
-            font-size: clamp(0.65rem, 2vw, 0.85rem);
-            gap: clamp(4px, 1vw, 8px);
-            margin-bottom: clamp(8px, 1.5vh, 15px);
-        }
+        .page-hero { min-height: clamp(200px,40vh,350px); padding: clamp(60px,10vh,100px) 0 clamp(30px,5vh,50px); }
+        .page-hero-title { font-size: clamp(1.2rem,5vw,2rem); }
+        .page-hero-title-wrap::before { min-height: clamp(24px,5vw,36px); width: clamp(3px,1vw,4px); }
+        .page-hero-breadcrumb { font-size: clamp(0.65rem,2vw,0.85rem); gap: clamp(4px,1vw,8px); margin-bottom: clamp(8px,1.5vh,15px); }
 
-        /* ===== UTILITIES RESPONSIVE ===== */
-        .py-5 {
-            padding-top: clamp(1.5rem, 5vh, 3rem);
-            padding-bottom: clamp(1.5rem, 5vh, 3rem);
-        }
+        .py-5 { padding-top: clamp(1.5rem,5vh,3rem); padding-bottom: clamp(1.5rem,5vh,3rem); }
 
-        /* ===== FIX UNTUK DEVICE KECIL ===== */
         @media (max-width: 576px) {
-            .site-container {
-                padding: 0 12px;
-            }
-            
-            .page-content {
-                font-size: 0.95rem;
-            }
-            
-            .page-content h1 {
-                margin-top: 20px;
-                margin-bottom: 10px;
-            }
-            
-            .page-content h2 {
-                margin-top: 20px;
-                margin-bottom: 8px;
-            }
-            
-            .sidebar-news {
-                padding: 12px;
-            }
-            
-            .sidebar-news-list a {
-                font-size: 0.9rem;
-            }
-            
-            .sidebar-news-list li {
-                padding: 8px 0;
-            }
+            .site-container { padding: 0 12px; }
+            .page-content { font-size: 0.95rem; }
+            .page-content h1 { margin-top: 20px; margin-bottom: 10px; }
+            .page-content h2 { margin-top: 20px; margin-bottom: 8px; }
+            .sidebar-news { padding: 12px; }
+            .sidebar-news-list a { font-size: 0.9rem; }
+            .sidebar-news-list li { padding: 8px 0; }
         }
 
         @media (max-width: 375px) {
-            .site-container {
-                padding: 0 10px;
-            }
-            
-            .page-content {
-                font-size: 0.9rem;
-            }
-            
-            .page-content h1 {
-                font-size: 1.4rem;
-            }
-            
-            .page-content h2 {
-                font-size: 1.3rem;
-            }
-            
-            .page-content h3 {
-                font-size: 1.2rem;
-            }
-            
-            .page-hero-title {
-                font-size: 1.2rem;
-            }
-            
-            .sidebar-title {
-                font-size: 1rem;
-            }
-            
-            .sidebar-news-list a {
-                font-size: 0.85rem;
-            }
+            .site-container { padding: 0 10px; }
+            .page-content { font-size: 0.9rem; }
+            .page-content h1 { font-size: 1.4rem; }
+            .page-content h2 { font-size: 1.3rem; }
+            .page-content h3 { font-size: 1.2rem; }
+            .page-hero-title { font-size: 1.2rem; }
+            .sidebar-title { font-size: 1rem; }
+            .sidebar-news-list a { font-size: 0.85rem; }
         }
 
-        /* ===== LANDSCAPE MODE ===== */
         @media (max-height: 600px) and (orientation: landscape) {
-            .page-hero {
-                min-height: 160px;
-                padding: 40px 0 20px;
-            }
-            
-            .page-hero-title {
-                font-size: 1.2rem;
-            }
-            
-            .page-hero-title-wrap::before {
-                min-height: 24px;
-            }
+            .page-hero { min-height: 160px; padding: 40px 0 20px; }
+            .page-hero-title { font-size: 1.2rem; }
+            .page-hero-title-wrap::before { min-height: 24px; }
         }
 
-        /* ===== PRINT STYLES ===== */
         @media print {
-            .page-sidebar,
-            .page-hero::before,
-            .page-hero::after {
-                display: none;
-            }
-            
-            .page-hero {
-                background: none;
-                min-height: auto;
-                padding: 20px 0;
-            }
-            
-            .page-hero-title {
-                color: var(--primary-dark) !important;
-                text-shadow: none;
-            }
-            
-            .page-content {
-                color: #000;
-            }
-            
-            .page-content a {
-                text-decoration: none;
-                color: #000;
-            }
-            
-            .page-layout {
-                grid-template-columns: 1fr;
-            }
+            .page-sidebar, .page-hero::before, .page-hero::after { display: none; }
+            .page-hero { background: none; min-height: auto; padding: 20px 0; }
+            .page-hero-title { color: var(--primary-dark) !important; text-shadow: none; }
+            .page-content { color: #000; }
+            .page-content a { text-decoration: none; color: #000; }
+            .page-layout { grid-template-columns: 1fr; }
         }
 
-        /* ===== ACCESSIBILITY ===== */
         @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
+            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
 
-        /* ===== FIX UNTUK ELEMEN YANG OVERFLOW ===== */
-        .page-content * {
-            max-width: 100%;
-        }
-        
-        .page-content pre,
-        .page-content code {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            overflow-x: auto;
-        }
-
-        /* ===== BETTER TOUCH SCROLLING ===== */
-        .table-responsive,
-        .page-content table {
-            -webkit-overflow-scrolling: touch;
-        }
+        .page-content * { max-width: 100%; }
+        .page-content pre, .page-content code { white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+        .table-responsive, .page-content table { -webkit-overflow-scrolling: touch; }
 
         /* ================================================
            RESPONSIVE BREAKPOINTS
@@ -1298,9 +1147,7 @@
             .hero-title { font-size: 4.4rem; }
         }
 
-        @media (max-width: 1399px) {
-            :root { --container-pad: 32px; }
-        }
+        @media (max-width: 1399px) { :root { --container-pad: 32px; } }
 
         @media (max-width: 1199px) {
             :root { --container-pad: 24px; }
@@ -1321,35 +1168,30 @@
             .logo-title-group { gap: 10px; }
             .header-container { min-height: 64px; padding: 8px 0; }
             .nav-link { font-size: 0.72rem; padding: 0 9px; }
-
             .top-bar-container { flex-direction: column; gap: 6px; }
             .top-bar-left { justify-content: center; gap: 14px; }
             .top-bar-right { justify-content: center; }
-
             .hero-section { min-height: 64vh; }
             .hero-title { font-size: 2.6rem; }
-
             .agenda-horizontal-wrapper { grid-template-columns: repeat(2, 1fr); gap: 18px; }
             .agenda-card-small { height: 280px; }
-
+            /* modal image responsive */
+            .modal-image-wrap { height: 180px; }
             .survey-content { grid-template-columns: 1fr; gap: 40px; text-align: center; }
             .survey-right { justify-content: center; }
             .survey-title { font-size: 2rem; }
             .survey-label { justify-content: center; }
-
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
         }
 
         @media (max-width: 767px) {
             :root { --container-pad: 16px; }
-
             .top-bar { padding: 6px 0; }
             .top-bar-container { flex-direction: column; gap: 4px; }
             .top-bar-left { flex-direction: column; gap: 3px; width: 100%; }
             .top-bar-item { justify-content: center; font-size: 0.7rem; width: 100%; }
             .top-bar-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
             .top-bar-right { width: 100%; justify-content: center; }
-
             .header-container { min-height: auto; padding: 8px 0; gap: 0; justify-content: space-between; }
             .logo-title-group { flex: 1; min-width: 0; gap: 8px; overflow: hidden; }
             .logo { width: 38px; height: 38px; flex-shrink: 0; }
@@ -1358,21 +1200,15 @@
             .header-title span { font-size: 0.6rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 
             .menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-                width: 38px; height: 38px;
-                margin-left: 8px;
-                font-size: 1rem;
+                display: flex; align-items: center; justify-content: center;
+                flex-shrink: 0; width: 38px; height: 38px;
+                margin-left: 8px; font-size: 1rem;
             }
 
-            /* Mobile nav drawer */
             .main-nav {
                 position: fixed;
                 top: 0; right: -100%;
-                width: 80%;
-                max-width: 290px;
+                width: 80%; max-width: 290px;
                 height: 100vh;
                 background: var(--primary);
                 transition: right 0.3s ease;
@@ -1388,9 +1224,7 @@
                 display: block;
                 height: 3px;
                 background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
-                position: sticky;
-                top: 0;
-                z-index: 2;
+                position: sticky; top: 0; z-index: 2;
             }
 
             .main-nav.active { right: 0; }
@@ -1398,9 +1232,7 @@
             .nav-menu {
                 flex-direction: column;
                 padding: 8px 0 32px;
-                gap: 0;
-                width: 100%;
-                align-items: stretch;
+                gap: 0; width: 100%; align-items: stretch;
             }
 
             .nav-menu > li { display: block; }
@@ -1408,22 +1240,14 @@
             .nav-link {
                 padding: 13px 20px;
                 border-bottom: 1px solid rgba(255,255,255,0.07);
-                border-left: none;
-                border-right: none;
-                border-top: none;
+                border-left: none; border-right: none; border-top: none;
                 border-bottom-color: rgba(255,255,255,0.07) !important;
-                font-size: 0.86rem;
-                white-space: normal;
-                border-radius: 0;
+                font-size: 0.86rem; white-space: normal; border-radius: 0;
                 color: rgba(255,255,255,0.88);
-                justify-content: space-between;
-                width: 100%;
-                display: flex;
+                justify-content: space-between; width: 100%; display: flex;
             }
 
-            .nav-link:focus,
-            .nav-link:active,
-            .nav-link.active {
+            .nav-link:focus, .nav-link:active, .nav-link.active {
                 color: var(--white) !important;
                 background: rgba(255,255,255,0.07);
                 outline: none;
@@ -1435,55 +1259,39 @@
                 border-bottom-color: rgba(255,255,255,0.07) !important;
                 padding-left: 24px;
             }
-            
-            .nav-dropdown.open > .nav-link{
-                color: var(--gold) !important;
-            }
 
-            /* Mobile submenu — static, toggle */
+            .nav-dropdown.open > .nav-link { color: var(--gold) !important; }
+
             .nav-dropdown > .nav-submenu {
                 position: static !important;
-                width: 100%;
-                background: rgba(0,0,0,0.25);
-                box-shadow: none;
-                border-radius: 0;
-                border: none;
+                width: 100%; background: rgba(0,0,0,0.25);
+                box-shadow: none; border-radius: 0; border: none;
                 border-top: 2px solid var(--gold) !important;
                 min-width: unset;
-                opacity: 1 !important;
-                visibility: visible !important;
-                transform: none !important;
-                transition: none !important;
-                pointer-events: auto !important;
-                display: none;
+                opacity: 1 !important; visibility: visible !important;
+                transform: none !important; transition: none !important;
+                pointer-events: auto !important; display: none;
             }
 
             .nav-dropdown.open > .nav-submenu { display: block !important; }
             .nav-dropdown.open > .nav-link i { transform: rotate(180deg); }
 
             .nav-submenu li a {
-                padding: 11px 20px 11px 32px;
-                font-size: 0.82rem;
+                padding: 11px 20px 11px 32px; font-size: 0.82rem;
                 color: rgba(255,255,255,0.72);
                 border-bottom: 1px solid rgba(255,255,255,0.04);
                 border-left: 3px solid transparent;
             }
 
             .nav-submenu li a:hover {
-                color: var(--white);
-                background: rgba(255,255,255,0.06);
-                padding-left: 36px;
-                border-left-color: var(--gold);
+                color: var(--white); background: rgba(255,255,255,0.06);
+                padding-left: 36px; border-left-color: var(--gold);
             }
 
             .menu-overlay {
-                display: none;
-                position: fixed;
-                inset: 0;
-                background: rgba(5,26,43,0.65);
-                z-index: 999;
-                opacity: 0;
-                backdrop-filter: blur(3px);
+                display: none; position: fixed; inset: 0;
+                background: rgba(5,26,43,0.65); z-index: 999;
+                opacity: 0; backdrop-filter: blur(3px);
                 -webkit-backdrop-filter: blur(3px);
             }
 
@@ -1503,6 +1311,9 @@
             .agenda-horizontal-wrapper { grid-template-columns: 1fr; gap: 16px; }
             .agenda-card-small { height: 240px; }
 
+            /* modal image responsive */
+            .modal-image-wrap { height: 160px; }
+
             .survey-section { padding: 52px 0; }
             .survey-title { font-size: 1.6rem; }
             .survey-description { font-size: 0.9rem; }
@@ -1511,6 +1322,8 @@
 
             .agenda-modal-content { border-radius: var(--radius-lg); margin: 0 8px; }
             .modal-header { padding: 22px 18px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+            .modal-image-wrap { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+            .modal-image-wrap + .modal-header { border-radius: 0; }
             .modal-body { padding: 18px; }
             .modal-footer { padding: 14px 18px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
             .modal-info { grid-template-columns: 1fr; gap: 10px; }
@@ -1518,7 +1331,6 @@
             .modal-day { font-size: 2rem; }
 
             .page-content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-
             .main-footer { padding: 44px 0 0; }
             .footer-grid { grid-template-columns: 1fr; gap: 22px; }
             .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
@@ -1691,11 +1503,23 @@
                     @php
                         $agendaDate = \Carbon\Carbon::parse($agenda->date);
                         $now = \Carbon\Carbon::now();
-                        if ($agendaDate->isToday()) { $status = 'ongoing'; $statusText = 'Berlangsung'; }
-                        elseif ($agendaDate->isPast()) { $status = 'completed'; $statusText = 'Selesai'; }
-                        else { $status = 'upcoming'; $statusText = 'Akan Datang'; }
+                        if ($agendaDate->isToday())       { $status = 'ongoing';   $statusText = 'Berlangsung'; }
+                        elseif ($agendaDate->isPast())    { $status = 'completed'; $statusText = 'Selesai'; }
+                        else                              { $status = 'upcoming';  $statusText = 'Akan Datang'; }
                     @endphp
                     <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}">
+
+                        {{-- GAMBAR LATAR BELAKANG CARD --}}
+                        @if(!empty($agenda->image))
+                            <img
+                                class="agenda-card-bg"
+                                src="{{ Storage::url($agenda->image) }}"
+                                alt="{{ $agenda->title }}"
+                                loading="lazy"
+                                onerror="this.style.display='none'"
+                            >
+                        @endif
+
                         <div class="agenda-date-small">
                             <span class="date-day-small">{{ $agendaDate->format('d') }}</span>
                             <span class="date-month-small">{{ $agendaDate->translatedFormat('M') }}</span>
@@ -1703,8 +1527,14 @@
                         <div class="agenda-content-small">
                             <h3 class="agenda-title-small">{{ $agenda->title }}</h3>
                             <div class="agenda-meta-small">
-                                <div class="meta-item-small"><i class="fas fa-clock"></i><span>{{ $agenda->time }}</span></div>
-                                <div class="meta-item-small"><i class="fas fa-map-marker-alt"></i><span>{{ Str::limit($agenda->location, 25) }}</span></div>
+                                <div class="meta-item-small">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ $agenda->time }}</span>
+                                </div>
+                                <div class="meta-item-small">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>{{ Str::limit($agenda->location, 25) }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1723,6 +1553,13 @@
     <div class="agenda-modal-overlay" id="agendaModal">
         <div class="agenda-modal-content">
             <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+
+            {{-- Gambar modal di-inject via JS --}}
+            <div class="modal-image-wrap" id="modalImageWrap" style="display:none;">
+                <img id="modalImage" src="" alt="">
+                <div class="modal-image-overlay"></div>
+            </div>
+
             <div class="modal-header">
                 <div class="modal-date-box">
                     <span class="modal-day" id="modalDay"></span>
@@ -1846,46 +1683,33 @@
 
         if (menuOverlay) menuOverlay.onclick = () => closeMobileMenu();
 
-        /* ===== DROPDOWN — DESKTOP hover dengan delay, MOBILE klik ===== */
-        const LEAVE_DELAY = 500; 
+        /* ===== DROPDOWN ===== */
+        const LEAVE_DELAY = 500;
 
         document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
             let leaveTimer = null;
 
-            /* --- DESKTOP: hover --- */
             dropdown.addEventListener('mouseenter', function() {
                 if (window.innerWidth <= 767) return;
                 clearTimeout(leaveTimer);
-                // Tutup semua dropdown lain
-                document.querySelectorAll('.nav-dropdown').forEach(d => {
-                    if (d !== dropdown) d.classList.remove('open');
-                });
+                document.querySelectorAll('.nav-dropdown').forEach(d => { if (d !== dropdown) d.classList.remove('open'); });
                 dropdown.classList.add('open');
             });
 
             dropdown.addEventListener('mouseleave', function() {
                 if (window.innerWidth <= 767) return;
-                leaveTimer = setTimeout(function() {
-                    dropdown.classList.remove('open');
-                }, LEAVE_DELAY);
+                leaveTimer = setTimeout(() => dropdown.classList.remove('open'), LEAVE_DELAY);
             });
 
-            // Batalkan close timer saat masuk ke submenu
             const submenu = dropdown.querySelector('.nav-submenu');
             if (submenu) {
-                submenu.addEventListener('mouseenter', function() {
+                submenu.addEventListener('mouseenter', () => { if (window.innerWidth <= 767) return; clearTimeout(leaveTimer); });
+                submenu.addEventListener('mouseleave', () => {
                     if (window.innerWidth <= 767) return;
-                    clearTimeout(leaveTimer);
-                });
-                submenu.addEventListener('mouseleave', function() {
-                    if (window.innerWidth <= 767) return;
-                    leaveTimer = setTimeout(function() {
-                        dropdown.classList.remove('open');
-                    }, LEAVE_DELAY);
+                    leaveTimer = setTimeout(() => dropdown.classList.remove('open'), LEAVE_DELAY);
                 });
             }
 
-            /* --- MOBILE: klik toggle --- */
             const toggle = dropdown.querySelector('.nav-toggle');
             if (toggle) {
                 toggle.addEventListener('click', function(e) {
@@ -1893,14 +1717,12 @@
                     e.preventDefault();
                     e.stopPropagation();
                     const isOpen = dropdown.classList.contains('open');
-                    // Tutup semua dulu
                     document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
                     if (!isOpen) dropdown.classList.add('open');
                 });
             }
         });
 
-        // Tutup dropdown saat klik di luar (desktop)
         document.addEventListener('click', function(e) {
             if (window.innerWidth <= 767) return;
             if (!e.target.closest('.nav-dropdown')) {
@@ -1908,29 +1730,36 @@
             }
         });
 
-        // Tutup mobile menu saat klik link di submenu
-        document.querySelectorAll('.nav-submenu a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                setTimeout(closeMobileMenu, 200);
-            });
+        document.querySelectorAll('.nav-submenu a').forEach(link => {
+            link.addEventListener('click', () => setTimeout(closeMobileMenu, 200));
         });
 
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 767) closeMobileMenu();
-        });
+        window.addEventListener('resize', () => { if (window.innerWidth > 767) closeMobileMenu(); });
 
-        /* ===== AGENDA MODAL ===== */
-        const agendaModal = document.getElementById('agendaModal');
-        const modalClose  = document.getElementById('modalClose');
-        const agendaCards = document.querySelectorAll('.agenda-card-small');
-        const agendaData  = @json($agendas ?? []);
+        /* ===== AGENDA MODAL (dengan gambar) ===== */
+        const agendaModal     = document.getElementById('agendaModal');
+        const modalClose      = document.getElementById('modalClose');
+        const modalImageWrap  = document.getElementById('modalImageWrap');
+        const modalImageEl    = document.getElementById('modalImage');
+        const agendaCards     = document.querySelectorAll('.agenda-card-small');
+
+        // Data agenda dari Laravel (termasuk field image)
+        const agendaData = @json($agendas ?? []);
+
+        // Helper: bangun URL storage (mirroring Storage::url di JS)
+        function storageUrl(path) {
+            if (!path) return '';
+            // Hapus prefix "public/" jika ada, lalu gabungkan dengan /storage/
+            const clean = path.replace(/^public\//, '');
+            return '/storage/' + clean;
+        }
 
         function formatModalDate(dateString) {
             const date = new Date(dateString);
             return {
-                day: date.getDate(),
+                day:   date.getDate(),
                 month: date.toLocaleDateString('id-ID', { month: 'long' }),
-                year: date.getFullYear()
+                year:  date.getFullYear()
             };
         }
 
@@ -1955,6 +1784,20 @@
                     statusText = 'Berlangsung'; statusClass = 'status-ongoing';
                 } else if (agendaDate > now) {
                     statusText = 'Akan Datang'; statusClass = 'status-upcoming';
+                }
+
+                // Tampilkan / sembunyikan gambar di modal
+                if (agenda.image) {
+                    const imgUrl = storageUrl(agenda.image);
+                    modalImageEl.src = imgUrl;
+                    modalImageEl.alt = agenda.title;
+                    modalImageWrap.style.display = 'block';
+
+                    // Fallback: sembunyikan jika gambar gagal dimuat
+                    modalImageEl.onerror = () => { modalImageWrap.style.display = 'none'; };
+                } else {
+                    modalImageWrap.style.display = 'none';
+                    modalImageEl.src = '';
                 }
 
                 document.getElementById('modalDay').textContent       = date.day;

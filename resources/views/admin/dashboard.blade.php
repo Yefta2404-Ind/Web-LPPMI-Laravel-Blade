@@ -2,120 +2,115 @@
 
 @section('content')
 <style>
+    /* ========================================
+       MODERN ADMIN DASHBOARD - SIMPLE & CLEAN
+       ======================================== */
+    
+    /* Warna yang mudah dipahami */
     :root {
-        --primary: #0f2a44;
-        --secondary: #3b82f6;
-        --success: #10b981;
-        --warning: #f59e0b;
-        --danger: #ef4444;
-        --purple: #8b5cf6;
-        --pink: #ec489a;
-        --indigo: #6366f1;
-        --cyan: #06b6d4;
-        --orange: #f97316;
-        --gray-50: #f9fafb;
-        --gray-100: #f3f4f6;
-        --gray-200: #e5e7eb;
-        --gray-300: #d1d5db;
-        --gray-600: #4b5563;
-        --gray-700: #374151;
-        --gray-800: #1f2937;
-        --gray-900: #111827;
+        --biru-tua: #0f2a44;
+        --biru-terang: #3b82f6;
+        --hijau: #10b981;
+        --kuning: #f59e0b;
+        --merah: #ef4444;
+        --ungu: #8b5cf6;
+        --abu-sangat-muda: #f9fafb;
+        --abu-muda: #f3f4f6;
+        --abu: #e5e7eb;
+        --abu-tua: #6b7280;
+        --hitam-muda: #374151;
+        --hitam: #1f2937;
     }
 
-    .admin-container {
+    /* Container utama */
+    .dashboard-admin {
         max-width: 1400px;
         margin: 0 auto;
-        padding: 24px;
+        padding: 20px;
     }
 
-    /* Welcome Section */
-    .welcome-card {
-        background: linear-gradient(135deg, var(--primary) 0%, #1e3a8a 100%);
-        border-radius: 16px;
-        padding: 28px 32px;
-        margin-bottom: 28px;
+    /* ========== KARTU SAMBUTAN ========== */
+    .kartu-sambutan {
+        background: linear-gradient(135deg, var(--biru-tua), #1e3a8a);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
         color: white;
-        position: relative;
-        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
     
-    .welcome-card::before {
-        content: "👑";
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        font-size: 60px;
-        opacity: 0.1;
-        pointer-events: none;
+    .kartu-sambutan h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
     }
     
-    .welcome-card h1 {
-        font-size: 24px;
-        font-weight: 700;
-        margin-bottom: 8px;
-    }
-    
-    .welcome-card p {
-        font-size: 14px;
+    .kartu-sambutan p {
+        font-size: 15px;
         opacity: 0.9;
         margin-bottom: 20px;
     }
     
-    .date-badge {
-        display: inline-block;
+    .tanggal-hari-ini {
         background: rgba(255,255,255,0.2);
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        backdrop-filter: blur(10px);
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        display: inline-block;
     }
 
-    /* Stats Grid */
-    .stats-grid {
+    /* ========== KARTU STATISTIK ========== */
+    .kartu-statistik {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        margin-bottom: 32px;
+        margin-bottom: 30px;
     }
     
-    .stat-card {
+    @media (max-width: 1000px) {
+        .kartu-statistik {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 600px) {
+        .kartu-statistik {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .stat-item {
         background: white;
         border-radius: 16px;
         padding: 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        transition: all 0.2s;
-        text-decoration: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border: 1px solid var(--abu);
+        transition: all 0.3s ease;
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        border: 1px solid var(--gray-200);
+        align-items: center;
     }
     
-    .stat-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
     
-    .stat-info h3 {
+    .stat-info h4 {
         font-size: 12px;
-        font-weight: 500;
-        color: var(--gray-600);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        color: var(--abu-tua);
         margin-bottom: 8px;
+        text-transform: uppercase;
     }
     
-    .stat-number {
+    .stat-angka {
         font-size: 32px;
-        font-weight: 800;
-        color: var(--gray-800);
-        margin-bottom: 4px;
+        font-weight: bold;
+        color: var(--hitam);
     }
     
     .stat-icon {
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
         border-radius: 12px;
         display: flex;
         align-items: center;
@@ -123,418 +118,433 @@
         font-size: 24px;
     }
     
-    .stat-icon.news { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706; }
-    .stat-icon.agenda { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #7c3aed; }
-    .stat-icon.approved { background: linear-gradient(135deg, #d1fae5, #a7f3d0); color: #059669; }
-    .stat-icon.rejected { background: linear-gradient(135deg, #fee2e2, #fecaca); color: #dc2626; }
+    .icon-berita { background: #fef3c7; color: #d97706; }
+    .icon-agenda { background: #ede9fe; color: #7c3aed; }
+    .icon-setuju { background: #d1fae5; color: #059669; }
+    .icon-tolak { background: #fee2e2; color: #dc2626; }
 
-    /* Chart Section */
-    .chart-section {
+    /* ========== KARTU GRAFIK ========== */
+    .kartu-grafik {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 24px;
-        margin-bottom: 32px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
     }
     
-    .chart-card {
+    @media (max-width: 900px) {
+        .kartu-grafik {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .grafik-card {
         background: white;
         border-radius: 16px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        border: 1px solid var(--gray-200);
+        border: 1px solid var(--abu);
         overflow: hidden;
         transition: all 0.3s ease;
     }
     
-    .chart-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    .grafik-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
     
-    .chart-header {
-        padding: 18px 20px;
-        border-bottom: 1px solid var(--gray-200);
-        background: linear-gradient(135deg, var(--gray-50), #ffffff);
+    .grafik-header {
+        padding: 15px 20px;
+        background: var(--abu-sangat-muda);
+        border-bottom: 1px solid var(--abu);
     }
     
-    .chart-header h3 {
+    .grafik-header h3 {
         font-size: 16px;
         font-weight: 600;
-        color: var(--gray-800);
+        margin: 0;
         display: flex;
         align-items: center;
         gap: 8px;
-        margin: 0;
     }
     
-    .chart-body {
+    .grafik-body {
         padding: 20px;
-        background: linear-gradient(135deg, #ffffff, var(--gray-50));
     }
     
     canvas {
-        max-height: 300px;
+        max-height: 280px;
         width: 100% !important;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
     }
     
-    .chart-legend {
+    /* Legenda warna */
+    .legenda {
         display: flex;
         justify-content: center;
-        gap: 24px;
-        margin-top: 20px;
+        gap: 20px;
+        margin-top: 15px;
         flex-wrap: wrap;
     }
     
-    .legend-item {
+    .legenda-item {
         display: flex;
         align-items: center;
         gap: 8px;
         font-size: 12px;
-        font-weight: 500;
-        color: var(--gray-700);
-        padding: 4px 12px;
-        background: var(--gray-50);
+        background: var(--abu-muda);
+        padding: 5px 12px;
         border-radius: 20px;
-        transition: all 0.2s;
     }
     
-    .legend-item:hover {
-        transform: scale(1.05);
-        background: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .legend-color {
+    .warna-legenda {
         width: 12px;
         height: 12px;
-        border-radius: 4px;
+        border-radius: 3px;
     }
 
-    /* Content Grid */
-    .content-grid {
+    /* ========== KARTU KONTEN ========== */
+    .kartu-konten {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-        gap: 24px;
-        margin-bottom: 32px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 30px;
     }
     
-    .card {
+    @media (max-width: 900px) {
+        .kartu-konten {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    .konten-card {
         background: white;
         border-radius: 16px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        border: 1px solid var(--gray-200);
+        border: 1px solid var(--abu);
         overflow: hidden;
-        transition: all 0.3s ease;
     }
     
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    
-    .card-header {
-        padding: 18px 20px;
-        border-bottom: 1px solid var(--gray-200);
+    .konten-header {
+        padding: 15px 20px;
+        background: var(--abu-sangat-muda);
+        border-bottom: 1px solid var(--abu);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: linear-gradient(135deg, var(--gray-50), #ffffff);
     }
     
-    .card-header h3 {
+    .konten-header h3 {
         font-size: 16px;
         font-weight: 600;
-        color: var(--gray-800);
+        margin: 0;
         display: flex;
         align-items: center;
         gap: 8px;
     }
     
-    .card-content {
+    .badge-jumlah {
+        background: linear-gradient(135deg, var(--kuning), #f97316);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .badge-agenda {
+        background: linear-gradient(135deg, var(--ungu), #a78bfa);
+    }
+    
+    .daftar-konten {
         padding: 20px;
         max-height: 500px;
         overflow-y: auto;
     }
     
-    /* Item List */
-    .item {
-        padding: 14px;
-        border: 1px solid var(--gray-200);
+    /* Item konten */
+    .item-konten {
+        border: 1px solid var(--abu);
         border-radius: 12px;
+        padding: 15px;
         margin-bottom: 12px;
         transition: all 0.2s;
-        background: white;
     }
     
-    .item:hover {
-        border-color: var(--secondary);
+    .item-konten:hover {
+        border-color: var(--biru-terang);
+        transform: translateX(5px);
         box-shadow: 0 2px 8px rgba(59,130,246,0.1);
-        transform: translateX(4px);
     }
     
-    .item-header {
+    .judul-konten {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 10px;
-        gap: 10px;
     }
     
-    .item-title {
+    .judul-konten h4 {
         font-weight: 600;
-        color: var(--gray-800);
         font-size: 14px;
-        flex: 1;
+        margin: 0;
+        color: var(--hitam);
     }
     
-    .badge {
+    .label-jenis {
         padding: 4px 10px;
         border-radius: 20px;
         font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        white-space: nowrap;
+        font-weight: bold;
     }
     
-    .badge-news { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; }
-    .badge-agenda { background: linear-gradient(135deg, #ede9fe, #ddd6fe); color: #5b21b6; }
+    .label-berita {
+        background: #fef3c7;
+        color: #92400e;
+    }
     
-    .item-meta {
+    .label-agenda {
+        background: #ede9fe;
+        color: #5b21b6;
+    }
+    
+    .info-konten {
         display: flex;
-        gap: 12px;
+        gap: 15px;
         font-size: 11px;
-        color: var(--gray-600);
+        color: var(--abu-tua);
         margin-bottom: 12px;
         flex-wrap: wrap;
     }
     
-    .item-actions {
+    .tombol-aksi {
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
     }
     
+    /* Tombol */
     .btn {
-        padding: 6px 12px;
-        border-radius: 6px;
+        padding: 6px 14px;
+        border-radius: 8px;
         font-size: 11px;
         font-weight: 500;
-        text-decoration: none;
-        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        border: none;
-        cursor: pointer;
+        transition: all 0.2s;
     }
     
-    .btn-approve {
-        background: linear-gradient(135deg, var(--success), #059669);
+    .btn-hijau {
+        background: var(--hijau);
         color: white;
     }
     
-    .btn-approve:hover {
-        background: linear-gradient(135deg, #059669, var(--success));
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+    .btn-hijau:hover {
+        background: #059669;
+        transform: translateY(-2px);
     }
     
-    .btn-reject {
-        background: linear-gradient(135deg, var(--danger), #dc2626);
+    .btn-merah {
+        background: var(--merah);
         color: white;
     }
     
-    .btn-reject:hover {
-        background: linear-gradient(135deg, #dc2626, var(--danger));
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(239,68,68,0.3);
+    .btn-merah:hover {
+        background: #dc2626;
+        transform: translateY(-2px);
     }
     
-    .btn-view {
-        background: linear-gradient(135deg, var(--gray-100), #ffffff);
-        color: var(--gray-700);
-        border: 1px solid var(--gray-300);
+    .btn-abu {
+        background: var(--abu-muda);
+        color: var(--hitam);
+        border: 1px solid var(--abu);
+        text-decoration: none;
     }
     
-    .btn-view:hover {
-        background: linear-gradient(135deg, var(--gray-200), var(--gray-100));
-        transform: translateY(-1px);
+    .btn-abu:hover {
+        background: var(--abu);
+        transform: translateY(-2px);
     }
     
-    .empty-state {
+    /* Kondisi kosong */
+    .kosong {
         text-align: center;
-        padding: 40px 20px;
+        padding: 50px 20px;
     }
     
-    .empty-state i {
+    .kosong i {
         font-size: 48px;
-        color: var(--gray-300);
-        margin-bottom: 12px;
+        color: var(--abu);
+        margin-bottom: 15px;
+        display: block;
     }
     
-    .empty-state p {
-        color: var(--gray-600);
+    .kosong p {
+        color: var(--abu-tua);
         font-size: 13px;
+        margin: 0;
     }
     
+    /* Responsif */
     @media (max-width: 768px) {
-        .admin-container { padding: 16px; }
-        .welcome-card { padding: 20px; }
-        .stats-grid { gap: 12px; }
-        .chart-section { gap: 16px; }
-        .content-grid { gap: 16px; }
-        .item-actions { flex-direction: column; }
-        .item-actions .btn { width: 100%; justify-content: center; }
+        .dashboard-admin { padding: 15px; }
+        .kartu-sambutan { padding: 20px; }
+        .kartu-sambutan h1 { font-size: 22px; }
+        .tombol-aksi { flex-direction: column; }
+        .tombol-aksi .btn { width: 100%; justify-content: center; }
     }
 </style>
 
-<div class="admin-container">
-    {{-- Welcome Section --}}
-    <div class="welcome-card">
-        <h1>Halo, Admin {{ auth()->user()->name ?? 'Admin' }}! 👋</h1>
-        <p>Kelola persetujuan konten berita dan agenda yang diajukan oleh staff.</p>
-        <span class="date-badge">
+<div class="dashboard-admin">
+    
+    {{-- KARTU SAMBUTAN --}}
+    <div class="kartu-sambutan">
+        <h1>Halo, {{ auth()->user()->name ?? 'Admin' }}! 👋</h1>
+        <p>Selamat datang di panel admin. Kelola persetujuan konten dengan mudah.</p>
+        <div class="tanggal-hari-ini">
             <i class="far fa-calendar-alt"></i> {{ now()->translatedFormat('l, d F Y') }}
-        </span>
+        </div>
     </div>
 
-    {{-- Statistics --}}
-    <div class="stats-grid">
-        <div class="stat-card">
+    {{-- STATISTIK --}}
+    @php
+        $jumlahBerita = $pendingNews->count();
+        $jumlahAgenda = $pendingAgenda->count();
+        $jumlahSetuju = $approvedCount ?? 0;
+        $jumlahTolak = $rejectedCount ?? 0;
+    @endphp
+
+    <div class="kartu-statistik">
+        <div class="stat-item">
             <div class="stat-info">
-                <h3>Berita Pending</h3>
-                <div class="stat-number">{{ $pendingNews->count() }}</div>
+                <h4>📰 BERITA MENUNGGU</h4>
+                <div class="stat-angka">{{ $jumlahBerita }}</div>
             </div>
-            <div class="stat-icon news">
+            <div class="stat-icon icon-berita">
                 <i class="fas fa-newspaper"></i>
             </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-item">
             <div class="stat-info">
-                <h3>Agenda Pending</h3>
-                <div class="stat-number">{{ $pendingAgenda->count() }}</div>
+                <h4>📅 AGENDA MENUNGGU</h4>
+                <div class="stat-angka">{{ $jumlahAgenda }}</div>
             </div>
-            <div class="stat-icon agenda">
+            <div class="stat-icon icon-agenda">
                 <i class="fas fa-calendar-alt"></i>
             </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-item">
             <div class="stat-info">
-                <h3>Total Disetujui</h3>
-                <div class="stat-number">{{ $approvedCount ?? 0 }}</div>
+                <h4>✅ SUDAH DISETUJUI</h4>
+                <div class="stat-angka">{{ $jumlahSetuju }}</div>
             </div>
-            <div class="stat-icon approved">
+            <div class="stat-icon icon-setuju">
                 <i class="fas fa-check-circle"></i>
             </div>
         </div>
 
-        <div class="stat-card">
+        <div class="stat-item">
             <div class="stat-info">
-                <h3>Total Ditolak</h3>
-                <div class="stat-number">{{ $rejectedCount ?? 0 }}</div>
+                <h4>❌ SUDAH DITOLAK</h4>
+                <div class="stat-angka">{{ $jumlahTolak }}</div>
             </div>
-            <div class="stat-icon rejected">
+            <div class="stat-icon icon-tolak">
                 <i class="fas fa-times-circle"></i>
             </div>
         </div>
     </div>
 
-    {{-- Chart Section --}}
+    {{-- GRAFIK --}}
     @php
-        // Menghitung data untuk chart
-        $newsPending = $pendingNews->count();
-        $agendaPending = $pendingAgenda->count();
-        
-        $totalApproved = $approvedCount ?? 0;
-        $totalPending = $newsPending + $agendaPending;
-        $totalRejected = $rejectedCount ?? 0;
-        $totalAll = $totalApproved + $totalPending + $totalRejected;
-        
-        if ($totalAll == 0) {
-            $totalApproved = 1;
-            $totalPending = 1;
-            $totalRejected = 1;
+        $totalKonten = $jumlahSetuju + $jumlahBerita + $jumlahAgenda + $jumlahTolak;
+        if ($totalKonten == 0) {
+            $jumlahSetuju = 1;
+            $jumlahBerita = 1;
+            $jumlahAgenda = 1;
+            $jumlahTolak = 1;
         }
     @endphp
 
-    <div class="chart-section">
-        {{-- Status Overview Chart --}}
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3><i class="fas fa-chart-pie"></i> Overview Status Konten</h3>
+    <div class="kartu-grafik">
+        <!-- Grafik Status -->
+        <div class="grafik-card">
+            <div class="grafik-header">
+                <h3><i class="fas fa-chart-pie"></i> 📊 Status Seluruh Konten</h3>
             </div>
-            <div class="chart-body">
-                <canvas id="statusChart"></canvas>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #10b981, #34d399);"></div>
-                        <span>Disetujui ({{ $totalApproved }})</span>
+            <div class="grafik-body">
+                <canvas id="grafikStatus"></canvas>
+                <div class="legenda">
+                    <div class="legenda-item">
+                        <div class="warna-legenda" style="background: #10b981;"></div>
+                        <span>✅ Disetujui ({{ $jumlahSetuju }})</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);"></div>
-                        <span>Pending ({{ $totalPending }})</span>
+                    <div class="legenda-item">
+                        <div class="warna-legenda" style="background: #f59e0b;"></div>
+                        <span>⏳ Berita Pending ({{ $jumlahBerita }})</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #ef4444, #f87171);"></div>
-                        <span>Ditolak ({{ $totalRejected }})</span>
+                    <div class="legenda-item">
+                        <div class="warna-legenda" style="background: #8b5cf6;"></div>
+                        <span>⏳ Agenda Pending ({{ $jumlahAgenda }})</span>
+                    </div>
+                    <div class="legenda-item">
+                        <div class="warna-legenda" style="background: #ef4444;"></div>
+                        <span>❌ Ditolak ({{ $jumlahTolak }})</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Content Distribution Chart --}}
-        <div class="chart-card">
-            <div class="chart-header">
-                <h3><i class="fas fa-chart-bar"></i> Konten Menunggu Persetujuan</h3>
+        <!-- Grafik Perbandingan -->
+        <div class="grafik-card">
+            <div class="grafik-header">
+                <h3><i class="fas fa-chart-bar"></i> 📊 Perbandingan Konten Pending</h3>
             </div>
-            <div class="chart-body">
-                <canvas id="distributionChart"></canvas>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #f59e0b, #f97316);"></div>
-                        <span>Berita ({{ $newsPending }})</span>
+            <div class="grafik-body">
+                <canvas id="grafikPerbandingan"></canvas>
+                <div class="legenda">
+                    <div class="legenda-item">
+                        <div class="warna-legenda" style="background: #f59e0b;"></div>
+                        <span>📰 Berita: {{ $jumlahBerita }}</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: linear-gradient(135deg, #8b5cf6, #a78bfa);"></div>
-                        <span>Agenda ({{ $agendaPending }})</span>
+                    <div class="legenda-item">
+                        <div class="warna-legenda" style="background: #8b5cf6;"></div>
+                        <span>📅 Agenda: {{ $jumlahAgenda }}</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Content Grid --}}
-    <div class="content-grid">
-        {{-- Pending News Card --}}
-        <div class="card">
-            <div class="card-header">
-                <h3><i class="fas fa-newspaper" style="color: #f59e0b;"></i> Berita Menunggu Persetujuan</h3>
-                <span class="badge badge-news">{{ $pendingNews->count() }} Menunggu</span>
+    {{-- DAFTAR KONTEN MENUNGGU --}}
+    <div class="kartu-konten">
+        <!-- Berita -->
+        <div class="konten-card">
+            <div class="konten-header">
+                <h3><i class="fas fa-newspaper"></i> 📰 Berita Menunggu Persetujuan</h3>
+                <span class="badge-jumlah">{{ $jumlahBerita }} Berita</span>
             </div>
-            <div class="card-content">
+            <div class="daftar-konten">
                 @if($pendingNews->count() > 0)
-                    @foreach($pendingNews as $news)
-                        <div class="item">
-                            <div class="item-header">
-                                <div class="item-title">{{ Str::limit($news->title, 60) }}</div>
-                                <span class="badge badge-news">Berita</span>
+                    @foreach($pendingNews as $berita)
+                        <div class="item-konten">
+                            <div class="judul-konten">
+                                <h4>{{ Str::limit($berita->title, 55) }}</h4>
+                                <span class="label-jenis label-berita">BERITA</span>
                             </div>
-                            <div class="item-meta">
-                                <span><i class="fas fa-user"></i> {{ $news->user->name ?? 'Unknown' }}</span>
-                                <span><i class="far fa-clock"></i> {{ $news->created_at->diffForHumans() }}</span>
+                            <div class="info-konten">
+                                <span><i class="fas fa-user"></i> {{ $berita->user->name ?? 'Unknown' }}</span>
+                                <span><i class="far fa-clock"></i> {{ $berita->created_at->diffForHumans() }}</span>
                             </div>
-                            <div class="item-actions">
-                                <form method="POST" action="{{ route('admin.news.approve', $news->id) }}" style="display: inline;">
+                            <div class="tombol-aksi">
+                                <form method="POST" action="{{ route('admin.news.approve', $berita->id) }}" style="display: inline;">
                                     @csrf
-                                    <button type="submit" class="btn btn-approve" onclick="return confirm('Setujui berita ini?')">
+                                    <button class="btn btn-hijau" onclick="return confirm('Setujui berita ini?')">
                                         <i class="fas fa-check"></i> Setujui
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('admin.news.reject', $news->id) }}" style="display: inline;">
+                                <form method="POST" action="{{ route('admin.news.reject', $berita->id) }}" style="display: inline;">
                                     @csrf
-                                    <button type="submit" class="btn btn-reject" onclick="return confirm('Tolak berita ini?')">
+                                    <button class="btn btn-merah" onclick="return confirm('Tolak berita ini?')">
                                         <i class="fas fa-times"></i> Tolak
                                     </button>
                                 </form>
@@ -542,48 +552,48 @@
                         </div>
                     @endforeach
                 @else
-                    <div class="empty-state">
+                    <div class="kosong">
                         <i class="fas fa-newspaper"></i>
-                        <p>Tidak ada berita yang menunggu persetujuan</p>
+                        <p>✨ Tidak ada berita yang menunggu</p>
                     </div>
                 @endif
             </div>
         </div>
 
-        {{-- Pending Agenda Card --}}
-        <div class="card">
-            <div class="card-header">
-                <h3><i class="fas fa-calendar-alt" style="color: #8b5cf6;"></i> Agenda Menunggu Persetujuan</h3>
-                <span class="badge badge-agenda">{{ $pendingAgenda->count() }} Menunggu</span>
+        <!-- Agenda -->
+        <div class="konten-card">
+            <div class="konten-header">
+                <h3><i class="fas fa-calendar-alt"></i> 📅 Agenda Menunggu Persetujuan</h3>
+                <span class="badge-jumlah badge-agenda">{{ $jumlahAgenda }} Agenda</span>
             </div>
-            <div class="card-content">
+            <div class="daftar-konten">
                 @if($pendingAgenda->count() > 0)
                     @foreach($pendingAgenda as $agenda)
-                        <div class="item">
-                            <div class="item-header">
-                                <div class="item-title">{{ Str::limit($agenda->title, 60) }}</div>
-                                <span class="badge badge-agenda">Agenda</span>
+                        <div class="item-konten">
+                            <div class="judul-konten">
+                                <h4>{{ Str::limit($agenda->title, 55) }}</h4>
+                                <span class="label-jenis label-agenda">AGENDA</span>
                             </div>
-                            <div class="item-meta">
+                            <div class="info-konten">
                                 <span><i class="fas fa-user"></i> {{ $agenda->user->name ?? 'Unknown' }}</span>
                                 <span><i class="fas fa-calendar-day"></i> {{ \Carbon\Carbon::parse($agenda->date)->format('d M Y') }}</span>
                                 @if($agenda->location)
-                                <span><i class="fas fa-map-marker-alt"></i> {{ Str::limit($agenda->location, 30) }}</span>
+                                <span><i class="fas fa-map-marker-alt"></i> {{ Str::limit($agenda->location, 25) }}</span>
                                 @endif
                             </div>
-                            <div class="item-actions">
-                                <a href="{{ route('agenda.show', $agenda->id) }}" class="btn btn-view" target="_blank">
-                                    <i class="fas fa-eye"></i> Lihat
+                            <div class="tombol-aksi">
+                                <a href="{{ route('agenda.show', $agenda->id) }}" class="btn btn-abu" target="_blank">
+                                    <i class="fas fa-eye"></i> Lihat Detail
                                 </a>
                                 <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="display: inline;">
                                     @csrf
-                                    <button type="submit" class="btn btn-approve" onclick="return confirm('Setujui agenda ini?')">
+                                    <button class="btn btn-hijau" onclick="return confirm('Setujui agenda ini?')">
                                         <i class="fas fa-check"></i> Setujui
                                     </button>
                                 </form>
                                 <form method="POST" action="{{ route('admin.agenda.reject', $agenda->id) }}" style="display: inline;">
                                     @csrf
-                                    <button type="submit" class="btn btn-reject" onclick="return confirm('Tolak agenda ini?')">
+                                    <button class="btn btn-merah" onclick="return confirm('Tolak agenda ini?')">
                                         <i class="fas fa-times"></i> Tolak
                                     </button>
                                 </form>
@@ -591,9 +601,9 @@
                         </div>
                     @endforeach
                 @else
-                    <div class="empty-state">
+                    <div class="kosong">
                         <i class="fas fa-calendar-alt"></i>
-                        <p>Tidak ada agenda yang menunggu persetujuan</p>
+                        <p>✨ Tidak ada agenda yang menunggu</p>
                     </div>
                 @endif
             </div>
@@ -604,105 +614,57 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Status Chart dengan warna gradasi
-    const statusCtx = document.getElementById('statusChart').getContext('2d');
-    const totalApproved = {{ $totalApproved }};
-    const totalPending = {{ $totalPending }};
-    const totalRejected = {{ $totalRejected }};
-    const totalAll = {{ $totalAll }};
-    
-    new Chart(statusCtx, {
+    // Grafik Status (Donut Chart)
+    const ctx1 = document.getElementById('grafikStatus').getContext('2d');
+    new Chart(ctx1, {
         type: 'doughnut',
         data: {
-            labels: ['Disetujui', 'Pending', 'Ditolak'],
+            labels: ['Disetujui', 'Berita Pending', 'Agenda Pending', 'Ditolak'],
             datasets: [{
-                data: [totalApproved, totalPending, totalRejected],
-                backgroundColor: [
-                    'rgba(16, 185, 129, 0.9)',
-                    'rgba(245, 158, 11, 0.9)',
-                    'rgba(239, 68, 68, 0.9)'
-                ],
+                data: [{{ $jumlahSetuju }}, {{ $jumlahBerita }}, {{ $jumlahAgenda }}, {{ $jumlahTolak }}],
+                backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
                 borderWidth: 0,
-                hoverOffset: 10,
-                hoverBorderWidth: 2,
-                hoverBorderColor: '#ffffff'
+                hoverOffset: 15
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#ffffff',
-                    bodyColor: '#f3f4f6',
-                    padding: 10,
-                    cornerRadius: 8,
                     callbacks: {
                         label: function(context) {
-                            const label = context.label || '';
-                            const value = context.raw || 0;
-                            const percentage = totalAll > 0 ? ((value / totalAll) * 100).toFixed(1) : 0;
-                            return `${label}: ${value} (${percentage}%)`;
+                            return `${context.label}: ${context.raw} konten`;
                         }
                     }
                 }
             },
-            cutout: '65%',
-            animation: {
-                animateRotate: true,
-                animateScale: true,
-                duration: 1500,
-                easing: 'easeInOutQuart'
-            }
+            cutout: '60%'
         }
     });
 
-    // Distribution Chart dengan gradasi dan animasi
-    const distCtx = document.getElementById('distributionChart').getContext('2d');
-    const newsPending = {{ $newsPending }};
-    const agendaPending = {{ $agendaPending }};
-    
-    new Chart(distCtx, {
+    // Grafik Perbandingan (Bar Chart)
+    const ctx2 = document.getElementById('grafikPerbandingan').getContext('2d');
+    new Chart(ctx2, {
         type: 'bar',
         data: {
             labels: ['Berita', 'Agenda'],
             datasets: [{
                 label: 'Menunggu Persetujuan',
-                data: [newsPending, agendaPending],
-                backgroundColor: [
-                    'rgba(245, 158, 11, 0.8)',
-                    'rgba(139, 92, 246, 0.8)'
-                ],
-                borderRadius: 12,
-                barPercentage: 0.65,
-                categoryPercentage: 0.8,
-                hoverBackgroundColor: [
-                    'rgba(245, 158, 11, 1)',
-                    'rgba(139, 92, 246, 1)'
-                ]
+                data: [{{ $jumlahBerita }}, {{ $jumlahAgenda }}],
+                backgroundColor: ['#f59e0b', '#8b5cf6'],
+                borderRadius: 10,
+                barPercentage: 0.6
             }]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
             plugins: {
-                legend: {
-                    display: false
-                },
+                legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: '#ffffff',
-                    bodyColor: '#f3f4f6',
-                    padding: 10,
-                    cornerRadius: 8,
                     callbacks: {
                         label: function(context) {
-                            const value = context.raw || 0;
-                            return `Menunggu: ${value} konten`;
+                            return `Menunggu: ${context.raw} konten`;
                         }
                     }
                 }
@@ -710,46 +672,7 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: {
                 y: {
                     beginAtZero: true,
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)',
-                        drawBorder: false
-                    },
-                    ticks: {
-                        stepSize: 1,
-                        precision: 0,
-                        color: '#6b7280',
-                        font: {
-                            size: 11
-                        }
-                    },
-                    title: {
-                        display: true,
-                        text: 'Jumlah Konten',
-                        color: '#6b7280',
-                        font: {
-                            size: 11,
-                            weight: '500'
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#374151',
-                        font: {
-                            size: 12,
-                            weight: '600'
-                        }
-                    }
-                }
-            },
-            animation: {
-                duration: 1500,
-                easing: 'easeInOutQuart',
-                delay: (context) => {
-                    return context.dataIndex * 100;
+                    ticks: { stepSize: 1, precision: 0 }
                 }
             }
         }

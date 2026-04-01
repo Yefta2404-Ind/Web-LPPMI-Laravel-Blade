@@ -53,7 +53,7 @@
 
 .news-viewport {
     overflow: hidden;
-    max-width: 1600px;
+    max-width: 1800px;
     margin: auto;
 }
 
@@ -152,9 +152,7 @@
     box-shadow: var(--shadow-md);
 }
 
-section {
-    margin-bottom: 80px;
-}
+
 
 /* ===== VIDEO SECTION (LEBAR SAMA, TINGGI DIKURANGI) ===== */
 .video-wrapper-reduced {
@@ -216,10 +214,13 @@ section {
     gap: 40px;
     transition: transform 0.4s ease;
     will-change: transform;
+    align-items: stretch;
 }
 
 .news-slide {
     flex: 0 0 380px;
+    display: flex;
+    align-items: stretch;
 }
 
 .news-card {
@@ -231,6 +232,8 @@ section {
     box-shadow: 0 8px 20px rgba(0,0,0,0.05);
     transition: transform 0.3s, box-shadow 0.3s;
     max-width: 100%;
+    flex-direction: column;
+    display: flex;
 }
 
 .news-card:hover {
@@ -240,13 +243,13 @@ section {
 
 .news-image {
     width: 100%;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
 }
 
 .news-image img {
     width: 100%;
-    height: 220px;
+    height: 100%;
     object-fit: cover;
     transition: transform 0.3s;
 }
@@ -258,14 +261,18 @@ section {
 
 .news-content {
     padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 .news-content h3 {
     font-size: 16px;
+
 }
 .news-section {
     width: 100%;
     background: #faf8f4;
-    padding: 60px 0;
+    padding: 96px 0;
     border-top: 1px solid #ede8df;
     border-bottom: 1px solid #ede8df;
 }
@@ -304,6 +311,7 @@ section {
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    margin-top: auto;
 }
 
 .read-more:hover {
