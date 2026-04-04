@@ -1541,10 +1541,6 @@
                     @endforeach
                 </div>
             </div>
-
-            <div class="agenda-footer">
-                <button class="view-all-btn">Lihat Semua Agenda <i class="fas fa-arrow-right"></i></button>
-            </div>
         </div>
     </section>
     @endif
