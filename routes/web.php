@@ -304,6 +304,7 @@ Route::delete('/hero-banners/{banner}',            [HeroBannerController::class,
 Route::get('/popup', [PopupBannerController::class, 'index'])->name('popup.index');
 Route::post('/popup', [PopupBannerController::class, 'store'])->name('popup.store');
 Route::post('/popup/toggle', [PopupBannerController::class, 'toggleActive'])->name('popup.toggle');
+Route::resource('popup', PopupBannerController::class);
        //SETTINGAN MENU 
        Route::post('/menus/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder'])
             ->name('menus.reorder');

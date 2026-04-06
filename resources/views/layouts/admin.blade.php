@@ -779,6 +779,12 @@
                     <span class="nav-teks">Spanduk Utama</span>
                 </a>
 
+                <a href="{{ route('admin.popup.index') }}"
+                   class="nav-item {{ request()->routeIs('admin.hero-banners.*') ? 'aktif' : '' }}">
+                    <i class="fas fa-image nav-ikon"></i>
+                    <span class="nav-teks">Menu Pop Up</span>
+                </a>
+
                 <!-- Struktur Organisasi -->
                 <div class="nav-item ada-submenu {{ request()->routeIs('admin.organization-structure.*') ? 'aktif terbuka' : '' }}"
                      data-submenu="submenu-org">
