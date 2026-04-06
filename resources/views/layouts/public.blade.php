@@ -1362,9 +1362,116 @@
             .agenda-title { font-size: 1.3rem; }
             .survey-title { font-size: 1.25rem; }
         }
+
+        /* ================= POPUP BANNER (DIPERBAIKI) ================= */
+        #popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 26, 43, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            animation: popupFadeIn 0.4s ease 0.3s forwards;
+        }
+
+        @keyframes popupFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+
+        @keyframes popupSlideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        #popup-box {
+            position: relative;
+            max-width: 460px; /* Ukuran popup diperkecil agar tidak terlalu besar */
+            width: 100%;
+            animation: popupSlideUp 0.45s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;
+        }
+
+        /* Tombol X */
+        #popup-close-btn {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            width: 36px;
+            height: 36px;
+            background: var(--gold);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+            transition: background var(--transition), transform var(--transition);
+        }
+
+        #popup-close-btn:hover {
+            background: var(--gold-dark);
+            transform: scale(1.12) rotate(90deg);
+        }
+
+        #popup-img {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+        }
+
+        /* Responsive popup */
+        @media (max-width: 767px) {
+            #popup-box { max-width: 85vw; } /* Lebih kecil di mobile */
+            #popup-close-btn {
+                top: -12px;
+                right: -10px;
+                width: 30px;
+                height: 30px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #popup-overlay { padding: 12px; }
+            #popup-box { max-width: 90vw; }
+            #popup-close-btn {
+                top: -8px;
+                right: -8px;
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
+
+@php
+    $popupBanner = \App\Models\PopupBanner::where('is_active', true)->latest()->first();
+@endphp
+
+@if(request()->is('/') && $popupBanner && $popupBanner->image_path)
+<div id="popup-overlay">
+    <div id="popup-box">
+        <button id="popup-close-btn" aria-label="Tutup">×</button>
+        <img id="popup-img"
+             src="{{ Storage::url($popupBanner->image_path) }}"
+             alt="Informasi LPPMI">
+    </div>
+</div>
+@endif
 
     <!-- TOP BAR -->
     <div class="top-bar">
@@ -1638,6 +1745,45 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
 
+        /* ===== POPUP BANNER (DIPERBAIKI) ===== */
+        const popupOverlay = document.getElementById('popup-overlay');
+        const popupCloseBtn = document.getElementById('popup-close-btn');
+
+        if (popupOverlay) {
+            // Fungsi untuk menutup popup
+            const closePopup = function() {
+                popupOverlay.style.animation = 'none';
+                popupOverlay.style.opacity = '0';
+                popupOverlay.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => {
+                    if(popupOverlay && popupOverlay.parentNode) popupOverlay.remove();
+                }, 300);
+            };
+
+            // Tutup dengan tombol X
+            if(popupCloseBtn) {
+                popupCloseBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closePopup();
+                });
+            }
+
+            // Tutup dengan klik di luar gambar (klik overlay)
+            popupOverlay.addEventListener('click', function (e) {
+                if (e.target === popupOverlay) {
+                    closePopup();
+                }
+            });
+
+            // Tutup dengan tombol Escape
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && document.getElementById('popup-overlay')) {
+                    closePopup();
+                }
+            });
+        }
+
         /* ===== HERO SLIDER ===== */
         const slides = document.querySelectorAll('.hero-slide');
         if (slides.length > 1) {
@@ -1745,7 +1891,6 @@
         // Helper: bangun URL storage (mirroring Storage::url di JS)
         function storageUrl(path) {
             if (!path) return '';
-            // Hapus prefix "public/" jika ada, lalu gabungkan dengan /storage/
             const clean = path.replace(/^public\//, '');
             return '/storage/' + clean;
         }
@@ -1782,14 +1927,11 @@
                     statusText = 'Akan Datang'; statusClass = 'status-upcoming';
                 }
 
-                // Tampilkan / sembunyikan gambar di modal
                 if (agenda.image) {
                     const imgUrl = storageUrl(agenda.image);
                     modalImageEl.src = imgUrl;
                     modalImageEl.alt = agenda.title;
                     modalImageWrap.style.display = 'block';
-
-                    // Fallback: sembunyikan jika gambar gagal dimuat
                     modalImageEl.onerror = () => { modalImageWrap.style.display = 'none'; };
                 } else {
                     modalImageWrap.style.display = 'none';

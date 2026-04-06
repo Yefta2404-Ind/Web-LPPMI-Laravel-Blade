@@ -6,6 +6,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ProfileController;
 use App\Models\News;
+use App\Http\Controllers\Admin\PopupBannerController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\HeroBannerController;
@@ -299,6 +300,10 @@ Route::delete('/hero-banners/{banner}',            [HeroBannerController::class,
         Route::delete('/videos/{video}/unfeature', [VideoController::class, 'unfeature'])
             ->name('videos.unfeature');
 
+
+Route::get('/popup', [PopupBannerController::class, 'index'])->name('popup.index');
+Route::post('/popup', [PopupBannerController::class, 'store'])->name('popup.store');
+Route::post('/popup/toggle', [PopupBannerController::class, 'toggleActive'])->name('popup.toggle');
        //SETTINGAN MENU 
        Route::post('/menus/reorder', [\App\Http\Controllers\Admin\MenuController::class, 'reorder'])
             ->name('menus.reorder');
