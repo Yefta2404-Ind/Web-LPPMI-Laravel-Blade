@@ -72,14 +72,18 @@ public function show(News $news)
 
 public function publicHome()
 {
-    $news = News::approved()->latest()->take(4)->get();
+    $news = News::where('status', 'approved')
+        ->where('created_at', '>=', now()->subMonth()) // 🔥 FILTER DI SINI
+        ->latest()
+        ->take(4)
+        ->get();
+
     $agendas = Agenda::approved()->latest()->take(10)->get();
 
     $featuredVideo = Video::where('is_featured', 1)
-    ->where('status', 'approved')
-    ->where('is_published', 1)
-    ->first();
-
+        ->where('status', 'approved')
+        ->where('is_published', 1)
+        ->first();
 
     $heroBanners = HeroBanner::active()->get();
     $activeSurvey = Survey::where('status', 'approved')->latest()->first();

@@ -1,465 +1,1416 @@
 @extends('layouts.admin')
 
 @section('content')
-<style>
-:root {
-    --primary-color: #2563eb;
-    --primary-light: #3b82f6;
-    --primary-dark: #1d4ed8;
-    --primary-soft: #dbeafe;
-    --primary-very-soft: #eff6ff;
-    --success-color: #059669;
-    --danger-color: #dc2626;
-    --secondary-color: #64748b;
-    --light-bg: #f8fafc;
-    --border-color: #e2e8f0;
-    --text-muted: #64748b;
-    --text-primary: #0f172a;
-    --text-secondary: #334155;
-    --hover-bg: #eff6ff;
-    --child-bg: #f8fafc;
-    --child-border: #c7d7fe;
-}
-
-.container-fluid { max-width: 1400px; margin: 0 auto; padding: 1.5rem 1rem; }
-
-.header-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
-
-.header-title h1 { font-size: calc(1.4rem + 0.6vw); font-weight: 700; margin-bottom: 0.25rem; color: var(--text-primary); line-height: 1.2; display: flex; align-items: center; gap: 0.75rem; }
-.header-title h1 i { color: white; background: var(--primary-color); padding: 0.65rem; border-radius: 1rem; font-size: 1.2rem; box-shadow: 0 4px 8px rgba(37,99,235,0.25); }
-.header-title p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0; display: flex; align-items: center; gap: 0.5rem; }
-
-.btn-primary { background: var(--primary-color); border: none; padding: 0.65rem 1.25rem; font-size: 0.9rem; font-weight: 500; border-radius: 0.5rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; color: white; box-shadow: 0 2px 4px rgba(37,99,235,0.1); text-decoration: none; }
-.btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(37,99,235,0.25); color: white; }
-
-.alert { border-radius: 0.75rem; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 1.5rem; padding: 1rem 1.25rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.75rem; }
-.alert-success { background: #ecfdf5; color: #065f46; border-left: 4px solid var(--success-color); }
-
-.card { border-radius: 1rem; overflow: hidden; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(37,99,235,0.06); border: 1px solid var(--border-color); }
-.card-header { background: white; border-bottom: 1px solid var(--border-color); padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
-.card-header h6 { font-size: 1rem; font-weight: 600; margin: 0; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; }
-.card-header h6 i { color: var(--primary-color); }
-.card-header small { color: var(--text-muted); font-size: 0.8rem; }
-
-/* TABLE */
-.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.table { margin: 0; min-width: 900px; width: 100%; border-collapse: separate; border-spacing: 0; }
-.table thead th { background: var(--light-bg); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-dark); border-bottom: 2px solid var(--border-color); padding: 0.875rem 0.75rem; white-space: nowrap; }
-
-/* PARENT ROW */
-.row-parent td { padding: 0.9rem 0.75rem; vertical-align: middle; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; color: var(--text-secondary); background: white; transition: background 0.15s; }
-.row-parent:hover td { background: var(--hover-bg); }
-.row-parent:hover td:first-child { border-left: 3px solid var(--primary-color); }
-
-/* CHILD ROW */
-.row-child td { padding: 0.7rem 0.75rem; vertical-align: middle; border-bottom: 1px solid #eef2ff; font-size: 0.875rem; color: var(--text-secondary); background: var(--child-bg); transition: background 0.15s; }
-.row-child:hover td { background: #eef2ff; }
-.row-child.collapsed { display: none; }
-
-/* Child indent line */
-.child-indent { display: flex; align-items: center; gap: 0.5rem; padding-left: 1.5rem; position: relative; }
-.child-indent::before { content: ''; position: absolute; left: 0.5rem; top: 50%; width: 0.75rem; height: 1px; background: var(--child-border); }
-
-/* DRAG */
-.drag-handle { color: var(--text-muted); cursor: grab; font-size: 1rem; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 0.4rem; transition: all 0.15s; }
-.drag-handle:hover { color: var(--primary-color); background: var(--primary-soft); }
-.drag-handle:active { cursor: grabbing; }
-
-/* COLLAPSE BUTTON */
-.collapse-btn { background: none; border: none; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; color: var(--text-primary); font-weight: 600; font-size: 0.9rem; transition: color 0.15s; }
-.collapse-btn:hover { color: var(--primary-color); }
-.collapse-icon { width: 20px; height: 20px; border-radius: 0.35rem; background: var(--primary-soft); color: var(--primary-color); display: inline-flex; align-items: center; justify-content: center; font-size: 0.62rem; transition: transform 0.2s, background 0.15s; flex-shrink: 0; }
-.collapse-btn.open .collapse-icon { transform: rotate(90deg); background: var(--primary-color); color: white; }
-
-/* CHILD COUNT */
-.child-count { background: var(--primary-soft); color: var(--primary-dark); font-size: 0.63rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 2rem; border: 1px solid var(--child-border); white-space: nowrap; }
-
-/* BADGES */
-.sub-indicator { background: var(--primary-soft); color: var(--primary-dark); font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 1rem; border: 1px solid var(--child-border); display: inline-flex; align-items: center; gap: 0.2rem; text-transform: uppercase; }
-.order-badge { background: var(--primary-soft); color: var(--primary-dark); font-weight: 600; font-size: 0.75rem; padding: 0.25rem 0.55rem; border-radius: 0.35rem; border: 1px solid var(--child-border); display: inline-flex; align-items: center; gap: 0.25rem; }
-
-/* TOGGLE SWITCH */
-.toggle-wrap { display: flex; align-items: center; gap: 0.5rem; }
-.toggle-switch { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
-.toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
-.toggle-slider { position: absolute; inset: 0; background: #cbd5e1; border-radius: 22px; cursor: pointer; transition: background 0.2s; }
-.toggle-slider::after { content: ''; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-.toggle-switch input:checked + .toggle-slider { background: var(--success-color); }
-.toggle-switch input:checked + .toggle-slider::after { transform: translateX(18px); }
-.toggle-switch.loading .toggle-slider { opacity: 0.5; cursor: wait; }
-.toggle-label { font-size: 0.75rem; font-weight: 500; color: var(--text-muted); min-width: 52px; }
-.toggle-label.active { color: var(--success-color); }
-
-/* URL & PREVIEW */
-.url-cell { position: relative; display: inline-block; max-width: 220px; }
-.url-text { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.82rem; background: var(--light-bg); padding: 0.3rem 0.65rem; border-radius: 0.45rem; border: 1px solid var(--border-color); max-width: 220px; transition: border-color 0.15s; }
-.url-text:hover { border-color: var(--primary-light); }
-.url-text i { color: var(--primary-color); font-size: 0.78rem; flex-shrink: 0; }
-.url-text span { color: var(--text-secondary); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
-.url-text .text-danger { color: var(--danger-color) !important; }
-
-.url-preview { position: absolute; top: calc(100% + 6px); left: 0; background: #1e293b; color: white; font-size: 0.72rem; padding: 0.4rem 0.75rem; border-radius: 0.5rem; white-space: nowrap; z-index: 200; pointer-events: none; opacity: 0; transform: translateY(-4px); transition: opacity 0.15s, transform 0.15s; max-width: 300px; overflow: hidden; text-overflow: ellipsis; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
-.url-preview::before { content: ''; position: absolute; top: -4px; left: 12px; width: 8px; height: 8px; background: #1e293b; transform: rotate(45deg); }
-.url-cell:hover .url-preview { opacity: 1; transform: translateY(0); }
-
-/* PARENT TEXT */
-.parent-text { color: var(--text-muted); font-size: 0.82rem; background: var(--primary-very-soft); padding: 0.3rem 0.65rem; border-radius: 0.45rem; display: inline-block; border: 1px dashed var(--child-border); }
-.parent-text i { color: var(--primary-color); margin-right: 0.3rem; }
-
-/* ACTION BUTTONS */
-.action-buttons { display: flex; gap: 0.35rem; justify-content: flex-end; }
-.btn-sm { padding: 0.38rem 0.75rem; font-size: 0.78rem; border-radius: 0.45rem; transition: all 0.15s; border-width: 1.5px; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 500; white-space: nowrap; }
-.btn-outline-primary { border-color: var(--primary-color); color: var(--primary-color); background: white; }
-.btn-outline-primary:hover { background: var(--primary-color); color: white; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(37,99,235,0.25); }
-.btn-outline-danger { border-color: var(--danger-color); color: var(--danger-color); background: white; }
-.btn-outline-danger:hover { background: var(--danger-color); color: white; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(220,38,38,0.25); }
-
-/* EMPTY STATE */
-.empty-state { text-align: center; padding: 4rem 2rem; }
-.empty-icon { width: 72px; height: 72px; background: var(--primary-soft); border-radius: 1.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.75rem; color: var(--primary-color); }
-.empty-state p { font-size: 1rem; margin-bottom: 1.25rem; color: var(--text-secondary); }
-
-/* DELETE MODAL */
-.delete-modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-.delete-modal-overlay.active { opacity: 1; pointer-events: all; }
-.delete-modal-box { background: white; border-radius: 1.25rem; width: 100%; max-width: 460px; box-shadow: 0 24px 60px rgba(15,23,42,0.2); transform: translateY(20px) scale(0.96); transition: transform 0.25s, opacity 0.25s; opacity: 0; overflow: hidden; }
-.delete-modal-overlay.active .delete-modal-box { transform: translateY(0) scale(1); opacity: 1; }
-.dmodal-header { background: linear-gradient(135deg, #fef2f2, #fff1f2); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid #fecaca; }
-.dmodal-icon { background: #fee2e2; border-radius: 50%; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.dmodal-icon i { color: var(--danger-color); font-size: 1.2rem; }
-.dmodal-header-text h5 { font-size: 1.05rem; font-weight: 700; color: #7f1d1d; margin: 0 0 0.2rem; }
-.dmodal-header-text p { font-size: 0.83rem; color: #991b1b; margin: 0; }
-.dmodal-body { padding: 1.25rem 1.5rem; }
-.children-warning { background: #fffbeb; border: 1px solid #fbbf24; border-radius: 0.75rem; padding: 1rem 1.1rem; margin-bottom: 1rem; display: none; gap: 0.75rem; align-items: flex-start; }
-.children-warning.visible { display: flex; }
-.children-warning > i { color: #d97706; font-size: 1rem; margin-top: 0.15rem; flex-shrink: 0; }
-.children-warning-body strong { display: block; color: #92400e; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.35rem; }
-.children-warning-body p { color: #78350f; font-size: 0.82rem; margin: 0 0 0.5rem; line-height: 1.5; }
-.children-list { list-style: none; padding: 0; margin: 0; }
-.children-list li { display: flex; align-items: center; gap: 0.45rem; font-size: 0.8rem; color: #78350f; padding: 0.15rem 0; }
-.children-list li i { color: #d97706; font-size: 0.72rem; }
-.dmodal-confirm-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
-.dmodal-confirm-text strong { color: var(--text-primary); }
-.dmodal-footer { padding: 1rem 1.5rem 1.5rem; display: flex; gap: 0.75rem; justify-content: flex-end; }
-.btn-dcancel { background: white; border: 1.5px solid var(--border-color); color: var(--text-secondary); padding: 0.6rem 1.25rem; font-size: 0.88rem; font-weight: 500; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; }
-.btn-dcancel:hover { background: var(--light-bg); }
-.btn-dconfirm { background: var(--danger-color); border: none; color: white; padding: 0.6rem 1.25rem; font-size: 0.88rem; font-weight: 600; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; box-shadow: 0 4px 8px rgba(220,38,38,0.25); }
-.btn-dconfirm:hover { background: #b91c1c; }
-.btn-dconfirm:disabled { opacity: 0.7; pointer-events: none; }
-
-/* SORTABLE */
-.sortable-drag { opacity: 0.9; box-shadow: 0 12px 24px rgba(37,99,235,0.2); }
-.sortable-ghost { opacity: 0.3; background: var(--primary-soft); }
-.sortable-chosen { box-shadow: 0 8px 16px rgba(37,99,235,0.15); }
-
-@media (max-width: 768px) {
-    .header-wrapper { flex-direction: column; align-items: flex-start; }
-    .btn-primary { width: 100%; justify-content: center; }
-    .table { min-width: 800px; }
-    .dmodal-footer { flex-direction: column; }
-    .btn-dcancel, .btn-dconfirm { width: 100%; justify-content: center; }
-}
-
-@keyframes rowIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
-.row-parent { animation: rowIn 0.18s ease forwards; }
-</style>
-
-{{-- DELETE MODAL --}}
-<div class="delete-modal-overlay" id="deleteModal" role="dialog" aria-modal="true">
-    <div class="delete-modal-box">
-        <div class="dmodal-header">
-            <div class="dmodal-icon"><i class="fas fa-trash-alt"></i></div>
-            <div class="dmodal-header-text">
-                <h5>Hapus Menu</h5>
-                <p id="dmodalSubtitle">Tindakan ini tidak dapat dibatalkan.</p>
+<div class="menu-dashboard">
+    <!-- Modern Header Section -->
+    <div class="dashboard-header">
+        <div class="header-left">
+            <div class="header-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                    <path d="M8 12v6M16 12v6"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="dashboard-title">Menu Navigasi</h1>
+                <p class="dashboard-subtitle">Kelola struktur dan tampilan menu website Anda</p>
             </div>
         </div>
-        <div class="dmodal-body">
-            <div class="children-warning" id="childrenWarning">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div class="children-warning-body">
-                    <strong><i class="fas fa-sitemap me-1"></i>Menu ini memiliki sub-menu!</strong>
-                    <p>Menghapus menu induk akan <strong>ikut menghapus semua sub-menu</strong> di bawahnya:</p>
-                    <ul class="children-list" id="childrenList"></ul>
+        <a href="{{ route('admin.menus.create') }}" class="btn-create">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14"/>
+            </svg>
+            Tambah Menu Baru
+        </a>
+    </div>
+
+    <!-- Alert Notifications -->
+    @if(session('success'))
+    <div class="alert alert-success" id="statusAlert">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <span>{{ session('success') }}</span>
+        <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+    </div>
+    @endif
+
+    <!-- Stats Cards -->
+    <div class="stats-wrapper">
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-primary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 12h18M3 6h18M3 18h18"/>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ $menus->count() }}</div>
+                <div class="stat-label">Total Menu</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-success">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 6h18M3 12h18M3 18h18"/>
+                    <path d="M8 6v12"/>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ $menus->whereNull('parent_id')->count() }}</div>
+                <div class="stat-label">Menu Utama</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-warning">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M4 4h16v16H4z"/>
+                    <path d="M9 9h6v6H9z"/>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ $menus->whereNotNull('parent_id')->count() }}</div>
+                <div class="stat-label">Sub Menu</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon stat-icon-info">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+            </div>
+            <div class="stat-content">
+                <div class="stat-value">{{ $menus->where('is_active', true)->count() }}</div>
+                <div class="stat-label">Menu Aktif</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="main-card">
+        <div class="card-header-custom">
+            <div class="header-left-section">
+                <div class="section-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3>Daftar Menu Navigasi</h3>
+                    <p>Drag & drop untuk mengatur urutan • Klik judul untuk collapse/expand</p>
                 </div>
             </div>
-            <p class="dmodal-confirm-text">
-                Apakah Anda yakin ingin menghapus menu <strong id="dmodalMenuName"></strong>?
+            <div class="header-right-section">
+                <span class="info-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="12" x2="12" y2="16"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    Total {{ $menus->count() }} entri
+                </span>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            @if($menus->count() > 0)
+            <div class="menu-container" id="menuSortable">
+                @foreach($menus->whereNull('parent_id') as $menu)
+                <!-- Parent Menu Item -->
+                <div class="menu-item parent-item" data-id="{{ $menu->id }}" data-order="{{ $menu->order }}">
+                    <div class="menu-item-content">
+                        <div class="drag-handle">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="9" cy="12" r="1"/>
+                                <circle cx="9" cy="5" r="1"/>
+                                <circle cx="9" cy="19" r="1"/>
+                                <circle cx="15" cy="12" r="1"/>
+                                <circle cx="15" cy="5" r="1"/>
+                                <circle cx="15" cy="19" r="1"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="menu-info">
+                            <div class="menu-title-section">
+                                @if($menu->children->count() > 0)
+                                <button class="collapse-toggle" data-parent="{{ $menu->id }}">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="9 18 15 12 9 6"/>
+                                    </svg>
+                                </button>
+                                @endif
+                                <div class="menu-title">
+                                    <span class="title-text">{{ $menu->title }}</span>
+                                    @if($menu->children->count() > 0)
+                                    <span class="child-count-badge">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                        </svg>
+                                        {{ $menu->children->count() }} sub
+                                    </span>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <div class="menu-meta">
+                                <div class="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                    </svg>
+                                    <span>
+                                        @if($menu->page)
+                                            {{ $menu->page->title }}
+                                        @elseif($menu->url)
+                                            {{ Str::limit($menu->url, 30) }}
+                                        @else
+                                            <span class="text-muted">Tidak ada URL</span>
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M3 6h18M3 12h18M3 18h18"/>
+                                    </svg>
+                                    <span>Parent: {{ $menu->parent?->title ?? 'Utama' }}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="8" x2="12" y2="16"/>
+                                        <line x1="8" y1="12" x2="16" y2="12"/>
+                                    </svg>
+                                    <span>Urutan: {{ $menu->order }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-actions">
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-active" data-id="{{ $menu->id }}" {{ $menu->is_active ? 'checked' : '' }}>
+                                <span class="toggle-slider"></span>
+                            </label>
+                            <span class="status-text {{ $menu->is_active ? 'active' : 'inactive' }}">
+                                {{ $menu->is_active ? 'Aktif' : 'Nonaktif' }}
+                            </span>
+                            
+                            <div class="action-buttons">
+                                <a href="{{ route('admin.menus.edit', $menu) }}" class="action-btn edit-btn" title="Edit">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
+                                        <path d="M4 20h16"/>
+                                    </svg>
+                                </a>
+                                <button type="button" class="action-btn delete-btn btn-open-delete" title="Hapus"
+                                        data-id="{{ $menu->id }}"
+                                        data-title="{{ $menu->title }}"
+                                        data-url="{{ route('admin.menus.destroy', $menu) }}"
+                                        data-children='@json($menu->children->map(fn($c) => ["id" => $c->id, "title" => $c->title]))'>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="3 6 5 6 21 6"/>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Child Menu Items -->
+                    @foreach($menu->children as $child)
+                    <div class="menu-item child-item" data-parent="{{ $menu->id }}">
+                        <div class="menu-item-content child-content">
+                            <div class="drag-handle-placeholder"></div>
+                            
+                            <div class="menu-info">
+                                <div class="menu-title-section">
+                                    <div class="child-indent-line"></div>
+                                    <div class="menu-title">
+                                        <span class="title-text">{{ $child->title }}</span>
+                                        <span class="sub-badge">Sub Menu</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="menu-meta">
+                                    <div class="meta-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                        </svg>
+                                        <span>
+                                            @if($child->page)
+                                                {{ $child->page->title }}
+                                            @elseif($child->url)
+                                                {{ Str::limit($child->url, 30) }}
+                                            @else
+                                                <span class="text-muted">Tidak ada URL</span>
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 6h18M3 12h18M3 18h18"/>
+                                        </svg>
+                                        <span>Parent: {{ $menu->title }}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="12" y1="8" x2="12" y2="16"/>
+                                            <line x1="8" y1="12" x2="16" y2="12"/>
+                                        </svg>
+                                        <span>Urutan: {{ $child->order }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-actions">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" class="toggle-active" data-id="{{ $child->id }}" {{ $child->is_active ? 'checked' : '' }}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="status-text {{ $child->is_active ? 'active' : 'inactive' }}">
+                                    {{ $child->is_active ? 'Aktif' : 'Nonaktif' }}
+                                </span>
+                                
+                                <div class="action-buttons">
+                                    <a href="{{ route('admin.menus.edit', $child) }}" class="action-btn edit-btn" title="Edit">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M17 3l4 4-7 7H10v-4l7-7z"/>
+                                            <path d="M4 20h16"/>
+                                        </svg>
+                                    </a>
+                                    <button type="button" class="action-btn delete-btn btn-open-delete" title="Hapus"
+                                            data-id="{{ $child->id }}"
+                                            data-title="{{ $child->title }}"
+                                            data-url="{{ route('admin.menus.destroy', $child) }}"
+                                            data-children='[]'>
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"/>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endforeach
+            </div>
+            @else
+            <!-- Empty State -->
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                        <path d="M8 12v6M16 12v6"/>
+                    </svg>
+                </div>
+                <h3>Belum Ada Menu</h3>
+                <p>Mulai buat menu navigasi pertama untuk website Anda</p>
+                <a href="{{ route('admin.menus.create') }}" class="btn-create-empty">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    Tambah Menu Pertama
+                </a>
+            </div>
+            @endif
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal-container">
+        <div class="modal-header">
+            <div class="modal-icon danger">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                    <polyline points="2 17 12 22 22 17"/>
+                    <polyline points="2 12 12 17 22 12"/>
+                </svg>
+            </div>
+            <div>
+                <h3>Hapus Menu</h3>
+                <p id="modalSubtitle">Tindakan ini tidak dapat dibatalkan</p>
+            </div>
+            <button class="modal-close" id="closeModalBtn">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="children-warning" id="childrenWarning">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <div>
+                    <strong>Menu ini memiliki sub-menu!</strong>
+                    <p>Menghapus menu induk akan ikut menghapus semua sub-menu di bawahnya:</p>
+                    <ul id="childrenList"></ul>
+                </div>
+            </div>
+            <p class="confirm-text">
+                Apakah Anda yakin ingin menghapus menu <strong id="modalMenuName"></strong>?
                 Tindakan ini permanen dan tidak dapat dikembalikan.
             </p>
         </div>
-        <div class="dmodal-footer">
-            <button type="button" class="btn-dcancel" id="cancelDeleteBtn">
-                <i class="fas fa-times"></i> Batal
+        <div class="modal-footer">
+            <button type="button" class="btn-cancel" id="cancelDeleteBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                Batal
             </button>
-            <button type="button" class="btn-dconfirm" id="confirmDeleteBtn">
-                <i class="fas fa-trash-alt"></i>
+            <button type="button" class="btn-confirm" id="confirmDeleteBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
                 <span id="confirmBtnLabel">Hapus Menu</span>
             </button>
         </div>
     </div>
 </div>
+
 <form id="deleteForm" method="POST" style="display:none;">
     @csrf
     @method('DELETE')
 </form>
 
-<div class="container-fluid">
-    <div class="header-wrapper">
-        <div class="header-title">
-            <h1><i class="fas fa-bars"></i> Menu Navigasi</h1>
-            <p><i class="fas fa-info-circle me-1" style="color:var(--primary-light)"></i> Kelola menu dan navigasi website</p>
-        </div>
-        <a href="{{ route('admin.menus.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Tambah Menu Baru
-        </a>
-    </div>
+<style>
+/* ============================================
+   MODERN MENU MANAGEMENT SYSTEM
+   Full Responsive Design
+   ============================================ */
 
-    @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show">
-        <i class="fas fa-check-circle" style="color:var(--success-color)"></i>
-        {{ session('success') }}
-        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-    </div>
-    @endif
+:root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --primary-light: #eff6ff;
+    --success: #10b981;
+    --success-light: #f0fdf4;
+    --warning: #f59e0b;
+    --warning-light: #fffbeb;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+}
 
-    <div class="card">
-        <div class="card-header">
-            <h6><i class="fas fa-list-ul"></i> Daftar Menu</h6>
-            <small class="text-muted">
-                <i class="fas fa-arrows-alt me-1" style="color:var(--primary-light)"></i>
-                Drag & drop untuk mengubah urutan • Klik judul untuk collapse sub-menu
-            </small>
-        </div>
+/* Main Container */
+.menu-dashboard {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 32px;
+    background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+    min-height: 100vh;
+}
 
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th style="width:48px"></th>
-                        <th>Judul Menu</th>
-                        <th>Halaman / URL</th>
-                        <th>Parent</th>
-                        <th style="width:70px">Urutan</th>
-                        <th style="width:140px">Status</th>
-                        <th style="width:155px; text-align:right">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="menuSortable">
-                    @forelse($menus as $menu)
+/* Header Section */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 24px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+}
 
-                    {{-- ===== PARENT ROW ===== --}}
-                    <tr class="row-parent" data-id="{{ $menu->id }}" data-order="{{ $menu->order }}">
-                        <td>
-                            <span class="drag-handle"><i class="fas fa-grip-vertical"></i></span>
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                @if(!$menu->parent_id && $menu->children->count() > 0)
-                                    <button type="button" class="collapse-btn open" data-parent="{{ $menu->id }}">
-                                        <span class="collapse-icon"><i class="fas fa-chevron-right"></i></span>
-                                        <span>{{ $menu->title }}</span>
-                                    </button>
-                                    <span class="child-count">
-                                        <i class="fas fa-layer-group fa-xs me-1"></i>{{ $menu->children->count() }} sub
-                                    </span>
-                                @else
-                                    <span class="fw-semibold" style="color:var(--text-primary)">{{ $menu->title }}</span>
-                                    @if($menu->parent_id)
-                                        <span class="sub-indicator"><i class="fas fa-level-down-alt fa-xs"></i> sub</span>
-                                    @endif
-                                @endif
-                            </div>
-                        </td>
-                        <td>
-                            <div class="url-cell">
-                                <div class="url-text">
-                                    @if($menu->page)
-                                        <i class="fas fa-file-alt"></i><span>{{ $menu->page->title }}</span>
-                                    @elseif($menu->url)
-                                        <i class="fas fa-link"></i><span>{{ $menu->url }}</span>
-                                    @else
-                                        <i class="fas fa-exclamation-circle" style="color:var(--danger-color)"></i>
-                                        <span class="text-danger">tidak ada</span>
-                                    @endif
-                                </div>
-                                @if($menu->page || $menu->url)
-                                <div class="url-preview">
-                                    <i class="fas fa-external-link-alt me-1"></i>
-                                    {{ $menu->page ? (url('/') . '/' . ($menu->page->slug ?? $menu->page->title)) : $menu->url }}
-                                </div>
-                                @endif
-                            </div>
-                        </td>
-                        <td>
-                            <div class="parent-text">
-                                <i class="fas fa-sitemap"></i>{{ $menu->parent?->title ?? 'Utama' }}
-                            </div>
-                        </td>
-                        <td><span class="order-badge"><i class="fas fa-hashtag fa-xs"></i>{{ $menu->order }}</span></td>
-                        <td>
-                            <div class="toggle-wrap">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="toggle-active" data-id="{{ $menu->id }}" {{ $menu->is_active ? 'checked' : '' }}>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <span class="toggle-label {{ $menu->is_active ? 'active' : '' }}">
-                                    {{ $menu->is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <a href="{{ route('admin.menus.edit', $menu) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i><span class="d-none d-lg-inline">Edit</span>
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger btn-open-delete"
-                                        data-id="{{ $menu->id }}"
-                                        data-title="{{ $menu->title }}"
-                                        data-url="{{ route('admin.menus.destroy', $menu) }}"
-                                        data-children='@json($menu->children->map(fn($c) => ["id" => $c->id, "title" => $c->title]))'>
-                                    <i class="fas fa-trash"></i><span class="d-none d-lg-inline">Hapus</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 
-                    {{-- ===== CHILD ROWS ===== --}}
-                    @foreach($menu->children as $child)
-                    <tr class="row-child" data-id="{{ $child->id }}" data-parent="{{ $menu->id }}">
-                        <td></td>
-                        <td>
-                            <div class="child-indent">
-                                <span style="color:var(--text-primary);font-weight:500">{{ $child->title }}</span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="url-cell">
-                                <div class="url-text">
-                                    @if($child->page)
-                                        <i class="fas fa-file-alt"></i><span>{{ $child->page->title }}</span>
-                                    @elseif($child->url)
-                                        <i class="fas fa-link"></i><span>{{ $child->url }}</span>
-                                    @else
-                                        <i class="fas fa-exclamation-circle" style="color:var(--danger-color)"></i>
-                                        <span class="text-danger">tidak ada</span>
-                                    @endif
-                                </div>
-                                @if($child->page || $child->url)
-                                <div class="url-preview">
-                                    <i class="fas fa-external-link-alt me-1"></i>
-                                    {{ $child->page ? (url('/') . '/' . ($child->page->slug ?? $child->page->title)) : $child->url }}
-                                </div>
-                                @endif
-                            </div>
-                        </td>
-                        <td>
-                            <div class="parent-text">
-                                <i class="fas fa-sitemap"></i>{{ $menu->title }}
-                            </div>
-                        </td>
-                        <td><span class="order-badge"><i class="fas fa-hashtag fa-xs"></i>{{ $child->order }}</span></td>
-                        <td>
-                            <div class="toggle-wrap">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" class="toggle-active" data-id="{{ $child->id }}" {{ $child->is_active ? 'checked' : '' }}>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <span class="toggle-label {{ $child->is_active ? 'active' : '' }}">
-                                    {{ $child->is_active ? 'Aktif' : 'Nonaktif' }}
-                                </span>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <a href="{{ route('admin.menus.edit', $child) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-edit"></i><span class="d-none d-lg-inline">Edit</span>
-                                </a>
-                                <button type="button" class="btn btn-sm btn-outline-danger btn-open-delete"
-                                        data-id="{{ $child->id }}"
-                                        data-title="{{ $child->title }}"
-                                        data-url="{{ route('admin.menus.destroy', $child) }}"
-                                        data-children='[]'>
-                                    <i class="fas fa-trash"></i><span class="d-none d-lg-inline">Hapus</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
+.header-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: var(--shadow-md);
+}
 
-                    @empty
-                    <tr>
-                        <td colspan="7">
-                            <div class="empty-state">
-                                <div class="empty-icon"><i class="fas fa-bars"></i></div>
-                                <p>Belum ada menu navigasi.</p>
-                                <a href="{{ route('admin.menus.create') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Tambah Menu Pertama
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+.dashboard-title {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gray-800), var(--gray-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0 0 4px 0;
+}
 
-        @if(count($menus) > 0)
-        <div class="card-footer bg-white border-top py-3 px-4">
-            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                <small class="text-muted">
-                    <i class="fas fa-info-circle me-1" style="color:var(--primary-color)"></i>
-                    Total {{ count($menus) }} entri •
-                    Parent: {{ $menus->whereNull('parent_id')->count() }} •
-                    Sub-menu: {{ $menus->whereNotNull('parent_id')->count() }}
-                </small>
-                <small class="text-muted">
-                    <i class="fas fa-mouse-pointer me-1" style="color:var(--primary-color)"></i>
-                    Hover URL untuk preview • Toggle untuk ubah status
-                </small>
-            </div>
-        </div>
-        @endif
-    </div>
-</div>
+.dashboard-subtitle {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.btn-create {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-create:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Alert */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    background: var(--success-light);
+    border-left: 4px solid var(--success);
+    color: var(--success);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* Stats Cards */
+.stats-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: transparent;
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover .stat-icon {
+    transform: scale(1.1);
+}
+
+.stat-icon-primary {
+    background: linear-gradient(135deg, var(--primary-light), #dbeafe);
+    color: var(--primary);
+}
+
+.stat-icon-success {
+    background: linear-gradient(135deg, var(--success-light), #d1fae5);
+    color: var(--success);
+}
+
+.stat-icon-warning {
+    background: linear-gradient(135deg, var(--warning-light), #fef3c7);
+    color: var(--warning);
+}
+
+.stat-icon-info {
+    background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+    color: #6366f1;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 36px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--gray-800), var(--gray-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Main Card */
+.main-card {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-header-custom {
+    padding: 24px;
+    background: linear-gradient(135deg, #ffffff, var(--gray-50));
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.header-left-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.header-left-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0 0 4px 0;
+}
+
+.header-left-section p {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin: 0;
+}
+
+.info-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: var(--gray-100);
+    border-radius: 40px;
+    font-size: 13px;
+    color: var(--gray-600);
+}
+
+/* Table Wrapper */
+.table-wrapper {
+    padding: 0;
+}
+
+/* Menu Container */
+.menu-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Menu Item */
+.menu-item {
+    border-bottom: 1px solid var(--gray-100);
+    transition: all 0.3s;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    transition: background 0.2s;
+}
+
+.parent-item .menu-item-content:hover {
+    background: var(--primary-light);
+}
+
+.child-item .menu-item-content {
+    background: var(--gray-50);
+    padding-left: 56px;
+}
+
+.child-item .menu-item-content:hover {
+    background: #f3f4f6;
+}
+
+/* Drag Handle */
+.drag-handle {
+    cursor: grab;
+    color: var(--gray-400);
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.drag-handle:hover {
+    color: var(--primary);
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.drag-handle-placeholder {
+    width: 20px;
+    flex-shrink: 0;
+}
+
+/* Menu Info */
+.menu-info {
+    flex: 1;
+}
+
+.menu-title-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.collapse-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: var(--gray-500);
+    transition: transform 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+.collapse-toggle:hover {
+    color: var(--primary);
+}
+
+.collapse-toggle svg {
+    transition: transform 0.2s;
+}
+
+.collapse-toggle.collapsed svg {
+    transform: rotate(-90deg);
+}
+
+.menu-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.title-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.child-count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--primary-light);
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.sub-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: var(--gray-200);
+    border-radius: 40px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-600);
+}
+
+.child-indent-line {
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gray-300), transparent);
+}
+
+.menu-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--gray-500);
+}
+
+.meta-item svg {
+    flex-shrink: 0;
+}
+
+.text-muted {
+    color: var(--gray-400);
+    font-style: italic;
+}
+
+/* Menu Actions */
+.menu-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--gray-300);
+    border-radius: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.toggle-slider::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: var(--success);
+}
+
+.toggle-switch input:checked + .toggle-slider::after {
+    transform: translateX(20px);
+}
+
+.status-text {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 60px;
+}
+
+.status-text.active {
+    color: var(--success);
+}
+
+.status-text.inactive {
+    color: var(--gray-500);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.edit-btn {
+    color: var(--primary);
+}
+
+.edit-btn:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    color: var(--danger);
+}
+
+.delete-btn:hover {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.empty-icon {
+    margin-bottom: 24px;
+    color: var(--gray-300);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.empty-state h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gray-800);
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    color: var(--gray-500);
+    margin-bottom: 32px;
+}
+
+.btn-create-empty {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-create-empty:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 24px;
+    max-width: 500px;
+    width: 100%;
+    transform: translateY(20px) scale(0.96);
+    transition: transform 0.3s, opacity 0.3s;
+    opacity: 0;
+    overflow: hidden;
+}
+
+.modal-overlay.active .modal-container {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+.modal-header {
+    padding: 24px;
+    background: linear-gradient(135deg, var(--danger-light), #fff1f2);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #fecaca;
+    position: relative;
+}
+
+.modal-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.modal-icon.danger {
+    background: #fee2e2;
+    color: var(--danger);
+}
+
+.modal-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #7f1d1d;
+    margin: 0 0 4px 0;
+}
+
+.modal-header p {
+    font-size: 13px;
+    color: #991b1b;
+    margin: 0;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--gray-400);
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--gray-600);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.children-warning {
+    background: var(--warning-light);
+    border: 1px solid #fbbf24;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: none;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.children-warning.visible {
+    display: flex;
+}
+
+.children-warning svg {
+    color: #d97706;
+    flex-shrink: 0;
+}
+
+.children-warning strong {
+    display: block;
+    color: #92400e;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.children-warning p {
+    color: #78350f;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+#childrenList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#childrenList li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #78350f;
+    padding: 4px 0;
+}
+
+#childrenList li::before {
+    content: '•';
+    color: #d97706;
+}
+
+.confirm-text {
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.confirm-text strong {
+    color: var(--gray-800);
+}
+
+.modal-footer {
+    padding: 20px 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    border-top: 1px solid var(--gray-200);
+}
+
+.btn-cancel, .btn-confirm {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-cancel {
+    background: white;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+}
+
+.btn-cancel:hover {
+    background: var(--gray-100);
+}
+
+.btn-confirm {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-confirm:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.btn-confirm:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Sortable Styles */
+.sortable-drag {
+    opacity: 0.9;
+    box-shadow: var(--shadow-lg);
+}
+
+.sortable-ghost {
+    opacity: 0.3;
+    background: var(--primary-light);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .menu-dashboard {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-dashboard {
+        padding: 20px;
+    }
+    
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .header-left {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stats-wrapper {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .menu-item-content {
+        flex-wrap: wrap;
+        padding: 16px;
+    }
+    
+    .menu-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .menu-meta {
+        gap: 12px;
+    }
+    
+    .meta-item {
+        font-size: 12px;
+    }
+    
+    .child-item .menu-item-content {
+        padding-left: 24px;
+    }
+    
+    .card-header-custom {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .header-left-section {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .menu-dashboard {
+        padding: 16px;
+    }
+    
+    .stats-wrapper {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-title {
+        font-size: 24px;
+    }
+    
+    .stat-value {
+        font-size: 28px;
+    }
+    
+    .menu-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .menu-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .action-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn-cancel, .btn-confirm {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-dashboard {
+        padding: 12px;
+    }
+    
+    .dashboard-header {
+        padding: 16px;
+    }
+    
+    .header-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .btn-create {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .menu-item-content {
+        padding: 12px;
+    }
+    
+    .title-text {
+        font-size: 14px;
+    }
+}
+</style>
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-
-    // ============================================================
-    // COLLAPSIBLE CHILDREN
-    // ============================================================
-    document.querySelectorAll('.collapse-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Auto dismiss alert
+    const alertEl = document.getElementById('statusAlert');
+    if (alertEl) {
+        setTimeout(() => {
+            alertEl.style.opacity = '0';
+            setTimeout(() => alertEl.remove(), 300);
+        }, 4000);
+    }
+    
+    // Collapse/Expand functionality
+    document.querySelectorAll('.collapse-toggle').forEach(btn => {
+        btn.addEventListener('click', function() {
             const parentId = this.dataset.parent;
-            const childRows = document.querySelectorAll(`.row-child[data-parent="${parentId}"]`);
-            const isOpen = this.classList.contains('open');
-
-            if (isOpen) {
-                childRows.forEach(row => row.classList.add('collapsed'));
-                this.classList.remove('open');
-            } else {
-                childRows.forEach(row => row.classList.remove('collapsed'));
-                this.classList.add('open');
-            }
+            const childItems = document.querySelectorAll(`.child-item[data-parent="${parentId}"]`);
+            const isCollapsed = this.classList.contains('collapsed');
+            
+            childItems.forEach(item => {
+                if (isCollapsed) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            this.classList.toggle('collapsed');
         });
     });
-
-    // ============================================================
-    // TOGGLE AKTIF / NONAKTIF (inline AJAX)
-    // ============================================================
+    
+    // Toggle active status
     document.querySelectorAll('.toggle-active').forEach(toggle => {
-        toggle.addEventListener('change', function () {
-            const menuId  = this.dataset.id;
+        toggle.addEventListener('change', function() {
+            const menuId = this.dataset.id;
             const checked = this.checked;
-            const label   = this.closest('.toggle-wrap').querySelector('.toggle-label');
-            const sw      = this.closest('.toggle-switch');
-
-            sw.classList.add('loading');
+            const statusText = this.closest('.menu-actions').querySelector('.status-text');
+            const toggleSwitch = this.closest('.toggle-switch');
+            
+            toggleSwitch.classList.add('loading');
             this.disabled = true;
-
+            
             fetch(`/admin/menus/${menuId}/toggle`, {
                 method: 'POST',
                 headers: {
@@ -472,8 +1423,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(r => r.json())
             .then(data => {
                 if (data.success) {
-                    label.textContent = checked ? 'Aktif' : 'Nonaktif';
-                    label.className   = 'toggle-label' + (checked ? ' active' : '');
+                    statusText.textContent = checked ? 'Aktif' : 'Nonaktif';
+                    statusText.className = `status-text ${checked ? 'active' : 'inactive'}`;
                     showNotification(`Menu "${data.title}" berhasil ${checked ? 'diaktifkan' : 'dinonaktifkan'}`, 'success');
                 } else {
                     this.checked = !checked;
@@ -485,96 +1436,112 @@ document.addEventListener('DOMContentLoaded', function () {
                 showNotification('Terjadi kesalahan', 'error');
             })
             .finally(() => {
-                sw.classList.remove('loading');
+                toggleSwitch.classList.remove('loading');
                 this.disabled = false;
             });
         });
     });
-
-    // ============================================================
-    // DELETE MODAL
-    // ============================================================
-    const overlay      = document.getElementById('deleteModal');
-    const deleteForm   = document.getElementById('deleteForm');
-    const menuNameEl   = document.getElementById('dmodalMenuName');
-    const subtitleEl   = document.getElementById('dmodalSubtitle');
-    const childrenWarn = document.getElementById('childrenWarning');
+    
+    // Delete Modal
+    const modal = document.getElementById('deleteModal');
+    const deleteForm = document.getElementById('deleteForm');
+    const menuNameEl = document.getElementById('modalMenuName');
+    const subtitleEl = document.getElementById('modalSubtitle');
+    const childrenWarning = document.getElementById('childrenWarning');
     const childrenList = document.getElementById('childrenList');
-    const confirmBtn   = document.getElementById('confirmDeleteBtn');
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
     const confirmLabel = document.getElementById('confirmBtnLabel');
-    const cancelBtn    = document.getElementById('cancelDeleteBtn');
-
+    const cancelBtn = document.getElementById('cancelDeleteBtn');
+    const closeBtn = document.getElementById('closeModalBtn');
+    
+    let currentDeleteUrl = '';
+    
     function openModal(btn) {
-        const title    = btn.dataset.title;
-        const url      = btn.dataset.url;
+        const title = btn.dataset.title;
+        const url = btn.dataset.url;
         const children = JSON.parse(btn.dataset.children || '[]');
-
-        deleteForm.action    = url;
-        menuNameEl.textContent = '"' + title + '"';
-
+        
+        currentDeleteUrl = url;
+        menuNameEl.textContent = `"${title}"`;
+        
         if (children.length > 0) {
-            childrenWarn.classList.add('visible');
-            childrenList.innerHTML = children.map(c => `<li><i class="fas fa-angle-right"></i>${c.title}</li>`).join('');
+            childrenWarning.classList.add('visible');
+            childrenList.innerHTML = children.map(c => `<li>${c.title}</li>`).join('');
             subtitleEl.textContent = 'Semua sub-menu akan ikut terhapus!';
-            confirmLabel.textContent = 'Hapus Semua (' + (children.length + 1) + ' menu)';
+            confirmLabel.textContent = `Hapus Semua (${children.length + 1} menu)`;
         } else {
-            childrenWarn.classList.remove('visible');
+            childrenWarning.classList.remove('visible');
             childrenList.innerHTML = '';
-            subtitleEl.textContent = 'Tindakan ini tidak dapat dibatalkan.';
+            subtitleEl.textContent = 'Tindakan ini tidak dapat dibatalkan';
             confirmLabel.textContent = 'Hapus Menu';
         }
-
+        
         confirmBtn.disabled = false;
-        confirmBtn.querySelector('i').className = 'fas fa-trash-alt';
-        overlay.classList.add('active');
+        modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-
+    
     function closeModal() {
-        overlay.classList.remove('active');
+        modal.classList.remove('active');
         document.body.style.overflow = '';
     }
-
-    document.querySelectorAll('.btn-open-delete').forEach(btn => btn.addEventListener('click', () => openModal(btn)));
+    
+    document.querySelectorAll('.btn-open-delete').forEach(btn => {
+        btn.addEventListener('click', () => openModal(btn));
+    });
+    
     cancelBtn.addEventListener('click', closeModal);
-    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('active')) closeModal(); });
-    confirmBtn.addEventListener('click', function () {
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) closeModal();
+    });
+    
+    confirmBtn.addEventListener('click', function() {
+        deleteForm.action = currentDeleteUrl;
         this.disabled = true;
-        this.querySelector('i').className = 'fas fa-spinner fa-spin';
+        this.querySelector('svg').innerHTML = '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>';
         confirmLabel.textContent = 'Menghapus...';
         deleteForm.submit();
     });
-
-    // ============================================================
-    // SORTABLE — hanya parent rows
-    // ============================================================
-    const menuTable = document.getElementById('menuSortable');
-    if (menuTable) {
-        new Sortable(menuTable, {
+    
+    // Sortable
+    const menuContainer = document.getElementById('menuSortable');
+    if (menuContainer) {
+        new Sortable(menuContainer, {
             animation: 200,
             handle: '.drag-handle',
-            draggable: '.row-parent',
+            draggable: '.parent-item',
             ghostClass: 'sortable-ghost',
             dragClass: 'sortable-drag',
             chosenClass: 'sortable-chosen',
             onStart: () => document.body.style.cursor = 'grabbing',
-            onEnd: function () {
+            onEnd: function() {
                 document.body.style.cursor = '';
                 const order = [];
-                document.querySelectorAll('#menuSortable .row-parent[data-id]').forEach(row => order.push(row.dataset.id));
-
+                document.querySelectorAll('#menuSortable .parent-item').forEach(item => {
+                    order.push(item.dataset.id);
+                });
+                
                 fetch('{{ route("admin.menus.reorder") }}', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
                     body: JSON.stringify({ order })
                 })
                 .then(r => r.json())
                 .then(data => {
                     if (data.success) {
-                        document.querySelectorAll('#menuSortable .row-parent[data-id]').forEach((row, i) => {
-                            const badge = row.querySelector('.order-badge');
-                            if (badge) badge.innerHTML = `<i class="fas fa-hashtag fa-xs"></i>${i + 1}`;
+                        document.querySelectorAll('#menuSortable .parent-item').forEach((item, index) => {
+                            const orderBadge = item.querySelector('.meta-item:last-child span');
+                            if (orderBadge) {
+                                orderBadge.textContent = `Urutan: ${index + 1}`;
+                            }
                         });
                         showNotification('Urutan menu berhasil diperbarui', 'success');
                     } else {
@@ -585,29 +1552,85 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
-    // ============================================================
-    // AUTO-HIDE ALERT
-    // ============================================================
-    const alertEl = document.querySelector('.alert');
-    if (alertEl) setTimeout(() => { alertEl.classList.remove('show'); setTimeout(() => alertEl.remove(), 150); }, 5000);
-
-    // ============================================================
-    // NOTIFICATION TOAST
-    // ============================================================
+    
+    // Notification Toast
     function showNotification(message, type = 'success') {
-        document.querySelector('.notif-toast')?.remove();
-        const c = { success: '#059669', error: '#dc2626' };
-        const ic = { success: 'fa-check-circle', error: 'fa-exclamation-circle' };
-        const n = document.createElement('div');
-        n.className = 'notif-toast';
-        n.style.cssText = `position:fixed;top:20px;right:20px;z-index:10000;min-width:280px;max-width:360px;background:white;border-radius:0.75rem;box-shadow:0 8px 24px rgba(0,0,0,0.12);border-left:4px solid ${c[type]};padding:0.875rem 1rem;display:flex;align-items:center;gap:0.6rem;font-size:0.875rem;color:#334155;animation:toastIn 0.25s ease;`;
-        n.innerHTML = `<i class="fas ${ic[type]}" style="color:${c[type]};flex-shrink:0"></i><span style="flex:1">${message}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.1rem;line-height:1;padding:0">&times;</button>`;
-        document.body.appendChild(n);
-        setTimeout(() => { n.style.cssText += 'opacity:0;transform:translateX(8px);transition:all 0.3s;'; setTimeout(() => n.remove(), 300); }, 3500);
+        const existingToast = document.querySelector('.notification-toast');
+        if (existingToast) existingToast.remove();
+        
+        const colors = {
+            success: '#10b981',
+            error: '#ef4444'
+        };
+        
+        const icons = {
+            success: '✓',
+            error: '✗'
+        };
+        
+        const toast = document.createElement('div');
+        toast.className = 'notification-toast';
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 10000;
+            min-width: 280px;
+            max-width: 360px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-left: 4px solid ${colors[type]};
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: #334155;
+            animation: slideInRight 0.3s ease;
+        `;
+        
+        toast.innerHTML = `
+            <div style="width: 24px; height: 24px; border-radius: 50%; background: ${colors[type]}20; display: flex; align-items: center; justify-content: center; color: ${colors[type]}; font-weight: bold;">
+                ${icons[type]}
+            </div>
+            <span style="flex: 1">${message}</span>
+            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 18px;">×</button>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'slideOutRight 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
     }
-
-    document.head.insertAdjacentHTML('beforeend', '<style>@keyframes toastIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}</style>');
+    
+    // Add animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
 });
 </script>
 @endpush

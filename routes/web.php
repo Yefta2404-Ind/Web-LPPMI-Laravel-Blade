@@ -328,15 +328,7 @@ Route::middleware('auth')->group(function () {
 */
 require __DIR__ . '/auth.php';
 
-Route::get('/', function () {
-
-$news = News::where('status','approved')
-    ->latest()
-    ->limit(5)
-    ->get();
-
-return view('public.home', compact('news'));
-});
+Route::get('/', [NewsController::class, 'publicHome']);
 
 Route::get('/{slug}', function ($slug) {
 

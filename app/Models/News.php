@@ -34,4 +34,9 @@ class News extends Model
     return $this->belongsTo(Category::class);
 }
 
+public function scopeLatestMonth($query)
+{
+    return $query->where('created_at', '>=', now()->subMonth());
+}
+
 }

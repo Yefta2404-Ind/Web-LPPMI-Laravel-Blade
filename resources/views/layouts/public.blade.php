@@ -79,6 +79,113 @@
             padding: 0 var(--container-pad);
         }
 
+        .main-footer {
+    background: #111;
+    color: #ddd;
+    padding: 60px 0 20px;
+    font-size: 14px;
+}
+
+.footer-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+}
+
+.footer-col h3 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.footer-logo img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 50%;
+    padding: 4px;
+}
+
+.footer-subtitle {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.footer-desc {
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: gold;
+}
+
+.footer-col p {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-col i {
+    color: gold;
+}
+
+.footer-social a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
+    background: #222;
+    border-radius: 50%;
+    color: #fff;
+    margin-right: 8px;
+    transition: 0.3s;
+}
+
+.footer-social a:hover {
+    background: gold;
+    color: #000;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+    font-size: 13px;
+    color: #aaa;
+}
+
 
         /* ================= TOP BAR ================= */
         .top-bar {
@@ -732,20 +839,23 @@
             display: none;
             align-items: center;
             justify-content: center;
+            pointer-events: none;
             z-index: 1100;
-            padding: 20px;
+            padding: 0px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .agenda-modal-overlay.active { display: flex; opacity: 1; }
+        .agenda-modal-overlay.active { display: flex; opacity: 1; pointer-events: auto; }
 
         .agenda-modal-content {
             background: var(--white);
-            border-radius: var(--radius-xl);
-            max-width: 560px;
+            border-radius: 0;
+            max-width: 600px;
             width: 100%;
             max-height: 85vh;
+            margin : 0 ;
+            border-radius: 20px;
             overflow-y: auto;
             box-shadow: var(--shadow-xl);
             position: relative;
@@ -827,25 +937,25 @@
             position: relative; z-index: 1;
         }
 
-        .modal-day { font-size: 2.6rem; font-weight: 700; line-height: 1; font-family: var(--font-heading); color: var(--white); }
+        .modal-day { font-size: 2rem; font-weight: 700; line-height: 1; font-family: var(--font-heading); color: var(--white); }
         .modal-month-year { font-size: 0.85rem; opacity: 0.85; line-height: 1.4; color: var(--gold-light); }
-        .modal-title { font-size: 1.5rem; font-weight: 700; line-height: 1.3; margin: 0; color: var(--white); position: relative; z-index: 1; }
+        .modal-title { font-size: 1.2rem; font-weight: 700; line-height: 1.3; margin: 0; color: var(--white); position: relative; z-index: 1; }
 
         .modal-body { padding: 28px 32px; }
 
         .modal-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 10px;
             margin-bottom: 24px;
-            padding: 18px;
+            padding: 14px;
             background: var(--accent);
             border-radius: var(--radius-md);
             border: 1px solid var(--border);
         }
 
         .modal-info-item { display: flex; align-items: center; gap: 10px; color: var(--text-dark); font-size: 0.9rem; }
-        .modal-info-item i { color: var(--primary); font-size: 0.95rem; width: 18px; flex-shrink: 0; }
+        .modal-info-item i { color: var(--primary); font-size: 0.85rem; width: 18px; flex-shrink: 0; }
 
         .modal-description { line-height: 1.75; color: var(--text-mid); font-size: 0.92rem; }
         .modal-description p { margin-bottom: 12px; }
@@ -862,14 +972,18 @@
         .modal-status { padding: 6px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; }
 
         /* ================= SURVEY ================= */
-        .survey-section {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            padding: 96px 0;
-            overflow: hidden;
-            color: var(--white);
-            position: relative;
-        }
+.survey-section {
+    background: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+        url('/images/qr.jpg');
 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    padding: 96px 0;
+    color: white;
+}
         .survey-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1057,12 +1171,76 @@
         .page-content table { min-width: 100%; width: 100% !important; border-collapse: collapse !important; }
         .page-content table.wide-table { min-width: 800px; }
 
-        @media (max-width: 768px) {
-            .page-content table { font-size: 14px; }
-            .page-content table th,
-            .page-content table td { padding: 8px 10px !important; white-space: nowrap; }
-            .page-content .table-responsive { margin: 15px -10px; width: calc(100% + 20px); }
-        }
+       @media (max-width: 768px) {
+
+    /* ===== TABLE ===== */
+    .page-content table {
+        font-size: 14px;
+    }
+
+    .page-content table th,
+    .page-content table td {
+        padding: 8px 10px !important;
+        white-space: nowrap;
+    }
+
+    .page-content .table-responsive {
+        margin: 15px -10px;
+        width: calc(100% + 20px);
+    }
+
+    /* ===== MODAL OVERLAY ===== */
+    .agenda-modal-overlay {
+        padding: 8px; /* jangan 0 biar gak terlalu mepet layar */
+        align-items: center; /* jangan dari bawah biar gak kebesaran */
+    }
+
+    /* ===== MODAL CONTENT ===== */
+    .agenda-modal-content {
+        width: 100%;
+        max-height: 85vh; /* cukup tinggi tapi gak full */
+        border-radius: 16px;
+        margin: 0;
+        overflow-y: auto;
+    }
+
+    /* ===== HEADER ===== */
+    .modal-header {
+        padding: 20px 16px 18px;
+    }
+
+    /* FIX YANG KAMU MAU (biar gak dempet) */
+    .modal-date-box {
+        margin-bottom: 12px;
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
+    .modal-title {
+        margin-top: 6px;
+        line-height: 1.4;
+    }
+
+    /* ===== BODY ===== */
+    .modal-body {
+        padding: 16px;
+    }
+
+    /* ===== FOOTER ===== */
+    .modal-footer {
+        padding: 14px 16px;
+    }
+
+    /* ===== IMAGE ===== */
+    .modal-image-wrap {
+        height: 170px;
+    }
+
+    /* ===== INFO GRID ===== */
+    .modal-info {
+        grid-template-columns: 1fr; /* biar gak sempit */
+    }
+}
 
         .page-content h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); }
         .page-content h2 { font-size: clamp(1.3rem, 4vw, 1.8rem); }
@@ -1134,7 +1312,7 @@
         }
 
         .page-content * { max-width: 100%; }
-        .page-content pre, .page-content code { white-space: pre-wrap; word-wrap: break-word; overflow-x: auto; }
+        .page-content pre, .page-content code { white-space: normal; word-wrap: break-word; overflow-x: auto; }
         .table-responsive, .page-content table { -webkit-overflow-scrolling: touch; }
 
         /* ================================================
@@ -1391,7 +1569,7 @@
 
         #popup-box {
             position: relative;
-            max-width: 460px; /* Ukuran popup diperkecil agar tidak terlalu besar */
+            max-width: 600px; /* Ukuran popup diperkecil agar tidak terlalu besar */
             width: 100%;
             animation: popupSlideUp 0.45s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;
         }
@@ -1433,7 +1611,7 @@
 
         /* Responsive popup */
         @media (max-width: 767px) {
-            #popup-box { max-width: 85vw; } /* Lebih kecil di mobile */
+            #popup-box { max-width: 90%; } /* Lebih kecil di mobile */
             #popup-close-btn {
                 top: -12px;
                 right: -10px;
@@ -1712,32 +1890,80 @@
     @endif
 
     <!-- FOOTER -->
-    <footer class="main-footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>{{ $settings->site_name }}</h3>
-                    <p>{{ $settings->footer_description }}</p>
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-grid">
+
+            <!-- LOGO + DESKRIPSI -->
+            <div class="footer-col">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        @if(!empty($settings->logo))
+                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="Logo">
+                        @else
+                            <img src="{{ asset('images/logo ugk.png') }}" alt="Logo">
+                        @endif
+                    </div>
+                    <div>
+                        <h3>{{ $settings->site_name }}</h3>
+                    </div>
                 </div>
-                <div class="footer-col">
-                    <h3>Kontak</h3>
-                    <p><i class="fas fa-map-marker-alt me-2" style="color:var(--gold);"></i> {{ $settings->footer_address }}</p>
-                    <p><i class="fas fa-phone-alt me-2" style="color:var(--gold);"></i> {{ $settings->footer_phone }}</p>
-                    <p><i class="fas fa-envelope me-2" style="color:var(--gold);"></i> {{ $settings->footer_email }}</p>
-                    <p><i class="fas fa-globe me-2" style="color:var(--gold);"></i> {{ $settings->footer_website }}</p>
-                </div>
-                <div class="footer-col">
-                    <h3>Tautan Cepat</h3>
-                    <a href="/" class="footer-link"><i class="fas fa-chevron-right"></i>Beranda</a>
-                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i>Dokumen Mutu</a>
-                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i>Profil Lembaga</a>
-                    <a href="#" class="footer-link"><i class="fas fa-chevron-right"></i>Kontak</a>
-                </div>
+
+                <p class="footer-desc">
+                    {{ $settings->footer_description }}
+                </p>
             </div>
-            <div class="footer-bottom">
+
+            <!-- MENU -->
+            <div class="footer-col">
+                <h3>Menu</h3>
+                <ul class="footer-links">
+                    @foreach($menus as $menu)
+                        <li>
+                            <a href="{{ menu_url($menu) }}">
+                                {{ $menu->title }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
+
+            <!-- KONTAK -->
+            <div class="footer-col">
+                <h3>Kontak</h3>
+
+                <p>
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ $settings->footer_address }}
+                </p>
+
+                <p>
+                    <i class="fas fa-phone-alt"></i>
+                    {{ $settings->footer_phone }}
+                </p>
+
+                <p>
+                    <i class="fas fa-envelope"></i>
+                    {{ $settings->footer_email }}
+                </p>
+
+                <p>
+                    <i class="fas fa-globe"></i>
+                    {{ $settings->footer_website }}
+                </p>
+            </div>
+
+
         </div>
-    </footer>
+
+        <!-- BOTTOM -->
+        <div class="footer-bottom">
+            <p>
+                © {{ date('Y') }} {{ $settings->site_name }}. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     @yield('scripts')

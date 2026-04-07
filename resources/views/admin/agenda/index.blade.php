@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('page-title', 'Agenda Pending')
+@section('page-title', 'Manajemen Agenda')
 @section('content')
 <style>
-    /* ===== VARIABLES - Mempertahankan warna asli ===== */
+    /* ========== VARIABEL ========== */
     :root {
         --primary: #2563eb;
         --primary-dark: #1d4ed8;
@@ -24,96 +24,95 @@
         --gray-700: #334155;
         --gray-800: #1e293b;
         --gray-900: #0f172a;
-        --radius: 12px;
-        --radius-sm: 8px;
-        --shadow: 0 1px 3px rgba(0,0,0,0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-        --transition: 150ms ease;
+        --radius: 1rem;
+        --radius-sm: 0.75rem;
+        --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        --transition: all 0.2s ease;
     }
 
-    /* ===== RESET ===== */
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
-    /* ===== LAYOUT - Improved Responsive ===== */
+    /* Container utama - lebih lega di mobile */
     .admin-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 0 24px;
         width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
 
-    /* Responsive padding */
-    @media (max-width: 1024px) {
-        .admin-container { 
-            padding: 0 20px; 
+    /* Layar kecil: tambah padding horizontal */
+    @media (max-width: 640px) {
+        .admin-container {
+            padding: 0 0.875rem;
         }
     }
-
-    @media (max-width: 768px) {
-        .admin-container { 
-            padding: 0 16px; 
-        }
-    }
-
     @media (max-width: 480px) {
-        .admin-container { 
-            padding: 0 12px; 
+        .admin-container {
+            padding: 0 1rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .admin-container {
+            padding: 0 2rem;
         }
     }
 
-    /* ===== HEADER ===== */
+    /* ========== HEADER ========== */
     .page-header {
-        margin-bottom: 32px;
+        margin-bottom: 1.5rem;
     }
-
     .page-title {
-        font-size: 1.875rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--gray-900);
-        margin-bottom: 8px;
-        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
     }
-
     .page-description {
         color: var(--gray-500);
-        font-size: 0.95rem;
+        font-size: 0.875rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
     }
-
-    /* Responsive header */
-    @media (max-width: 1024px) {
-        .page-title { 
-            font-size: 1.75rem; 
-        }
-    }
-
-    @media (max-width: 768px) {
-        .page-title { 
-            font-size: 1.5rem; 
-        }
-    }
-
     @media (max-width: 480px) {
-        .page-title { 
-            font-size: 1.35rem; 
+        .page-title {
+            font-size: 1.25rem;
+        }
+        .page-description {
+            font-size: 0.75rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
     }
+    @media (min-width: 768px) {
+        .page-title { font-size: 1.875rem; }
+        .page-description { font-size: 0.95rem; }
+    }
 
-    /* ===== STATUS TABS - Improved Responsive ===== */
+    /* ========== TAB STATUS ========== */
     .status-tabs {
         display: flex;
-        gap: 12px;
-        margin-bottom: 32px;
         flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
     }
-
     .status-tab {
-        padding: 10px 24px;
-        border-radius: 40px;
-        font-size: 0.9rem;
+        flex: 1 0 auto;
+        min-width: 90px;
+        padding: 0.625rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.75rem;
         font-weight: 600;
         background: white;
         color: var(--gray-600);
@@ -122,233 +121,146 @@
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
+        justify-content: center;
+        gap: 0.5rem;
         white-space: nowrap;
+        cursor: pointer;
     }
-
-    .status-tab i {
-        font-size: 0.85rem;
-    }
-
-    .status-tab:hover {
-        background: var(--gray-50);
-        border-color: var(--gray-300);
-    }
-
-    .status-tab.active {
-        background: var(--gray-900);
-        color: white;
-        border-color: var(--gray-900);
-    }
-
-    .status-tab.active i {
-        color: white;
-    }
-
-    /* Responsive tabs */
-    @media (max-width: 768px) {
-        .status-tabs {
-            gap: 8px;
-            justify-content: center;
-        }
-        
-        .status-tab {
-            flex: 1;
-            justify-content: center;
-            padding: 8px 12px;
-            font-size: 0.85rem;
-        }
-    }
-
     @media (max-width: 480px) {
         .status-tab {
-            padding: 8px 10px;
-            font-size: 0.8rem;
+            flex: 1;
+            min-width: 70px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.7rem;
         }
-        
         .status-tab i {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
         }
     }
+    @media (min-width: 640px) {
+        .status-tab { flex: none; padding: 0.625rem 1.5rem; font-size: 0.875rem; }
+        .status-tab i { font-size: 0.875rem; }
+    }
 
-    /* ===== STATS CARD - Improved Grid ===== */
+    /* ========== STATISTIK GRID ========== */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
-        margin-bottom: 32px;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
     }
-
     .stat-card {
         background: white;
-        padding: 24px;
-        border-radius: var(--radius);
+        border-radius: var(--radius-sm);
         border: 1px solid var(--gray-200);
+        padding: 1rem;
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 1rem;
         transition: var(--transition);
+        box-shadow: var(--shadow);
     }
-
-    .stat-card:hover {
-        border-color: var(--gray-300);
-        box-shadow: var(--shadow-md);
-    }
-
     .stat-icon {
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.75rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+        flex-shrink: 0;
     }
-
-    .stat-icon.pending {
-        background: var(--warning-light);
-        color: var(--warning);
-    }
-
-    .stat-icon.approved {
-        background: var(--success-light);
-        color: var(--success);
-    }
-
-    .stat-icon.rejected {
-        background: var(--danger-light);
-        color: var(--danger);
-    }
-
     .stat-content {
         flex: 1;
+        min-width: 0;
     }
-
     .stat-label {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         color: var(--gray-500);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 4px;
+        margin-bottom: 0.25rem;
     }
-
     .stat-value {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--gray-900);
-        line-height: 1;
+        line-height: 1.2;
     }
-
-    /* Responsive stats */
-    @media (max-width: 768px) {
-        .stats-grid {
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
+    .stat-sub {
+        font-size: 0.65rem;
+        color: var(--gray-500);
+        margin-top: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    @media (max-width: 480px) {
         .stat-card {
-            padding: 20px;
+            padding: 0.875rem;
+            gap: 0.75rem;
         }
-
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            font-size: 1.1rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            font-size: 1rem;
         }
-
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
+        }
+        .stat-label {
+            font-size: 0.6rem;
         }
     }
+    @media (min-width: 768px) {
+        .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+        .stat-card { padding: 1.5rem; }
+        .stat-value { font-size: 1.75rem; }
+    }
 
-    /* ===== ALERTS - Improved ===== */
+    /* ========== ALERT ========== */
     .alert {
-        padding: 16px 20px;
+        padding: 0.75rem 1rem;
         border-radius: var(--radius-sm);
-        margin-bottom: 28px;
+        margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
-        gap: 12px;
-        font-size: 0.95rem;
-        border-left: 4px solid;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+        border-left: 3px solid;
         background: white;
         animation: slideIn 0.3s ease;
     }
-
-    @keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+    @media (max-width: 480px) {
+        .alert {
+            padding: 0.75rem;
+            font-size: 0.8rem;
+            gap: 0.5rem;
         }
     }
 
-    .alert-success {
-        border-left-color: var(--success);
-        background: var(--success-light);
-        color: var(--success);
-    }
-
-    .alert-error {
-        border-left-color: var(--danger);
-        background: var(--danger-light);
-        color: var(--danger);
-    }
-
-    .alert-info {
-        border-left-color: var(--primary);
-        background: var(--primary-light);
-        color: var(--primary);
-    }
-
-    /* ===== TABLE - Improved Responsive ===== */
+    /* ========== TABEL & CARD VIEW ========== */
     .table-container {
         background: white;
         border-radius: var(--radius);
         border: 1px solid var(--gray-200);
         overflow: hidden;
-        position: relative;
-        margin-bottom: 32px;
+        margin-bottom: 1.5rem;
         box-shadow: var(--shadow);
     }
-
     .table-scroll {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        scrollbar-width: thin;
-        scrollbar-color: var(--gray-300) var(--gray-100);
     }
-
-    .table-scroll::-webkit-scrollbar {
-        height: 8px;
-    }
-
-    .table-scroll::-webkit-scrollbar-track {
-        background: var(--gray-100);
-    }
-
-    .table-scroll::-webkit-scrollbar-thumb {
-        background: var(--gray-300);
-        border-radius: 20px;
-    }
-
-    .table-scroll::-webkit-scrollbar-thumb:hover {
-        background: var(--gray-400);
-    }
-
-    .table {
+    .agenda-table {
         width: 100%;
         border-collapse: collapse;
-        min-width: 1000px;
+        min-width: 800px;
     }
-
-    .table th {
+    .agenda-table th {
         background: var(--gray-50);
-        padding: 18px 24px;
-        font-size: 0.8rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--gray-600);
         text-transform: uppercase;
@@ -357,333 +269,209 @@
         border-bottom: 1px solid var(--gray-200);
         white-space: nowrap;
     }
-
-    .table td {
-        padding: 24px;
-        font-size: 0.95rem;
+    .agenda-table td {
+        padding: 1rem;
+        font-size: 0.85rem;
         color: var(--gray-700);
         border-bottom: 1px solid var(--gray-100);
         vertical-align: middle;
     }
 
-    .table tr:last-child td {
-        border-bottom: none;
+    /* Mobile card view - lebih lega */
+    .mobile-card-view {
+        display: none;
     }
-
-    .table tbody tr {
-        transition: var(--transition);
+    .agenda-card {
+        background: white;
+        border-bottom: 1px solid var(--gray-100);
+        padding: 1rem;
     }
-
-    .table tbody tr:hover {
-        background: var(--gray-50);
-    }
-
-    /* Responsive table cells */
-    @media (max-width: 768px) {
-        .table td { 
-            padding: 20px; 
+    @media (max-width: 480px) {
+        .agenda-card {
+            padding: 1rem 0.75rem;
         }
     }
-
-    /* ===== AGENDA INFO ===== */
-    .agenda-info {
-        max-width: 350px;
+    .card-header {
+        display: flex;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
     }
-
-    .agenda-title {
+    .card-image {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+    .card-image img,
+    .card-image .placeholder {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.5rem;
+        border: 1px solid var(--gray-200);
+    }
+    .card-title {
         font-weight: 600;
         color: var(--gray-900);
-        font-size: 1rem;
-        margin-bottom: 6px;
-        line-height: 1.4;
+        margin-bottom: 0.25rem;
+        font-size: 0.95rem;
     }
-
-    .agenda-desc {
-        font-size: 0.85rem;
+    .card-desc {
+        font-size: 0.75rem;
         color: var(--gray-500);
-        margin-bottom: 12px;
-        line-height: 1.5;
+        margin-bottom: 0.5rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
-
-    .agenda-meta {
+    .card-meta {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
     }
-
-    .meta-tag {
+    .card-meta-item {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 4px 10px;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
         background: var(--gray-100);
-        border-radius: 20px;
-        font-size: 0.75rem;
-        color: var(--gray-600);
-        transition: var(--transition);
-    }
-
-    .meta-tag:hover {
-        background: var(--gray-200);
-    }
-
-    .meta-tag i {
-        color: var(--gray-500);
+        border-radius: 1rem;
         font-size: 0.7rem;
+        color: var(--gray-600);
     }
-
-    /* Responsive agenda info */
-    @media (max-width: 768px) {
-        .agenda-info {
-            max-width: 280px;
-        }
-    }
-
-    /* ===== IMAGE STYLES ===== */
-    .agenda-image {
-        width: 70px;
-        height: 50px;
-        object-fit: cover;
-        border-radius: 6px;
-        border: 1px solid var(--gray-200);
-        transition: var(--transition);
-    }
-
-    .agenda-image:hover {
-        transform: scale(1.05);
-        box-shadow: var(--shadow);
-    }
-
-    .agenda-image-placeholder {
-        width: 70px;
-        height: 50px;
-        background: var(--gray-100);
-        border-radius: 6px;
+    .card-row {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--gray-400);
-        font-size: 1.2rem;
-        border: 1px solid var(--gray-200);
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--gray-100);
+        font-size: 0.8rem;
+    }
+    .card-row:last-child { border-bottom: none; }
+    .card-label { color: var(--gray-500); font-weight: 500; }
+    .card-value { color: var(--gray-700); text-align: right; }
+    .card-actions {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        flex-wrap: wrap;
+    }
+    .card-actions .btn { flex: 1; justify-content: center; }
+
+    @media (max-width: 768px) {
+        .desktop-table-view { display: none; }
+        .mobile-card-view { display: block; }
     }
 
-    /* Responsive image */
-    @media (max-width: 480px) {
-        .agenda-image,
-        .agenda-image-placeholder {
-            width: 60px;
-            height: 45px;
-        }
-    }
-
-    /* ===== BADGES ===== */
+    /* ========== BADGE ========== */
     .badge {
         display: inline-flex;
         align-items: center;
-        padding: 6px 14px;
-        border-radius: 30px;
-        font-size: 0.75rem;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.65rem;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.03em;
-        gap: 8px;
         white-space: nowrap;
     }
+    .badge-pending { background: var(--warning-light); color: var(--warning); }
+    .badge-approved { background: var(--success-light); color: var(--success); }
+    .badge-rejected { background: var(--danger-light); color: var(--danger); }
 
-    .badge-pending {
-        background: var(--warning-light);
-        color: var(--warning);
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-
-    .badge-approved {
-        background: var(--success-light);
-        color: var(--success);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-    }
-
-    .badge-rejected {
-        background: var(--danger-light);
-        color: var(--danger);
-        border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-
-    /* Responsive badges */
-    @media (max-width: 480px) {
-        .badge {
-            padding: 4px 10px;
-            font-size: 0.7rem;
-        }
-    }
-
-    /* ===== ACTION BUTTONS - Improved Responsive ===== */
-    .action-group {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-    }
-
+    /* ========== TOMBOL ========== */
     .btn {
-        padding: 8px 16px;
+        padding: 0.5rem 0.75rem;
         border-radius: var(--radius-sm);
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         font-weight: 500;
         border: 1px solid transparent;
         transition: var(--transition);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 0.375rem;
         cursor: pointer;
         background: white;
         text-decoration: none;
     }
+    .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.7rem; }
+    .btn-outline { border: 1px solid var(--gray-200); color: var(--gray-700); }
+    .btn-outline:hover { background: var(--gray-100); border-color: var(--gray-300); }
+    .btn-approve { background: var(--success); color: white; }
+    .btn-approve:hover { background: #0da271; }
+    .btn-reject { background: var(--danger); color: white; }
+    .btn-reject:hover { background: #dc2626; }
 
-    .btn-sm {
-        padding: 6px 14px;
-        font-size: 0.8rem;
-    }
-
-    .btn-outline {
-        border: 1px solid var(--gray-200);
-        color: var(--gray-700);
-    }
-
-    .btn-outline:hover {
-        background: var(--gray-100);
-        border-color: var(--gray-300);
-        transform: translateY(-1px);
-    }
-
-    .btn-approve {
-        background: var(--success);
-        color: white;
-    }
-
-    .btn-approve:hover {
-        background: #0da271;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
-    }
-
-    .btn-reject {
-        background: var(--danger);
-        color: white;
-    }
-
-    .btn-reject:hover {
-        background: #dc2626;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(239, 68, 68, 0.2);
-    }
-
-    /* Responsive action buttons */
-    @media (max-width: 768px) {
-        .action-group {
-            flex-direction: column;
-            width: 100%;
-            min-width: 120px;
+    @media (max-width: 480px) {
+        .btn {
+            padding: 0.5rem 0.6rem;
+            font-size: 0.7rem;
         }
-
-        .action-group .btn {
-            width: 100%;
+        .btn-sm {
+            padding: 0.4rem 0.6rem;
+            font-size: 0.65rem;
         }
     }
 
-    /* ===== NO ACTIONS MESSAGE ===== */
-    .no-actions {
-        color: var(--gray-400);
-        font-size: 0.85rem;
-        font-style: italic;
-        padding: 4px 0;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        white-space: nowrap;
-    }
-
-    /* ===== EMPTY STATE ===== */
+    /* ========== EMPTY STATE ========== */
     .empty-state {
-        padding: 64px 24px;
+        padding: 3rem 1rem;
         text-align: center;
     }
-
     .empty-icon {
-        font-size: 3.5rem;
+        font-size: 3rem;
         color: var(--gray-300);
-        margin-bottom: 16px;
-        animation: pulse 2s infinite;
+        margin-bottom: 1rem;
     }
-
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
-
     .empty-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--gray-700);
-        margin-bottom: 8px;
+        margin-bottom: 0.5rem;
     }
-
     .empty-text {
         color: var(--gray-500);
-        margin-bottom: 24px;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
     }
-
-    /* Responsive empty state */
     @media (max-width: 480px) {
-        .empty-state {
-            padding: 40px 16px;
-        }
-
-        .empty-icon {
-            font-size: 3rem;
-        }
-
-        .empty-title {
-            font-size: 1rem;
-        }
+        .empty-state { padding: 2rem 0.75rem; }
+        .empty-icon { font-size: 2.5rem; }
+        .empty-title { font-size: 0.9rem; }
+        .empty-text { font-size: 0.75rem; }
     }
 
-    /* ===== SCROLL HINT ===== */
+    /* ========== SCROLL HINT ========== */
     .scroll-hint {
         display: none;
         position: sticky;
-        bottom: 20px;
+        bottom: 1rem;
         left: 50%;
         transform: translateX(-50%);
         background: var(--gray-800);
         color: white;
-        padding: 8px 20px;
-        border-radius: 30px;
-        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.7rem;
         align-items: center;
-        gap: 10px;
+        gap: 0.5rem;
         z-index: 10;
-        opacity: 0.9;
-        box-shadow: var(--shadow-md);
         width: fit-content;
-        animation: bounce 2s infinite;
+        margin: 0 auto;
     }
-
-    @keyframes bounce {
-        0%, 100% { transform: translateX(-50%) translateY(0); }
-        50% { transform: translateX(-50%) translateY(-5px); }
-    }
-
     @media (max-width: 768px) {
+        .scroll-hint { display: flex; }
+    }
+    @media (max-width: 480px) {
         .scroll-hint {
-            display: flex;
+            font-size: 0.6rem;
+            padding: 0.4rem 0.8rem;
         }
     }
 
-    /* ===== MODAL - Improved Responsive ===== */
+    /* ========== MODAL RESPONSIF - LEBIH LEBAR DI MOBILE ========== */
     .modal {
         display: none;
         position: fixed;
@@ -694,277 +482,174 @@
         background: rgba(0, 0, 0, 0.5);
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        padding: 1rem;
         z-index: 1000;
         backdrop-filter: blur(4px);
     }
-
     .modal-content {
         background: white;
         border-radius: var(--radius);
-        max-width: 500px;
+        max-width: 90%;
         width: 100%;
         max-height: 90vh;
         overflow-y: auto;
-        padding: 32px;
+        padding: 1.25rem;
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         animation: modalSlideUp 0.3s ease;
     }
-
-    @keyframes modalSlideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+    @media (max-width: 480px) {
+        .modal-content {
+            max-width: 95%;
+            padding: 1rem;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .modal-title {
+            font-size: 1.1rem;
+        }
+        .detail-value {
+            font-size: 0.85rem;
         }
     }
-
-    .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 28px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid var(--gray-200);
+    @media (min-width: 480px) {
+        .modal-content { max-width: 450px; padding: 1.5rem; }
     }
-
-    .modal-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--gray-900);
-    }
-
-    .modal-close {
-        background: none;
-        border: none;
-        font-size: 2rem;
-        color: var(--gray-400);
-        cursor: pointer;
-        line-height: 1;
-        padding: 0 8px;
-        border-radius: 50%;
-        transition: var(--transition);
-    }
-
-    .modal-close:hover {
-        background: var(--gray-100);
-        color: var(--gray-600);
+    @media (min-width: 768px) {
+        .modal-content { max-width: 500px; padding: 2rem; }
     }
 
     .detail-item {
-        margin-bottom: 20px;
-        padding-bottom: 20px;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
         border-bottom: 1px solid var(--gray-100);
     }
-
     .detail-item:last-child {
         border-bottom: none;
         margin-bottom: 0;
         padding-bottom: 0;
     }
-
     .detail-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: var(--gray-500);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: 6px;
+        margin-bottom: 0.25rem;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 0.25rem;
     }
-
     .detail-value {
-        font-size: 1rem;
+        font-size: 0.9rem;
         color: var(--gray-800);
-        line-height: 1.6;
+        line-height: 1.5;
+        word-break: break-word;
+    }
+    @media (min-width: 768px) {
+        .detail-label { font-size: 0.75rem; }
+        .detail-value { font-size: 1rem; }
     }
 
-    /* Responsive modal */
-    @media (max-width: 768px) {
-        .modal-content {
-            padding: 24px;
-        }
-
-        .modal-title {
-            font-size: 1.35rem;
-        }
+    .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .w-100 { width: 100%; }
+    .agenda-image {
+        width: 60px;
+        height: 45px;
+        object-fit: cover;
+        border-radius: 6px;
     }
-
-    @media (max-width: 480px) {
-        .modal-content {
-            padding: 20px;
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-        }
-
-        .detail-item {
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-        }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-
-    /* ===== ADDITIONAL UTILITIES ===== */
-    .text-nowrap {
-        white-space: nowrap;
-    }
-
-    .d-inline-flex {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .w-100 {
-        width: 100%;
-    }
-
-    /* Print styles */
-    @media print {
-        .status-tabs,
-        .action-group,
-        .btn,
-        .modal,
-        .scroll-hint {
-            display: none !important;
-        }
-
-        .table-container {
-            border: 1px solid black;
-            box-shadow: none;
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid black;
-        }
+    @keyframes modalSlideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 </style>
 
 <div class="admin-container">
-    <!-- Header -->
+    <!-- HEADER -->
     <div class="page-header">
         <h1 class="page-title">
-            <i class="fas fa-calendar-check" style="color: var(--primary); margin-right: 10px;"></i>
+            <i class="fas fa-calendar-check" style="color: var(--primary);"></i>
             Manajemen Agenda
         </h1>
         <p class="page-description">
-            <i class="fas fa-info-circle" style="color: var(--gray-400);"></i>
+            <i class="fas fa-info-circle"></i>
             Kelola semua pengajuan agenda dari staff
-            <span style="margin-left: 10px; padding: 4px 10px; background: var(--gray-100); border-radius: 30px; font-size: 0.8rem;">
+            <span class="meta-tag" style="background: var(--gray-100); padding: 0.2rem 0.6rem; border-radius: 1rem;">
                 <i class="fas fa-calendar"></i> {{ now()->format('d F Y') }}
             </span>
         </p>
     </div>
 
-    <!-- Status Tabs - Active State Based on Current Route -->
+    <!-- TAB STATUS -->
     <div class="status-tabs">
         <a href="{{ route('admin.agenda.index', ['status' => 'pending']) }}" 
            class="status-tab {{ request('status') == 'pending' || !request('status') ? 'active' : '' }}">
-            <i class="fas fa-clock"></i> 
-            <span>Pending</span>
-            @if(request('status') == 'pending' || !request('status'))
-                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 30px; font-size: 0.7rem;">
-                    {{ $agendas->count() }}
-                </span>
-            @endif
+            <i class="fas fa-clock"></i> Pending
         </a>
         <a href="{{ route('admin.agenda.index', ['status' => 'approved']) }}" 
            class="status-tab {{ request('status') == 'approved' ? 'active' : '' }}">
-            <i class="fas fa-check-circle"></i> 
-            <span>Approved</span>
-            @if(request('status') == 'approved')
-                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 30px; font-size: 0.7rem;">
-                    {{ $agendas->count() }}
-                </span>
-            @endif
+            <i class="fas fa-check-circle"></i> Approved
         </a>
         <a href="{{ route('admin.agenda.index', ['status' => 'rejected']) }}" 
            class="status-tab {{ request('status') == 'rejected' ? 'active' : '' }}">
-            <i class="fas fa-times-circle"></i> 
-            <span>Rejected</span>
-            @if(request('status') == 'rejected')
-                <span style="background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 30px; font-size: 0.7rem;">
-                    {{ $agendas->count() }}
-                </span>
-            @endif
+            <i class="fas fa-times-circle"></i> Rejected
         </a>
     </div>
 
-    <!-- Dynamic Stats Based on Current Status -->
+    <!-- STATISTIK -->
     @php
         $currentStatus = request('status', 'pending');
         $totalCount = $agendas->count();
         $monthCount = $agendas->where('created_at', '>=', now()->startOfMonth())->count();
         $weekCount = $agendas->where('created_at', '>=', now()->startOfWeek())->count();
     @endphp
-
     <div class="stats-grid">
         <div class="stat-card">
-            <div class="stat-icon {{ $currentStatus }}">
-                <i class="fas 
-                    @if($currentStatus == 'pending') fa-clock
-                    @elseif($currentStatus == 'approved') fa-check-circle
-                    @else fa-times-circle
-                    @endif
-                "></i>
+            <div class="stat-icon" style="background: var(--gray-100); color: var(--gray-600);">
+                <i class="fas fa-database"></i>
             </div>
             <div class="stat-content">
                 <div class="stat-label">Total {{ ucfirst($currentStatus) }}</div>
                 <div class="stat-value">{{ $totalCount }}</div>
-                <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 4px;">
-                    <i class="fas fa-database"></i> Semua waktu
-                </div>
+                <div class="stat-sub">Semua waktu</div>
             </div>
         </div>
-
         <div class="stat-card">
-            <div class="stat-icon {{ $currentStatus }}">
+            <div class="stat-icon" style="background: var(--warning-light); color: var(--warning);">
                 <i class="fas fa-calendar-week"></i>
             </div>
             <div class="stat-content">
                 <div class="stat-label">Minggu Ini</div>
                 <div class="stat-value">{{ $weekCount }}</div>
-                <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 4px;">
-                    <i class="fas fa-chart-line"></i> {{ $weekCount > 0 ? '+' . $weekCount : '0' }} baru
-                </div>
+                <div class="stat-sub">{{ $weekCount > 0 ? '+' . $weekCount : '0' }} baru</div>
             </div>
         </div>
-
         <div class="stat-card">
-            <div class="stat-icon {{ $currentStatus }}">
+            <div class="stat-icon" style="background: var(--primary-light); color: var(--primary);">
                 <i class="fas fa-calendar-alt"></i>
             </div>
             <div class="stat-content">
                 <div class="stat-label">Bulan Ini</div>
                 <div class="stat-value">{{ $monthCount }}</div>
-                <div style="font-size: 0.7rem; color: var(--gray-500); margin-top: 4px;">
-                    <i class="fas fa-percent"></i> 
-                    {{ $totalCount > 0 ? round(($monthCount / $totalCount) * 100) : 0 }}% dari total
-                </div>
+                <div class="stat-sub">{{ $totalCount > 0 ? round(($monthCount / $totalCount) * 100) : 0 }}% dari total</div>
             </div>
         </div>
     </div>
 
-    <!-- Alerts -->
+    <!-- NOTIFIKASI -->
     @if(session('success'))
-        <div class="alert alert-success">
-            <i class="fas fa-check-circle"></i>
+        <div class="alert" style="border-left-color: var(--success); background: var(--success-light);">
+            <i class="fas fa-check-circle" style="color: var(--success);"></i>
             <div style="flex: 1;">{{ session('success') }}</div>
             <button onclick="this.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer;">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     @endif
-
     @if(session('error'))
-        <div class="alert alert-error">
-            <i class="fas fa-exclamation-circle"></i>
+        <div class="alert" style="border-left-color: var(--danger); background: var(--danger-light);">
+            <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
             <div style="flex: 1;">{{ session('error') }}</div>
             <button onclick="this.parentElement.remove()" style="background: none; border: none; color: inherit; cursor: pointer;">
                 <i class="fas fa-times"></i>
@@ -972,212 +657,186 @@
         </div>
     @endif
 
-    <!-- Table Container -->
-    <div class="table-container">
+    <!-- TABEL DESKTOP -->
+    <div class="table-container desktop-table-view">
         <div class="table-scroll">
             @if($agendas->count() > 0)
-                <table class="table">
+                <table class="agenda-table">
                     <thead>
-                        <tr>
-                            <th>Gambar</th>
-                            <th>Agenda</th>
-                            <th>Tanggal</th>
-                            <th>Waktu</th>
-                            <th>Lokasi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
+                        <tr><th>Gambar</th><th>Agenda</th><th>Tanggal</th><th>Waktu</th><th>Lokasi</th><th>Status</th><th>Aksi</th></tr>
                     </thead>
                     <tbody>
                         @foreach($agendas as $agenda)
-                            <tr>
-                                <td onclick="event.stopPropagation()">
-                                    @if($agenda->image)
-                                        <img src="{{ asset('storage/'.$agenda->image) }}" 
-                                             class="agenda-image"
-                                             alt="{{ $agenda->title }}">
-                                    @else
-                                        <div class="agenda-image-placeholder">
-                                            <i class="fas fa-image"></i>
-                                        </div>
-                                    @endif
-                                </td>
-                                
-                                <!-- Agenda Info -->
-                                <td>
-                                    <div class="agenda-info">
-                                        <div class="agenda-title">{{ $agenda->title }}</div>
-                                        @if($agenda->deskripsi)
-                                            <div class="agenda-desc">{{ Str::limit($agenda->deskripsi, 60) }}</div>
-                                        @endif
-                                        <div class="agenda-meta">
-                                            <span class="meta-tag">
-                                                <i class="fas fa-user"></i>
-                                                {{ $agenda->user->name ?? 'Unknown' }}
-                                            </span>
-                                            <span class="meta-tag">
-                                                <i class="fas fa-clock"></i>
-                                                {{ $agenda->created_at->diffForHumans() }}
-                                            </span>
-                                        </div>
+                        <tr>
+                            <td>
+                                @if($agenda->image)
+                                    <img src="{{ asset('storage/'.$agenda->image) }}" class="agenda-image" alt="{{ $agenda->title }}">
+                                @else
+                                    <div style="width:60px; height:45px; background:var(--gray-100); border-radius:6px; display:flex; align-items:center; justify-content:center;">
+                                        <i class="fas fa-image" style="color: var(--gray-400);"></i>
                                     </div>
-                                </td>
-
-                                <!-- Date -->
-                                <td>
-                                    @if($agenda->date)
-                                        <span class="d-inline-flex">
-                                            <i class="fas fa-calendar-day" style="color: var(--gray-400);"></i>
-                                            {{ \Carbon\Carbon::parse($agenda->date)->format('d/m/Y') }}
-                                        </span>
-                                    @else
-                                        <span style="color: var(--gray-400);">-</span>
-                                    @endif
-                                </td>
-
-                                <!-- Time -->
-                                <td>
-                                    @if($agenda->time)
-                                        <span class="d-inline-flex">
-                                            <i class="fas fa-clock" style="color: var(--gray-400);"></i>
-                                            {{ \Carbon\Carbon::parse($agenda->time)->format('H:i') }}
-                                        </span>
-                                    @else
-                                        <span style="color: var(--gray-400);">-</span>
-                                    @endif
-                                </td>
-
-                                <!-- Location -->
-                                <td>
-                                    @if($agenda->location)
-                                        <span class="d-inline-flex">
-                                            <i class="fas fa-map-marker-alt" style="color: var(--gray-400);"></i>
-                                            {{ Str::limit($agenda->location, 20) }}
-                                        </span>
-                                    @else
-                                        <span style="color: var(--gray-400);">-</span>
-                                    @endif
-                                </td>
-
-                                <!-- Status Badge -->
-                                <td>
-                                    @if($agenda->status === 'pending')
-                                        <span class="badge badge-pending">
-                                            <i class="fas fa-clock"></i> Pending
-                                        </span>
-                                    @elseif($agenda->status === 'approved')
-                                        <span class="badge badge-approved">
-                                            <i class="fas fa-check"></i> Approved
-                                        </span>
-                                    @elseif($agenda->status === 'rejected')
-                                        <span class="badge badge-rejected">
-                                            <i class="fas fa-times"></i> Rejected
-                                        </span>
-                                    @endif
-                                </td>
-
-                                <!-- Actions -->
-                                <td>
-                                    @if($agenda->status === 'pending')
-                                        <!-- PENDING: Show all actions -->
-                                        <div class="action-group">
-                                            <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm">
-                                                <i class="fas fa-eye"></i> Detail
-                                            </button>
-                                            <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-approve btn-sm" onclick="return confirm('Setujui agenda ini?')">
-                                                    <i class="fas fa-check"></i> Approve
-                                                </button>
-                                            </form>
-                                            <form method="POST" action="{{ route('admin.agenda.reject', $agenda->id) }}" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-reject btn-sm" onclick="return confirm('Tolak agenda ini?')">
-                                                    <i class="fas fa-times"></i> Reject
-                                                </button>
-                                            </form>
-                                        </div>
-
-                                    @elseif($agenda->status === 'rejected')
-                                        <!-- REJECTED: Show Detail + Approve (Re-approve) -->
-                                        <div class="action-group">
-                                            <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm">
-                                                <i class="fas fa-eye"></i> Detail
-                                            </button>
-                                            <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="display: inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-approve btn-sm" onclick="return confirm('Setujui agenda yang sebelumnya ditolak?')">
-                                                    <i class="fas fa-check"></i> Approve Ulang
-                                                </button>
-                                            </form>
-                                        </div>
-
-                                    @elseif($agenda->status === 'approved')
-                                        <!-- APPROVED: Only show detail -->
-                                        <div class="action-group">
-                                            <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm">
-                                                <i class="fas fa-eye"></i> Detail
-                                            </button>
-                                            <span class="no-actions">
-                                                <i class="fas fa-check-circle" style="color: var(--success);"></i> Selesai
-                                            </span>
-                                        </div>
-                                    @endif
-                                </td>
-                            </tr>
+                                @endif
+                            </td>
+                            <td>
+                                <div style="font-weight:600;">{{ $agenda->title }}</div>
+                                @if($agenda->deskripsi)<div style="font-size:0.7rem; color:var(--gray-500);">{{ Str::limit($agenda->deskripsi, 50) }}</div>@endif
+                                <div style="display:flex; gap:0.5rem; margin-top:0.25rem;">
+                                    <span style="font-size:0.65rem; background:var(--gray-100); padding:0.1rem 0.5rem; border-radius:1rem;"><i class="fas fa-user"></i> {{ $agenda->user->name ?? 'Unknown' }}</span>
+                                    <span style="font-size:0.65rem; background:var(--gray-100); padding:0.1rem 0.5rem; border-radius:1rem;"><i class="fas fa-clock"></i> {{ $agenda->created_at->diffForHumans() }}</span>
+                                </div>
+                            </td>
+                            <td class="text-nowrap">{{ $agenda->date ? \Carbon\Carbon::parse($agenda->date)->format('d/m/Y') : '-' }}</td>
+                            <td class="text-nowrap">{{ $agenda->time ? \Carbon\Carbon::parse($agenda->time)->format('H:i') : '-' }}</td>
+                            <td class="text-truncate" style="max-width:150px;">{{ $agenda->location ?? '-' }}</td>
+                            <td>
+                                @if($agenda->status === 'pending')
+                                    <span class="badge badge-pending"><i class="fas fa-clock"></i> Pending</span>
+                                @elseif($agenda->status === 'approved')
+                                    <span class="badge badge-approved"><i class="fas fa-check"></i> Approved</span>
+                                @else
+                                    <span class="badge badge-rejected"><i class="fas fa-times"></i> Rejected</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($agenda->status === 'pending')
+                                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                                        <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> Detail</button>
+                                        <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-approve btn-sm" onclick="return confirm('Setujui agenda ini?')"><i class="fas fa-check"></i> Approve</button>
+                                        </form>
+                                        <form method="POST" action="{{ route('admin.agenda.reject', $agenda->id) }}" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-reject btn-sm" onclick="return confirm('Tolak agenda ini?')"><i class="fas fa-times"></i> Reject</button>
+                                        </form>
+                                    </div>
+                                @elseif($agenda->status === 'rejected')
+                                    <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                                        <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> Detail</button>
+                                        <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-approve btn-sm" onclick="return confirm('Setujui agenda yang sebelumnya ditolak?')"><i class="fas fa-check"></i> Approve Ulang</button>
+                                        </form>
+                                    </div>
+                                @else
+                                    <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> Detail</button>
+                                @endif
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
             @else
-                <!-- Empty State -->
                 <div class="empty-state">
-                    <div class="empty-icon">
-                        <i class="fas 
-                            @if($currentStatus == 'pending') fa-clock
-                            @elseif($currentStatus == 'approved') fa-check-circle
-                            @else fa-times-circle
-                            @endif
-                        "></i>
-                    </div>
-                    <div class="empty-title">
-                        Tidak ada agenda {{ $currentStatus }}
-                    </div>
+                    <div class="empty-icon"><i class="fas fa-calendar-times"></i></div>
+                    <div class="empty-title">Tidak ada agenda {{ $currentStatus }}</div>
                     <p class="empty-text">
-                        @if($currentStatus == 'pending')
-                            Semua agenda sudah diproses
-                        @elseif($currentStatus == 'approved')
-                            Belum ada agenda yang disetujui
-                        @else
-                            Belum ada agenda yang ditolak
-                        @endif
+                        @if($currentStatus == 'pending') Semua agenda sudah diproses.
+                        @elseif($currentStatus == 'approved') Belum ada agenda yang disetujui.
+                        @else Belum ada agenda yang ditolak. @endif
                     </p>
                     @if($currentStatus != 'pending')
-                        <a href="{{ route('admin.agenda.index', ['status' => 'pending']) }}" class="btn btn-outline">
-                            <i class="fas fa-clock"></i> Lihat Pending
-                        </a>
+                        <a href="{{ route('admin.agenda.index', ['status' => 'pending']) }}" class="btn btn-outline"><i class="fas fa-clock"></i> Lihat Pending</a>
                     @endif
                 </div>
             @endif
         </div>
     </div>
 
-    <!-- Scroll Hint for Mobile -->
+    <!-- CARD VIEW MOBILE (lebih lega) -->
+    <div class="mobile-card-view">
+        @if($agendas->count() > 0)
+            @foreach($agendas as $agenda)
+                <div class="agenda-card">
+                    <div class="card-header">
+                        <div class="card-image">
+                            @if($agenda->image)
+                                <img src="{{ asset('storage/'.$agenda->image) }}" alt="{{ $agenda->title }}">
+                            @else
+                                <div class="placeholder"><i class="fas fa-image"></i></div>
+                            @endif
+                        </div>
+                        <div style="flex:1;">
+                            <div class="card-title">{{ $agenda->title }}</div>
+                            @if($agenda->deskripsi)<div class="card-desc">{{ Str::limit($agenda->deskripsi, 80) }}</div>@endif
+                            <div class="card-meta">
+                                <span class="card-meta-item"><i class="fas fa-user"></i> {{ $agenda->user->name ?? 'Unknown' }}</span>
+                                <span class="card-meta-item"><i class="fas fa-clock"></i> {{ $agenda->created_at->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label"><i class="fas fa-calendar-day"></i> Tanggal</span>
+                        <span class="card-value">{{ $agenda->date ? \Carbon\Carbon::parse($agenda->date)->format('d/m/Y') : '-' }}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label"><i class="fas fa-clock"></i> Waktu</span>
+                        <span class="card-value">{{ $agenda->time ? \Carbon\Carbon::parse($agenda->time)->format('H:i').' WIB' : '-' }}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label"><i class="fas fa-map-marker-alt"></i> Lokasi</span>
+                        <span class="card-value">{{ $agenda->location ?? '-' }}</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label"><i class="fas fa-info-circle"></i> Status</span>
+                        <span class="card-value">
+                            @if($agenda->status === 'pending') <span class="badge badge-pending"><i class="fas fa-clock"></i> Pending</span>
+                            @elseif($agenda->status === 'approved') <span class="badge badge-approved"><i class="fas fa-check"></i> Approved</span>
+                            @else <span class="badge badge-rejected"><i class="fas fa-times"></i> Rejected</span>
+                            @endif
+                        </span>
+                    </div>
+                    <div class="card-actions">
+                        <button onclick="viewAgenda({{ $agenda->id }})" class="btn btn-outline btn-sm"><i class="fas fa-eye"></i> Detail</button>
+                        @if($agenda->status === 'pending')
+                            <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="flex:1;">
+                                @csrf
+                                <button type="submit" class="btn btn-approve btn-sm w-100" onclick="return confirm('Setujui agenda ini?')"><i class="fas fa-check"></i> Approve</button>
+                            </form>
+                            <form method="POST" action="{{ route('admin.agenda.reject', $agenda->id) }}" style="flex:1;">
+                                @csrf
+                                <button type="submit" class="btn btn-reject btn-sm w-100" onclick="return confirm('Tolak agenda ini?')"><i class="fas fa-times"></i> Reject</button>
+                            </form>
+                        @elseif($agenda->status === 'rejected')
+                            <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="flex:1;">
+                                @csrf
+                                <button type="submit" class="btn btn-approve btn-sm w-100" onclick="return confirm('Setujui agenda yang sebelumnya ditolak?')"><i class="fas fa-check"></i> Approve Ulang</button>
+                            </form>
+                        @else
+                            <span style="flex:1; text-align:center; color:var(--gray-400);"><i class="fas fa-check-circle"></i> Selesai</span>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
+        @else
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-calendar-times"></i></div>
+                <div class="empty-title">Tidak ada agenda {{ $currentStatus }}</div>
+                <p class="empty-text">
+                    @if($currentStatus == 'pending') Semua agenda sudah diproses.
+                    @elseif($currentStatus == 'approved') Belum ada agenda yang disetujui.
+                    @else Belum ada agenda yang ditolak. @endif
+                </p>
+                @if($currentStatus != 'pending')
+                    <a href="{{ route('admin.agenda.index', ['status' => 'pending']) }}" class="btn btn-outline"><i class="fas fa-clock"></i> Lihat Pending</a>
+                @endif
+            </div>
+        @endif
+    </div>
+
+    <!-- SCROLL HINT (mobile) -->
     @if($agendas->count() > 0)
         <div class="scroll-hint">
-            <i class="fas fa-arrows-alt-h"></i>
-            <span>Geser untuk lihat lebih banyak</span>
+            <i class="fas fa-arrows-alt-h"></i> <span>Geser ke kanan untuk info lengkap</span>
         </div>
     @endif
 </div>
 
-<!-- Modal -->
+<!-- MODAL DETAIL -->
 <div id="agendaModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">
-                <i class="fas fa-info-circle" style="color: var(--primary);"></i>
-                Detail Agenda
-            </h3>
+            <h3 class="modal-title"><i class="fas fa-info-circle" style="color: var(--primary);"></i> Detail Agenda</h3>
             <button onclick="closeModal()" class="modal-close">&times;</button>
         </div>
         <div id="modalContent" class="modal-body"></div>
@@ -1185,159 +844,55 @@
 </div>
 
 <script>
-// Data agendas
-const agendas = @json($agendas->keyBy('id'));
+// Data agenda untuk modal
+const agendas = {};
+@foreach($agendas as $agenda)
+agendas[{{ $agenda->id }}] = {
+    id: {{ $agenda->id }},
+    title: {!! json_encode($agenda->title) !!},
+    deskripsi: {!! json_encode($agenda->deskripsi) !!},
+    image: {!! json_encode($agenda->image) !!},
+    date: {!! json_encode($agenda->date) !!},
+    time: {!! json_encode($agenda->time) !!},
+    location: {!! json_encode($agenda->location) !!},
+    status: {!! json_encode($agenda->status) !!},
+    user: {!! json_encode($agenda->user ? ['name' => $agenda->user->name, 'email' => $agenda->user->email] : null) !!},
+    created_at: {!! json_encode($agenda->created_at ? $agenda->created_at->toISOString() : null) !!},
+    updated_at: {!! json_encode($agenda->updated_at ? $agenda->updated_at->toISOString() : null) !!}
+};
+@endforeach
 
-// View agenda details
 function viewAgenda(id) {
-    const agenda = agendas[id];
-    if (!agenda) return;
-
+    const a = agendas[id];
+    if (!a) return;
     const statusBadge = {
         pending: '<span class="badge badge-pending"><i class="fas fa-clock"></i> Pending</span>',
         approved: '<span class="badge badge-approved"><i class="fas fa-check"></i> Approved</span>',
         rejected: '<span class="badge badge-rejected"><i class="fas fa-times"></i> Rejected</span>'
     };
-
-    const formatDate = (date) => {
-        return new Date(date).toLocaleDateString('id-ID', { 
-            day: 'numeric', 
-            month: 'long', 
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
-
-    const content = document.getElementById('modalContent');
-    content.innerHTML = `
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-tag"></i> Judul Agenda
-            </div>
-            <div class="detail-value" style="font-weight: 600; font-size: 1.1rem;">
-                ${agenda.title}
-            </div>
-        </div>
-        
-        ${agenda.image ? `
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-image"></i> Gambar
-            </div>
-            <div class="detail-value">
-                <img src="{{ asset('storage') }}/${agenda.image}" 
-                     style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid var(--gray-200);">
-            </div>
-        </div>
-        ` : ''}
-        
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-align-left"></i> Deskripsi
-            </div>
-            <div class="detail-value">
-                ${agenda.deskripsi || '<span style="color: var(--gray-400);">Tidak ada deskripsi</span>'}
-            </div>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-calendar-alt"></i> Waktu & Tempat
-            </div>
-            <div class="detail-value">
-                <div style="margin-bottom: 5px;">
-                    <i class="fas fa-calendar-day" style="color: var(--gray-500); width: 20px;"></i>
-                    ${agenda.date ? new Date(agenda.date).toLocaleDateString('id-ID', { 
-                        day: 'numeric', 
-                        month: 'long', 
-                        year: 'numeric' 
-                    }) : '<span style="color: var(--gray-400);">Tanggal tidak ditentukan</span>'}
-                </div>
-                <div style="margin-bottom: 5px;">
-                    <i class="fas fa-clock" style="color: var(--gray-500); width: 20px;"></i>
-                    ${agenda.time ? agenda.time + ' WIB' : '<span style="color: var(--gray-400);">Waktu tidak ditentukan</span>'}
-                </div>
-                <div>
-                    <i class="fas fa-map-marker-alt" style="color: var(--gray-500); width: 20px;"></i>
-                    ${agenda.location || '<span style="color: var(--gray-400);">Lokasi tidak ditentukan</span>'}
-                </div>
-            </div>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-info-circle"></i> Status
-            </div>
-            <div class="detail-value">
-                ${statusBadge[agenda.status] || '-'}
-            </div>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-user"></i> Dibuat Oleh
-            </div>
-            <div class="detail-value">
-                <div style="font-weight: 500;">${agenda.user?.name || 'Unknown'}</div>
-                <div style="font-size: 0.8rem; color: var(--gray-500);">${agenda.user?.email || ''}</div>
-            </div>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-label">
-                <i class="fas fa-history"></i> Riwayat
-            </div>
-            <div class="detail-value">
-                <div style="margin-bottom: 3px; font-size: 0.9rem;">
-                    <span style="color: var(--gray-500);">Dibuat:</span> ${formatDate(agenda.created_at)}
-                </div>
-                <div style="font-size: 0.9rem;">
-                    <span style="color: var(--gray-500);">Diperbarui:</span> ${formatDate(agenda.updated_at)}
-                </div>
-            </div>
-        </div>
+    const formatDate = (d) => d ? new Date(d).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '-';
+    const formatDateOnly = (d) => d ? new Date(d).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' }) : '-';
+    document.getElementById('modalContent').innerHTML = `
+        <div class="detail-item"><div class="detail-label"><i class="fas fa-tag"></i> Judul</div><div class="detail-value" style="font-weight:600;">${a.title || '-'}</div></div>
+        ${a.image ? `<div class="detail-item"><div class="detail-label"><i class="fas fa-image"></i> Gambar</div><div class="detail-value"><img src="{{ asset('storage') }}/${a.image}" style="width:100%; max-height:200px; object-fit:cover; border-radius:8px;"></div></div>` : ''}
+        <div class="detail-item"><div class="detail-label"><i class="fas fa-align-left"></i> Deskripsi</div><div class="detail-value">${a.deskripsi || '<span style="color:var(--gray-400);">Tidak ada deskripsi</span>'}</div></div>
+        <div class="detail-item"><div class="detail-label"><i class="fas fa-calendar-alt"></i> Waktu & Tempat</div><div class="detail-value">
+            <div><i class="fas fa-calendar-day"></i> ${formatDateOnly(a.date)}</div>
+            <div><i class="fas fa-clock"></i> ${a.time ? a.time+' WIB' : '-'}</div>
+            <div><i class="fas fa-map-marker-alt"></i> ${a.location || '-'}</div>
+        </div></div>
+        <div class="detail-item"><div class="detail-label"><i class="fas fa-info-circle"></i> Status</div><div class="detail-value">${statusBadge[a.status] || '-'}</div></div>
+        <div class="detail-item"><div class="detail-label"><i class="fas fa-user"></i> Dibuat Oleh</div><div class="detail-value"><div style="font-weight:500;">${a.user?.name || 'Unknown'}</div><div style="font-size:0.8rem; color:var(--gray-500);">${a.user?.email || ''}</div></div></div>
+        <div class="detail-item"><div class="detail-label"><i class="fas fa-history"></i> Riwayat</div><div class="detail-value"><div>Dibuat: ${formatDate(a.created_at)}</div><div>Diperbarui: ${formatDate(a.updated_at)}</div></div></div>
     `;
-
     document.getElementById('agendaModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
-
-// Close modal
 function closeModal() {
     document.getElementById('agendaModal').style.display = 'none';
     document.body.style.overflow = 'auto';
 }
-
-// Click outside modal to close
-document.getElementById('agendaModal').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-});
-
-// ESC key to close
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
-});
-
-// Scroll hint visibility
-const tableScroll = document.querySelector('.table-scroll');
-const scrollHint = document.querySelector('.scroll-hint');
-
-if (tableScroll && scrollHint) {
-    tableScroll.addEventListener('scroll', function() {
-        scrollHint.style.opacity = '0.5';
-        setTimeout(() => {
-            scrollHint.style.opacity = '0.9';
-        }, 1000);
-    });
-}
-
-// Add animation on page load
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.stat-card');
-    cards.forEach((card, index) => {
-        card.style.animation = `slideIn 0.3s ease ${index * 0.1}s both`;
-    });
-});
+document.getElementById('agendaModal').addEventListener('click', (e) => { if(e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeModal(); });
 </script>
 @endsection

@@ -2,634 +2,777 @@
 
 @section('content')
 <style>
-/* Custom CSS untuk Halaman Management - Warna Biru Kebiruan */
+/* ============================================
+   RESET & VARIABLES
+   ============================================ */
 :root {
-    --primary-color: #2563eb; /* Biru lebih modern */
-    --primary-light: #3b82f6; /* Biru terang */
-    --primary-dark: #1d4ed8; /* Biru gelap */
-    --primary-soft: #dbeafe; /* Biru sangat soft untuk background */
-    --success-color: #059669; /* Hijau */
-    --danger-color: #dc2626; /* Merah */
-    --warning-color: #d97706; /* Kuning */
-    --secondary-color: #64748b; /* Abu-abu biru */
-    --light-bg: #f8fafc; /* Putih kebiruan */
-    --border-color: #e2e8f0; /* Border kebiruan */
-    --text-muted: #64748b;
+    --primary-color: #2563eb;
+    --primary-light: #3b82f6;
+    --primary-dark: #1d4ed8;
+    --primary-soft: #dbeafe;
+    --success-color: #059669;
+    --danger-color: #dc2626;
+    --warning-color: #d97706;
+    --secondary-color: #64748b;
     --text-primary: #0f172a;
-    --hover-bg: #eff6ff; /* Hover background biru soft */
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --light-bg: #f8fafc;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
 }
 
-/* Container utama */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ============================================
+   MOBILE FIRST STYLES (0 - 767px)
+   ============================================ */
 .container-fluid {
-    max-width: 1400px;
+    width: 100%;
+    padding: 12px !important;
     margin: 0 auto;
-    padding: 1.5rem 1rem;
 }
 
-/* Header section */
+/* Header - Stack di mobile */
 .header-wrapper {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .header-title h1 {
-    font-size: calc(1.3rem + 0.6vw);
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    font-size: 20px;
+    font-weight: 700;
     color: var(--text-primary);
-    line-height: 1.2;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .header-title h1 i {
     color: var(--primary-color);
     background: var(--primary-soft);
-    padding: 0.5rem;
-    border-radius: 0.75rem;
-    font-size: 1.2rem;
+    padding: 8px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
 }
 
 .header-title p {
-    font-size: 0.875rem;
+    font-size: 12px;
     color: var(--text-muted);
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.header-title p i {
-    color: var(--primary-light);
-}
-
-/* Button styling */
+/* Tombol Primary - Full width di mobile */
 .btn-primary {
     background: var(--primary-color);
     border: none;
-    padding: 0.6rem 1.2rem;
-    font-size: 0.875rem;
+    padding: 12px 16px;
+    font-size: 14px;
     font-weight: 500;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     transition: all 0.2s ease;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 8px;
     color: white;
-}
-
-.btn-primary:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    width: 100%;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 .btn-primary:active {
-    transform: translateY(0);
+    transform: scale(0.98);
     background: var(--primary-dark);
 }
 
-/* Alert styling */
+/* Alert */
 .alert {
-    border-radius: 0.75rem;
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin-bottom: 1.5rem;
-    padding: 1rem 1.25rem;
-    font-size: 0.95rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    padding: 12px;
+    font-size: 12px;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 8px;
+    background: var(--white);
+    border-left: 3px solid;
+    box-shadow: var(--shadow-sm);
 }
 
 .alert-success {
+    border-left-color: var(--success-color);
     background: #ecfdf5;
-    color: #065f46;
-    border-left: 4px solid var(--success-color);
-}
-
-.alert-success i {
     color: var(--success-color);
 }
 
-/* Card styling */
+.alert-danger {
+    border-left-color: var(--danger-color);
+    background: #fef2f2;
+    color: var(--danger-color);
+}
+
+.alert i {
+    font-size: 14px;
+}
+
+.alert .btn-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+/* Card */
 .card {
-    border-radius: 1rem;
+    background: var(--white);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    background: white;
-    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
-    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
 }
 
-.card:hover {
-    box-shadow: 0 0.5rem 1.5rem rgba(37, 99, 235, 0.1);
-    border-color: var(--primary-light);
-}
-
-/* Table styling */
+/* ============================================
+   CARD LAYOUT UNTUK HP - TIDAK PAKAI TABLE!
+   ============================================ */
+/* Sembunyikan tabel di mobile */
 .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 1rem;
+    display: none;
 }
 
-.table {
-    margin: 0;
-    min-width: 900px;
-    width: 100%;
+/* Tampilan card untuk mobile */
+.mobile-card-view {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
 }
 
-.table thead th {
-    background: var(--light-bg);
-    font-weight: 600;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--primary-dark);
-    border-bottom: 2px solid var(--border-color);
-    padding: 1rem 1rem;
-    white-space: nowrap;
-}
-
-.table thead th:first-child {
-    border-top-left-radius: 1rem;
-}
-
-.table thead th:last-child {
-    border-top-right-radius: 1rem;
-}
-
-.table tbody td {
-    padding: 1.25rem 1rem;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.95rem;
-}
-
-.table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.table tbody tr {
+.mobile-item-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
     transition: all 0.2s ease;
 }
 
-.table tbody tr:hover {
-    background-color: var(--hover-bg);
+.mobile-item-card:active {
+    transform: scale(0.99);
+    background: var(--light-bg);
 }
 
-.table tbody tr:hover td:first-child {
-    border-left: 3px solid var(--primary-color);
+.card-header-mobile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--light-bg);
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* Nomor urut styling */
-.row-number {
-    color: var(--primary-color);
-    font-weight: 600;
-    font-size: 0.9rem;
+.card-number {
     background: var(--primary-soft);
+    color: var(--primary-color);
     width: 28px;
     height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.5rem;
-}
-
-/* Judul dan deskripsi */
-.page-title {
+    border-radius: var(--radius-sm);
     font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.25rem;
-    font-size: 1rem;
+    font-size: 12px;
 }
 
-.page-title:hover {
-    color: var(--primary-color);
-}
-
-.page-description {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    display: block;
-    line-height: 1.4;
-    max-width: 250px;
-}
-
-.page-description i {
-    color: var(--primary-light);
-}
-
-/* Slug styling */
-.slug-container {
-    background: var(--primary-soft);
-    padding: 0.4rem 0.75rem;
-    border-radius: 0.5rem;
-    display: inline-block;
-    font-size: 0.85rem;
-    border: 1px solid var(--border-color);
-}
-
-.slug-container code {
-    color: var(--primary-dark);
-    background: transparent;
-    padding: 0;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-/* Status badge styling */
-.status-badge {
-    padding: 0.5rem 1rem;
-    font-weight: 500;
-    font-size: 0.75rem;
-    border-radius: 2rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 90px;
-    text-transform: capitalize;
-    letter-spacing: 0.3px;
-}
-
-.status-badge.bg-success {
-    background: var(--success-color) !important;
-    color: white;
-}
-
-.status-badge.bg-secondary {
-    background: var(--secondary-color) !important;
-    color: white;
-}
-
-.status-badge.bg-success i,
-.status-badge.bg-secondary i {
-    color: white;
-}
-
-.status-badge:hover {
-    transform: translateY(-1px);
-    filter: brightness(110%);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
-}
-
-.status-badge:active {
-    transform: translateY(0);
-}
-
-/* Tanggal styling */
-.date-text {
-    color: var(--text-primary);
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-}
-
-.date-text i {
-    color: var(--primary-color);
-    font-size: 0.8rem;
-}
-
-/* Action buttons */
-.action-buttons {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
-
-.btn-sm {
-    padding: 0.5rem 0.9rem;
-    font-size: 0.8rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
-    border-width: 1px;
+.status-badge-mobile {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 4px;
+    border: none;
+    cursor: pointer;
 }
 
-.btn-outline-secondary {
+.status-active {
+    background: var(--success-color);
+    color: white;
+}
+
+.status-draft {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.card-body-mobile {
+    padding: 12px;
+}
+
+.info-row {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.info-value {
+    font-size: 13px;
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.info-value code {
+    background: var(--primary-soft);
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--primary-dark);
+    display: inline-block;
+}
+
+.meta-info {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.meta-info i {
+    font-size: 10px;
+}
+
+.description-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+/* Action buttons mobile */
+.action-buttons-mobile {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-mobile {
+    flex: 1;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid;
+    background: var(--white);
+    transition: all 0.2s;
+}
+
+.btn-mobile:active {
+    transform: scale(0.97);
+}
+
+.btn-mobile-preview {
     border-color: var(--secondary-color);
     color: var(--secondary-color);
 }
 
-.btn-outline-secondary:hover {
-    background: var(--secondary-color);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3);
-    border-color: var(--secondary-color);
-}
-
-.btn-outline-primary {
+.btn-mobile-edit {
     border-color: var(--primary-color);
     color: var(--primary-color);
-    background: white;
 }
 
-.btn-outline-primary:hover {
-    background: var(--primary-color);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
-    border-color: var(--primary-color);
-}
-
-.btn-outline-danger {
+.btn-mobile-delete {
     border-color: var(--danger-color);
     color: var(--danger-color);
 }
 
-.btn-outline-danger:hover {
-    background: var(--danger-color);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
-    border-color: var(--danger-color);
-}
-
-/* Empty state styling */
-.empty-state {
+/* Empty state mobile */
+.empty-state-mobile {
     text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-muted);
+    padding: 48px 20px;
 }
 
-.empty-state i {
-    font-size: 3.5rem;
-    margin-bottom: 1.5rem;
+.empty-state-mobile i {
+    font-size: 48px;
     color: var(--primary-soft);
-    background: var(--primary-soft);
-    padding: 1rem;
-    border-radius: 2rem;
+    margin-bottom: 16px;
 }
 
-.empty-state p {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
+.empty-state-mobile p {
+    font-size: 14px;
     color: var(--text-primary);
+    margin-bottom: 20px;
 }
 
-.empty-state a {
-    color: white;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    background: var(--primary-color);
-    transition: all 0.2s ease;
-    display: inline-block;
-}
-
-.empty-state a:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-}
-
-/* Pagination styling */
-.card-footer {
+/* Pagination mobile */
+.pagination-mobile {
+    padding: 12px;
     background: var(--light-bg);
     border-top: 1px solid var(--border-color);
-    padding: 1rem 1.5rem;
 }
 
-.card-footer small {
+.pagination-stats {
+    text-align: center;
+    font-size: 11px;
     color: var(--text-muted);
+    margin-bottom: 12px;
 }
 
-/* Custom pagination colors */
-.pagination .page-link {
+.pagination-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+.page-btn {
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
     color: var(--primary-color);
-    border-color: var(--border-color);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
-.pagination .page-link:hover {
-    background: var(--primary-soft);
-    color: var(--primary-dark);
-    border-color: var(--primary-light);
-}
-
-.pagination .active .page-link {
+.page-btn.active {
     background: var(--primary-color);
-    border-color: var(--primary-color);
     color: white;
+    border-color: var(--primary-color);
 }
 
-/* Responsive breakpoints */
-@media (max-width: 992px) {
-    .container-fluid {
-        padding: 1.25rem 1rem;
-    }
-    
-    .table {
-        min-width: 800px;
-    }
+.page-btn:active {
+    transform: scale(0.95);
 }
 
-@media (max-width: 768px) {
+/* ============================================
+   TABLET KE ATAS (min-width: 768px)
+   ============================================ */
+@media (min-width: 768px) {
     .container-fluid {
-        padding: 1rem 0.75rem;
+        padding: 20px !important;
+        max-width: 1400px;
+        margin: 0 auto;
     }
     
     .header-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
     }
     
     .header-title h1 {
-        font-size: 1.5rem;
+        font-size: 24px;
     }
     
     .btn-primary {
-        width: 100%;
-        justify-content: center;
+        width: auto;
+        padding: 10px 20px;
     }
     
-    .table tbody td {
-        padding: 1rem 0.75rem;
-    }
-    
-    .page-description {
-        max-width: 200px;
-    }
-    
-    .action-buttons {
-        gap: 0.3rem;
-    }
-    
-    .btn-sm {
-        padding: 0.4rem 0.7rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .container-fluid {
-        padding: 0.75rem 0.5rem;
-    }
-    
-    .header-title h1 {
-        font-size: 1.3rem;
-    }
-    
-    .card {
-        border-radius: 0.75rem;
-    }
-    
-    .table thead th {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.7rem;
-    }
-    
-    .table tbody td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.85rem;
-    }
-    
-    .status-badge {
-        padding: 0.4rem 0.75rem;
-        font-size: 0.7rem;
-        min-width: 70px;
-    }
-    
-    .btn-sm {
-        padding: 0.35rem 0.6rem;
-        font-size: 0.75rem;
-    }
-    
-    .slug-container {
-        padding: 0.25rem 0.5rem;
-    }
-    
-    .slug-container code {
-        font-size: 0.75rem;
-    }
-    
-    .empty-state {
-        padding: 3rem 1rem;
-    }
-    
-    .empty-state i {
-        font-size: 3rem;
-    }
-    
-    .row-number {
-        width: 24px;
-        height: 24px;
-        font-size: 0.8rem;
-    }
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.table tbody tr {
-    animation: fadeIn 0.3s ease forwards;
-}
-
-/* Blue shimmer effect untuk hover */
-@keyframes blueShimmer {
-    0% {
-        background-position: -1000px;
-    }
-    100% {
-        background-position: 1000px;
-    }
-}
-
-.table tbody tr:hover .page-title {
-    color: var(--primary-color);
-}
-
-/* Loading state */
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-}
-
-/* Print styles */
-@media print {
-    .btn-primary,
-    .action-buttons,
-    .alert {
+    /* Sembunyikan mobile card view */
+    .mobile-card-view {
         display: none;
     }
     
-    .card {
-        box-shadow: none;
-        border: 1px solid var(--border-color);
+    /* Tampilkan tabel */
+    .table-responsive {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
+    
+    .table {
+        width: 100%;
+        margin: 0;
+        min-width: 600px;
+    }
+    
+    .table thead th {
+        background: var(--light-bg);
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        padding: 12px;
+        border-bottom: 2px solid var(--border-color);
+    }
+    
+    .table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 13px;
+    }
+    
+    .row-number {
+        display: inline-flex;
+        width: 28px;
+        height: 28px;
+        background: var(--primary-soft);
+        color: var(--primary-color);
+        border-radius: var(--radius-sm);
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 12px;
+    }
+    
+    .page-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+    
+    .page-description {
+        font-size: 11px;
+        color: var(--text-muted);
+    }
+    
+    .slug-container {
+        background: var(--primary-soft);
+        padding: 4px 8px;
+        border-radius: var(--radius-sm);
+        display: inline-block;
+    }
+    
+    .slug-container code {
+        font-size: 11px;
+        color: var(--primary-dark);
+    }
+    
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .status-badge.bg-success {
+        background: var(--success-color);
+        color: white;
+    }
+    
+    .status-badge.bg-secondary {
+        background: var(--secondary-color);
+        color: white;
+    }
+    
+    .date-text {
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 6px;
+        justify-content: flex-end;
+    }
+    
+    .btn-sm {
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: var(--radius-sm);
+        border: 1px solid;
+        background: var(--white);
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .btn-outline-secondary {
+        border-color: var(--secondary-color);
+        color: var(--secondary-color);
+    }
+    
+    .btn-outline-primary {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+    }
+    
+    .btn-outline-danger {
+        border-color: var(--danger-color);
+        color: var(--danger-color);
+    }
+    
+    .card-footer {
+        padding: 12px 16px;
+        background: var(--light-bg);
+        border-top: 1px solid var(--border-color);
+    }
+    
+    .pagination {
+        display: flex;
+        gap: 4px;
+        justify-content: flex-end;
+        margin: 0;
+    }
+    
+    .page-link {
+        padding: 5px 10px;
+        font-size: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    .page-item.active .page-link {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+}
+
+/* ============================================
+   DESKTOP (min-width: 1024px)
+   ============================================ */
+@media (min-width: 1024px) {
+    .container-fluid {
+        padding: 24px !important;
+    }
+    
+    .table thead th {
+        padding: 14px 16px;
+        font-size: 13px;
+    }
+    
+    .table tbody td {
+        padding: 14px 16px;
+        font-size: 14px;
+    }
+    
+    .btn-sm {
+        padding: 7px 14px;
+        font-size: 12px;
+    }
+    
+    .btn-sm:hover {
+        transform: translateY(-1px);
+    }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-end {
+    text-align: right;
+}
+
+.d-inline {
+    display: inline;
+}
+
+.me-1 {
+    margin-right: 4px;
+}
+
+.me-2 {
+    margin-right: 8px;
+}
+
+.mt-1 {
+    margin-top: 4px;
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.w-100 {
+    width: 100%;
 }
 </style>
 
 <div class="container-fluid">
-    <!-- Header dengan judul dan tombol tambah -->
+    <!-- Header -->
     <div class="header-wrapper">
         <div class="header-title">
             <h1>
-                <i class="fas fa-file-alt me-2"></i>
+                <i class="fas fa-file-alt"></i>
                 Halaman
             </h1>
             <p>
-                <i class="fas fa-info-circle me-1"></i>
+                <i class="fas fa-info-circle"></i>
                 Kelola semua halaman website
             </p>
         </div>
-        <a href="{{ route('admin.pages.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> 
-            Tambah Halaman Baru
+        <a href="{{ route('admin.pages.create') }}" class="btn-primary">
+            <i class="fas fa-plus"></i>
+            Tambah Halaman
         </a>
     </div>
 
-    <!-- Alert notifikasi -->
+    <!-- Alert -->
     @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i>
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span style="flex: 1;">{{ session('success') }}</span>
+            <button class="btn-close" onclick="this.parentElement.remove()">×</button>
         </div>
     @endif
 
-    <!-- Card daftar halaman -->
+    @if(session('error'))
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            <span style="flex: 1;">{{ session('error') }}</span>
+            <button class="btn-close" onclick="this.parentElement.remove()">×</button>
+        </div>
+    @endif
+
     <div class="card">
+        <!-- TAMPILAN MOBILE (CARD LAYOUT) -->
+        <div class="mobile-card-view">
+            @forelse($pages as $page)
+            <div class="mobile-item-card">
+                <div class="card-header-mobile">
+                    <span class="card-number">{{ $loop->iteration }}</span>
+                    <form action="{{ route('admin.pages.toggle-status', $page) }}" method="POST" class="d-inline">
+                        @csrf
+                        <button type="submit" class="status-badge-mobile {{ $page->status === 'published' ? 'status-active' : 'status-draft' }}">
+                            <i class="fas {{ $page->status === 'published' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
+                            {{ $page->status === 'published' ? 'Published' : 'Draft' }}
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body-mobile">
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="fas fa-heading"></i> Judul Halaman
+                        </div>
+                        <div class="info-value">
+                            <strong>{{ $page->title }}</strong>
+                        </div>
+                        @if($page->meta_description)
+                            <div class="description-text">
+                                <i class="fas fa-align-left"></i> {{ Str::limit($page->meta_description, 80) }}
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="fas fa-link"></i> URL / Slug
+                        </div>
+                        <div class="info-value">
+                            <code>/{{ $page->slug }}</code>
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <div class="info-label">
+                            <i class="far fa-calendar-alt"></i> Tanggal Dibuat
+                        </div>
+                        <div class="info-value">
+                            <div class="meta-info">
+                                <span><i class="far fa-calendar"></i> {{ $page->created_at->format('d M Y') }}</span>
+                                <span><i class="far fa-clock"></i> {{ $page->created_at->format('H:i') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons-mobile">
+                        <a href="{{ route('admin.pages.edit', $page) }}" class="btn-mobile btn-mobile-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('admin.pages.destroy', $page) }}" method="POST" class="d-inline w-100" onsubmit="return confirm('Hapus halaman "{{ $page->title }}"?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-mobile btn-mobile-delete" style="width: 100%;">
+                                <i class="fas fa-trash"></i> Hapus
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <div class="empty-state-mobile">
+                <i class="fas fa-file-alt"></i>
+                <p>Belum ada halaman yang dibuat.</p>
+                <a href="{{ route('admin.pages.create') }}" class="btn-primary">Buat halaman pertama</a>
+            </div>
+            @endforelse
+        </div>
+
+        <!-- TAMPILAN TABLET/DESKTOP (TABLE LAYOUT) -->
         <div class="table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="ps-4">No</th>
+                        <th class="ps-3" style="width: 60px;">No</th>
                         <th>Judul Halaman</th>
-                        <th>URL / Slug</th>
-                        <th>Status</th>
-                        <th>Tanggal Dibuat</th>
-                        <th class="text-end pe-4">Aksi</th>
+                        <th style="width: 180px;">URL / Slug</th>
+                        <th style="width: 110px;">Status</th>
+                        <th style="width: 130px;">Tanggal Dibuat</th>
+                        <th class="text-end pe-3" style="width: 180px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($pages as $page)
                     <tr>
-                        <td class="ps-4">
+                        <td class="ps-3">
                             <span class="row-number">{{ $loop->iteration }}</span>
                         </td>
                         <td>
                             <div class="page-title">{{ $page->title }}</div>
                             @if($page->meta_description)
-                                <small class="page-description">
-                                    <i class="fas fa-align-left me-1"></i>
-                                    {{ Str::limit($page->meta_description, 60) }}
-                                </small>
+                                <div class="page-description">
+                                    <i class="fas fa-align-left"></i> {{ Str::limit($page->meta_description, 60) }}
+                                </div>
                             @endif
                         </td>
                         <td>
@@ -638,60 +781,33 @@
                             </div>
                         </td>
                         <td>
-                            <form action="{{ route('admin.pages.toggle-status', $page) }}" 
-                                  method="POST" 
-                                  class="d-inline"
-                                  onsubmit="return confirm('Ubah status halaman ini?')">
+                            <form action="{{ route('admin.pages.toggle-status', $page) }}" method="POST" class="d-inline">
                                 @csrf
-                                <button type="submit" 
-                                        class="status-badge {{ $page->status === 'published' ? 'bg-success' : 'bg-secondary' }}"
-                                        title="Klik untuk mengubah status">
-                                    <i class="fas {{ $page->status === 'published' ? 'fa-eye' : 'fa-eye-slash' }} me-1"></i>
+                                <button type="submit" class="status-badge {{ $page->status === 'published' ? 'bg-success' : 'bg-secondary' }}">
+                                    <i class="fas {{ $page->status === 'published' ? 'fa-eye' : 'fa-eye-slash' }}"></i>
                                     {{ $page->status === 'published' ? 'Published' : 'Draft' }}
                                 </button>
                             </form>
                         </td>
                         <td>
                             <div class="date-text">
-                                <i class="far fa-calendar-alt"></i>
-                                {{ $page->created_at->format('d M Y') }}
+                                <i class="far fa-calendar-alt"></i> {{ $page->created_at->format('d M Y') }}
                             </div>
-                            <small class="text-muted d-block mt-1">
-                                <i class="far fa-clock"></i>
-                                {{ $page->created_at->format('H:i') }}
-                            </small>
+                            <div class="date-text mt-1">
+                                <i class="far fa-clock"></i> {{ $page->created_at->format('H:i') }}
+                            </div>
                         </td>
-                        <td class="text-end pe-4">
+                        <td class="text-end pe-3">
                             <div class="action-buttons">
-                                <!-- Preview button -->
-                                <a href="{{ url('/' . $page->slug) }}" 
-                                   target="_blank"
-                                   class="btn btn-sm btn-outline-secondary" 
-                                   title="Lihat halaman">
-                                    <i class="fas fa-eye"></i>
-                                    <span class="d-none d-lg-inline ms-1">Preview</span>
-                                </a>
                                 
-                                <!-- Edit button -->
-                                <a href="{{ route('admin.pages.edit', $page) }}"
-                                   class="btn btn-sm btn-outline-primary" 
-                                   title="Edit halaman">
-                                    <i class="fas fa-edit"></i>
-                                    <span class="d-none d-lg-inline ms-1">Edit</span>
+                                <a href="{{ route('admin.pages.edit', $page) }}" class="btn-sm btn-outline-primary" title="Edit">
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
-                                
-                                <!-- Delete button -->
-                                <form action="{{ route('admin.pages.destroy', $page) }}" 
-                                      method="POST" 
-                                      class="d-inline"
-                                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaman \"{{ $page->title }}\"? Tindakan ini tidak dapat dibatalkan.')">
-                                    @csrf 
+                                <form action="{{ route('admin.pages.destroy', $page) }}" method="POST" class="d-inline">
+                                    @csrf
                                     @method('DELETE')
-                                    <button type="submit" 
-                                            class="btn btn-sm btn-outline-danger"
-                                            title="Hapus halaman">
-                                        <i class="fas fa-trash"></i>
-                                        <span class="d-none d-lg-inline ms-1">Hapus</span>
+                                    <button type="submit" class="btn-sm btn-outline-danger" title="Hapus" onclick="return confirm('Hapus halaman &quot;{{ $page->title }}&quot;?')">
+                                        <i class="fas fa-trash"></i> Hapus
                                     </button>
                                 </form>
                             </div>
@@ -699,14 +815,11 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6">
-                            <div class="empty-state">
+                        <td colspan="6" class="text-center py-5">
+                            <div class="empty-state-mobile" style="padding: 40px;">
                                 <i class="fas fa-file-alt"></i>
                                 <p>Belum ada halaman yang dibuat.</p>
-                                <a href="{{ route('admin.pages.create') }}">
-                                    <i class="fas fa-plus me-1"></i>
-                                    Buat halaman pertama
-                                </a>
+                                <a href="{{ route('admin.pages.create') }}" class="btn-primary" style="display: inline-block; width: auto;">Buat halaman pertama</a>
                             </div>
                         </td>
                     </tr>
@@ -715,52 +828,47 @@
             </table>
         </div>
         
-        <!-- Optional: Pagination jika ada -->
-        @if(method_exists($pages, 'links') && $pages->hasPages())
-        <div class="card-footer bg-white border-top py-3">
-            <div class="d-flex justify-content-between align-items-center">
-                <small class="text-muted">
-                    <i class="fas fa-file me-1"></i>
-                    Menampilkan {{ $pages->firstItem() ?? 0 }} - {{ $pages->lastItem() ?? 0 }} 
-                    dari {{ $pages->total() }} halaman
-                </small>
-                {{ $pages->links() }}
+        <!-- Pagination -->
+        @if(isset($pages) && method_exists($pages, 'links') && $pages->hasPages())
+        <div class="card-footer">
+            <div class="pagination-stats">
+                <i class="fas fa-file"></i> Menampilkan {{ $pages->firstItem() ?? 0 }} - {{ $pages->lastItem() ?? 0 }} dari {{ $pages->total() }} halaman
+            </div>
+            <div class="pagination-buttons">
+                {{ $pages->onEachSide(1)->links() }}
             </div>
         </div>
         @endif
     </div>
 </div>
 
-@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Auto-hide alert setelah 5 detik
-    const alert = document.querySelector('.alert');
-    if (alert) {
+    // Auto-hide alert
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
         setTimeout(() => {
-            alert.classList.remove('show');
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.3s';
             setTimeout(() => {
-                alert.remove();
-            }, 150);
-        }, 5000);
-    }
-    
-    // Konfirmasi sebelum toggle status
-    const statusForms = document.querySelectorAll('form[action*="toggle-status"]');
-    statusForms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            if (!confirm('Apakah Anda yakin ingin mengubah status halaman ini?')) {
-                e.preventDefault();
-            }
-        });
+                if (alert && alert.remove) alert.remove();
+            }, 300);
+        }, 4000);
     });
     
-    // Tooltip initialization (jika menggunakan Bootstrap 5)
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
-    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+    // Touch feedback untuk mobile
+    const touchElements = document.querySelectorAll('.btn-mobile, .status-badge-mobile, .btn-primary, .page-btn');
+    touchElements.forEach(el => {
+        el.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.97)';
+        });
+        el.addEventListener('touchend', function() {
+            this.style.transform = '';
+        });
+        el.addEventListener('touchcancel', function() {
+            this.style.transform = '';
+        });
     });
 });
 </script>
-@endpush
 @endsection

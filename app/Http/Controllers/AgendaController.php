@@ -7,6 +7,7 @@ use App\Models\Agenda;
 use App\Models\News; // sesuaikan jika nama model berbeda
 use App\Models\Setting;
 use App\Models\Menu;
+use Carbon\Carbon;
 
 class AgendaController extends Controller
 {
@@ -155,36 +156,22 @@ class AgendaController extends Controller
     // PUBLIC — halaman /agenda dengan kalender
     // =============================================
 
-    public function publicIndex(Request $request)
-    {
-        // Semua agenda yang sudah approved (dikirim ke JS sebagai JSON)
-        $agendas = Agenda::where('status', 'approved')
-            ->orderBy('date')
-            ->get(['id', 'title', 'date', 'time', 'location', 'description', 'image']);
+public function publicIndex(Request $request)
+{
+    $agendas = Agenda::where('status', 'approved')
+        ->where('date', '>=', now()->subMonth())
+        ->orderBy('date')
+        ->get(['id', 'title', 'date', 'time', 'location', 'description', 'image']);
 
-        // Berita terkini untuk sidebar
-        // Ganti 'News' dengan model berita yang kamu pakai, misal Post, Article, dll.
-        // Jika belum ada model berita, hapus baris ini dan sesuaikan view-nya.
-        $latestNews = collect(); // default kosong
-        if (class_exists(\App\Models\News::class)) {
-            $latestNews = \App\Models\News::where('status', 'published')
-                ->latest()
-                ->take(5)
-                ->get(['id', 'title', 'slug']);
-        }
+    $latestNews = News::where('status', 'approved') // ✅ ganti ini
+    ->where('created_at', '>=', now()->subMonth())
+    ->latest()
+    ->take(5)
+    ->get(['id', 'title', 'image', 'content', 'created_at']);
 
-        // Variabel global yang dibutuhkan layout (settings, menus, dll)
-        // Biasanya sudah di-share via ViewServiceProvider atau middleware,
-        // tapi jika belum, uncomment baris di bawah:
-        // $settings = Setting::first();
-        // $menus    = Menu::whereNull('parent_id')->with('children')->orderBy('order')->get();
+    return view('public.agenda', compact('agendas', 'latestNews'));
+}
 
-        return view('public.agenda', compact('agendas', 'latestNews'));
-    }
-
-    // =============================================
-    // LAMA — dipakai di home (tetap ada)
-    // =============================================
 
     public function publicAgenda()
     {

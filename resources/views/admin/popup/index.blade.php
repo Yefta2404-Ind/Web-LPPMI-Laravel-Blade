@@ -3,290 +3,618 @@
 
 @section('content')
 <style>
-    /* Custom CSS untuk halaman Kelola Pop-up Banner - Putih Solid */
-    .popup-container {
-        padding: 20px;
-        background: #ffffff;
+    /* ============================================
+       ENTERPRISE PROFESSIONAL STYLES
+       Color Scheme: Navy + Gray + White
+       Inspired by: Stripe, Salesforce, Microsoft
+    ============================================ */
+    
+    :root {
+        --primary: #0066FF;
+        --primary-dark: #0052CC;
+        --primary-light: #E6F0FF;
+        --secondary: #00A3FF;
+        --success: #00A86B;
+        --warning: #FFB800;
+        --danger: #FF3B30;
+        --info: #5E5CE6;
+        
+        --gray-25: #FCFCFD;
+        --gray-50: #F9FAFB;
+        --gray-100: #F2F4F7;
+        --gray-200: #EAECF0;
+        --gray-300: #D0D5DD;
+        --gray-400: #98A2B3;
+        --gray-500: #667085;
+        --gray-600: #475467;
+        --gray-700: #344054;
+        --gray-800: #1D2939;
+        --gray-900: #101828;
+        
+        --white: #FFFFFF;
+        --black: #000000;
+    }
+    
+    /* Container Utama */
+    .popup-manager {
+        padding: 0;
+        background: var(--gray-50);
         min-height: calc(100vh - 200px);
     }
-
-    .popup-header {
-        background: #ffffff;
-        border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 30px;
-        border: 1px solid #e5e7eb;
-        border-left: 5px solid #3b82f6;
+    
+    /* Header Section - Clean & Professional */
+    .page-header {
+        background: var(--white);
+        border-bottom: 1px solid var(--gray-200);
+        padding: 28px 32px;
+        margin-bottom: 28px;
     }
-
-    .popup-header h2 {
-        margin: 0;
-        color: #1f2937;
+    
+    .page-title {
+        font-size: 24px;
         font-weight: 600;
-        font-size: 28px;
+        color: var(--gray-900);
+        margin: 0 0 6px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        letter-spacing: -0.01em;
+    }
+    
+    .page-title i {
+        color: var(--primary);
+        font-size: 24px;
+    }
+    
+    .page-description {
+        color: var(--gray-600);
+        font-size: 14px;
+        margin: 0;
+        line-height: 1.5;
+    }
+    
+    /* Grid Layout */
+    .popup-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        padding: 0 32px 32px 32px;
+    }
+    
+    @media (max-width: 992px) {
+        .popup-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 0 24px 24px 24px;
+        }
+    }
+    
+    /* Cards - Clean Border Style */
+    .card-enterprise {
+        background: var(--white);
+        border-radius: 12px;
+        border: 1px solid var(--gray-200);
+        overflow: hidden;
+        transition: box-shadow 0.2s ease;
+    }
+    
+    .card-enterprise:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    
+    .card-header-enterprise {
+        background: var(--white);
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--gray-200);
+    }
+    
+    .card-header-enterprise h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin: 0;
         display: flex;
         align-items: center;
         gap: 10px;
     }
-
-    .popup-header h2:before {
-        content: "🎯";
-        font-size: 32px;
-    }
-
-    .popup-card {
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        overflow: hidden;
-        transition: box-shadow 0.3s ease;
-        background: #ffffff;
-    }
-
-    .popup-card:hover {
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .popup-card .card-header {
-        background: #f8fafc;
-        color: #1f2937;
-        font-weight: 600;
+    
+    .card-header-enterprise h3 i {
+        color: var(--primary);
         font-size: 18px;
-        padding: 15px 25px;
-        border-bottom: 1px solid #e5e7eb;
     }
-
-    .popup-card .card-body {
-        padding: 30px;
-        background: #ffffff;
+    
+    .card-body-enterprise {
+        padding: 24px;
     }
-
+    
+    /* Form Styles - Clean Typography */
+    .form-group {
+        margin-bottom: 24px;
+    }
+    
     .form-label {
-        font-weight: 600;
-        color: #374151;
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--gray-700);
         margin-bottom: 8px;
     }
-
-    .form-control {
+    
+    .form-label i {
+        margin-right: 8px;
+        color: var(--gray-500);
+        font-size: 12px;
+    }
+    
+    /* File Upload - Simple & Clean */
+    .file-upload {
+        border: 1px solid var(--gray-300);
         border-radius: 8px;
-        border: 1px solid #d1d5db;
-        padding: 10px 15px;
-        transition: all 0.2s ease;
-        background: #ffffff;
+        background: var(--white);
+        transition: all 0.2s;
+        position: relative;
     }
-
-    .form-control:focus {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        outline: none;
+    
+    .file-upload:hover {
+        border-color: var(--primary);
+        background: var(--gray-25);
     }
-
-    .form-check-input {
-        width: 18px;
-        height: 18px;
-        margin-top: 0;
+    
+    .file-upload-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
     }
-
-    .form-check-input:checked {
-        background-color: #3b82f6;
-        border-color: #3b82f6;
+    
+    .file-upload-placeholder {
+        padding: 32px 24px;
+        text-align: center;
     }
-
-    .btn-primary {
-        background: #3b82f6;
+    
+    .file-upload-placeholder i {
+        font-size: 32px;
+        color: var(--gray-400);
+        margin-bottom: 12px;
+    }
+    
+    .file-upload-placeholder p {
+        font-size: 14px;
+        color: var(--gray-600);
+        margin: 0;
+    }
+    
+    .file-upload-placeholder small {
+        font-size: 12px;
+        color: var(--gray-500);
+        display: block;
+        margin-top: 6px;
+    }
+    
+    .file-name {
+        margin-top: 12px;
+        padding: 8px 12px;
+        background: var(--gray-50);
+        border-radius: 6px;
+        font-size: 13px;
+        color: var(--gray-700);
+        display: none;
+    }
+    
+    .file-name.active {
+        display: block;
+    }
+    
+    /* Toggle Switch - Clean Design */
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        border-top: 1px solid var(--gray-200);
+        border-bottom: 1px solid var(--gray-200);
+        margin-bottom: 24px;
+    }
+    
+    .toggle-info h4 {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--gray-900);
+        margin: 0 0 4px 0;
+    }
+    
+    .toggle-info p {
+        font-size: 12px;
+        color: var(--gray-600);
+        margin: 0;
+    }
+    
+    /* Toggle Switch */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 44px;
+        height: 24px;
+    }
+    
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: var(--gray-300);
+        transition: 0.2s;
+        border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 20px;
+        width: 20px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.2s;
+        border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+        background-color: var(--primary);
+    }
+    
+    input:checked + .toggle-slider:before {
+        transform: translateX(20px);
+    }
+    
+    /* Button - Clean & Professional */
+    .btn-primary-enterprise {
+        background: var(--primary);
+        color: white;
         border: none;
+        padding: 10px 20px;
         border-radius: 8px;
-        padding: 12px 30px;
-        font-weight: 600;
-        transition: all 0.2s ease;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
     }
-
-    .btn-primary:hover {
-        background: #2563eb;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    
+    .btn-primary-enterprise:hover {
+        background: var(--primary-dark);
     }
-
+    
+    .btn-primary-enterprise:active {
+        transform: scale(0.98);
+    }
+    
+    /* Preview Section */
+    .preview-container {
+        background: var(--gray-50);
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    .preview-image-wrapper {
+        background: var(--white);
+        border-radius: 8px;
+        padding: 16px;
+        border: 1px solid var(--gray-200);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
     .preview-image {
         max-width: 100%;
+        height: auto;
+        border-radius: 6px;
+    }
+    
+    /* Status Badge - Clean */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    
+    .status-active {
+        background: #ECFDF3;
+        color: #067647;
+    }
+    
+    .status-inactive {
+        background: #FEF3F2;
+        color: #B42318;
+    }
+    
+    /* Info Box - Clean */
+    .info-box {
+        background: var(--gray-50);
         border-radius: 8px;
-        border: 1px solid #e5e7eb;
-        transition: transform 0.3s ease;
+        padding: 16px;
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
     }
-
-    .preview-image:hover {
-        transform: scale(1.02);
+    
+    .info-box i {
+        color: var(--primary);
+        font-size: 18px;
+        margin-top: 2px;
     }
-
-    .alert {
+    
+    .info-box p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--gray-700);
+        line-height: 1.5;
+    }
+    
+    .info-box.warning {
+        background: #FFFBEB;
+    }
+    
+    .info-box.warning i {
+        color: var(--warning);
+    }
+    
+    /* Alert - Clean */
+    .alert-enterprise {
+        margin: 0 32px 28px 32px;
+        padding: 14px 20px;
         border-radius: 8px;
-        border-left: 4px solid;
-        padding: 15px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: fadeIn 0.3s ease;
     }
-
-    .alert-success {
-        background: #f0fdf4;
-        border-left-color: #22c55e;
-        color: #166534;
+    
+    .alert-enterprise.success {
+        background: #ECFDF3;
+        color: #067647;
     }
-
-    .alert-info {
-        background: #eff6ff;
-        border-left-color: #3b82f6;
-        color: #1e40af;
+    
+    .alert-enterprise i {
+        font-size: 18px;
     }
-
-    .alert-warning {
-        background: #fefce8;
-        border-left-color: #eab308;
-        color: #854d0e;
-    }
-
-    @keyframes slideIn {
+    
+    @keyframes fadeIn {
         from {
-            transform: translateX(-100%);
             opacity: 0;
+            transform: translateY(-10px);
         }
         to {
-            transform: translateX(0);
             opacity: 1;
+            transform: translateY(0);
         }
     }
-
-    .badge {
-        padding: 6px 12px;
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+    }
+    
+    .empty-state i {
+        font-size: 48px;
+        color: var(--gray-300);
+        margin-bottom: 16px;
+    }
+    
+    .empty-state h4 {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--gray-700);
+        margin: 0 0 6px 0;
+    }
+    
+    .empty-state p {
         font-size: 13px;
-        font-weight: 600;
-        border-radius: 20px;
+        color: var(--gray-500);
+        margin: 0;
     }
-
-    .badge.bg-success {
-        background: #dcfce7;
-        color: #166534;
+    
+    /* Divider */
+    .divider {
+        height: 1px;
+        background: var(--gray-200);
+        margin: 20px 0;
     }
-
-    .badge.bg-secondary {
-        background: #f1f5f9;
-        color: #475569;
-    }
-
-    .info-text {
-        color: #6b7280;
+    
+    /* Helper Text */
+    .helper-text {
         font-size: 12px;
-        margin-top: 5px;
+        color: var(--gray-500);
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
-
-    .text-muted {
-        color: #6b7280 !important;
-    }
-
-    @media (max-width: 768px) {
-        .popup-header h2 {
-            font-size: 24px;
-        }
-        
-        .popup-card .card-body {
-            padding: 20px;
-        }
-        
-        .btn-primary {
-            width: 100%;
-        }
+    
+    .helper-text i {
+        font-size: 12px;
     }
 </style>
 
-<div class="popup-container">
-    <div class="container">
-        <div class="popup-header">
-            <h2>Kelola Pop-up Banner</h2>
-            <p class="text-muted mt-2 mb-0">Atur tampilan pop-up banner untuk promosi atau pengumuman penting</p>
+<div class="popup-manager">
+    <!-- Header -->
+    <div class="page-header">
+        <div class="page-title">
+            <i class="fas fa-window-maximize"></i>
+            Pop-up Banner
         </div>
-
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Berhasil!</strong> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <p class="page-description">
+            Kelola banner pop-up yang akan ditampilkan kepada pengunjung website.
+        </p>
+    </div>
+    
+    <!-- Alert -->
+    @if(session('success'))
+    <div class="alert-enterprise success">
+        <i class="fas fa-check-circle"></i>
+        <span>{{ session('success') }}</span>
+    </div>
+    @endif
+    
+    <!-- Grid -->
+    <div class="popup-grid">
+        <!-- Form Upload -->
+        <div class="card-enterprise">
+            <div class="card-header-enterprise">
+                <h3>
+                    <i class="fas fa-upload"></i>
+                    Upload Banner
+                </h3>
             </div>
-        @endif
-
-        <div class="card popup-card">
-            <div class="card-header">
-                <i class="fas fa-upload me-2"></i> Upload Pop-up Banner Baru
-            </div>
-            <div class="card-body">
+            <div class="card-body-enterprise">
                 <form action="{{ route('admin.popup.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
-
-                    <div class="mb-4">
+                    
+                    <div class="form-group">
                         <label class="form-label">
-                            <i class="fas fa-image me-2"></i>Upload Gambar Pop-up
+                            <i class="fas fa-image"></i>
+                            File Gambar
                         </label>
-                        <input type="file" name="image" class="form-control" accept="image/*" required>
-                        <div class="info-text">
-                            <i class="fas fa-info-circle me-1"></i>
-                            Format yang didukung: JPG, PNG, WEBP. Maksimal ukuran file: 2MB.
-                            <br>Rekomendasi ukuran: 800px x 600px untuk hasil terbaik.
+                        <div class="file-upload" onclick="document.getElementById('imageInput').click()">
+                            <div class="file-upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Klik untuk upload</p>
+                                <small>JPG, PNG, WEBP (Max 2MB)</small>
+                            </div>
+                            <input type="file" name="image" id="imageInput" class="file-upload-input" accept="image/*" required onchange="showFileName(this)">
+                        </div>
+                        <div class="file-name" id="fileName">
+                            <i class="fas fa-file-image"></i>
+                            <span></span>
+                        </div>
+                        <div class="helper-text">
+                            <i class="fas fa-info-circle"></i>
+                            Rekomendasi ukuran: 800x600 pixels
                         </div>
                     </div>
-
-                    <div class="form-check mb-4">
-                        <input class="form-check-input" type="checkbox" name="is_active" id="is_active"
-                            {{ optional($popup)->is_active ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_active">
-                            <i class="fas fa-toggle-on me-1"></i>
-                            Aktifkan Pop-up
-                        </label>
-                        <div class="info-text ms-4">
-                            Jika diaktifkan, pop-up akan muncul saat pengguna membuka halaman website.
+                    
+                    <div class="toggle-container">
+                        <div class="toggle-info">
+                            <h4>Status Pop-up</h4>
+                            <p>Aktifkan untuk menampilkan banner</p>
                         </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="is_active" id="is_active" {{ optional($popup)->is_active ? 'checked' : '' }}>
+                            <span class="toggle-slider"></span>
+                        </label>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save me-2"></i>Simpan Perubahan
+                    
+                    <button type="submit" class="btn-primary-enterprise">
+                        <i class="fas fa-save"></i>
+                        Simpan
                     </button>
                 </form>
             </div>
         </div>
-
-        {{-- Preview gambar aktif --}}
-        @if($popup && $popup->image_path)
-        <div class="card popup-card mt-4">
-            <div class="card-header">
-                <i class="fas fa-eye me-2"></i> Preview Pop-up Aktif
+        
+        <!-- Preview -->
+        <div class="card-enterprise">
+            <div class="card-header-enterprise">
+                <h3>
+                    <i class="fas fa-eye"></i>
+                    Preview Banner
+                </h3>
             </div>
-            <div class="card-body text-center">
-                <img src="{{ Storage::url($popup->image_path) }}"
-                     class="preview-image"
-                     alt="Preview Pop-up Banner"
-                     style="max-width: 500px; width: 100%;">
-                
-                <div class="mt-3">
-                    <p class="mb-2">
-                        <strong>Status:</strong>
-                        <span class="badge {{ $popup->is_active ? 'bg-success' : 'bg-secondary' }}">
-                            <i class="fas {{ $popup->is_active ? 'fa-check-circle' : 'fa-times-circle' }} me-1"></i>
-                            {{ $popup->is_active ? 'Aktif' : 'Nonaktif' }}
-                        </span>
-                    </p>
-                    @if($popup->is_active)
-                        <div class="alert alert-info mt-3">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Pop-up banner ini akan muncul saat pengguna membuka halaman website Anda.
+            <div class="card-body-enterprise">
+                @if($popup && $popup->image_path)
+                    <div class="preview-container">
+                        <div class="preview-image-wrapper">
+                            <img src="{{ Storage::url($popup->image_path) }}" 
+                                 class="preview-image" 
+                                 alt="Banner Preview">
                         </div>
-                    @else
-                        <div class="alert alert-warning mt-3">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            Pop-up banner sedang nonaktif. Aktifkan untuk menampilkannya di website.
+                        
+                        <div style="text-align: center;">
+                            <span class="status-badge {{ $popup->is_active ? 'status-active' : 'status-inactive' }}">
+                                <i class="fas {{ $popup->is_active ? 'fa-circle' : 'fa-circle' }}"></i>
+                                {{ $popup->is_active ? 'Aktif' : 'Nonaktif' }}
+                            </span>
                         </div>
-                    @endif
-                </div>
+                        
+                        <div class="divider"></div>
+                        
+                        @if($popup->is_active)
+                            <div class="info-box">
+                                <i class="fas fa-info-circle"></i>
+                                <p>Banner aktif dan akan ditampilkan kepada pengunjung website saat halaman dimuat.</p>
+                            </div>
+                        @else
+                            <div class="info-box warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p>Banner sedang nonaktif. Aktifkan toggle switch di samping untuk menampilkan banner.</p>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <div class="empty-state">
+                        <i class="fas fa-image"></i>
+                        <h4>Belum ada banner</h4>
+                        <p>Upload banner melalui form di samping</p>
+                    </div>
+                @endif
             </div>
         </div>
-        @endif
     </div>
 </div>
 
-{{-- Optional: Tambahkan Font Awesome jika belum ada --}}
+<script>
+    function showFileName(input) {
+        const fileNameDiv = document.getElementById('fileName');
+        const fileNameSpan = fileNameDiv.querySelector('span');
+        
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            
+            // Validate file size
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Ukuran file maksimal 2MB');
+                input.value = '';
+                fileNameDiv.classList.remove('active');
+                return;
+            }
+            
+            // Validate file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Format file harus JPG, PNG, atau WEBP');
+                input.value = '';
+                fileNameDiv.classList.remove('active');
+                return;
+            }
+            
+            fileNameSpan.innerHTML = `<strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)} KB)`;
+            fileNameDiv.classList.add('active');
+        } else {
+            fileNameDiv.classList.remove('active');
+        }
+    }
+</script>
+
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 @endpush

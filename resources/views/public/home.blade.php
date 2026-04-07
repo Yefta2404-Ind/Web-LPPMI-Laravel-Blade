@@ -5,40 +5,70 @@
 @section('content')
 <section class="news-section">
     <div class="lpm-container">
-        @if(isset($news) && $news->count() > 0)
-        <div class="agenda-header">
+        {{-- Empty State --}}
+@if(!isset($news) || $news->count() == 0)
+<div class="empty-state">
+    <div class="empty-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none">
+            <path d="M20 12V18H4V12M20 12L12 5L4 12" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+    </div>
+    <h3>Belum Ada Berita</h3>
+    <p>Bulan ini belum tersedia informasi berita terbaru.</p>
+</div>
+@else
+
+<div class="agenda-header">
     <div class="agenda-header-left">
         <div class="section-label">Informasi</div>
         <h2 class="agenda-title">Berita Terbaru</h2>
-        <p class="agenda-subtitle">Informasi dan berita terkini dari LPPMI Universitas Gunung Kidul</p>
+        <p class="agenda-subtitle">Informasi terbaru LPPMI</p>
     </div>
 </div>
 
-        <div class="news-carousel">
-            <div class="news-viewport">
-                <div class="news-track">
-                    @foreach($news as $item)
-                    <div class="news-slide">
-                        <div class="news-card">
-                            @if($item->image)
-                            <div class="news-image">
-                                <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}" loading="lazy">
-                            </div>
-                            @endif
-                            <div class="news-content">
-                                <span class="news-date">{{ $item->created_at->format('d M Y') }}</span>
-                                <h3>{{ Str::limit($item->title, 55) }}</h3>
-                                <p>{{ Str::limit(strip_tags($item->content), 70) }}</p>
-                                <a href="{{ route('public.news.show', $item) }}" class="read-more">Baca Selengkapnya</a>
-                            </div>
-                        </div>
+<div class="news-carousel">
+    <div class="news-viewport">
+        <div class="news-track">
+
+            @foreach($news as $item)
+            <div class="news-slide">
+                <div class="news-card">
+
+                    @if($item->image)
+                    <div class="news-image">
+                        <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->title }}">
                     </div>
-                    @endforeach
+                    @endif
+
+                    <div class="news-content">
+                        <span class="news-date">
+                            {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}
+                        </span>
+
+                        <h3>{{ \Illuminate\Support\Str::limit($item->title, 55) }}</h3>
+
+                        <p>
+                            {{ \Illuminate\Support\Str::limit(strip_tags($item->content), 70) }}
+                        </p>
+
+                        <a href="{{ route('public.news.show', $item->id) }}" class="read-more">
+                            Baca Selengkapnya
+                        </a>
+                    </div>
+
                 </div>
             </div>
-<a href="{{ route('public.news.index') }}" class="view-all">Lihat Semua</a>
+            @endforeach
+
         </div>
-        @endif
+    </div>
+
+    <a href="{{ route('public.news.index') }}" class="view-all">
+        Lihat Semua
+    </a>
+</div>
+
+@endif
     </div>
 </section>
 
@@ -47,8 +77,43 @@
 .lpm-container {
     max-width: 1800px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 24px;
     width: 100%;
+}
+
+/* ===== EMPTY STATE STYLES ===== */
+.empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+.empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
 }
 
 .news-viewport {
@@ -152,14 +217,12 @@
     box-shadow: var(--shadow-md);
 }
 
-
-
 /* ===== VIDEO SECTION (LEBAR SAMA, TINGGI DIKURANGI) ===== */
 .video-wrapper-reduced {
     position: relative;
     width: 100%;
     margin: 0 auto;
-    padding-bottom: 35%; /* DIKURANGI dari 56.25% (16:9) menjadi 35% */
+    padding-bottom: 35%;
     height: 0;
     overflow: hidden;
     border-radius: 12px;
@@ -179,25 +242,6 @@
     border-radius: 12px;
 }
 
-/* Responsive untuk video yang dikurangi tinggi */
-@media (max-width: 1024px) {
-    .video-wrapper-reduced {
-        padding-bottom: 40%;
-    }
-}
-
-@media (max-width: 768px) {
-    .video-wrapper-reduced {
-        padding-bottom: 45%;
-    }
-}
-
-@media (max-width: 480px) {
-    .video-wrapper-reduced {
-        padding-bottom: 50%;
-    }
-}
-
 /* ===== NEWS CAROUSEL ===== */
 .news-carousel {
     position: relative;
@@ -211,7 +255,7 @@
 
 .news-track {
     display: flex;
-    gap: 40px;
+    gap: 24px;
     transition: transform 0.4s ease;
     will-change: transform;
     align-items: stretch;
@@ -265,17 +309,19 @@
     flex-direction: column;
     flex: 1;
 }
+
 .news-content h3 {
     font-size: 16px;
-
 }
+
 .news-section {
     width: 100%;
     background: #faf8f4;
-    padding: 96px 0;
+    padding: 60px 0;
     border-top: 1px solid #ede8df;
     border-bottom: 1px solid #ede8df;
 }
+
 .news-content p {
     font-size: 13px;
 }
@@ -353,27 +399,98 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
     .news-slide {
-        flex: 0 0 280px;
+        flex: 0 0 320px;
+    }
+    
+    .news-track {
+        gap: 20px;
+    }
+    
+    .lpm-container {
+        padding: 0 20px;
     }
 }
 
 @media (max-width: 768px) {
+    .news-section {
+        padding: 40px 0;
+    }
+    
     .lpm-container {
-        padding: 30px 15px;
+        padding: 0 16px;
     }
     
     .section-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;   
+        text-align: center;    
         gap: 10px;
+    }
+    
+    .agenda-header {
+        flex-direction: column;
+        justify-content: center;  /* override space-between */
+        align-items: center;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+    
+        .agenda-header-left {
+        width: 100%;
+    }
+
+    .section-label,
+    .agenda-title,
+    .agenda-subtitle {
+        text-align: center;
+    }
+
+    .agenda-title {
+        font-size: 24px !important;
+    }
+    
+    .agenda-subtitle {
+        font-size: 13px !important;
     }
     
     .news-slide {
         flex: 0 0 85%;
     }
     
+    .news-track {
+        gap: 16px;
+    }
+    
     .nav-btn {
         display: none;
+    }
+    
+    .empty-state {
+        padding: 40px 20px;
+    }
+    
+    .empty-icon {
+        width: 64px;
+        height: 64px;
+    }
+    
+    .empty-icon svg {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .empty-state h3 {
+        font-size: 18px;
+    }
+    
+    .empty-state p {
+        font-size: 13px;
+    }
+    
+    .view-all {
+        padding: 12px 28px;
+        font-size: 14px;
+        margin-top: 32px;
     }
 }
 
@@ -383,7 +500,113 @@
     }
     
     .news-slide {
-        flex: 0 0 90%;
+        flex: 0 0 92%;
+    }
+    
+    .lpm-container {
+        padding: 0 12px;
+    }
+    
+    .news-section {
+        padding: 32px 0;
+    }
+    
+    .news-card h3 {
+        font-size: 16px !important;
+    }
+    
+    .news-image {
+        height: 160px;
+    }
+    
+    .news-content {
+        padding: 14px;
+    }
+    
+    .empty-state {
+        padding: 32px 16px;
+    }
+    
+    .empty-icon {
+        width: 56px;
+        height: 56px;
+        margin-bottom: 16px;
+    }
+    
+    .empty-icon svg {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .view-all {
+        padding: 10px 24px;
+        font-size: 13px;
+        margin-top: 28px;
+    }
+}
+
+/* Responsive untuk video yang dikurangi tinggi */
+@media (max-width: 1024px) {
+    .video-wrapper-reduced {
+        padding-bottom: 40%;
+    }
+}
+
+@media (max-width: 768px) {
+    .video-wrapper-reduced {
+        padding-bottom: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-wrapper-reduced {
+        padding-bottom: 50%;
+    }
+}
+
+/* Agenda Header Styles */
+.agenda-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.agenda-header-left {
+    flex: 1;
+}
+
+.section-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2563eb;
+    margin-bottom: 8px;
+}
+
+.agenda-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.agenda-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .agenda-title {
+        font-size: 22px;
+    }
+    
+    .agenda-subtitle {
+        font-size: 12px;
     }
 }
 </style>
@@ -396,15 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const track = newsCarousel.querySelector('.news-track');
         let newsSlides = Array.from(track.children);
 
-        const gap = 16;
+        const gap = 24;
         const newsSlideWidth = newsSlides[0].offsetWidth + gap;
 
-        // Clone untuk infinite scroll
-        newsSlides.forEach(slide => {
-            const clone = slide.cloneNode(true);
-            clone.classList.add('clone');
-            track.appendChild(clone);
-        });
 
         newsSlides = Array.from(track.children);
 
