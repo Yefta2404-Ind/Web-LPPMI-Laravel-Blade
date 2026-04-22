@@ -49,6 +49,44 @@
             --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
         }
 
+        /* ===== Z-INDEX SYSTEM ===== */
+        body {
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-header {
+            z-index: 9500;
+        }
+
+        .main-nav {
+            z-index: 10000;
+        }
+
+        .main-nav a:visited {
+    color: rgba(255, 255, 255, 0.88) !important;
+}
+        .menu-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 26, 43, 0.7);
+    z-index: 8999; /* turunkan, biar di bawah header */
+    transition: opacity 0.3s ease;
+}
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        .agenda-modal-overlay {
+            z-index: 20000;
+        }
+
+        #popup-overlay {
+            z-index: 999999 !important;
+        }
+
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
@@ -60,6 +98,10 @@
             overflow-x: hidden;
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
+        }
+
+        body.menu-open {
+            overflow: hidden;
         }
 
         h1,h2,h3,h4,h5,h6 {
@@ -148,10 +190,9 @@
             background: var(--primary);
             position: sticky;
             top: 0;
-            z-index: 9999;
             width: 100%;
             box-shadow: 0 2px 20px rgba(0,0,0,0.25);
-            overflow: visible; /* PENTING: jangan hidden */
+            overflow: visible;
         }
 
         .site-header::before {
@@ -169,7 +210,7 @@
             padding: 10px 0;
             gap: 16px;
             width: 100%;
-            overflow: visible; /* PENTING: jangan hidden */
+            overflow: visible;
         }
 
         .logo-title-group {
@@ -241,7 +282,7 @@
             display: flex;
             justify-content: flex-end;
             align-items: stretch;
-            overflow: visible; /* PENTING */
+            overflow: visible;
         }
 
         .nav-menu {
@@ -251,7 +292,7 @@
             padding: 0;
             gap: 2px;
             align-items: stretch;
-            overflow: visible; /* PENTING */
+            overflow: visible;
         }
 
         .nav-menu > li {
@@ -259,7 +300,7 @@
             display: block;
             align-items: stretch;
             justify-content: flex-end;
-            overflow: visible; /* PENTING */
+            overflow: visible;
         }
 
         .nav-link {
@@ -300,26 +341,22 @@
             opacity: 0.7;
         }
 
-        .nav-link:hover i {
-            opacity: 1;
-            color: var(--gold-light);
-        }
+        .nav-link:hover i { opacity: 1; color: var(--gold-light); }
 
         .nav-dropdown {
             position: relative;
             display: block;
             align-items: stretch;
-            overflow: visible; /* PENTING */
+            overflow: visible;
         }
 
-        /* ========== LEVEL 2 SUBMENU ========== */
         .nav-submenu {
             position: absolute;
             top: 100%;
             left: 0;
             background: var(--primary-dark);
             min-width: 220px;
-            max-width: calc(100vw - 16px); /* tidak boleh lebih lebar dari layar */
+            max-width: calc(100vw - 16px);
             list-style: none;
             padding: 8px 0;
             margin: 0;
@@ -332,14 +369,9 @@
             pointer-events: none;
             z-index: 10000;
             margin-top: -2px;
-            /* Secara default rata kiri, JS akan tambah flip-left kalau perlu */
         }
 
-        /* Flip ke kanan-aligned jika mendekati tepi kanan */
-        .nav-submenu.flip-left {
-            left: auto;
-            right: 0;
-        }
+        .nav-submenu.flip-left { left: auto; right: 0; }
 
         .nav-dropdown:hover > .nav-submenu {
             opacity: 1;
@@ -374,7 +406,6 @@
             border-left-color: var(--gold);
         }
 
-        /* Arrow untuk parent dengan child level 3 */
         .has-child > a {
             display: flex;
             justify-content: space-between;
@@ -397,7 +428,6 @@
             color: var(--gold-light);
         }
 
-        /* ========== LEVEL 3 CHILD MENU ========== */
         .child-menu {
             position: absolute;
             top: 0;
@@ -420,7 +450,6 @@
             transform: translateY(10px);
         }
 
-        /* Flip child menu ke kiri jika mendekati tepi kanan */
         .child-menu.flip-left {
             left: auto;
             right: 100%;
@@ -437,10 +466,7 @@
             transform: translateY(0);
         }
 
-        .child-menu li {
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-        }
-
+        .child-menu li { border-bottom: 1px solid rgba(255,255,255,0.08); }
         .child-menu li:last-child { border-bottom: none; }
 
         .child-menu li a {
@@ -459,21 +485,12 @@
             padding-left: 26px;
         }
 
-        /* ========== TABLET: paksa semua dropdown rata kanan ========== */
-        /* Di 769px - 991px layar sudah sempit, aman paksa right-aligned */
         @media (min-width: 769px) and (max-width: 991px) {
-            .nav-submenu {
-                left: auto;
-                right: 0;
-                min-width: 200px;
-            }
+            .nav-submenu { left: auto; right: 0; min-width: 200px; }
             .child-menu {
-                left: auto;
-                right: 100%;
-                margin-left: 0;
-                margin-right: -2px;
-                border-left: none;
-                border-right: 3px solid var(--gold);
+                left: auto; right: 100%;
+                margin-left: 0; margin-right: -2px;
+                border-left: none; border-right: 3px solid var(--gold);
             }
         }
 
@@ -660,8 +677,7 @@
         .agenda-card-bg {
             position: absolute;
             inset: 0;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
             display: block;
             z-index: 0;
@@ -757,6 +773,102 @@
 
         .meta-item-small i { color: var(--gold-light); font-size: 0.65rem; }
 
+        .agenda-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 64px 24px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            border-radius: var(--radius-xl);
+            border: 2px dashed var(--border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .agenda-empty::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(10,42,68,0.04);
+            pointer-events: none;
+        }
+
+        .agenda-empty::after {
+            content: '';
+            position: absolute;
+            bottom: -40px; left: -40px;
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: rgba(201,168,76,0.06);
+            pointer-events: none;
+        }
+
+        .agenda-empty-icon {
+            width: 80px; height: 80px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 1;
+        }
+
+        .agenda-empty-icon i {
+            font-size: 2rem;
+            color: var(--primary);
+            opacity: 0.35;
+        }
+
+        .agenda-empty-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .agenda-empty-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.65;
+            max-width: 380px;
+            margin: 0 auto 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .agenda-empty-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(201,168,76,0.12);
+            border: 1px solid rgba(201,168,76,0.3);
+            color: var(--gold-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 100px;
+            letter-spacing: 0.03em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .agenda-empty-badge i { font-size: 0.7rem; }
+
         .view-all-btn,
         .view-all {
             display: inline-flex;
@@ -787,7 +899,6 @@
 
         .agenda-footer { display: flex; justify-content: center; }
 
-        /* ================= AGENDA MODAL ================= */
         .agenda-modal-overlay {
             position: fixed;
             inset: 0;
@@ -798,7 +909,6 @@
             align-items: center;
             justify-content: center;
             pointer-events: none;
-            z-index: 1100;
             padding: 16px;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -914,7 +1024,6 @@
         .status-ongoing   { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.25); }
         .status-completed { background: var(--accent); color: var(--text-light); border: 1px solid var(--border); }
 
-        /* ================= SURVEY ================= */
         .survey-section {
             background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/images/qr.jpg');
             background-size: cover;
@@ -971,7 +1080,6 @@
         .qr-box { background: var(--white); padding: 18px; border-radius: var(--radius-lg); margin-bottom: 16px; box-shadow: var(--shadow-md); }
         .qr-image { width: 190px; height: 190px; display: block; margin: 0 auto; }
 
-        /* ================= FOOTER ================= */
         .main-footer {
             background: var(--primary);
             color: rgba(255,255,255,0.85);
@@ -1035,17 +1143,14 @@
             color: rgba(255,255,255,0.6);
         }
 
-        /* ================= MAIN CONTAINER ================= */
         .main-container { margin: 0; padding: 0; }
         .main-container section, section { margin-bottom: 0 !important; }
 
-        /* ================= SCROLLBAR ================= */
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-track { background: var(--accent); }
         ::-webkit-scrollbar-thumb { background: #b0c4d8; border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #7a98b4; }
 
-        /* ================= PAGE CONTENT ================= */
         .page-content { max-width: 100%; overflow-x: hidden; word-wrap: break-word; }
         .page-content * { max-width: 100%; }
         .page-content pre, .page-content code { white-space: normal; word-wrap: break-word; overflow-x: auto; }
@@ -1058,7 +1163,6 @@
         .page-content table tbody tr:not(:first-child):hover td { background-color: #eef2f6 !important; }
 
         .page-content img, .page-content table, .page-content iframe, .page-content video { max-width: 100% !important; height: auto !important; }
-
         .page-content .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 20px 0; border-radius: 8px; }
 
         .page-content h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); }
@@ -1084,12 +1188,10 @@
 
         .py-5 { padding-top: clamp(1.5rem,5vh,3rem); padding-bottom: clamp(1.5rem,5vh,3rem); }
 
-        /* ================= POPUP BANNER ================= */
         #popup-overlay {
             position: fixed;
             inset: 0;
-            background: transparent;
-            z-index: 99999;
+            background: rgba(0,0,0,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1098,7 +1200,10 @@
             animation: popupFadeIn 0.4s ease 0.3s forwards;
         }
 
-        @keyframes popupFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popupFadeIn { 
+            from { opacity: 0; background: transparent; }
+            to { opacity: 1; background: rgba(0,0,0,0.7); }
+        }
         @keyframes popupSlideUp {
             from { opacity: 0; transform: translateY(30px) scale(0.96); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -1113,8 +1218,10 @@
 
         #popup-close-btn {
             position: absolute;
-            top: clamp(8px, 1.5vw, -16px);
-            width: 36px; height: 36px;
+            top: -16px;
+            right: -16px;
+            width: 36px;
+            height: 36px;
             background: var(--gold);
             color: var(--white);
             border: none;
@@ -1131,7 +1238,10 @@
             transition: background var(--transition), transform var(--transition);
         }
 
-        #popup-close-btn:hover { background: var(--gold-dark); transform: scale(1.12) rotate(90deg); }
+        #popup-close-btn:hover { 
+            background: var(--gold-dark); 
+            transform: scale(1.12) rotate(90deg);
+        }
 
         #popup-img {
             width: 100%;
@@ -1143,7 +1253,6 @@
             box-shadow: 0 24px 60px rgba(0,0,0,0.45);
         }
 
-        /* ================= RESPONSIVE ================= */
         @media (min-width: 1400px) {
             .header-title h1 { font-size: 1.15rem; }
             .nav-link { font-size: 0.9rem; padding: 0 18px; }
@@ -1213,15 +1322,11 @@
 
             .main-nav {
                 position: fixed;
-                top: 0;
-                right: -100%;
-                width: 85%;
-                max-width: 320px;
+                top: 0; right: -100%;
+                width: 85%; max-width: 320px;
                 height: 100vh;
                 background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
                 transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                z-index: 10001;
-                box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
                 display: block;
                 overflow-y: auto;
                 overflow-x: hidden;
@@ -1242,9 +1347,7 @@
             .nav-link {
                 padding: 14px 20px;
                 border-bottom: 1px solid rgba(255,255,255,0.07) !important;
-                border-left: none;
-                border-right: none;
-                border-top: none;
+                border-left: none; border-right: none; border-top: none;
                 border-radius: 0;
                 font-size: 0.9rem;
                 height: auto;
@@ -1267,9 +1370,7 @@
                 border-bottom: none !important;
             }
 
-            /* Mobile: semua submenu hidden by default */
-            .nav-submenu,
-            .child-menu {
+            .nav-submenu, .child-menu {
                 position: static !important;
                 opacity: 1 !important;
                 visibility: visible !important;
@@ -1285,13 +1386,9 @@
                 transform: none !important;
             }
 
-            /* Override flip-left di mobile (tidak perlu) */
-            .nav-submenu.flip-left,
-            .child-menu.flip-left {
-                left: auto !important;
-                right: auto !important;
-                margin-left: 15px !important;
-                margin-right: 0 !important;
+            .nav-submenu.flip-left, .child-menu.flip-left {
+                left: auto !important; right: auto !important;
+                margin-left: 15px !important; margin-right: 0 !important;
                 border-left: 2px solid var(--gold) !important;
                 border-right: none !important;
             }
@@ -1300,23 +1397,7 @@
             .has-child.open > .child-menu { display: block !important; }
 
             .has-child > a::after { content: '\f078'; }
-
             .child-menu { margin-left: 0; }
-
-            .menu-overlay {
-                display: none;
-                position: fixed;
-                inset: 0;
-                background: rgba(5, 26, 43, 0.7);
-                z-index: 10000;
-                opacity: 0;
-                backdrop-filter: blur(4px);
-                transition: opacity 0.3s ease;
-            }
-
-            .menu-overlay.active { display: block; opacity: 1; }
-
-            body.menu-open { overflow: hidden; }
 
             .hero-section { min-height: 50vh; }
             .hero-overlay { padding: 70px 0 60px; }
@@ -1328,6 +1409,10 @@
             .agenda-title { font-size: 1.7rem; }
             .agenda-horizontal-wrapper { grid-template-columns: 1fr; gap: 16px; }
             .agenda-card-small { height: 240px; }
+            .agenda-empty { padding: 44px 20px; }
+            .agenda-empty-icon { width: 64px; height: 64px; }
+            .agenda-empty-icon i { font-size: 1.6rem; }
+            .agenda-empty-title { font-size: 1rem; }
 
             .survey-section { padding: 52px 0; }
             .survey-title { font-size: 1.6rem; }
@@ -1423,17 +1508,17 @@
             <div class="header-container">
                 <div class="logo-title-group">
                     <a href="{{ url('/') }}" class="logo">
-    @if(!empty($settings->logo))
-        <img src="{{ asset('storage/' . $settings->logo) }}"
-             alt="Logo"
-             style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));background:#ffffff;border-radius:50%;padding:3px;">
-    @else
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="50" cy="50" r="45" fill="white" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-            <image href="{{ asset('images/logo ugk.png') }}" x="15" y="15" width="70" height="70" preserveAspectRatio="xMidYMid meet"/>
-        </svg>
-    @endif
-</a>
+                        @if(!empty($settings->logo))
+                            <img src="{{ asset('storage/' . $settings->logo) }}"
+                                 alt="Logo"
+                                 style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));background:#ffffff;border-radius:50%;padding:3px;">
+                        @else
+                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="45" fill="white" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+                                <image href="{{ asset('images/logo ugk.png') }}" x="15" y="15" width="70" height="70" preserveAspectRatio="xMidYMid meet"/>
+                            </svg>
+                        @endif
+                    </a>
                     <div class="header-title">
                         <h1>{{ strtoupper($settings->site_name) }}</h1>
                         <span>{{ strtoupper($settings->site_subtitle) }}</span>
@@ -1513,7 +1598,8 @@
         @yield('content')
     </main>
 
-    @if(request()->is('/') && isset($agendas) && $agendas->count() > 0)
+    {{-- ================= AGENDA SECTION ================= --}}
+    @if(request()->is('/'))
     <section class="agenda-section">
         <div class="lpm-container">
             <div class="agenda-header">
@@ -1525,48 +1611,71 @@
             </div>
 
             <div class="agenda-horizontal-container">
-                <div class="agenda-horizontal-wrapper" id="agendaWrapper">
-                    @foreach($agendas->take(3) as $agenda)
-                    @php
-                        $agendaDate = \Carbon\Carbon::parse($agenda->date);
-                        $now = \Carbon\Carbon::now();
-                        if ($agendaDate->isToday())       { $status = 'ongoing';   $statusText = 'Berlangsung'; }
-                        elseif ($agendaDate->isPast())    { $status = 'completed'; $statusText = 'Selesai'; }
-                        else                              { $status = 'upcoming';  $statusText = 'Akan Datang'; }
-                    @endphp
-                    <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}" role="button" tabindex="0" aria-label="Lihat detail: {{ $agenda->title }}">
-                        @if(!empty($agenda->image))
-                            <img class="agenda-card-bg"
-                                 src="{{ Storage::url($agenda->image) }}"
-                                 alt="{{ $agenda->title }}"
-                                 loading="lazy"
-                                 onerror="this.style.display='none'">
-                        @endif
-                        <div class="agenda-date-small">
-                            <span class="date-day-small">{{ $agendaDate->format('d') }}</span>
-                            <span class="date-month-small">{{ $agendaDate->translatedFormat('M') }}</span>
-                        </div>
-                        <div class="agenda-content-small">
-                            <h3 class="agenda-title-small">{{ $agenda->title }}</h3>
-                            <div class="agenda-meta-small">
-                                <div class="meta-item-small">
-                                    <i class="fas fa-clock"></i>
-                                    <span>{{ $agenda->time }}</span>
-                                </div>
-                                <div class="meta-item-small">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>{{ Str::limit($agenda->location, 25) }}</span>
+                @if(isset($agendas) && $agendas->count() > 0)
+                    {{-- ADA AGENDA --}}
+                    <div class="agenda-horizontal-wrapper" id="agendaWrapper">
+                        @foreach($agendas->take(3) as $agenda)
+                        @php
+                            $agendaDate = \Carbon\Carbon::parse($agenda->date);
+                            $now = \Carbon\Carbon::now();
+                            if ($agendaDate->isToday())       { $status = 'ongoing';   $statusText = 'Berlangsung'; }
+                            elseif ($agendaDate->isPast())    { $status = 'completed'; $statusText = 'Selesai'; }
+                            else                              { $status = 'upcoming';  $statusText = 'Akan Datang'; }
+                        @endphp
+                        <div class="agenda-card-small"
+                             data-agenda-id="{{ $agenda->id }}"
+                             role="button" tabindex="0"
+                             aria-label="Lihat detail: {{ $agenda->title }}">
+                            @if(!empty($agenda->image))
+                                <img class="agenda-card-bg"
+                                     src="{{ Storage::url($agenda->image) }}"
+                                     alt="{{ $agenda->title }}"
+                                     loading="lazy"
+                                     onerror="this.style.display='none'">
+                            @endif
+                            <div class="agenda-date-small">
+                                <span class="date-day-small">{{ $agendaDate->format('d') }}</span>
+                                <span class="date-month-small">{{ $agendaDate->translatedFormat('M') }}</span>
+                            </div>
+                            <div class="agenda-content-small">
+                                <h3 class="agenda-title-small">{{ $agenda->title }}</h3>
+                                <div class="agenda-meta-small">
+                                    <div class="meta-item-small">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ $agenda->time }}</span>
+                                    </div>
+                                    <div class="meta-item-small">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>{{ Str::limit($agenda->location, 25) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
-                    @endforeach
-                </div>
+                @else
+                    {{-- TIDAK ADA AGENDA --}}
+                    <div class="agenda-empty">
+                        <div class="agenda-empty-icon">
+                            <i class="fas fa-calendar-times"></i>
+                        </div>
+                        <h4 class="agenda-empty-title">Tidak Ada Agenda</h4>
+                        <p class="agenda-empty-desc">
+                            Belum ada kegiatan yang dijadwalkan untuk beberapa hari ke depan.
+                            Pantau terus halaman ini untuk informasi agenda terbaru.
+                        </p>
+                        <span class="agenda-empty-badge">
+                            <i class="fas fa-bell"></i>
+                            Segera hadir
+                        </span>
+                    </div>
+                @endif
             </div>
         </div>
     </section>
     @endif
 
+    {{-- ================= AGENDA MODAL ================= --}}
     <div class="agenda-modal-overlay" id="agendaModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="agenda-modal-content">
             <button class="modal-close" id="modalClose" aria-label="Tutup">&times;</button>
@@ -1644,9 +1753,7 @@
                     <h3>Menu</h3>
                     <ul class="footer-links">
                         @foreach($menus as $menu)
-                            <li>
-                                <a href="{{ menu_url($menu) }}">{{ $menu->title }}</a>
-                            </li>
+                            <li><a href="{{ menu_url($menu) }}">{{ $menu->title }}</a></li>
                         @endforeach
                     </ul>
                 </div>
@@ -1672,291 +1779,170 @@
 
     @yield('scripts')
 
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
+<script>
+document.addEventListener('DOMContentLoaded', function () {
 
-        // ================= POPUP BANNER =================
-        const popupOverlay = document.getElementById('popup-overlay');
-        if (popupOverlay) {
-            const closePopup = function () {
-                popupOverlay.style.transition = 'opacity .3s ease';
-                popupOverlay.style.opacity = '0';
-                setTimeout(function() {
-                    if (popupOverlay.parentNode) popupOverlay.remove();
-                }, 300);
-            };
-            const closeBtn = document.getElementById('popup-close-btn');
-            if (closeBtn) closeBtn.addEventListener('click', function (e) { e.stopPropagation(); closePopup(); });
-            popupOverlay.addEventListener('click', function (e) { if (e.target === popupOverlay) closePopup(); });
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && document.getElementById('popup-overlay')) closePopup();
-            });
+    /* ===== UTIL ===== */
+    const isMobile = () => window.innerWidth <= 768;
+
+    /* ===== POPUP ===== */
+    const popupOverlay = document.getElementById('popup-overlay');
+    if (popupOverlay) {
+        const closePopup = () => {
+            popupOverlay.style.opacity = '0';
+            setTimeout(() => popupOverlay.remove(), 300);
+        };
+        document.getElementById('popup-close-btn')?.addEventListener('click', e => { e.stopPropagation(); closePopup(); });
+        popupOverlay.addEventListener('click', e => { if (e.target === popupOverlay) closePopup(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.getElementById('popup-overlay')) closePopup(); });
+    }
+
+    /* ===== MOBILE MENU ===== */
+    const menuToggle  = document.getElementById('menuToggle');
+    const mainNav     = document.getElementById('mainNav');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    const openMenu = () => {
+        mainNav.classList.add('active');
+        menuOverlay?.classList.add('active');
+        document.body.classList.add('menu-open');
+        if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-times"></i>';
+    };
+
+    const closeMenu = () => {
+        mainNav.classList.remove('active');
+        menuOverlay?.classList.remove('active');
+        document.body.classList.remove('menu-open');
+        if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+    };
+
+    menuToggle?.addEventListener('click', e => {
+        e.stopPropagation();
+        mainNav.classList.contains('active') ? closeMenu() : openMenu();
+    });
+
+    menuOverlay?.addEventListener('click', closeMenu);
+
+    window.addEventListener('resize', () => {
+        if (!isMobile()) {
+            closeMenu();
+            document.querySelectorAll('.nav-dropdown.open, .has-child.open')
+                .forEach(el => el.classList.remove('open'));
         }
+    });
 
-        // ================= HERO SLIDER =================
-        var slides = document.querySelectorAll('.hero-slide');
-        if (slides.length > 1) {
-            var current = 0;
-            setInterval(function() {
-                slides[current].classList.remove('active');
-                current = (current + 1) % slides.length;
-                slides[current].classList.add('active');
-            }, 5000);
-        }
+    /* ===== DROPDOWN MOBILE ===== */
+    // Level 1 - klik chevron/nav-link parent
+    document.querySelectorAll('.nav-dropdown > .nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (!isMobile()) return;
+            e.preventDefault();
+            e.stopPropagation();
 
-        // ================= MOBILE MENU =================
-        const menuToggle = document.getElementById('menuToggle');
-        const mainNav = document.getElementById('mainNav');
-        const menuOverlay = document.getElementById('menuOverlay');
+            const parent = this.closest('.nav-dropdown');
+            const isOpen = parent.classList.contains('open');
 
-        function isMobile() { return window.innerWidth <= 768; }
+            // Tutup semua dulu
+            document.querySelectorAll('.nav-dropdown.open')
+                .forEach(el => el.classList.remove('open'));
 
-        function openMobileMenu() {
-            mainNav.classList.add('active');
-            menuOverlay.classList.add('active');
-            document.body.classList.add('menu-open');
-            menuToggle.innerHTML = '<i class="fas fa-times"></i>';
-            menuToggle.setAttribute('aria-expanded', 'true');
-        }
-
-        function closeMobileMenu() {
-            mainNav.classList.remove('active');
-            menuOverlay.classList.remove('active');
-            document.body.classList.remove('menu-open');
-            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.querySelectorAll('.nav-dropdown.open, .has-child.open').forEach(function(el) {
-                el.classList.remove('open');
-            });
-        }
-
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (mainNav.classList.contains('active')) {
-                    closeMobileMenu();
-                } else {
-                    openMobileMenu();
-                }
-            });
-        }
-
-        if (menuOverlay) {
-            menuOverlay.addEventListener('click', closeMobileMenu);
-        }
-
-        // ================= MOBILE DROPDOWN TOGGLE =================
-        document.querySelectorAll('.nav-dropdown > .nav-link').forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                if (!isMobile()) return;
-                e.preventDefault();
-                e.stopPropagation();
-                var parent = this.closest('.nav-dropdown');
-                if (parent) {
-                    document.querySelectorAll('.nav-dropdown.open').forEach(function(open) {
-                        if (open !== parent) open.classList.remove('open');
-                    });
-                    parent.classList.toggle('open');
-                }
-            });
-        });
-
-        document.querySelectorAll('.has-child > a').forEach(function(link) {
-            link.addEventListener('click', function(e) {
-                if (!isMobile()) return;
-                e.preventDefault();
-                e.stopPropagation();
-                var parent = this.closest('.has-child');
-                if (parent) {
-                    parent.classList.toggle('open');
-                }
-            });
-        });
-
-        window.addEventListener('resize', function() {
-            if (!isMobile()) {
-                if (mainNav.classList.contains('active')) closeMobileMenu();
-                document.querySelectorAll('.nav-dropdown.open, .has-child.open').forEach(function(el) {
-                    el.classList.remove('open');
-                });
-                checkAllDropdowns();
-            }
-        });
-
-        document.querySelectorAll('.nav-submenu a, .child-menu a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                if (isMobile()) setTimeout(closeMobileMenu, 150);
-            });
-        });
-
-        // ================= FIX DROPDOWN OVERFLOW (DESKTOP) =================
-        // Helper: ukur elemen yang tersembunyi dengan force-visible sementara
-        function measureHidden(el, callback) {
-            var prev = {
-                visibility:   el.style.visibility,
-                opacity:      el.style.opacity,
-                pointerEvents:el.style.pointerEvents,
-                display:      el.style.display,
-                position:     el.style.position
-            };
-            el.style.visibility    = 'hidden';
-            el.style.opacity       = '0';
-            el.style.pointerEvents = 'none';
-            el.style.display       = 'block';
-            // Harus tetap position absolute agar getBoundingClientRect akurat
-            var rect = el.getBoundingClientRect();
-            el.style.visibility    = prev.visibility;
-            el.style.opacity       = prev.opacity;
-            el.style.pointerEvents = prev.pointerEvents;
-            el.style.display       = prev.display;
-            callback(rect);
-        }
-
-        function fixSubmenuPosition(dropdown) {
-            var submenu = dropdown.querySelector(':scope > .nav-submenu');
-            if (!submenu) return;
-            submenu.classList.remove('flip-left');
-            measureHidden(submenu, function(rect) {
-                if (rect.right > (window.innerWidth - 4)) {
-                    submenu.classList.add('flip-left');
-                }
-            });
-        }
-
-        function fixChildMenuPosition(hasChildEl) {
-            var childMenu = hasChildEl.querySelector(':scope > .child-menu');
-            if (!childMenu) return;
-            childMenu.classList.remove('flip-left');
-            measureHidden(childMenu, function(rect) {
-                if (rect.right > (window.innerWidth - 4)) {
-                    childMenu.classList.add('flip-left');
-                }
-            });
-        }
-
-        // Jalankan sekali saat load untuk semua dropdown
-        function checkAllDropdowns() {
-            if (isMobile()) return;
-            document.querySelectorAll('.nav-dropdown').forEach(fixSubmenuPosition);
-            document.querySelectorAll('.has-child').forEach(fixChildMenuPosition);
-        }
-
-        checkAllDropdowns();
-
-        // Re-check saat hover (menangani zoom / perubahan viewport dinamis)
-        document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
-            dropdown.addEventListener('mouseenter', function() {
-                if (isMobile()) return;
-                fixSubmenuPosition(this);
-            });
-        });
-
-        document.querySelectorAll('.has-child').forEach(function(item) {
-            item.addEventListener('mouseenter', function() {
-                if (isMobile()) return;
-                fixChildMenuPosition(this);
-            });
-        });
-
-        // ================= AGENDA MODAL =================
-        var agendaModal    = document.getElementById('agendaModal');
-        var modalClose     = document.getElementById('modalClose');
-        var modalImageWrap = document.getElementById('modalImageWrap');
-        var modalImageEl   = document.getElementById('modalImage');
-        var agendaData     = window.__agendaData || [];
-
-        function storageUrl(path) {
-            if (!path) return '';
-            return '/storage/' + path.replace(/^public\//, '');
-        }
-
-        function formatDate(dateString) {
-            var d = new Date(dateString);
-            return {
-                day: d.getDate(),
-                month: d.toLocaleDateString('id-ID', { month: 'long' }),
-                year: d.getFullYear()
-            };
-        }
-
-        function closeModal() {
-            if (agendaModal) agendaModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function setEl(id, val) {
-            var el = document.getElementById(id);
-            if (el) el.textContent = val;
-        }
-
-        document.querySelectorAll('.agenda-card-small').forEach(function(card) {
-            function openAgenda() {
-                var agendaId = card.getAttribute('data-agenda-id');
-                var agenda = agendaData.find(function(a) { return String(a.id) === String(agendaId); });
-                if (!agenda) return;
-
-                var date = formatDate(agenda.date);
-                var agendaDate = new Date(agenda.date);
-                var now = new Date();
-
-                var statusText = 'Selesai', statusClass = 'status-completed';
-                if (agendaDate.toDateString() === now.toDateString()) {
-                    statusText = 'Berlangsung'; statusClass = 'status-ongoing';
-                } else if (agendaDate > now) {
-                    statusText = 'Akan Datang'; statusClass = 'status-upcoming';
-                }
-
-                if (agenda.image && modalImageWrap && modalImageEl) {
-                    modalImageEl.src = storageUrl(agenda.image);
-                    modalImageEl.alt = agenda.title;
-                    modalImageWrap.style.display = 'block';
-                    modalImageEl.onerror = function() { modalImageWrap.style.display = 'none'; };
-                } else if (modalImageWrap) {
-                    modalImageWrap.style.display = 'none';
-                }
-
-                setEl('modalDay', date.day);
-                setEl('modalMonthYear', date.month + ' ' + date.year);
-                setEl('modalTitle', agenda.title);
-                setEl('modalTime', agenda.time);
-                setEl('modalLocation', agenda.location);
-
-                var desc = document.getElementById('modalDescription');
-                if (desc) {
-                    desc.innerHTML = agenda.description
-                        ? agenda.description.replace(/\n/g, '<br>')
-                        : '<p style="color:var(--text-light);font-style:italic;">Tidak ada deskripsi tersedia.</p>';
-                }
-
-                var modalStatusEl = document.getElementById('modalStatus');
-                if (modalStatusEl) {
-                    modalStatusEl.textContent = statusText;
-                    modalStatusEl.className = 'modal-status ' + statusClass;
-                }
-
-                if (agendaModal) {
-                    agendaModal.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                }
-            }
-
-            card.addEventListener('click', openAgenda);
-            card.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAgenda(); }
-            });
-        });
-
-        if (modalClose) modalClose.addEventListener('click', closeModal);
-        if (agendaModal) {
-            agendaModal.addEventListener('click', function(e) {
-                if (e.target === agendaModal) closeModal();
-            });
-        }
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && agendaModal && agendaModal.classList.contains('active')) closeModal();
+            // Buka yang diklik (jika sebelumnya tutup)
+            if (!isOpen) parent.classList.add('open');
         });
     });
-    </script>
+
+    // Level 2 - klik has-child
+    document.querySelectorAll('.has-child > a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (!isMobile()) return;
+            e.preventDefault();
+            e.stopPropagation();
+            this.closest('.has-child').classList.toggle('open');
+        });
+    });
+
+    // Link biasa di dalam submenu — tutup menu setelah navigasi
+    document.querySelectorAll('.nav-submenu a:not(.has-child > a), .child-menu a').forEach(link => {
+        link.addEventListener('click', function() {
+            if (!isMobile()) return;
+            const href = this.getAttribute('href');
+            if (href && href !== '#') setTimeout(closeMenu, 150);
+        });
+    });
+
+    // Link top-level (bukan dropdown)
+    document.querySelectorAll('.nav-menu > li:not(.nav-dropdown) > .nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+            if (!isMobile()) return;
+            const href = this.getAttribute('href');
+            if (href && href !== '#') setTimeout(closeMenu, 150);
+        });
+    });
+
+    /* ===== AGENDA MODAL ===== */
+    const agendaModal = document.getElementById('agendaModal');
+    const agendaData  = window.__agendaData || [];
+
+    const openAgendaModal = (agendaId) => {
+        const agenda = agendaData.find(a => a.id == agendaId);
+        if (!agenda) return;
+
+        const date = new Date(agenda.date);
+        const day  = date.getDate().toString().padStart(2, '0');
+        const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+        document.getElementById('modalDay').textContent = day;
+        document.getElementById('modalMonthYear').textContent = `${months[date.getMonth()]} ${date.getFullYear()}`;
+        document.getElementById('modalTitle').textContent = agenda.title;
+        document.getElementById('modalTime').textContent = agenda.time;
+        document.getElementById('modalLocation').textContent = agenda.location;
+        document.getElementById('modalDescription').innerHTML = agenda.description || '<p>Tidak ada deskripsi.</p>';
+
+        const now = new Date();
+        let cls = '', txt = '';
+        if (date.toDateString() === now.toDateString()) { cls = 'status-ongoing';   txt = 'Berlangsung'; }
+        else if (date < now)                            { cls = 'status-completed'; txt = 'Selesai'; }
+        else                                            { cls = 'status-upcoming';  txt = 'Akan Datang'; }
+
+        const statusEl = document.getElementById('modalStatus');
+        statusEl.className = `modal-status ${cls}`;
+        statusEl.textContent = txt;
+
+        const imgWrap = document.getElementById('modalImageWrap');
+        const imgEl   = document.getElementById('modalImage');
+        if (agenda.image) { imgEl.src = '/storage/' + agenda.image; imgWrap.style.display = 'block'; }
+        else              { imgWrap.style.display = 'none'; }
+
+        agendaModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeAgendaModal = () => {
+        agendaModal?.classList.remove('active');
+        document.body.style.overflow = '';
+    };
+
+    document.querySelectorAll('.agenda-card-small').forEach(card => {
+        card.addEventListener('click', () => openAgendaModal(card.getAttribute('data-agenda-id')));
+    });
+
+    document.getElementById('modalClose')?.addEventListener('click', closeAgendaModal);
+    agendaModal?.addEventListener('click', e => { if (e.target === agendaModal) closeAgendaModal(); });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && agendaModal?.classList.contains('active')) closeAgendaModal();
+    });
+
+    /* ===== HERO SLIDER ===== */
+    const slides = document.querySelectorAll('.hero-slide');
+    if (slides.length > 1) {
+        let cur = 0;
+        setInterval(() => {
+            slides[cur].classList.remove('active');
+            cur = (cur + 1) % slides.length;
+            slides[cur].classList.add('active');
+        }, 5000);
+    }
+});
+</script>
 </body>
 </html>

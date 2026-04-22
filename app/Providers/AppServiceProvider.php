@@ -48,9 +48,10 @@ View::composer('layouts.public', function ($view) {
     $heroBanners = HeroBanner::where('is_active',1)->get();
 
     $agendas = Agenda::where('status','approved')
-        ->latest()
-        ->take(5)
-        ->get();
+    ->where('date', '>=', now()->subDays(3)->toDateString())
+    ->orderBy('date', 'asc')
+    ->take(5)
+    ->get();
 
     $activeSurvey = Survey::where('status','approved')
         ->latest()

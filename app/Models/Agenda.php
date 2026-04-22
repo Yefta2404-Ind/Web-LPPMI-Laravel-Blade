@@ -31,4 +31,11 @@ class Agenda extends Model
     {
         return $query->where('status', 'approved');
     }
+
+
+public function scopeVisible($query)
+{
+    return $query->where('status', 'approved')
+                 ->where('date', '>=', now()->subDays(3)->toDateString());
+}
 }

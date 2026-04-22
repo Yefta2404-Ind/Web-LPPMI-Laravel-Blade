@@ -173,9 +173,9 @@ public function publicIndex(Request $request)
 }
 
 
-    public function publicAgenda()
-    {
-        $agendas = Agenda::where('status', 'approved')->orderBy('date')->get();
-        return view('public.home', compact('agendas'));
-    }
+public function publicAgenda()
+{
+    $agendas = Agenda::visible()->orderBy('date')->get();
+    return view('public.home', compact('agendas'));
+}
 }

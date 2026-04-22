@@ -134,33 +134,37 @@ public function reject(News $news)
         return view('news.show', compact('news'));
     }
 
-    public function publicHome()
-    {
-        $news = News::with('images')
-            ->where('status', 'approved')
-            ->where('created_at', '>=', now()->subMonth())
-            ->latest()
-            ->take(4)
-            ->get();
+public function publicHome()
+{
+    $news = News::with('images')
+        ->where('status', 'approved')
+        ->where('created_at', '>=', now()->subMonth())
+        ->latest()
+        ->take(4)
+        ->get();
 
-        $agendas = Agenda::approved()->latest()->take(10)->get();
+    $agendas = Agenda::where('status', 'approved')
+        ->where('date', '>=', now()->subDays(3)->toDateString())
+        ->orderBy('date', 'asc')
+        ->take(10)
+        ->get();
 
-        $featuredVideo = Video::where('is_featured', 1)
-            ->where('status', 'approved')
-            ->where('is_published', 1)
-            ->first();
+    $featuredVideo = Video::where('is_featured', 1)
+        ->where('status', 'approved')
+        ->where('is_published', 1)
+        ->first();
 
-        $heroBanners = HeroBanner::active()->get();
-        $activeSurvey = Survey::where('status', 'approved')->latest()->first();
+    $heroBanners = HeroBanner::active()->get();
+    $activeSurvey = Survey::where('status', 'approved')->latest()->first();
 
-        return view('public.home', compact(
-            'heroBanners',
-            'news',
-            'agendas',
-            'featuredVideo',
-            'activeSurvey'
-        ));
-    }
+    return view('public.home', compact(
+        'heroBanners',
+        'news',
+        'agendas',
+        'featuredVideo',
+        'activeSurvey'
+    ));
+}
 
 public function showPublic(News $news)
 {
