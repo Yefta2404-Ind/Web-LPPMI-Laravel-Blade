@@ -2,23 +2,28 @@
 
 @section('page-title', 'Data Berita')
 @section('content')
+
 <style>
 /* ============================================
-   DATA BERITA - FULL RESPONSIVE
-   MOBILE FIRST APPROACH
+   MODERN NEWS MANAGEMENT - PROFESSIONAL DESIGN
+   FULLY RESPONSIVE + SMOOTH ANIMATIONS
    ============================================ */
-
+   
+/* ----- CSS VARIABLES ----- */
 :root {
-    --primary-color: #2563eb;
+    --primary: #2563eb;
     --primary-dark: #1d4ed8;
-    --primary-light: #dbeafe;
-    --primary-bg-light: #eff6ff;
-    --success-color: #10b981;
-    --success-light: #d1fae5;
-    --warning-color: #f59e0b;
-    --warning-light: #fef3c7;
-    --danger-color: #ef4444;
-    --danger-light: #fee2e2;
+    --primary-light: #3b82f6;
+    --primary-bg: #eff6ff;
+    --success: #10b981;
+    --success-dark: #059669;
+    --success-bg: #ecfdf5;
+    --warning: #f59e0b;
+    --warning-dark: #d97706;
+    --warning-bg: #fffbeb;
+    --danger: #ef4444;
+    --danger-dark: #dc2626;
+    --danger-bg: #fef2f2;
     --gray-50: #f9fafb;
     --gray-100: #f3f4f6;
     --gray-200: #e5e7eb;
@@ -29,14 +34,15 @@
     --gray-700: #374151;
     --gray-800: #1f2937;
     --gray-900: #111827;
-    --border-radius: 16px;
-    --border-radius-sm: 12px;
-    --border-radius-xs: 8px;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-    --transition: all 0.25s ease;
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
 }
 
 * {
@@ -45,57 +51,98 @@
     box-sizing: border-box;
 }
 
-/* ============================================
-   MOBILE FIRST (0 - 768px)
-   ============================================ */
-
-/* Container */
-.admin-container {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 12px;
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
+    min-height: 100vh;
 }
 
-/* Page Header */
+/* ============================================
+   MAIN CONTAINER - RESPONSIVE PADDING
+   ============================================ */
+.news-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+@media (min-width: 640px) {
+    .news-container { padding: 20px 24px; }
+}
+@media (min-width: 1024px) {
+    .news-container { padding: 24px 32px; }
+}
+@media (min-width: 1280px) {
+    .news-container { padding: 32px 40px; }
+}
+
+/* ============================================
+   HEADER SECTION
+   ============================================ */
 .page-header {
-    margin-bottom: 20px;
-    padding-bottom: 16px;
-    border-bottom: 2px solid rgba(37, 99, 235, 0.1);
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid rgba(37, 99, 235, 0.12);
+    position: relative;
+}
+
+.page-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: 2px;
 }
 
 .page-title {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--gray-800);
-    margin-bottom: 6px;
+    background: linear-gradient(135deg, var(--gray-800), var(--gray-600));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .page-description {
     color: var(--gray-500);
-    font-size: 0.75rem;
-    line-height: 1.4;
+    font-size: 0.875rem;
+    line-height: 1.5;
 }
 
-/* Alerts */
+@media (min-width: 768px) {
+    .page-title { font-size: 1.75rem; }
+    .page-description { font-size: 0.9375rem; }
+}
+@media (min-width: 1024px) {
+    .page-title { font-size: 2rem; }
+}
+
+/* ============================================
+   ALERT NOTIFICATIONS
+   ============================================ */
 .alert {
-    padding: 12px 14px;
-    border-radius: var(--border-radius-sm);
-    margin-bottom: 16px;
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.8rem;
-    animation: slideIn 0.3s ease;
+    gap: 12px;
+    font-size: 0.875rem;
+    animation: slideDown 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    box-shadow: var(--shadow-sm);
 }
 
-@keyframes slideIn {
+@keyframes slideDown {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-20px);
     }
     to {
         opacity: 1;
@@ -104,358 +151,546 @@
 }
 
 .alert-success {
-    background: #ecfdf5;
-    color: #065f46;
-    border-left: 3px solid var(--success-color);
+    background: var(--success-bg);
+    color: var(--success-dark);
+    border-left: 4px solid var(--success);
 }
 
 .alert-error {
-    background: #fef2f2;
-    color: #991b1b;
-    border-left: 3px solid var(--danger-color);
+    background: var(--danger-bg);
+    color: var(--danger-dark);
+    border-left: 4px solid var(--danger);
 }
 
 .alert i {
-    font-size: 1rem;
+    font-size: 1.1rem;
     flex-shrink: 0;
 }
 
-/* Stats Cards - Mobile */
+/* ============================================
+   STATISTICS CARDS - MODERN METRICS
+   ============================================ */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+@media (min-width: 480px) {
+    .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+}
+@media (min-width: 1024px) {
+    .stats-grid { gap: 20px; margin-bottom: 32px; }
 }
 
 .stat-card {
     background: white;
-    border-radius: var(--border-radius-sm);
-    padding: 14px;
-    transition: var(--transition);
-    border: 1px solid #e5e7eb;
-    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-lg);
+    padding: 16px 14px;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-xs);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-.stat-card:active {
-    transform: scale(0.98);
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
 }
 
 .stat-card.active {
-    border-color: var(--primary-color);
-    background: var(--primary-bg-light);
+    border-color: var(--primary);
+    background: linear-gradient(135deg, white, var(--primary-bg));
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card.active::before {
+    transform: scaleX(1);
 }
 
 .stat-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--border-radius-xs);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-    font-size: 1.1rem;
+    margin-bottom: 12px;
+    font-size: 1.25rem;
+}
+
+@media (min-width: 640px) {
+    .stat-icon { width: 48px; height: 48px; font-size: 1.35rem; }
 }
 
 .stat-icon.total {
-    background: #eff6ff;
-    color: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-bg), #dbeafe);
+    color: var(--primary);
 }
-
 .stat-icon.draft {
-    background: #f3f4f6;
-    color: #6b7280;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    color: var(--gray-600);
 }
-
 .stat-icon.pending {
-    background: #fffbeb;
-    color: var(--warning-color);
+    background: linear-gradient(135deg, var(--warning-bg), #fef3c7);
+    color: var(--warning);
 }
-
 .stat-icon.approved {
-    background: #f0fdf4;
-    color: var(--success-color);
+    background: linear-gradient(135deg, var(--success-bg), #d1fae5);
+    color: var(--success);
 }
 
 .stat-label {
-    font-size: 0.6rem;
-    color: var(--gray-500);
+    font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+    color: var(--gray-500);
+    margin-bottom: 6px;
 }
 
 .stat-value {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 1.75rem;
+    font-weight: 800;
     color: var(--gray-800);
     line-height: 1.2;
 }
 
-/* News Grid - Mobile */
-.news-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 24px;
+@media (min-width: 640px) {
+    .stat-label { font-size: 0.75rem; }
+    .stat-value { font-size: 2rem; }
+}
+@media (min-width: 1024px) {
+    .stat-value { font-size: 2.25rem; }
 }
 
-/* News Card - Mobile */
+/* ============================================
+   NEWS GRID - FULLY RESPONSIVE
+   ============================================ */
+.news-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+@media (min-width: 480px) {
+    .news-grid { gap: 24px; }
+}
+@media (min-width: 640px) {
+    .news-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
+@media (min-width: 1024px) {
+    .news-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+}
+@media (min-width: 1280px) {
+    .news-grid { grid-template-columns: repeat(3, 1fr); gap: 28px; }
+}
+
+/* ============================================
+   NEWS CARD - ELEVATED DESIGN
+   ============================================ */
 .news-card {
     background: white;
-    border-radius: var(--border-radius-sm);
-    border: 1px solid #e5e7eb;
-    overflow: hidden;
-    transition: var(--transition);
+    border-radius: var(--radius-xl);
+    overflow: visible;
+    transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    position: relative;
 }
 
-.news-card:active {
-    transform: scale(0.99);
+.news-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--gray-300);
 }
 
-.news-image-container {
+/* Image Container */
+.news-image-wrapper {
     position: relative;
     width: 100%;
-    height: 180px;
+    height: 200px;
     overflow: hidden;
-    background: #f3f4f6;
+    background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+}
+
+@media (min-width: 640px) {
+    .news-image-wrapper { height: 210px; }
+}
+@media (min-width: 1024px) {
+    .news-image-wrapper { height: 220px; }
 }
 
 .news-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
-.news-status {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 2;
+.news-card:hover .news-image {
+    transform: scale(1.05);
 }
 
 /* Status Badge */
 .status-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.65rem;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 30px;
+    font-size: 0.7rem;
     font-weight: 600;
-    backdrop-filter: blur(4px);
-}
-
-.status-draft {
-    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.75);
     color: white;
+    z-index: 2;
+    box-shadow: var(--shadow-sm);
 }
 
-.status-pending {
-    background: rgba(245, 158, 11, 0.9);
-    color: white;
-}
+.status-badge i { font-size: 0.65rem; }
 
-.status-approved {
-    background: rgba(16, 185, 129, 0.9);
-    color: white;
-}
+.status-badge.draft { background: rgba(0, 0, 0, 0.8); }
+.status-badge.pending { background: rgba(245, 158, 11, 0.95); }
+.status-badge.approved { background: rgba(16, 185, 129, 0.95); }
+.status-badge.rejected { background: rgba(239, 68, 68, 0.95); }
 
-.status-rejected {
-    background: rgba(239, 68, 68, 0.9);
-    color: white;
-}
-
-/* News Content */
+/* Content Area */
 .news-content {
-    padding: 14px;
+    padding: 18px 16px 16px;
 }
 
-.category-badge {
+@media (min-width: 640px) {
+    .news-content { padding: 20px 18px 18px; }
+}
+@media (min-width: 1024px) {
+    .news-content { padding: 22px 20px 20px; }
+}
+
+/* Category */
+.news-category {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 0.65rem;
-    font-weight: 600;
-    background: #eff6ff;
+    gap: 6px;
+    padding: 4px 12px;
+    background: var(--primary-bg);
     color: var(--primary-dark);
-    margin-bottom: 10px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-bottom: 12px;
 }
 
+/* Title */
 .news-title {
     font-size: 1rem;
     font-weight: 700;
     color: var(--gray-800);
-    line-height: 1.35;
-    margin-bottom: 8px;
+    line-height: 1.4;
+    margin-bottom: 10px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
+@media (min-width: 640px) {
+    .news-title { font-size: 1.1rem; margin-bottom: 12px; }
+}
+@media (min-width: 1024px) {
+    .news-title { font-size: 1.125rem; }
+}
+
+/* Excerpt */
 .news-excerpt {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--gray-600);
-    line-height: 1.5;
-    margin-bottom: 12px;
+    line-height: 1.55;
+    margin-bottom: 16px;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* News Meta */
+/* Meta Info */
 .news-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
+    padding-top: 14px;
+    border-top: 1px solid var(--gray-200);
     flex-wrap: wrap;
     gap: 10px;
 }
 
-.meta-left {
+.meta-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     flex-wrap: wrap;
 }
 
 .meta-item {
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 0.65rem;
+    gap: 6px;
+    font-size: 0.7rem;
     color: var(--gray-500);
 }
 
 .meta-item i {
-    font-size: 0.6rem;
-    color: var(--primary-color);
+    font-size: 0.65rem;
+    color: var(--primary);
 }
 
 /* Action Buttons */
-.news-actions {
+.action-buttons {
     display: flex;
     gap: 8px;
 }
 
-.btn-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: var(--border-radius-xs);
+.btn-action {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     background: white;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--gray-200);
     cursor: pointer;
-    transition: var(--transition);
-    color: #6b7280;
+    transition: all 0.2s ease;
+    color: var(--gray-500);
     text-decoration: none;
 }
 
-.btn-icon:active {
-    transform: scale(0.95);
+.btn-action:hover {
+    transform: translateY(-2px);
 }
 
-.btn-icon.edit:active {
-    background: #eff6ff;
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+.btn-action.edit:hover {
+    background: var(--primary-bg);
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
-.btn-icon.delete:active {
-    background: #fef2f2;
-    border-color: var(--danger-color);
-    color: var(--danger-color);
+.btn-action.delete:hover {
+    background: var(--danger-bg);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.btn-action.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ============================================
+   IMPROVED TOOLTIP - FULLY VISIBLE
+   ============================================ */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip Container */
+.tooltip-wrapper .tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%;
+    right : 0 ;
+    left: auto;
+    transform: none;
+    background: #1f2937;
+    color: white;
+    text-align: center;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    pointer-events: none;
+    line-height: 1.4;
+}
+
+/* Tooltip Arrow */
+.tooltip-wrapper .tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: #1f2937 transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.tooltip-wrapper:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+/* Alternative position for mobile (top-right to avoid cutting off) */
+@media (max-width: 640px) {
+    .tooltip-wrapper .tooltip-text {
+        bottom: auto;
+        top: 125%;
+        left: auto;
+        right: 0;
+        transform: translateX(0);
+        white-space: normal;
+        max-width: 220px;
+        min-width: 180px;
+        word-wrap: break-word;
+        text-align: left;
+    }
+    
+    .tooltip-wrapper .tooltip-text::after {
+        top: auto;
+        bottom: 100%;
+        left: auto;
+        right: 10px;
+        transform: translateX(0);
+        border-color: transparent transparent #1f2937 transparent;
+    }
+    
+    .tooltip-wrapper:hover .tooltip-text {
+        transform: translateY(-5px);
+    }
+}
+
+/* For very small screens, position differently */
+@media (max-width: 480px) {
+    .tooltip-wrapper .tooltip-text {
+        max-width: 200px;
+        min-width: 160px;
+        font-size: 0.7rem;
+        padding: 6px 10px;
+    }
 }
 
 /* Empty State */
 .empty-state {
     text-align: center;
-    padding: 40px 20px;
+    padding: 60px 24px;
     background: white;
-    border-radius: var(--border-radius-sm);
-    border: 1px solid #e5e7eb;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
 }
 
 .empty-icon {
-    width: 60px;
-    height: 60px;
-    background: #eff6ff;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-bg), #dbeafe);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 16px;
-    font-size: 1.5rem;
-    color: var(--primary-color);
+    margin: 0 auto 20px;
+    font-size: 2rem;
+    color: var(--primary);
 }
 
 .empty-title {
-    font-size: 1rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--gray-700);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .empty-description {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     color: var(--gray-500);
-    margin-bottom: 16px;
-    max-width: 280px;
+    margin-bottom: 24px;
+    max-width: 400px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Buttons */
-.btn {
+.btn-primary {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 8px;
-    padding: 8px 16px;
-    border-radius: var(--border-radius-xs);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    border: 1px solid transparent;
-    transition: var(--transition);
-}
-
-.btn-primary {
-    background: var(--primary-color);
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: var(--shadow-sm);
 }
 
-.btn-primary:active {
-    transform: scale(0.97);
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
     background: white;
-    color: var(--primary-color);
-    border-color: #e5e7eb;
+    color: var(--primary);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
-.btn-outline:active {
-    background: #eff6ff;
-    transform: scale(0.97);
+.btn-outline:hover {
+    border-color: var(--primary);
+    background: var(--primary-bg);
+    transform: translateY(-2px);
 }
 
-/* Pagination - Mobile */
-.pagination-container {
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid #f0f0f0;
+/* ============================================
+   PAGINATION
+   ============================================ */
+.pagination-wrapper {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gray-200);
 }
 
 .pagination {
@@ -465,205 +700,72 @@
     flex-wrap: wrap;
 }
 
-.pagination-link {
-    padding: 6px 11px;
-    border: 1px solid #e5e7eb;
-    border-radius: var(--border-radius-xs);
-    font-size: 0.7rem;
-    color: #6b7280;
+.pagination-item {
+    min-width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    color: var(--gray-600);
     text-decoration: none;
+    transition: all 0.2s ease;
     background: white;
-    min-width: 34px;
-    text-align: center;
 }
 
-.pagination-link:active {
-    transform: scale(0.95);
+.pagination-item:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
 }
 
-.pagination-link.active {
-    background: var(--primary-color);
-    border-color: var(--primary-color);
+.pagination-item.active {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-color: var(--primary);
     color: white;
 }
 
-.pagination-link.disabled {
+.pagination-item.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* ============================================
-   TABLET (min-width: 768px)
-   ============================================ */
-@media (min-width: 768px) {
-    .admin-container {
-        padding: 20px 24px;
-    }
-    
-    .page-header {
-        margin-bottom: 28px;
-        padding-bottom: 20px;
-    }
-    
-    .page-title {
-        font-size: 1.6rem;
-    }
-    
-    .page-description {
-        font-size: 0.85rem;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-        margin-bottom: 28px;
-    }
-    
-    .stat-card {
-        padding: 18px;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-    }
-    
-    .stat-icon {
-        width: 48px;
-        height: 48px;
-        font-size: 1.3rem;
-    }
-    
-    .stat-label {
-        font-size: 0.7rem;
-    }
-    
-    .stat-value {
-        font-size: 1.8rem;
-    }
-    
-    .news-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-    
-    .news-image-container {
-        height: 200px;
-    }
-    
-    .news-content {
-        padding: 16px;
-    }
-    
-    .news-title {
-        font-size: 1.1rem;
-    }
-    
-    .news-excerpt {
-        font-size: 0.8rem;
-    }
-    
-    .btn-icon:hover {
-        transform: translateY(-2px);
-    }
-    
-    .btn-icon.edit:hover {
-        background: #eff6ff;
-        border-color: var(--primary-color);
-        color: var(--primary-color);
-    }
-    
-    .btn-icon.delete:hover {
-        background: #fef2f2;
-        border-color: var(--danger-color);
-        color: var(--danger-color);
-    }
-    
-    .empty-state {
-        padding: 60px 40px;
-    }
-    
-    .empty-icon {
-        width: 80px;
-        height: 80px;
-        font-size: 2rem;
-    }
-    
-    .empty-title {
-        font-size: 1.2rem;
-    }
-    
-    .empty-description {
-        font-size: 0.85rem;
-        max-width: 400px;
-    }
-    
-    .pagination-link {
-        padding: 8px 14px;
-        font-size: 0.8rem;
-    }
-    
-    .pagination-link:hover {
-        border-color: var(--primary-color);
-        color: var(--primary-color);
-        transform: translateY(-2px);
-    }
-}
-
-/* ============================================
-   DESKTOP (min-width: 1024px)
-   ============================================ */
-@media (min-width: 1024px) {
-    .admin-container {
-        padding: 24px 32px;
-    }
-    
-    .news-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-    }
-    
-    .news-image-container {
-        height: 220px;
-    }
-    
-    .stat-card {
-        padding: 20px;
-    }
-    
-    .stat-value {
-        font-size: 2rem;
-    }
-}
-
-/* ============================================
-   LARGE DESKTOP (min-width: 1280px)
-   ============================================ */
-@media (min-width: 1280px) {
-    .news-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 28px;
-    }
-}
-
-/* ============================================
-   TOUCH DEVICE OPTIMIZATIONS
+   RESPONSIVE TOUCH OPTIMIZATIONS
    ============================================ */
 @media (hover: none) and (pointer: coarse) {
-    .btn-icon,
     .stat-card,
-    .pagination-link,
-    .btn {
-        min-height: 44px;
+    .btn-action,
+    .pagination-item,
+    .btn-primary,
+    .btn-outline {
+        min-height: 48px;
     }
     
-    .btn-icon {
-        min-width: 44px;
+    .btn-action {
+        min-width: 48px;
     }
     
-    .stat-card {
-        cursor: pointer;
+    .stat-card:active {
+        transform: scale(0.97);
+    }
+    
+    .btn-action:active {
+        transform: scale(0.95);
+    }
+    
+    /* For touch devices, show tooltip on tap */
+    .tooltip-wrapper .tooltip-text {
+        visibility: hidden;
+    }
+    
+    .tooltip-wrapper:active .tooltip-text {
+        visibility: visible;
+        opacity: 1;
     }
 }
 
@@ -671,9 +773,13 @@
    PRINT STYLES
    ============================================ */
 @media print {
+    body {
+        background: white;
+    }
+    
     .stats-grid,
-    .news-actions,
-    .pagination-container,
+    .action-buttons,
+    .pagination-wrapper,
     .alert {
         display: none;
     }
@@ -681,64 +787,107 @@
     .news-card {
         break-inside: avoid;
         border: 1px solid #ddd;
+        box-shadow: none;
         margin-bottom: 20px;
     }
     
-    .news-image-container {
-        height: 150px;
+    .news-card:hover {
+        transform: none;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-up {
+    animation: fadeInUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1) forwards;
+}
+
+.animate-scale {
+    animation: scaleIn 0.4s cubic-bezier(0.2, 0.9, 0.4, 1) forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-up,
+    .animate-scale {
+        animation: none;
+        opacity: 1;
+        transform: none;
     }
 }
 </style>
 
-<div class="admin-container">
-    <!-- Page Header -->
-    <div class="page-header">
+<div class="news-container">
+    <!-- Header -->
+    <div class="page-header animate-fade-up">
         <h1 class="page-title">
-            📰 Data Berita
+            📰 Manajemen Berita
         </h1>
-        <p class="page-description">Kelola berita yang Anda buat. Lihat status, edit, atau hapus berita.</p>
+        <p class="page-description">
+            Kelola semua berita yang telah Anda buat. Pantau status, edit konten, atau hapus berita yang tidak diperlukan.
+        </p>
     </div>
 
     <!-- Alerts -->
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success animate-fade-up">
             <i class="fas fa-check-circle"></i>
             <span style="flex: 1;">{{ session('success') }}</span>
+            <i class="fas fa-times" style="cursor: pointer; opacity: 0.6;" onclick="this.closest('.alert').remove()"></i>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-error">
+        <div class="alert alert-error animate-fade-up">
             <i class="fas fa-exclamation-circle"></i>
             <span style="flex: 1;">{{ session('error') }}</span>
+            <i class="fas fa-times" style="cursor: pointer; opacity: 0.6;" onclick="this.closest('.alert').remove()"></i>
         </div>
     @endif
 
-    @if(session('warning'))
-        <div class="alert alert-warning">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span style="flex: 1;">{{ session('warning') }}</span>
-        </div>
-    @endif
-
-    <!-- Status Stats -->
+    <!-- Statistics -->
     @php
         $totalNews = $news->total();
         $pendingCount = $news->where('status', 'pending')->count();
         $approvedCount = $news->where('status', 'approved')->count();
         $rejectedCount = $news->where('status', 'rejected')->count();
         $draftCount = $news->where('status', 'draft')->count();
-        
         $currentStatus = request('status');
     @endphp
 
-    <div class="stats-grid">
+    <div class="stats-grid animate-fade-up delay-100">
         <div class="stat-card {{ !$currentStatus ? 'active' : '' }}" onclick="filterByStatus('')">
             <div class="stat-icon total">
                 <i class="fas fa-newspaper"></i>
             </div>
             <div class="stat-label">Total Berita</div>
-            <div class="stat-value">{{ $totalNews }}</div>
+            <div class="stat-value">{{ number_format($totalNews) }}</div>
         </div>
 
         <div class="stat-card {{ $currentStatus == 'draft' ? 'active' : '' }}" onclick="filterByStatus('draft')">
@@ -746,7 +895,7 @@
                 <i class="fas fa-pen-fancy"></i>
             </div>
             <div class="stat-label">Draft</div>
-            <div class="stat-value">{{ $draftCount }}</div>
+            <div class="stat-value">{{ number_format($draftCount) }}</div>
         </div>
 
         <div class="stat-card {{ $currentStatus == 'pending' ? 'active' : '' }}" onclick="filterByStatus('pending')">
@@ -754,7 +903,7 @@
                 <i class="fas fa-clock"></i>
             </div>
             <div class="stat-label">Menunggu</div>
-            <div class="stat-value">{{ $pendingCount }}</div>
+            <div class="stat-value">{{ number_format($pendingCount) }}</div>
         </div>
 
         <div class="stat-card {{ $currentStatus == 'approved' ? 'active' : '' }}" onclick="filterByStatus('approved')">
@@ -762,73 +911,61 @@
                 <i class="fas fa-check-circle"></i>
             </div>
             <div class="stat-label">Disetujui</div>
-            <div class="stat-value">{{ $approvedCount }}</div>
+            <div class="stat-value">{{ number_format($approvedCount) }}</div>
         </div>
     </div>
 
     <!-- News Grid -->
     <div class="news-grid">
-        @forelse($news as $n)
-            <div class="news-card">
-                <!-- News Image -->
-                <div class="news-image-container">
+        @forelse($news as $index => $n)
+            <div class="news-card animate-scale" style="animation-delay: {{ $index * 0.05 }}s">
+                <!-- Image -->
+                <div class="news-image-wrapper">
                     <img 
-                        src="{{ $n->image ? asset('storage/'.$n->image) : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}" 
+                        src="{{ $n->image ? asset('storage/'.$n->image) : 'https://placehold.co/800x600/e5e7eb/9ca3af?text=No+Image' }}" 
                         alt="{{ $n->title }}"
                         class="news-image"
-                        onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'"
+                        loading="lazy"
+                        onerror="this.src='https://placehold.co/800x600/e5e7eb/9ca3af?text=No+Image'"
                     >
                     
                     <!-- Status Badge -->
-                    <div class="news-status">
+                    <div class="status-badge {{ $n->status }}">
                         @if($n->status === 'draft')
-                            <span class="status-badge status-draft">
-                                <i class="fas fa-pen-fancy"></i> Draft
-                            </span>
+                            <i class="fas fa-pen-fancy"></i> Draft
                         @elseif($n->status === 'pending')
-                            <span class="status-badge status-pending">
-                                <i class="fas fa-clock"></i> Menunggu
-                            </span>
+                            <i class="fas fa-clock"></i> Menunggu
                         @elseif($n->status === 'approved')
-                            <span class="status-badge status-approved">
-                                <i class="fas fa-check-circle"></i> Disetujui
-                            </span>
+                            <i class="fas fa-check-circle"></i> Disetujui
                         @elseif($n->status === 'rejected')
-                            <span class="status-badge status-rejected">
-                                <i class="fas fa-times-circle"></i> Ditolak
-                            </span>
+                            <i class="fas fa-times-circle"></i> Ditolak
                         @endif
                     </div>
                 </div>
                 
-                <!-- News Content -->
+                <!-- Content -->
                 <div class="news-content">
-                    <!-- Category -->
                     @if($n->category)
-                        <div class="category-badge">
+                        <div class="news-category">
                             <i class="fas fa-folder-open"></i>
                             {{ $n->category->name ?? 'Uncategorized' }}
                         </div>
                     @endif
                     
-                    <!-- Title -->
                     <h3 class="news-title">
-                        {{ Str::limit($n->title, 60) }}
+                        {{ Str::limit($n->title, 65) }}
                     </h3>
                     
-                    <!-- Excerpt -->
                     <div class="news-excerpt">
-                        {{ Str::limit(strip_tags($n->content), 100) }}
+                        {{ Str::limit(strip_tags($n->content), 110) }}
                     </div>
                     
-                    <!-- Meta & Actions -->
                     <div class="news-meta">
-                        <div class="meta-left">
+                        <div class="meta-info">
                             <div class="meta-item">
                                 <i class="fas fa-calendar-alt"></i>
                                 <span>{{ $n->created_at->translatedFormat('d M Y') }}</span>
                             </div>
-                            
                             @if($n->views)
                                 <div class="meta-item">
                                     <i class="fas fa-eye"></i>
@@ -837,58 +974,78 @@
                             @endif
                         </div>
                         
-                        <div class="news-actions">
-                            <!-- Edit Button (only for draft/rejected) -->
-                            @if(in_array($n->status, ['draft', 'rejected']))
+                        <div class="action-buttons">
+                            <!-- Edit Button -->
+                            @if(in_array($n->status, ['draft', 'pending', 'rejected']))
                                 <a href="{{ route('staff.news.edit', $n) }}" 
-                                   class="btn-icon edit"
+                                   class="btn-action edit"
                                    title="Edit Berita">
                                     <i class="fas fa-edit"></i>
                                 </a>
                             @endif
                             
-                            <!-- Delete Button -->
-                            <form method="POST" 
-                                  action="{{ route('staff.news.destroy', $n) }}" 
-                                  class="form-inline"
-                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus berita ini?')"
-                                  style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-icon delete" title="Hapus Berita">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
+                            <!-- Delete Button - ONLY FOR PENDING STATUS -->
+                            @if($n->status === 'pending')
+                                <form method="POST" 
+                                      action="{{ route('staff.news.destroy', $n) }}" 
+                                      style="display: inline;"
+                                      onsubmit="return confirm('⚠️ Peringatan!\n\nAnda akan menghapus berita ini secara permanen.\nTindakan ini tidak dapat dibatalkan.\n\nApakah Anda yakin ingin melanjutkan?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-action delete" title="Hapus Berita">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            @else
+                                <!-- IMPROVED TOOLTIP - FULLY VISIBLE -->
+                                <div class="tooltip-wrapper">
+                                    <button type="button" class="btn-action delete disabled" disabled>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    <span class="tooltip-text">
+                                        @if($n->status === 'approved')
+                                            <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
+                                            Berita yang sudah disetujui tidak dapat dihapus
+                                        @elseif($n->status === 'rejected')
+                                            <i class="fas fa-exclamation-triangle" style="margin-right: 4px;"></i>
+                                            Berita ditolak, hubungi administrator
+                                        @else
+                                            <i class="fas fa-ban" style="margin-right: 4px;"></i>
+                                            Tidak dapat dihapus
+                                        @endif
+                                    </span>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         @empty
-            <div class="empty-state">
+            <div class="empty-state animate-scale">
                 <div class="empty-icon">
                     <i class="fas fa-newspaper"></i>
                 </div>
                 <h3 class="empty-title">
                     @if(request()->hasAny(['status', 'category', 'search']))
-                        Tidak ada berita ditemukan
+                        Tidak Ada Berita Ditemukan
                     @else
-                        Belum ada berita
+                        Belum Ada Berita
                     @endif
                 </h3>
                 <p class="empty-description">
                     @if(request()->hasAny(['status', 'category', 'search']))
                         Coba ubah filter pencarian Anda atau reset filter untuk melihat semua berita.
                     @else
-                        Mulai buat berita pertama Anda dengan menekan tombol "Buat Berita Baru" di atas.
+                        Mulai buat berita pertama Anda sekarang. Berita akan tampil setelah disetujui oleh admin.
                     @endif
                 </p>
                 @if(request()->hasAny(['status', 'category', 'search']))
-                    <a href="{{ route('staff.news.index') }}" class="btn btn-outline">
+                    <a href="{{ route('staff.news.index') }}" class="btn-outline">
                         <i class="fas fa-times"></i> Reset Filter
                     </a>
                 @else
-                    <a href="{{ route('staff.news.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Buat Berita Pertama
+                    <a href="{{ route('staff.news.create') }}" class="btn-primary">
+                        <i class="fas fa-plus"></i> Buat Berita Baru
                     </a>
                 @endif
             </div>
@@ -897,34 +1054,37 @@
 
     <!-- Pagination -->
     @if($news->hasPages())
-        <div class="pagination-container">
+        <div class="pagination-wrapper animate-fade-up delay-200">
             <div class="pagination">
+                {{-- Previous --}}
                 @if($news->onFirstPage())
-                    <span class="pagination-link disabled">
+                    <span class="pagination-item disabled">
                         <i class="fas fa-chevron-left"></i>
                     </span>
                 @else
-                    <a href="{{ $news->previousPageUrl() }}" class="pagination-link">
+                    <a href="{{ $news->previousPageUrl() }}" class="pagination-item">
                         <i class="fas fa-chevron-left"></i>
                     </a>
                 @endif
 
+                {{-- Page Numbers --}}
                 @foreach($news->getUrlRange(1, $news->lastPage()) as $page => $url)
                     @if($page == $news->currentPage())
-                        <span class="pagination-link active">{{ $page }}</span>
+                        <span class="pagination-item active">{{ $page }}</span>
                     @elseif(abs($page - $news->currentPage()) <= 2 || $page == 1 || $page == $news->lastPage())
-                        <a href="{{ $url }}" class="pagination-link">{{ $page }}</a>
+                        <a href="{{ $url }}" class="pagination-item">{{ $page }}</a>
                     @elseif(abs($page - $news->currentPage()) == 3)
-                        <span class="pagination-link disabled">...</span>
+                        <span class="pagination-item disabled">...</span>
                     @endif
                 @endforeach
 
+                {{-- Next --}}
                 @if($news->hasMorePages())
-                    <a href="{{ $news->nextPageUrl() }}" class="pagination-link">
+                    <a href="{{ $news->nextPageUrl() }}" class="pagination-item">
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 @else
-                    <span class="pagination-link disabled">
+                    <span class="pagination-item disabled">
                         <i class="fas fa-chevron-right"></i>
                     </span>
                 @endif
@@ -934,6 +1094,7 @@
 </div>
 
 <script>
+// Filter by status
 function filterByStatus(status) {
     const url = new URL(window.location.href);
     if (status) {
@@ -941,28 +1102,30 @@ function filterByStatus(status) {
     } else {
         url.searchParams.delete('status');
     }
+    url.searchParams.delete('page');
     window.location.href = url.toString();
 }
 
-// Auto-hide alerts after 4 seconds
+// Auto-hide alerts after 5 seconds
 document.addEventListener('DOMContentLoaded', function() {
     const alerts = document.querySelectorAll('.alert');
     alerts.forEach(alert => {
         setTimeout(() => {
-            alert.style.transition = 'opacity 0.3s ease';
+            alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
             alert.style.opacity = '0';
+            alert.style.transform = 'translateY(-10px)';
             setTimeout(() => {
                 if (alert && alert.remove) alert.remove();
             }, 300);
-        }, 4000);
+        }, 5000);
     });
     
     // Touch feedback for mobile
-    const touchElements = document.querySelectorAll('.stat-card, .btn-icon, .pagination-link, .btn');
+    const touchElements = document.querySelectorAll('.stat-card, .btn-action, .pagination-item, .btn-primary, .btn-outline');
     touchElements.forEach(el => {
         el.addEventListener('touchstart', function() {
             this.style.transform = 'scale(0.97)';
-        });
+        }, { passive: true });
         el.addEventListener('touchend', function() {
             this.style.transform = '';
         });
@@ -972,4 +1135,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
 @endsection

@@ -3,599 +3,809 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>LPPMI · Akses Staf | Portal Mutu</title>
+    <title>LPMI Access · Portal Mutu | Universitas Gunung Kidul</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <!-- Google Fonts + Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         :root {
-            --bg-deep: #0a0f1c;
-            --bg-card: #ffffff;
-            --primary-dark: #0B2B40;
-            --primary-deep: #144d5c;
-            --accent-gold: #C9A03D;
-            --accent-gold-light: #e0b354;
-            --accent-gold-glow: rgba(201, 160, 61, 0.2);
-            --text-main: #1f2a3a;
-            --text-secondary: #4a5b6e;
-            --text-muted: #7c8b9c;
-            --border-light: #eef2f6;
-            --border-focus: #c9a03d;
-            --input-bg: #ffffff;
-            --shadow-sm: 0 8px 30px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.02);
-            --shadow-md: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
-            --radius-xl: 28px;
-            --radius-lg: 20px;
-            --radius-md: 14px;
-            --radius-sm: 12px;
+            --navy: #08192e;
+            --navy-mid: #0d2444;
+            --navy-deep: #050f1e;
+            --gold: #c9a03d;
+            --gold-lt: #e0b354;
+            --gold-dim: rgba(201, 160, 61, 0.18);
+            --white: #ffffff;
+            --off-white: #f7f5f0;
+            --ink: #1a1a2e;
+            --muted: #6b7280;
+            --border: #e5e2d8;
+            --success-bg: #ecfdf5;
+            --success-border: #a7f3d0;
+            --success-text: #065f46;
+            --error-bg: #fef2f2;
+            --error-border: #fecaca;
+            --error-text: #991b1b;
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'DM Sans', sans-serif;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            background: var(--bg-deep);
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            background: #eef0f0;
+            background-image: radial-gradient(circle at 10% 20%, rgba(201, 160, 61, 0.05) 2%, transparent 2.5%),
+                              radial-gradient(circle at 85% 70%, rgba(13, 36, 68, 0.04) 1.8%, transparent 2%);
+            background-size: 48px 48px, 36px 36px;
             padding: 1.5rem;
+            min-height: 100vh;
         }
 
-        /* refined background with depth & texture */
-        .bg-ambient {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            background: radial-gradient(circle at 20% 30%, rgba(11, 43, 64, 0.6), #050a14 80%);
-        }
-
-        .bg-grain {
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-
-        /* floating organic blur */
-        .blob-1, .blob-2 {
-            position: fixed;
-            width: 55vw;
-            height: 55vw;
-            background: radial-gradient(circle, rgba(201,160,61,0.08) 0%, rgba(11,43,64,0) 70%);
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: 0;
-            pointer-events: none;
-        }
-        .blob-1 { top: -20vh; right: -15vw; }
-        .blob-2 { bottom: -25vh; left: -10vw; background: radial-gradient(circle, rgba(20,77,92,0.12) 0%, rgba(0,0,0,0) 70%); }
-
-        /* main card */
-        .card-container {
-            position: relative;
-            z-index: 10;
+        /* MAIN CARD - enhanced glassmorphism touch */
+        .card {
+            display: flex;
             width: 100%;
-            max-width: 460px;
-            margin: 0 auto;
+            max-width: 1100px;
+            min-height: 600px;
+            border-radius: 36px;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: rise 0.75s var(--ease-out) both;
         }
 
-        .glass-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 2.5rem 2.2rem 2.2rem;
-            backdrop-filter: blur(0px);
-            box-shadow: var(--shadow-md), 0 1px 2px rgba(0,0,0,0.02);
-            transition: transform 0.3s ease, box-shadow 0.3s;
-            border: 1px solid rgba(201, 160, 61, 0.18);
+        @keyframes rise {
+            0% {
+                opacity: 0;
+                transform: translateY(32px) scale(0.96);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* LEFT PANEL — immersive art */
+        .panel-art {
+            flex: 0 0 44%;
             position: relative;
+            overflow: hidden;
+            background: var(--navy-deep);
         }
 
-        .glass-card:hover {
-            box-shadow: 0 30px 45px -20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* subtle gold line decor */
-        .card-ornament {
+        .art-svg {
             position: absolute;
-            top: 0;
-            left: 2rem;
-            right: 2rem;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), var(--accent-gold-light), transparent);
-            border-radius: 4px;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        /* emblem with refined style */
-        .emblem-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-        .emblem-icon {
-            width: 68px;
-            height: 68px;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary-deep));
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 12px 18px -8px rgba(0,0,0,0.2), 0 0 0 1px rgba(201,160,61,0.25);
-        }
-        .emblem-icon i {
-            font-size: 2rem;
-            color: var(--accent-gold-light);
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        .panel-art:hover .art-svg {
+            transform: scale(1.02);
         }
 
-        .title-section {
-            text-align: center;
-            margin-bottom: 1rem;
+        .panel-art-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2.5rem 2rem;
+            z-index: 3;
+            background: linear-gradient(to top, rgba(5, 15, 30, 0.88) 0%, rgba(5, 15, 30, 0.25) 45%, transparent 100%);
         }
-        .title-section h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.9rem;
+
+        .art-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.7rem;
+            font-weight: 300;
+            color: var(--white);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .art-label em {
+            font-style: italic;
+            color: var(--gold-lt);
             font-weight: 500;
-            color: var(--text-main);
-            letter-spacing: -0.3px;
         }
-        .title-section h1 span {
-            color: var(--accent-gold);
-            font-weight: 600;
-        }
-        .org-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: rgba(201, 160, 61, 0.1);
-            backdrop-filter: blur(4px);
-            padding: 0.25rem 0.9rem;
-            border-radius: 40px;
-            margin-top: 0.7rem;
-            border: 1px solid rgba(201, 160, 61, 0.25);
-        }
-        .org-badge i {
+
+        .art-inst {
             font-size: 0.7rem;
-            color: var(--accent-gold);
-        }
-        .org-badge span {
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: var(--primary-deep);
-            letter-spacing: 0.2px;
-        }
-        .tagline {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 0.65rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             font-weight: 400;
         }
 
-        /* divider minimal */
-        .elegant-divider {
-            margin: 1.6rem 0 1.8rem;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-light), #e2e8f0, transparent);
+        .art-dot {
+            width: 40px;
+            height: 2px;
+            background: var(--gold);
+            margin-bottom: 1.2rem;
+            opacity: 0.85;
         }
 
-        /* alerts: polished */
-        .alert-modern {
+        /* RIGHT PANEL */
+        .panel-form {
+            flex: 1;
             display: flex;
-            align-items: flex-start;
-            gap: 0.7rem;
-            padding: 0.75rem 1rem;
-            border-radius: var(--radius-sm);
-            margin-bottom: 1.5rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            line-height: 1.45;
-            border-left: 3px solid;
-            background: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            flex-direction: column;
+            justify-content: center;
+            background: var(--white);
+            padding: 3rem 3rem;
         }
-        .alert-modern.alert-success {
-            border-left-color: #2b7a4b;
-            background: #f0faf5;
-            color: #1a5a3a;
-        }
-        .alert-modern.alert-error {
-            border-left-color: #b91c1c;
-            background: #fef2f2;
-            color: #991b1b;
-        }
-        .close-alert {
-            margin-left: auto;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.2s;
-            font-size: 0.75rem;
-        }
-        .close-alert:hover { opacity: 1; }
 
-        /* form groups */
-        .form-group {
-            margin-bottom: 1.5rem;
+        .form-header {
+            margin-bottom: 2rem;
         }
-        .input-label {
+
+        .form-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-sub {
+            font-size: 0.85rem;
+            color: var(--muted);
+            letter-spacing: 0.02em;
+            font-weight: 400;
+            border-left: 2px solid var(--gold);
+            padding-left: 0.7rem;
+        }
+
+        /* ALERTS modern */
+        .alert {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 450;
+            backdrop-filter: blur(2px);
+            animation: slideAlert 0.35s var(--ease-out) both;
+        }
+
+        @keyframes slideAlert {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: var(--success-bg);
+            border-left: 4px solid #10b981;
+            color: var(--success-text);
+        }
+
+        .alert-error {
+            background: var(--error-bg);
+            border-left: 4px solid #f43f5e;
+            color: var(--error-text);
+        }
+
+        .alert-close {
+            margin-left: auto;
+            cursor: pointer;
+            opacity: 0.55;
             font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
+            padding: 6px;
+            transition: all 0.2s;
+            border-radius: 50%;
         }
-        .input-label i {
+
+        .alert-close:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* FIELDS */
+        .field {
+            margin-bottom: 1.6rem;
+        }
+
+        .field label {
+            display: block;
             font-size: 0.7rem;
-            color: var(--accent-gold);
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
         }
-        .input-field {
+
+        .input-wrap {
             position: relative;
+            display: flex;
+            align-items: center;
         }
-        .input-field input {
+
+        .input-wrap input {
             width: 100%;
-            padding: 0.9rem 1rem 0.9rem 2.8rem;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            border: 1.5px solid var(--border-light);
-            border-radius: var(--radius-md);
-            background: var(--input-bg);
-            color: var(--text-main);
-            transition: all 0.2s ease;
+            border: none;
+            border-bottom: 1.8px solid var(--border);
+            background: transparent;
+            padding: 0.7rem 2.2rem 0.7rem 0;
+            font-size: 1rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
             outline: none;
+            transition: border-color 0.25s, padding 0.2s;
         }
-        .input-field input:focus {
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px var(--accent-gold-glow);
-        }
-        .input-field .input-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
+
+        .input-wrap input::placeholder {
+            color: #cbc6bc;
+            font-weight: 300;
             font-size: 0.9rem;
-            color: #9aaebf;
+        }
+
+        .input-wrap input:focus {
+            border-bottom-color: var(--gold);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 0;
+            bottom: 0.7rem;
+            font-size: 0.9rem;
+            color: #b9b3a8;
+            pointer-events: none;
             transition: color 0.2s;
         }
-        .input-field input:focus + .input-icon {
-            color: var(--accent-gold);
+
+        .input-wrap input:focus~.input-icon {
+            color: var(--gold);
         }
-        .toggle-visibility {
+
+        .toggle-pw {
             position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
+            right: 0;
+            bottom: 0.7rem;
             background: none;
             border: none;
             cursor: pointer;
-            color: #9aaebf;
-            font-size: 0.85rem;
+            color: #b9b3a8;
+            font-size: 0.9rem;
             padding: 0;
             transition: color 0.2s;
         }
-        .toggle-visibility:hover {
-            color: var(--primary-dark);
+
+        .toggle-pw:hover {
+            color: var(--navy-mid);
         }
 
-        /* primary CTA */
-        .btn-login {
+        /* FORGOT ROW */
+        .forgot-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -0.4rem;
+            margin-bottom: 2rem;
+        }
+
+        .forgot-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.2s, transform 0.1s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .forgot-link i {
+            font-size: 0.65rem;
+        }
+
+        .forgot-link:hover {
+            color: var(--navy);
+            text-decoration: underline;
+        }
+
+        /* BUTTON */
+        .btn-submit {
             width: 100%;
-            background: linear-gradient(105deg, var(--primary-dark) 0%, var(--primary-deep) 100%);
-            border: none;
             padding: 0.9rem 1.2rem;
-            border-radius: var(--radius-md);
-            font-weight: 600;
+            background: var(--navy-mid);
+            color: var(--white);
+            border: none;
+            border-radius: 40px;
+            font-family: 'DM Sans', sans-serif;
             font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            color: white;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.25s, transform 0.15s, box-shadow 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.7rem;
-            cursor: pointer;
-            margin-top: 0.3rem;
-            transition: all 0.25s;
-            box-shadow: 0 4px 12px rgba(11, 43, 64, 0.25);
-            letter-spacing: 0.3px;
+            box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.2);
         }
-        .btn-login i {
-            font-size: 0.85rem;
-            transition: transform 0.2s;
+
+        .btn-submit::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
-        .btn-login:hover {
-            background: linear-gradient(105deg, #0f3a4f, #1a6075);
+
+        .btn-submit:hover {
+            background: #0f2c4a;
             transform: translateY(-2px);
-            box-shadow: 0 12px 22px -8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 14px 22px -10px rgba(0, 0, 0, 0.25);
         }
-        .btn-login:active {
+
+        .btn-submit:hover::after {
+            transform: translateX(100%);
+        }
+
+        .btn-submit:active {
             transform: translateY(1px);
         }
-        .btn-login.loading {
+
+        .btn-submit.loading {
             pointer-events: none;
             opacity: 0.8;
         }
 
-        /* footer clean (only help desk? but we keep minimal without forget password extraneous links) */
-        .footer-minimal {
-            margin-top: 1.8rem;
-            text-align: center;
-            border-top: 1px solid var(--border-light);
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn-submit.loading .btn-icon {
+            animation: spin 0.85s linear infinite;
+        }
+
+        /* FOOTER */
+        .form-footer {
+            margin-top: 2.2rem;
             padding-top: 1.4rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
         }
-        .support-text {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            display: inline-flex;
+
+        .footer-support {
+            font-size: 0.72rem;
+            color: var(--muted);
+            display: flex;
             align-items: center;
-            gap: 6px;
-            background: transparent;
-        }
-        .support-text i {
-            color: var(--accent-gold);
-            font-size: 0.65rem;
-        }
-        .badge-version {
-            margin-top: 1rem;
-            font-size: 0.65rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            background: #f8f9fc;
-            display: inline-block;
-            padding: 0.2rem 0.9rem;
-            border-radius: 40px;
+            gap: 0.5rem;
         }
 
-        /* no extra links */
-        .no-extra-links {
-            margin: 0;
+        .footer-support i {
+            color: var(--gold);
+            font-size: 0.7rem;
         }
 
-        /* toast custom */
-        .custom-toast {
+        .footer-version {
+            font-size: 0.65rem;
+            color: #bfb9ae;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* TOAST CUSTOM */
+        .toast {
             position: fixed;
-            bottom: 30px;
+            bottom: 32px;
             left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            background: #1e293b;
-            backdrop-filter: blur(12px);
-            color: #f1f5f9;
-            padding: 0.7rem 1.5rem;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--ink);
+            color: #f2efea;
+            padding: 0.7rem 1.6rem;
             border-radius: 60px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            font-family: 'Inter', sans-serif;
-            box-shadow: 0 5px 18px rgba(0,0,0,0.25);
-            border: 1px solid rgba(201,160,61,0.4);
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.2s, transform 0.2s;
-            z-index: 2000;
+            border: 1px solid rgba(201, 160, 61, 0.45);
+            backdrop-filter: blur(8px);
+            transition: all 0.25s var(--ease-out);
+            z-index: 9999;
             white-space: nowrap;
+            letter-spacing: 0.01em;
+            box-shadow: 0 10px 18px -6px rgba(0, 0, 0, 0.2);
         }
 
-        @media (max-width: 500px) {
-            .glass-card { padding: 1.8rem 1.5rem; }
-            .title-section h1 { font-size: 1.6rem; }
-            .custom-toast { white-space: normal; max-width: 85%; text-align: center; }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 820px) {
+            body {
+                padding: 1rem;
+                align-items: flex-start;
+            }
+
+            .card {
+                flex-direction: column;
+                border-radius: 28px;
+                max-width: 560px;
+                min-height: auto;
+                margin: 0 auto;
+            }
+
+            .panel-art {
+                flex: 0 0 240px;
+                height: 240px;
+            }
+
+            .panel-art-content {
+                padding: 1.5rem 1.6rem;
+            }
+
+            .art-label {
+                font-size: 2rem;
+            }
+
+            .panel-form {
+                padding: 2rem 1.8rem;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .panel-form {
+                padding: 1.8rem 1.4rem;
+            }
+
+            .form-title {
+                font-size: 2rem;
+            }
+
+            .btn-submit {
+                padding: 0.75rem 1rem;
+            }
+
+            .toast {
+                white-space: normal;
+                max-width: 85vw;
+                text-align: center;
+                font-size: 0.75rem;
+                padding: 0.5rem 1.2rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .panel-form {
+                padding: 1.5rem 1rem;
+            }
+
+            .art-label {
+                font-size: 1.7rem;
+                letter-spacing: 0.1em;
+            }
+        }
+
+        /* subtle additional */
+        .input-wrap input:focus~.input-icon,
+        .input-wrap input:focus~.toggle-pw {
+            color: var(--gold);
         }
     </style>
 </head>
+
 <body>
 
-<div class="bg-ambient"></div>
-<div class="bg-grain"></div>
-<div class="blob-1"></div>
-<div class="blob-2"></div>
+    <div class="card">
 
-<div class="card-container">
-    <div class="glass-card">
-        <div class="card-ornament"></div>
+        <!-- LEFT PANEL - Enhanced Immersive SVG Art (sakral & refined) -->
+        <div class="panel-art">
+            <svg class="art-svg" viewBox="0 0 400 620" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <radialGradient id="moonGlow" cx="70%" cy="16%" r="32%">
+                        <stop offset="0%" stop-color="#2c4c7a" stop-opacity="0.75" />
+                        <stop offset="100%" stop-color="#050f1e" stop-opacity="0" />
+                    </radialGradient>
+                    <radialGradient id="templeLight" cx="48%" cy="48%" r="24%">
+                        <stop offset="0%" stop-color="#e0b354" stop-opacity="0.28" />
+                        <stop offset="100%" stop-color="#c9a03d" stop-opacity="0" />
+                    </radialGradient>
+                    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                        <feMerge>
+                            <feMergeNode in="offsetblur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
 
-        <!-- branding -->
-        <div class="emblem-wrapper">
-            <div class="emblem-icon">
-                <i class="fas fa-building-columns"></i>
+                <rect width="400" height="620" fill="#081c2f" />
+                <rect width="400" height="620" fill="url(#moonGlow)" />
+
+                <!-- Stars -->
+                <g fill="#ffffff" opacity="0.7">
+                    <circle cx="34" cy="38" r="1.1" />
+                    <circle cx="72" cy="22" r="0.8" opacity="0.5" />
+                    <circle cx="124" cy="48" r="1.3" />
+                    <circle cx="168" cy="20" r="0.9" opacity="0.6" />
+                    <circle cx="216" cy="34" r="1.0" />
+                    <circle cx="274" cy="26" r="1.2" opacity="0.7" />
+                    <circle cx="312" cy="52" r="0.8" />
+                    <circle cx="358" cy="30" r="1.1" opacity="0.65" />
+                    <circle cx="48" cy="78" r="0.7" opacity="0.45" />
+                    <circle cx="98" cy="68" r="0.9" />
+                    <circle cx="148" cy="84" r="0.6" />
+                    <circle cx="200" cy="64" r="1.0" opacity="0.5" />
+                    <circle cx="260" cy="76" r="0.8" />
+                    <circle cx="330" cy="68" r="1.0" opacity="0.55" />
+                    <circle cx="380" cy="48" r="0.7" />
+                </g>
+
+                <!-- Moon with halo -->
+                <circle cx="290" cy="62" r="28" fill="#efdfb0" opacity="0.12" />
+                <circle cx="290" cy="62" r="20" fill="#f5e9c4" opacity="0.2" />
+                <circle cx="290" cy="62" r="12" fill="#fef3d6" opacity="0.35" />
+
+                <!-- Distant mountains -->
+                <path d="M0,320 L55,210 L115,255 L165,190 L225,230 L280,170 L340,215 L400,190 L400,620 L0,620Z" fill="#0c233e" />
+                <path d="M0,380 L45,275 L100,310 L150,250 L210,285 L265,240 L325,280 L400,260 L400,620 L0,620Z" fill="#0f2d4c" />
+
+                <!-- Temple complex glow -->
+                <rect width="400" height="620" fill="url(#templeLight)" />
+
+                <!-- Main Temple Structure (elegant Javanese silhouette) -->
+                <g transform="translate(140, 270)">
+                    <!-- base -->
+                    <rect x="12" y="60" width="74" height="48" rx="3" fill="#b58f2e" opacity="0.95" />
+                    <rect x="20" y="68" width="12" height="12" rx="1.5" fill="#fad974" opacity="0.5" />
+                    <rect x="66" y="68" width="12" height="12" rx="1.5" fill="#fad974" opacity="0.5" />
+                    <rect x="37" y="78" width="24" height="30" rx="2" fill="#82681f" />
+                    <!-- middle tier -->
+                    <rect x="18" y="42" width="62" height="24" rx="2" fill="#d9af48" opacity="0.9" />
+                    <rect x="28" y="48" width="10" height="8" rx="1" fill="#fce38a" opacity="0.6" />
+                    <rect x="60" y="48" width="10" height="8" rx="1" fill="#fce38a" opacity="0.6" />
+                    <!-- roof tiers -->
+                    <polygon points="0,42 49,16 98,42" fill="#c79b3a" />
+                    <polygon points="6,42 49,21 92,42" fill="#e3bc66" />
+                    <rect x="42" y="4" width="14" height="16" rx="1" fill="#d9af48" />
+                    <polygon points="38,8 49,-2 60,8" fill="#f2d27a" />
+                    <!-- ornament -->
+                    <line x1="5" y1="42" x2="5" y2="48" stroke="#d9b14a" stroke-width="1.8" opacity="0.9" />
+                    <line x1="93" y1="42" x2="93" y2="48" stroke="#d9b14a" stroke-width="1.8" opacity="0.9" />
+                </g>
+
+                <!-- Foreground jungle trees silhouette -->
+                <g fill="#05121f" opacity="0.95">
+                    <ellipse cx="12" cy="510" rx="46" ry="100" />
+                    <ellipse cx="60" cy="525" rx="38" ry="88" />
+                    <ellipse cx="345" cy="505" rx="48" ry="102" />
+                    <ellipse cx="390" cy="520" rx="32" ry="84" />
+                </g>
+
+                <!-- Mid ground foliage -->
+                <g fill="#0b2f2a" opacity="0.9">
+                    <ellipse cx="85" cy="470" rx="62" ry="32" />
+                    <ellipse cx="180" cy="460" rx="70" ry="34" />
+                    <ellipse cx="285" cy="465" rx="65" ry="30" />
+                </g>
+
+                <!-- warm accent foliage (golden) -->
+                <g opacity="0.7">
+                    <ellipse cx="100" cy="448" rx="20" ry="12" fill="#a4752a" />
+                    <ellipse cx="210" cy="440" rx="24" ry="14" fill="#b88931" />
+                    <ellipse cx="300" cy="450" rx="18" ry="10" fill="#9f6d24" />
+                    <ellipse cx="150" cy="452" rx="14" ry="8" fill="#e2af48" />
+                </g>
+
+                <!-- Pathway & stone glow -->
+                <path d="M178,620 L198,530 L215,470 L205,490 L188,530 L178,620Z" fill="rgba(201,160,61,0.08)" />
+                <path d="M230,620 L210,530 L195,470" fill="none" stroke="rgba(201,160,61,0.12)" stroke-width="10" />
+
+                <!-- Ancestral lanterns -->
+                <line x1="142" y1="420" x2="142" y2="470" stroke="#c9a03d" stroke-width="2.5" opacity="0.65" />
+                <rect x="134" y="410" width="16" height="14" rx="2" fill="#c9a03d" opacity="0.65" />
+                <rect x="138" y="413" width="8" height="8" rx="1" fill="#ffdf99" opacity="0.7" />
+                <line x1="270" y1="428" x2="270" y2="475" stroke="#c9a03d" stroke-width="2.5" opacity="0.6" />
+                <rect x="262" y="418" width="16" height="14" rx="2" fill="#c9a03d" opacity="0.6" />
+                <rect x="266" y="421" width="8" height="8" rx="1" fill="#ffdf99" opacity="0.65" />
+
+                <!-- Fireflies magical -->
+                <circle cx="174" cy="388" r="2.2" fill="#ffe1a0" opacity="0.8" filter="url(#softGlow)" />
+                <circle cx="234" cy="365" r="1.8" fill="#ffe1a0" opacity="0.6" />
+                <circle cx="148" cy="412" r="2" fill="#ffd966" opacity="0.7" />
+                <circle cx="260" cy="395" r="1.5" fill="#ffd966" opacity="0.55" />
+                <circle cx="200" cy="372" r="1.6" fill="#ffeaad" opacity="0.75" />
+
+                <!-- Ground final -->
+                <rect x="0" y="550" width="400" height="70" fill="#071120" />
+            </svg>
+
+            <div class="panel-art-content">
+                <div class="art-dot"></div>
+                <div class="art-label"><em>Welcome back</em></div>
+                <div class="art-inst">Lembaga Penjaminan Mutu Internal</div>
+                <div class="art-inst" style="font-size: 0.55rem; margin-top: 6px;">Universitas Gunung Kidul</div>
             </div>
         </div>
-        <div class="title-section">
-            <h1>LPMI<span> Access</span></h1>
-            <div class="org-badge">
-                <i class="fas fa-certificate"></i>
-                <span>UNIVERSITAS GUNUNG KIDUL</span>
-            </div>
-            
-        </div>
 
-        <div class="elegant-divider"></div>
-
-        <!-- backend session/error alerts -->
-        @if (session('status'))
-            <div class="alert-modern alert-success" id="sessionAlert">
-                <i class="fas fa-check-circle"></i>
-                <span>{{ session('status') }}</span>
-                <i class="fas fa-times close-alert" onclick="this.closest('.alert-modern').remove()"></i>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert-modern alert-error" id="errorAlert">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div style="flex:1">
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
-                </div>
-                <i class="fas fa-times close-alert" onclick="this.closest('.alert-modern').remove()"></i>
-            </div>
-        @endif
-
-        <!-- LOGIN FORM: hanya email & password, tanpa forget password dll -->
-        <form method="POST" action="{{ route('login') }}" id="loginForm">
-            @csrf
-
-            <div class="form-group">
-                <div class="input-label">
-                    <i class="fas fa-envelope"></i>
-                    <span>Alamat Email</span>
-                </div>
-                <div class="input-field">
-                    <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="nama.staff@lppmi.ac.id" required autofocus>
-                    <i class="fas fa-envelope input-icon"></i>
-                </div>
+        <!-- RIGHT PANEL Login Form -->
+        <div class="panel-form">
+            <div class="form-header">
+                <div class="form-title">Akses Portal</div>
             </div>
 
-            <div class="form-group">
-                <div class="input-label">
-                    <i class="fas fa-key"></i>
-                    <span>Kata Sandi</span>
+            <!-- Flash session simulation (Laravel style but works as static demo, alert can be triggered via ?status=success in real use, here I show dynamic demo) 
+            NOTE: since it's plain HTML, we'll keep demo but with dynamic JS removal for demo; however the session/error simulation is robust with sample error display handling -->
+            @if (session('status'))
+                <div class="alert alert-success" id="alertSession">
+                    <i class="fas fa-check-circle"></i>
+                    <span>{{ session('status') }}</span>
+                    <i class="fas fa-times alert-close" onclick="this.closest('.alert').remove()"></i>
                 </div>
-                <div class="input-field">
-                    <input type="password" name="password" id="password" placeholder="••••••••" required>
-                    <i class="fas fa-lock input-icon"></i>
-                    <button type="button" class="toggle-visibility" id="togglePasswordBtn" aria-label="Tampilkan sandi">
-                        <i class="fas fa-eye-slash" id="pwIcon"></i>
-                    </button>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-error" id="alertError">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div style="flex:1">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                    <i class="fas fa-times alert-close" onclick="this.closest('.alert').remove()"></i>
                 </div>
-            </div>
+            @endif
 
-            <button type="submit" class="btn-login" id="submitLoginBtn">
-                <i class="fas fa-arrow-right-to-bracket"></i>
-                <span>Masuk ke Dashboard</span>
-            </button>
+            <form method="POST" action="{{ route('login') }}" id="loginForm" novalidate>
+                @csrf
 
-        </form>
+                <div class="field">
+                    <label for="email">Alamat Email</label>
+                    <div class="input-wrap">
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="" autocomplete="username" autofocus required />
+                        <i class="fas fa-envelope input-icon"></i>
+                    </div>
+                </div>
 
-        <!-- footer sangat minimal: tanpa forget password, tanpa link tambahan yg mengganggu, hanya info dukungan & versi -->
-        <div class="footer-minimal">
-            
+                <div class="field">
+                    <label for="password">Kata Sandi</label>
+                    <div class="input-wrap">
+                        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+                        <button type="button" class="toggle-pw" id="togglePw" aria-label="Tampilkan sandi">
+                            <i class="fas fa-eye-slash" id="pwIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="loginBtn">
+                    <i class="fas fa-arrow-right-to-bracket btn-icon"></i>
+                    <span class="btn-label">Masuk ke Portal</span>
+                </button>
+            </form>
         </div>
     </div>
-</div>
 
-<div id="toastMessage" class="custom-toast"></div>
+    <div id="toast" class="toast"></div>
 
-<script>
-    (function() {
-        // --- toggle password visibility
-        const toggleBtn = document.getElementById('togglePasswordBtn');
-        const passwordField = document.getElementById('password');
-        const pwIcon = document.getElementById('pwIcon');
+    <script>
+        (function() {
+            // Password toggle
+            const toggleBtn = document.getElementById('togglePw');
+            const pwField = document.getElementById('password');
+            const pwIcon = document.getElementById('pwIcon');
 
-        if (toggleBtn && passwordField) {
-            toggleBtn.addEventListener('click', function() {
-                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordField.setAttribute('type', type);
-                if (type === 'text') {
-                    pwIcon.classList.remove('fa-eye-slash');
-                    pwIcon.classList.add('fa-eye');
-                } else {
-                    pwIcon.classList.remove('fa-eye');
-                    pwIcon.classList.add('fa-eye-slash');
-                }
-            });
-        }
-
-        // --- auto-hide alerts with smooth removal
-        const sessionAlertDiv = document.getElementById('sessionAlert');
-        if (sessionAlertDiv) {
-            setTimeout(() => {
-                sessionAlertDiv.style.transition = 'opacity 0.35s ease';
-                sessionAlertDiv.style.opacity = '0';
-                setTimeout(() => {
-                    if(sessionAlertDiv && sessionAlertDiv.remove) sessionAlertDiv.remove();
-                }, 400);
-            }, 4500);
-        }
-
-        const errorAlertDiv = document.getElementById('errorAlert');
-        if (errorAlertDiv) {
-            setTimeout(() => {
-                errorAlertDiv.style.transition = 'opacity 0.35s ease';
-                errorAlertDiv.style.opacity = '0';
-                setTimeout(() => {
-                    if(errorAlertDiv && errorAlertDiv.remove) errorAlertDiv.remove();
-                }, 5500);
-            }, 6000);
-        }
-
-        // --- submit loading state & simple frontend validation
-        const form = document.getElementById('loginForm');
-        const submitBtn = document.getElementById('submitLoginBtn');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-
-        function showToastMessage(message, duration = 2800) {
-            const toast = document.getElementById('toastMessage');
-            toast.textContent = message;
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-            clearTimeout(toast._hideTimer);
-            toast._hideTimer = setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(10px)';
-            }, duration);
-        }
-
-        if (form && submitBtn) {
-            form.addEventListener('submit', function(e) {
-                let emailVal = emailInput ? emailInput.value.trim() : '';
-                let passVal = passwordInput ? passwordInput.value : '';
-
-                if (!emailVal) {
-                    e.preventDefault();
-                    showToastMessage('Email institusi harus diisi');
-                    emailInput?.focus();
-                    return false;
-                }
-                if (!passVal) {
-                    e.preventDefault();
-                    showToastMessage('Kata sandi tidak boleh kosong');
-                    passwordInput?.focus();
-                    return false;
-                }
-                // simple email format reminder (opsional)
-                if (!emailVal.includes('@') || !emailVal.includes('.')) {
-                    e.preventDefault();
-                    showToastMessage('Masukkan email yang valid (contoh: nama@lppmi.ac.id)');
-                    return false;
-                }
-
-                // show loading state
-                submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>Memproses...</span>';
-                submitBtn.classList.add('loading');
-                // form akan tetap submit secara normal ke Laravel
-            });
-        }
-
-        // optional: jika ada tombol close alert secara manual, sudah ditangani onclick inline
-        // TIDAK ADA LINK "lupa password" atau "forget password" / bantuan ti / dll sesuai permintaan
-        // namun kita sudah hapus semua link ekstra (termasuk yang sebelumnya footer-link dll)
-        // Pastikan tidak ada elemen dengan class footer-link yang mengganggu
-        // Semua ekstra link yang tidak diperlukan dihilangkan dari HTML.
-
-        // small style for auto-fill
-        const styleNode = document.createElement('style');
-        styleNode.textContent = `
-            input:-webkit-autofill,
-            input:-webkit-autofill:focus {
-                transition: background-color 600000s 0s, color 600000s 0s;
+            if (toggleBtn && pwField) {
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = pwField.type === 'password';
+                    pwField.type = isHidden ? 'text' : 'password';
+                    pwIcon.classList.toggle('fa-eye-slash', !isHidden);
+                    pwIcon.classList.toggle('fa-eye', isHidden);
+                });
             }
-            input:focus {
-                outline: none;
-            }
-        `;
-        document.head.appendChild(styleNode);
-    })();
-</script>
 
+            // Auto dismiss alerts
+            function dismissAlert(id, delay) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                setTimeout(() => {
+                    el.style.transition = 'opacity 0.3s ease, transform 0.2s';
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(-10px)';
+                    setTimeout(() => el.remove(), 350);
+                }, delay);
+            }
+            dismissAlert('alertSession', 5000);
+            dismissAlert('alertError', 7000);
+
+            // Toast system
+            function showToast(msg, duration = 3200) {
+                const toast = document.getElementById('toast');
+                if (!toast) return;
+                toast.textContent = msg;
+                toast.classList.add('show');
+                if (toast._timer) clearTimeout(toast._timer);
+                toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+            }
+
+            // Form validation + loading state
+            const form = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            if (form && loginBtn) {
+                form.addEventListener('submit', function(e) {
+                    let emailVal = emailInput?.value.trim() || '';
+                    let passVal = passwordInput?.value || '';
+
+                    if (!emailVal) {
+                        e.preventDefault();
+                        showToast('✉️ Email harus diisi.');
+                        emailInput?.focus();
+                        return;
+                    }
+                    const emailPattern = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+                    if (!emailPattern.test(emailVal)) {
+                        e.preventDefault();
+                        showToast('📧 Format email tidak valid (contoh: nama@domain.ac.id).');
+                        emailInput?.focus();
+                        return;
+                    }
+                    if (!passVal) {
+                        e.preventDefault();
+                        showToast('🔒 Kata sandi tidak boleh kosong.');
+                        passwordInput?.focus();
+                        return;
+                    }
+
+                    // Show loading state
+                    const btnIcon = loginBtn.querySelector('.btn-icon');
+                    const btnLabel = loginBtn.querySelector('.btn-label');
+                    if (btnIcon) btnIcon.className = 'fas fa-circle-notch btn-icon';
+                    if (btnLabel) btnLabel.textContent = 'Memproses ...';
+                    loginBtn.classList.add('loading');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>

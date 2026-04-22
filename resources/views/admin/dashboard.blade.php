@@ -2,792 +2,1113 @@
 
 @section('content')
 <style>
-    /* ========================================
-       MODERN ADMIN DASHBOARD - FULL RESPONSIVE
-       Support: 320px - 2560px+ (segala device)
-    ======================================== */
-    
-    /* Reset & Base */
+    /* ========== GOOGLE FONTS ========== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
 
-    /* Root variables dengan responsive font */
-    :root {
-        --biru-tua: #0f2a44;
-        --biru-terang: #3b82f6;
-        --hijau: #10b981;
-        --kuning: #f59e0b;
-        --merah: #ef4444;
-        --ungu: #8b5cf6;
-        --abu-sangat-muda: #f9fafb;
-        --abu-muda: #f3f4f6;
-        --abu: #e5e7eb;
-        --abu-tua: #6b7280;
-        --hitam-muda: #374151;
-        --hitam: #1f2937;
-        
-        /* Responsive font sizes */
-        --fs-base: clamp(14px, 4vw, 16px);
-        --fs-h1: clamp(20px, 6vw, 32px);
-        --fs-h3: clamp(14px, 4.5vw, 18px);
-        --fs-angka: clamp(24px, 7vw, 36px);
-    }
-
     body {
-        font-family: system-ui, -apple-system, 'Inter', 'Segoe UI', sans-serif;
-        background: #f8fafc;
-        overflow-x: hidden;
-        width: 100%;
-        font-size: var(--fs-base);
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #f5f7fb 0%, #f0f2f5 100%);
+        min-height: 100vh;
     }
 
-    /* Container utama - fluid width */
+    /* ========== CSS VARIABLES ========== */
+    :root {
+        --primary: #1e3a5f;
+        --primary-dark: #0f2a44;
+        --primary-light: #2d4a6e;
+        --secondary: #2563eb;
+        --secondary-dark: #1d4ed8;
+        --secondary-light: #3b82f6;
+        --success: #059669;
+        --success-light: #10b981;
+        --success-bg: #ecfdf5;
+        --warning: #dc2626;
+        --warning-bg: #fee2e2;
+        --danger: #dc2626;
+        --danger-bg: #fee2e2;
+        --gray-50: #f8fafc;
+        --gray-100: #f1f5f9;
+        --gray-200: #e2e8f0;
+        --gray-300: #cbd5e1;
+        --gray-400: #94a3b8;
+        --gray-500: #64748b;
+        --gray-600: #475569;
+        --gray-700: #334155;
+        --gray-800: #1e293b;
+        --gray-900: #0f172a;
+        --radius-xs: 6px;
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 20px;
+        --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        --transition-super-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    /* ========== SMOOTH ANIMATIONS ========== */
+    @keyframes fadeInScale {
+        0% {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes slideUpSmooth {
+        0% {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideDownSmooth {
+        0% {
+            opacity: 0;
+            transform: translateY(-40px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideLeftSmooth {
+        0% {
+            opacity: 0;
+            transform: translateX(-40px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideRightSmooth {
+        0% {
+            opacity: 0;
+            transform: translateX(40px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes rotateIn {
+        0% {
+            opacity: 0;
+            transform: rotate(-5deg) scale(0.9);
+        }
+        100% {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+    }
+
+    @keyframes floatSmooth {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-8px);
+        }
+    }
+
+    @keyframes pulseSmooth {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.8;
+            transform: scale(1.02);
+        }
+    }
+
+    @keyframes shimmerSmooth {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
+    @keyframes glowPulse {
+        0%, 100% {
+            box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.3);
+        }
+        50% {
+            box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+        }
+    }
+
+    @keyframes borderGlow {
+        0%, 100% {
+            border-color: rgba(37, 99, 235, 0.2);
+        }
+        50% {
+            border-color: rgba(37, 99, 235, 0.6);
+        }
+    }
+
+    /* Animation Classes */
+    .animate-fade-scale {
+        animation: fadeInScale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-slide-up {
+        animation: slideUpSmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-slide-down {
+        animation: slideDownSmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-slide-left {
+        animation: slideLeftSmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-slide-right {
+        animation: slideRightSmooth 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-rotate {
+        animation: rotateIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        opacity: 0;
+    }
+
+    .animate-float {
+        animation: floatSmooth 4s ease-in-out infinite;
+    }
+
+    .animate-pulse {
+        animation: pulseSmooth 2s ease-in-out infinite;
+    }
+
+    .animate-glow {
+        animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    /* Stagger delays with smooth timing */
+    .delay-1 { animation-delay: 0s; }
+    .delay-2 { animation-delay: 0.1s; }
+    .delay-3 { animation-delay: 0.2s; }
+    .delay-4 { animation-delay: 0.3s; }
+    .delay-5 { animation-delay: 0.4s; }
+    .delay-6 { animation-delay: 0.5s; }
+    .delay-7 { animation-delay: 0.6s; }
+    .delay-8 { animation-delay: 0.7s; }
+
+    /* Hover Effects - Super Smooth */
+    .hover-lift {
+        transition: var(--transition-slow);
+    }
+    .hover-lift:hover {
+        transform: translateY(-6px);
+        transition: var(--transition-slow);
+    }
+
+    .hover-scale {
+        transition: var(--transition-slow);
+    }
+    .hover-scale:hover {
+        transform: scale(1.05);
+        transition: var(--transition-slow);
+    }
+
+    .hover-scale-icon {
+        transition: var(--transition-smooth);
+    }
+    .hover-scale-icon:hover {
+        transform: scale(1.15) rotate(3deg);
+        transition: var(--transition-smooth);
+    }
+
+    .hover-glow {
+        transition: var(--transition-slow);
+    }
+    .hover-glow:hover {
+        box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.15);
+        transition: var(--transition-slow);
+    }
+
+    .hover-border-glow {
+        transition: var(--transition-slow);
+    }
+    .hover-border-glow:hover {
+        border-color: var(--secondary);
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition-slow);
+    }
+
+    /* ========== LAYOUT ========== */
     .dashboard-admin {
-        width: 100%;
-        max-width: 1400px;
+        max-width: 1440px;
         margin: 0 auto;
-        padding: clamp(12px, 3vw, 24px);
-        overflow-x: hidden;
+        padding: 28px 32px;
     }
 
-    /* ========== KARTU SAMBUTAN ========== */
-    .kartu-sambutan {
-        background: linear-gradient(135deg, var(--biru-tua), #1e3a8a);
-        border-radius: clamp(16px, 5vw, 24px);
-        padding: clamp(20px, 5vw, 32px);
-        margin-bottom: clamp(20px, 4vw, 32px);
-        color: white;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    
-    .kartu-sambutan h1 {
-        font-size: var(--fs-h1);
-        margin-bottom: 8px;
-        font-weight: 600;
-        word-break: break-word;
-    }
-    
-    .kartu-sambutan p {
-        font-size: clamp(13px, 3.5vw, 15px);
-        opacity: 0.9;
-        margin-bottom: 16px;
-        line-height: 1.4;
-    }
-    
-    .tanggal-hari-ini {
-        background: rgba(255,255,255,0.2);
-        padding: 6px 14px;
-        border-radius: 40px;
-        font-size: clamp(11px, 3vw, 13px);
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        backdrop-filter: blur(4px);
-        flex-wrap: wrap;
-    }
-
-    /* ========== KARTU STATISTIK - GRID RESPONSIF ========== */
-    .kartu-statistik {
-        display: grid;
-        gap: clamp(12px, 3vw, 20px);
-        margin-bottom: clamp(20px, 4vw, 32px);
-    }
-    
-    /* Breakpoints untuk grid statistik */
-    @media (min-width: 1200px) {
-        .kartu-statistik {
-            grid-template-columns: repeat(4, 1fr);
-        }
-    }
-    
-    @media (min-width: 768px) and (max-width: 1199px) {
-        .kartu-statistik {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (max-width: 767px) {
-        .kartu-statistik {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .stat-item {
-        background: white;
-        border-radius: clamp(14px, 4vw, 20px);
-        padding: clamp(16px, 4vw, 22px);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        border: 1px solid var(--abu);
-        transition: all 0.3s ease;
+    /* ========== WELCOME SECTION ========== */
+    .welcome-card {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        border-radius: var(--radius-xl);
+        padding: 28px 32px;
+        margin-bottom: 28px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 12px;
-    }
-    
-    .stat-item:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-    }
-    
-    .stat-info {
-        flex: 1;
-        min-width: 0;
-    }
-    
-    .stat-info h4 {
-        font-size: clamp(10px, 3vw, 12px);
-        color: var(--abu-tua);
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 600;
-        word-break: keep-all;
-    }
-    
-    .stat-angka {
-        font-size: var(--fs-angka);
-        font-weight: 700;
-        color: var(--hitam);
-        line-height: 1.2;
-        word-break: break-word;
-    }
-    
-    .stat-icon {
-        width: clamp(44px, 12vw, 56px);
-        height: clamp(44px, 12vw, 56px);
-        border-radius: clamp(12px, 3vw, 16px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: clamp(20px, 5vw, 26px);
-        flex-shrink: 0;
-    }
-    
-    .icon-berita { background: #fef3c7; color: #d97706; }
-    .icon-agenda { background: #ede9fe; color: #7c3aed; }
-    .icon-setuju { background: #d1fae5; color: #059669; }
-    .icon-tolak { background: #fee2e2; color: #dc2626; }
-
-    /* ========== KARTU GRAFIK ========== */
-    .kartu-grafik {
-        display: grid;
-        gap: clamp(12px, 3vw, 20px);
-        margin-bottom: clamp(20px, 4vw, 32px);
-    }
-    
-    @media (min-width: 992px) {
-        .kartu-grafik {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (max-width: 991px) {
-        .kartu-grafik {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .grafik-card {
-        background: white;
-        border-radius: clamp(14px, 4vw, 20px);
-        border: 1px solid var(--abu);
+        flex-wrap: wrap;
+        gap: 20px;
+        box-shadow: var(--shadow-lg);
+        position: relative;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: var(--transition-slow);
     }
-    
-    .grafik-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+
+    .welcome-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-xl);
+        transition: var(--transition-slow);
     }
-    
-    .grafik-header {
-        padding: clamp(12px, 3.5vw, 18px) clamp(16px, 4vw, 24px);
-        background: var(--abu-sangat-muda);
-        border-bottom: 1px solid var(--abu);
+
+    .welcome-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+        transition: var(--transition-slow);
     }
-    
-    .grafik-header h3 {
-        font-size: var(--fs-h3);
-        font-weight: 600;
-        margin: 0;
+
+    .welcome-card:hover::before {
+        transform: scale(1.2);
+        transition: var(--transition-slow);
+    }
+
+    .welcome-card::after {
+        content: '👑';
+        position: absolute;
+        bottom: -20px;
+        right: 20px;
+        font-size: 100px;
+        opacity: 0.04;
+        pointer-events: none;
+        transition: var(--transition-slow);
+    }
+
+    .welcome-card:hover::after {
+        transform: scale(1.1) rotate(5deg);
+        opacity: 0.08;
+        transition: var(--transition-slow);
+    }
+
+    .welcome-title h1 {
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 6px;
+        letter-spacing: -0.3px;
+    }
+
+    .welcome-title p {
+        font-size: 13px;
+        color: rgba(255,255,255,0.75);
+    }
+
+    .date-chip {
         display: flex;
         align-items: center;
         gap: 8px;
-        flex-wrap: wrap;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        padding: 8px 18px;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 500;
+        color: white;
+        border: 1px solid rgba(255,255,255,0.15);
+        transition: var(--transition-slow);
     }
-    
-    .grafik-body {
-        padding: clamp(16px, 4vw, 24px);
+
+    .date-chip:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-2px) scale(1.02);
+        transition: var(--transition-slow);
     }
-    
-    canvas {
-        max-height: 280px;
-        width: 100% !important;
-        height: auto !important;
+
+    /* ========== STATS GRID ========== */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-bottom: 28px;
     }
-    
-    /* Legenda responsif */
-    .legenda {
-        display: flex;
-        justify-content: center;
-        gap: clamp(8px, 3vw, 16px);
-        margin-top: clamp(12px, 3vw, 20px);
-        flex-wrap: wrap;
-    }
-    
-    .legenda-item {
+
+    .stat-card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 20px;
         display: flex;
         align-items: center;
-        gap: 6px;
-        font-size: clamp(10px, 3vw, 12px);
-        background: var(--abu-muda);
-        padding: 4px clamp(8px, 3vw, 12px);
-        border-radius: 30px;
+        justify-content: space-between;
+        transition: var(--transition-slow);
+        border: 1px solid var(--gray-100);
+        box-shadow: var(--shadow-xs);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--secondary), var(--secondary-light));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--gray-200);
+        transition: var(--transition-slow);
+    }
+
+    .stat-card:hover::before {
+        transform: scaleX(1);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover .stat-icon {
+        transform: scale(1.1) rotate(5deg);
+        transition: var(--transition-smooth);
+    }
+
+    .stat-card:hover .stat-number {
+        transform: scale(1.02);
+        transition: var(--transition-smooth);
+    }
+
+    .stat-info h4 {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--gray-500);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+        transition: var(--transition-fast);
+    }
+
+    .stat-card:hover .stat-info h4 {
+        color: var(--secondary);
+        transition: var(--transition-fast);
+    }
+
+    .stat-number {
+        font-size: 34px;
+        font-weight: 800;
+        color: var(--gray-800);
+        line-height: 1.2;
+        margin-bottom: 6px;
+        letter-spacing: -1px;
+        transition: var(--transition-smooth);
+    }
+
+    .stat-trend {
+        font-size: 11px;
+        color: var(--success);
+        display: flex;
+        align-items: center;
+        gap: 4px;
         font-weight: 500;
-        white-space: nowrap;
     }
-    
-    @media (max-width: 480px) {
-        .legenda-item {
-            white-space: normal;
-            font-size: 9px;
-        }
+
+    .stat-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        transition: var(--transition-smooth);
     }
-    
-    .warna-legenda {
+
+    .stat-icon.news { background: #eff6ff; color: var(--secondary); }
+    .stat-icon.agenda { background: #ecfdf5; color: var(--success); }
+    .stat-icon.approved { background: #f0fdf4; color: var(--success); }
+    .stat-icon.rejected { background: #fee2e2; color: var(--danger); }
+
+    /* ========== TWO COLUMN ========== */
+    .two-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+
+    /* ========== CARD BASE ========== */
+    .card {
+        background: white;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--gray-100);
+        overflow: hidden;
+        transition: var(--transition-slow);
+        box-shadow: var(--shadow-xs);
+    }
+
+    .card:hover {
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-4px);
+        transition: var(--transition-slow);
+    }
+
+    .card-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--gray-100);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--gray-50);
+        transition: var(--transition-slow);
+    }
+
+    .card:hover .card-header {
+        background: white;
+        transition: var(--transition-slow);
+    }
+
+    .card-header h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--gray-800);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .card-header h3 i {
+        color: var(--secondary);
+        font-size: 16px;
+        transition: var(--transition-smooth);
+    }
+
+    .card:hover .card-header h3 i {
+        transform: rotate(5deg) scale(1.1);
+        transition: var(--transition-smooth);
+    }
+
+    /* ========== CHART ========== */
+    .chart-wrapper {
+        padding: 20px;
+        height: 280px;
+        position: relative;
+        transition: var(--transition-slow);
+    }
+
+    .card:hover .chart-wrapper {
+        padding: 22px;
+        transition: var(--transition-slow);
+    }
+
+    .chart-legend {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 12px 20px 20px;
+        border-top: 1px solid var(--gray-100);
+        background: var(--gray-50);
+        flex-wrap: wrap;
+        transition: var(--transition-slow);
+    }
+
+    .card:hover .chart-legend {
+        background: white;
+        transition: var(--transition-slow);
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--gray-600);
+        transition: var(--transition-smooth);
+        cursor: pointer;
+    }
+
+    .legend-item:hover {
+        transform: translateX(3px);
+        color: var(--secondary);
+        transition: var(--transition-smooth);
+    }
+
+    .legend-dot {
         width: 10px;
         height: 10px;
         border-radius: 3px;
-        flex-shrink: 0;
+        transition: var(--transition-smooth);
     }
 
-    /* ========== KARTU KONTEN ========== */
-    .kartu-konten {
+    .legend-item:hover .legend-dot {
+        transform: scale(1.3);
+        transition: var(--transition-smooth);
+    }
+
+    /* ========== CONTENT LISTS ========== */
+    .content-grid {
         display: grid;
-        gap: clamp(12px, 3vw, 20px);
-        margin-bottom: 20px;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
     }
-    
-    @media (min-width: 992px) {
-        .kartu-konten {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-    
-    @media (max-width: 991px) {
-        .kartu-konten {
-            grid-template-columns: 1fr;
-        }
-    }
-    
-    .konten-card {
+
+    .list-card {
         background: white;
-        border-radius: clamp(14px, 4vw, 20px);
-        border: 1px solid var(--abu);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--gray-100);
         overflow: hidden;
+        transition: var(--transition-slow);
+        box-shadow: var(--shadow-xs);
         display: flex;
         flex-direction: column;
     }
-    
-    .konten-header {
-        padding: clamp(12px, 3.5vw, 18px) clamp(16px, 4vw, 24px);
-        background: var(--abu-sangat-muda);
-        border-bottom: 1px solid var(--abu);
+
+    .list-card:hover {
+        box-shadow: var(--shadow-xl);
+        transform: translateY(-4px);
+        transition: var(--transition-slow);
+    }
+
+    .list-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--gray-100);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
+        background: var(--gray-50);
+        transition: var(--transition-slow);
     }
-    
-    .konten-header h3 {
-        font-size: var(--fs-h3);
+
+    .list-card:hover .list-header {
+        background: white;
+        transition: var(--transition-slow);
+    }
+
+    .list-header h3 {
+        font-size: 14px;
         font-weight: 600;
-        margin: 0;
+        color: var(--gray-800);
         display: flex;
         align-items: center;
         gap: 8px;
-        flex-wrap: wrap;
     }
-    
-    .badge-jumlah {
-        background: linear-gradient(135deg, var(--kuning), #f97316);
+
+    .badge-count {
+        background: var(--secondary);
         color: white;
-        padding: 4px 12px;
-        border-radius: 30px;
-        font-size: clamp(11px, 3vw, 13px);
+        padding: 2px 10px;
+        border-radius: 20px;
+        font-size: 11px;
         font-weight: 600;
-        white-space: nowrap;
+        transition: var(--transition-smooth);
     }
-    
-    .badge-agenda {
-        background: linear-gradient(135deg, var(--ungu), #a78bfa);
+
+    .list-card:hover .badge-count {
+        transform: scale(1.05);
+        transition: var(--transition-smooth);
     }
-    
-    .daftar-konten {
-        padding: clamp(12px, 3.5vw, 20px);
-        max-height: 560px;
+
+    .badge-count.agenda {
+        background: var(--success);
+    }
+
+    .list-content {
+        padding: 8px 0;
+        max-height: 500px;
         overflow-y: auto;
-        scrollbar-width: thin;
     }
-    
-    /* Item konten - full responsive */
-    .item-konten {
-        border: 1px solid var(--abu);
-        border-radius: clamp(12px, 3.5vw, 16px);
-        padding: clamp(12px, 3.5vw, 18px);
-        margin-bottom: 12px;
-        transition: all 0.2s;
-        background: white;
-    }
-    
-    .item-konten:hover {
-        border-color: var(--biru-terang);
-        transform: translateX(4px);
-        box-shadow: 0 4px 12px rgba(59,130,246,0.1);
-    }
-    
-    .judul-konten {
+
+    .list-item {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 10px;
-        gap: 10px;
-        flex-wrap: wrap;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--gray-50);
+        transition: var(--transition-slow);
+        animation: slideRightSmooth 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation-delay: calc(var(--item-order) * 0.05s);
+        opacity: 0;
     }
-    
-    .judul-konten h4 {
-        font-weight: 600;
-        font-size: clamp(13px, 4vw, 15px);
-        margin: 0;
-        color: var(--hitam);
-        line-height: 1.4;
+
+    .list-item:nth-child(1) { --item-order: 1; }
+    .list-item:nth-child(2) { --item-order: 2; }
+    .list-item:nth-child(3) { --item-order: 3; }
+    .list-item:nth-child(4) { --item-order: 4; }
+    .list-item:nth-child(5) { --item-order: 5; }
+
+    .list-item:hover {
+        background: linear-gradient(135deg, var(--gray-50), white);
+        padding-left: 24px;
+        padding-right: 24px;
+        transition: var(--transition-slow);
+    }
+
+    .item-info {
         flex: 1;
         min-width: 0;
-        word-break: break-word;
     }
-    
-    .label-jenis {
-        padding: 3px 10px;
-        border-radius: 30px;
-        font-size: clamp(9px, 2.5vw, 11px);
-        font-weight: 700;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-    
-    .label-berita {
-        background: #fef3c7;
-        color: #92400e;
-    }
-    
-    .label-agenda {
-        background: #ede9fe;
-        color: #5b21b6;
-    }
-    
-    .info-konten {
-        display: flex;
-        gap: clamp(10px, 3vw, 16px);
-        font-size: clamp(10px, 3vw, 12px);
-        color: var(--abu-tua);
-        margin-bottom: 12px;
-        flex-wrap: wrap;
-    }
-    
-    .info-konten i {
-        width: 14px;
-        font-size: 11px;
-    }
-    
-    .tombol-aksi {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-top: 4px;
-    }
-    
-    /* Tombol responsif */
-    .btn {
-        padding: 6px clamp(10px, 3vw, 14px);
-        border-radius: 8px;
-        font-size: clamp(10px, 3vw, 12px);
+
+    .item-title {
+        font-size: 13px;
         font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        transition: var(--transition-smooth);
+    }
+
+    .list-item:hover .item-title {
+        color: var(--secondary);
+        transition: var(--transition-smooth);
+    }
+
+    .item-meta {
+        display: flex;
+        gap: 14px;
+        font-size: 11px;
+        color: var(--gray-400);
+        flex-wrap: wrap;
+    }
+
+    .item-meta i {
+        width: 12px;
+        font-size: 10px;
+        transition: var(--transition-smooth);
+    }
+
+    .list-item:hover .item-meta i {
+        color: var(--secondary);
+        transition: var(--transition-smooth);
+    }
+
+    .item-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .type-badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 10px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: var(--transition-smooth);
+    }
+
+    .type-badge.news {
+        background: #eff6ff;
+        color: var(--secondary);
+    }
+
+    .type-badge.agenda {
+        background: #ecfdf5;
+        color: var(--success);
+    }
+
+    .list-item:hover .type-badge {
+        transform: scale(1.02);
+        transition: var(--transition-smooth);
+    }
+
+    .btn-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gray-500);
+        text-decoration: none;
+        transition: var(--transition-smooth);
+        background: transparent;
         border: none;
         cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.2s;
-        font-family: inherit;
-        white-space: nowrap;
     }
-    
-    @media (max-width: 480px) {
-        .btn {
-            white-space: normal;
-            text-align: center;
-            justify-content: center;
-            flex: 1;
-        }
-        .tombol-aksi {
-            flex-direction: column;
-        }
-        .tombol-aksi .btn {
-            width: 100%;
-        }
+
+    .btn-icon:hover {
+        background: var(--gray-100);
+        transform: scale(1.1) rotate(3deg);
+        transition: var(--transition-smooth);
     }
-    
-    .btn-hijau {
-        background: var(--hijau);
-        color: white;
+
+    .btn-icon.approve:hover {
+        background: var(--success-bg);
+        color: var(--success);
+        transform: scale(1.15);
+        transition: var(--transition-smooth);
     }
-    
-    .btn-hijau:hover {
-        background: #059669;
-        transform: translateY(-2px);
+
+    .btn-icon.reject:hover {
+        background: var(--danger-bg);
+        color: var(--danger);
+        transform: scale(1.15);
+        transition: var(--transition-smooth);
     }
-    
-    .btn-merah {
-        background: var(--merah);
-        color: white;
-    }
-    
-    .btn-merah:hover {
-        background: #dc2626;
-        transform: translateY(-2px);
-    }
-    
-    .btn-abu {
-        background: var(--abu-muda);
-        color: var(--hitam);
-        border: 1px solid var(--abu);
-        text-decoration: none;
-    }
-    
-    .btn-abu:hover {
-        background: var(--abu);
-        transform: translateY(-2px);
-    }
-    
-    /* Kondisi kosong */
-    .kosong {
+
+    /* ========== EMPTY STATE ========== */
+    .empty-state {
         text-align: center;
-        padding: clamp(30px, 10vw, 60px) 20px;
+        padding: 48px 20px;
+        transition: var(--transition-slow);
     }
-    
-    .kosong i {
-        font-size: clamp(40px, 12vw, 56px);
-        color: var(--abu);
+
+    .empty-state i {
+        font-size: 48px;
+        color: var(--gray-300);
         margin-bottom: 12px;
         display: block;
+        transition: var(--transition-smooth);
     }
-    
-    .kosong p {
-        color: var(--abu-tua);
-        font-size: clamp(12px, 3.5vw, 14px);
-        margin: 0;
+
+    .empty-state:hover i {
+        transform: scale(1.1);
+        color: var(--secondary);
+        transition: var(--transition-smooth);
     }
-    
-    /* Scrollbar tetap rapi */
-    .daftar-konten::-webkit-scrollbar {
+
+    .empty-state p {
+        font-size: 13px;
+        color: var(--gray-500);
+    }
+
+    /* ========== CUSTOM SCROLLBAR ========== */
+    .list-content::-webkit-scrollbar {
         width: 4px;
     }
-    .daftar-konten::-webkit-scrollbar-track {
-        background: var(--abu-muda);
+
+    .list-content::-webkit-scrollbar-track {
+        background: var(--gray-100);
         border-radius: 10px;
     }
-    .daftar-konten::-webkit-scrollbar-thumb {
-        background: var(--abu-tua);
+
+    .list-content::-webkit-scrollbar-thumb {
+        background: var(--gray-400);
         border-radius: 10px;
+        transition: var(--transition-slow);
     }
-    
-    /* Touch-friendly untuk mobile */
-    @media (max-width: 768px) {
-        .btn {
-            min-height: 40px;
-        }
-        .stat-item {
-            cursor: pointer;
-        }
-        .item-konten {
-            cursor: pointer;
-        }
+
+    .list-content::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary);
+        transition: var(--transition-slow);
     }
-    
-    /* Landscape mode untuk mobile */
-    @media (max-width: 768px) and (orientation: landscape) {
-        .dashboard-admin {
-            padding: 12px;
-        }
-        .daftar-konten {
-            max-height: 400px;
-        }
-        canvas {
-            max-height: 200px;
-        }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 1024px) {
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        .two-columns { grid-template-columns: 1fr; }
+        .content-grid { grid-template-columns: 1fr; }
+        .dashboard-admin { padding: 20px; }
     }
-    
-    /* Device sangat kecil (320px ke bawah) */
-    @media (max-width: 360px) {
-        .stat-icon {
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-        }
-        .info-konten {
-            gap: 8px;
-        }
-        .konten-header h3 i {
-            font-size: 12px;
-        }
-    }
-    
-    /* Tablet landscape */
-    @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-        .kartu-statistik {
-            grid-template-columns: repeat(4, 1fr);
-        }
-    }
-    
-    /* Desktop besar (4K) */
-    @media (min-width: 1920px) {
-        .dashboard-admin {
-            max-width: 1800px;
-        }
-        .stat-angka {
-            font-size: 44px;
-        }
-        .btn {
-            font-size: 14px;
-            padding: 8px 18px;
-        }
-        .judul-konten h4 {
-            font-size: 16px;
-        }
-    }
-    
-    /* Animasi & transisi halus */
-    .stat-item, .grafik-card, .konten-card, .btn {
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    
-    form {
-        display: inline-block;
+
+    @media (max-width: 640px) {
+        .dashboard-admin { padding: 16px; }
+        .stats-grid { gap: 12px; }
+        .stat-number { font-size: 28px; }
+        .stat-icon { width: 44px; height: 44px; font-size: 20px; }
+        .welcome-card { padding: 20px; flex-direction: column; align-items: flex-start; }
+        .welcome-title h1 { font-size: 20px; }
+        .list-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .item-actions { width: 100%; justify-content: flex-start; gap: 12px; }
     }
 </style>
 
 <div class="dashboard-admin">
-    
-    {{-- KARTU SAMBUTAN --}}
-    <div class="kartu-sambutan">
-        <h1>Halo, {{ auth()->user()->name ?? 'Admin' }}! 👋</h1>
-        <p>Selamat datang di panel admin. Kelola persetujuan konten dengan mudah.</p>
-        <div class="tanggal-hari-ini">
-            <i class="far fa-calendar-alt"></i> {{ now()->translatedFormat('l, d F Y') }}
+    {{-- Welcome Section --}}
+    <div class="welcome-card animate-slide-down delay-1">
+        <div class="welcome-title">
+            <h1>Selamat datang, {{ auth()->user()->name ?? 'Admin' }}! 👋</h1>
+            <p>Kelola dan moderasi semua konten dengan mudah</p>
+        </div>
+        <div class="date-chip animate-glow">
+            <i class="fas fa-calendar-alt"></i>
+            {{ now()->translatedFormat('l, d F Y') }}
         </div>
     </div>
 
-    {{-- STATISTIK --}}
+    {{-- Stats Grid --}}
     @php
-        $jumlahBerita = $pendingNews->count();
-        $jumlahAgenda = $pendingAgenda->count();
-        $jumlahSetuju = $approvedCount ?? 0;
-        $jumlahTolak = $rejectedCount ?? 0;
+        $totalPending = $pendingNews->count() + $pendingAgenda->count();
+        $totalApproved = $approvedCount ?? 0;
+        $totalRejected = $rejectedCount ?? 0;
     @endphp
 
-    <div class="kartu-statistik">
-        <div class="stat-item">
+    <div class="stats-grid">
+        <div class="stat-card animate-slide-left delay-2 hover-lift">
             <div class="stat-info">
-                <h4>📰 BERITA MENUNGGU</h4>
-                <div class="stat-angka">{{ $jumlahBerita }}</div>
+                <h4>📰 Berita Menunggu</h4>
+                <div class="stat-number">{{ $pendingNews->count() }}</div>
+                <div class="stat-trend">
+                    <i class="fas fa-clock"></i> Perlu review
+                </div>
             </div>
-            <div class="stat-icon icon-berita">
+            <div class="stat-icon news hover-scale-icon">
                 <i class="fas fa-newspaper"></i>
             </div>
         </div>
 
-        <div class="stat-item">
+        <div class="stat-card animate-slide-left delay-3 hover-lift">
             <div class="stat-info">
-                <h4>📅 AGENDA MENUNGGU</h4>
-                <div class="stat-angka">{{ $jumlahAgenda }}</div>
+                <h4>📅 Agenda Menunggu</h4>
+                <div class="stat-number">{{ $pendingAgenda->count() }}</div>
+                <div class="stat-trend">
+                    <i class="fas fa-clock"></i> Perlu review
+                </div>
             </div>
-            <div class="stat-icon icon-agenda">
+            <div class="stat-icon agenda hover-scale-icon">
                 <i class="fas fa-calendar-alt"></i>
             </div>
         </div>
 
-        <div class="stat-item">
+        <div class="stat-card animate-slide-left delay-4 hover-lift">
             <div class="stat-info">
-                <h4>✅ SUDAH DISETUJUI</h4>
-                <div class="stat-angka">{{ $jumlahSetuju }}</div>
+                <h4>✅ Sudah Disetujui</h4>
+                <div class="stat-number">{{ $totalApproved }}</div>
+                <div class="stat-trend">
+                    <i class="fas fa-check-circle"></i> Telah tayang
+                </div>
             </div>
-            <div class="stat-icon icon-setuju">
+            <div class="stat-icon approved hover-scale-icon">
                 <i class="fas fa-check-circle"></i>
             </div>
         </div>
 
-        <div class="stat-item">
+        <div class="stat-card animate-slide-left delay-5 hover-lift">
             <div class="stat-info">
-                <h4>❌ SUDAH DITOLAK</h4>
-                <div class="stat-angka">{{ $jumlahTolak }}</div>
+                <h4>❌ Ditolak</h4>
+                <div class="stat-number">{{ $totalRejected }}</div>
+                <div class="stat-trend">
+                    <i class="fas fa-times-circle"></i> Tidak disetujui
+                </div>
             </div>
-            <div class="stat-icon icon-tolak">
+            <div class="stat-icon rejected hover-scale-icon">
                 <i class="fas fa-times-circle"></i>
             </div>
         </div>
     </div>
 
-    {{-- GRAFIK --}}
+    {{-- Charts Section --}}
     @php
-        $totalKonten = $jumlahSetuju + $jumlahBerita + $jumlahAgenda + $jumlahTolak;
+        $totalKonten = $totalApproved + $pendingNews->count() + $pendingAgenda->count() + $totalRejected;
         if ($totalKonten == 0) {
-            $jumlahSetuju = 1;
-            $jumlahBerita = 1;
-            $jumlahAgenda = 1;
-            $jumlahTolak = 1;
+            $chartApproved = 1;
+            $chartNews = 1;
+            $chartAgenda = 1;
+            $chartRejected = 1;
+        } else {
+            $chartApproved = $totalApproved;
+            $chartNews = $pendingNews->count();
+            $chartAgenda = $pendingAgenda->count();
+            $chartRejected = $totalRejected;
         }
     @endphp
 
-    <div class="kartu-grafik">
-        <div class="grafik-card">
-            <div class="grafik-header">
-                <h3><i class="fas fa-chart-pie"></i> 📊 Status Seluruh Konten</h3>
+    <div class="two-columns">
+        {{-- Donut Chart Card --}}
+        <div class="card animate-fade-scale delay-6">
+            <div class="card-header">
+                <h3>
+                    <i class="fas fa-chart-pie"></i>
+                    Status Seluruh Konten
+                </h3>
+                <span style="font-size: 11px; color: var(--gray-400);">Total: {{ $totalKonten }}</span>
             </div>
-            <div class="grafik-body">
-                <canvas id="grafikStatus"></canvas>
-                <div class="legenda">
-                    <div class="legenda-item">
-                        <div class="warna-legenda" style="background: #10b981;"></div>
-                        <span>✅ Disetujui ({{ $jumlahSetuju }})</span>
-                    </div>
-                    <div class="legenda-item">
-                        <div class="warna-legenda" style="background: #f59e0b;"></div>
-                        <span>⏳ Berita ({{ $jumlahBerita }})</span>
-                    </div>
-                    <div class="legenda-item">
-                        <div class="warna-legenda" style="background: #8b5cf6;"></div>
-                        <span>⏳ Agenda ({{ $jumlahAgenda }})</span>
-                    </div>
-                    <div class="legenda-item">
-                        <div class="warna-legenda" style="background: #ef4444;"></div>
-                        <span>❌ Ditolak ({{ $jumlahTolak }})</span>
-                    </div>
+            <div class="chart-wrapper">
+                <canvas id="statusChart" style="width:100%; height:220px;"></canvas>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #059669;"></span>
+                    <span>✅ Disetujui ({{ $chartApproved }})</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #2563eb;"></span>
+                    <span>📰 Berita ({{ $chartNews }})</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #10b981;"></span>
+                    <span>📅 Agenda ({{ $chartAgenda }})</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #dc2626;"></span>
+                    <span>❌ Ditolak ({{ $chartRejected }})</span>
                 </div>
             </div>
         </div>
 
-        <div class="grafik-card">
-            <div class="grafik-header">
-                <h3><i class="fas fa-chart-bar"></i> 📊 Perbandingan Konten Pending</h3>
+        {{-- Bar Chart Card --}}
+        <div class="card animate-fade-scale delay-7">
+            <div class="card-header">
+                <h3>
+                    <i class="fas fa-chart-bar"></i>
+                    Perbandingan Konten Pending
+                </h3>
+                <span style="font-size: 11px; color: var(--gray-400);">Menunggu review</span>
             </div>
-            <div class="grafik-body">
-                <canvas id="grafikPerbandingan"></canvas>
-                <div class="legenda">
-                    <div class="legenda-item">
-                        <div class="warna-legenda" style="background: #f59e0b;"></div>
-                        <span>📰 Berita: {{ $jumlahBerita }}</span>
-                    </div>
-                    <div class="legenda-item">
-                        <div class="warna-legenda" style="background: #8b5cf6;"></div>
-                        <span>📅 Agenda: {{ $jumlahAgenda }}</span>
-                    </div>
+            <div class="chart-wrapper">
+                <canvas id="pendingChart" style="width:100%; height:220px;"></canvas>
+            </div>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #2563eb;"></span>
+                    <span>📰 Berita: {{ $pendingNews->count() }}</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot" style="background: #10b981;"></span>
+                    <span>📅 Agenda: {{ $pendingAgenda->count() }}</span>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- DAFTAR KONTEN MENUNGGU --}}
-    <div class="kartu-konten">
-        <div class="konten-card">
-            <div class="konten-header">
-                <h3><i class="fas fa-newspaper"></i> 📰 Berita Menunggu</h3>
-                <span class="badge-jumlah">{{ $jumlahBerita }} Berita</span>
+    {{-- Content Lists --}}
+    <div class="content-grid">
+        {{-- Berita List --}}
+        <div class="list-card animate-slide-up delay-8">
+            <div class="list-header">
+                <h3>
+                    <i class="fas fa-newspaper"></i>
+                    Berita Menunggu Review
+                </h3>
+                <span class="badge-count">{{ $pendingNews->count() }}</span>
             </div>
-            <div class="daftar-konten">
+            <div class="list-content">
                 @if($pendingNews->count() > 0)
-                    @foreach($pendingNews as $berita)
-                        <div class="item-konten">
-                            <div class="judul-konten">
-                                <h4>{{ Str::limit($berita->title, 55) }}</h4>
-                                <span class="label-jenis label-berita">BERITA</span>
+                    @foreach($pendingNews as $index => $berita)
+                        <div class="list-item" style="--item-order: {{ $index + 1 }}">
+                            <div class="item-info">
+                                <div class="item-title">{{ Str::limit($berita->title, 50) }}</div>
+                                <div class="item-meta">
+                                    <span><i class="fas fa-user"></i> {{ $berita->user->name ?? 'Unknown' }}</span>
+                                    <span><i class="far fa-clock"></i> {{ $berita->created_at->diffForHumans() }}</span>
+                                </div>
                             </div>
-                            <div class="info-konten">
-                                <span><i class="fas fa-user"></i> {{ $berita->user->name ?? 'Unknown' }}</span>
-                                <span><i class="far fa-clock"></i> {{ $berita->created_at->diffForHumans() }}</span>
-                            </div>
-                            <div class="tombol-aksi">
-                                <form method="POST" action="{{ route('admin.news.approve', $berita->id) }}">
+                            <div class="item-actions">
+                                <span class="type-badge news">
+                                    <i class="fas fa-newspaper"></i> Berita
+                                </span>
+                                <form method="POST" action="{{ route('admin.news.approve', $berita->id) }}" style="display: inline;">
                                     @csrf
-                                    <button class="btn btn-hijau" onclick="return confirm('Setujui berita ini?')">
-                                        <i class="fas fa-check"></i> Setujui
+                                    <button type="submit" class="btn-icon approve" title="Setujui" onclick="return confirm('Setujui berita ini?')">
+                                        <i class="fas fa-check-circle"></i>
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('admin.news.reject', $berita->id) }}">
+                                <form method="POST" action="{{ route('admin.news.reject', $berita->id) }}" style="display: inline;">
                                     @csrf
-                                    <button class="btn btn-merah" onclick="return confirm('Tolak berita ini?')">
-                                        <i class="fas fa-times"></i> Tolak
+                                    <button type="submit" class="btn-icon reject" title="Tolak" onclick="return confirm('Tolak berita ini?')">
+                                        <i class="fas fa-times-circle"></i>
                                     </button>
                                 </form>
                             </div>
                         </div>
                     @endforeach
                 @else
-                    <div class="kosong">
-                        <i class="fas fa-newspaper"></i>
-                        <p>✨ Tidak ada berita yang menunggu</p>
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <p>Tidak ada berita yang menunggu review</p>
                     </div>
                 @endif
             </div>
         </div>
 
-        <div class="konten-card">
-            <div class="konten-header">
-                <h3><i class="fas fa-calendar-alt"></i> 📅 Agenda Menunggu</h3>
-                <span class="badge-jumlah badge-agenda">{{ $jumlahAgenda }} Agenda</span>
+        {{-- Agenda List --}}
+        <div class="list-card animate-slide-up delay-8">
+            <div class="list-header">
+                <h3>
+                    <i class="fas fa-calendar-alt"></i>
+                    Agenda Menunggu Review
+                </h3>
+                <span class="badge-count agenda">{{ $pendingAgenda->count() }}</span>
             </div>
-            <div class="daftar-konten">
+            <div class="list-content">
                 @if($pendingAgenda->count() > 0)
-                    @foreach($pendingAgenda as $agenda)
-                        <div class="item-konten">
-                            <div class="judul-konten">
-                                <h4>{{ Str::limit($agenda->title, 55) }}</h4>
-                                <span class="label-jenis label-agenda">AGENDA</span>
+                    @foreach($pendingAgenda as $index => $agenda)
+                        <div class="list-item" style="--item-order: {{ $index + 1 }}">
+                            <div class="item-info">
+                                <div class="item-title">{{ Str::limit($agenda->title, 50) }}</div>
+                                <div class="item-meta">
+                                    <span><i class="fas fa-user"></i> {{ $agenda->user->name ?? 'Unknown' }}</span>
+                                    <span><i class="fas fa-calendar-day"></i> {{ \Carbon\Carbon::parse($agenda->date)->format('d M Y') }}</span>
+                                    @if($agenda->location)
+                                    <span><i class="fas fa-map-marker-alt"></i> {{ Str::limit($agenda->location, 20) }}</span>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="info-konten">
-                                <span><i class="fas fa-user"></i> {{ $agenda->user->name ?? 'Unknown' }}</span>
-                                <span><i class="fas fa-calendar-day"></i> {{ \Carbon\Carbon::parse($agenda->date)->format('d M Y') }}</span>
-                                @if($agenda->location)
-                                <span><i class="fas fa-map-marker-alt"></i> {{ Str::limit($agenda->location, 20) }}</span>
-                                @endif
-                            </div>
-                            <div class="tombol-aksi">
-                                <a href="{{ route('agenda.show', $agenda->id) }}" class="btn btn-abu" target="_blank">
-                                    <i class="fas fa-eye"></i> Detail
-                                </a>
-                                <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}">
+                            <div class="item-actions">
+                                <span class="type-badge agenda">
+                                    <i class="fas fa-calendar-alt"></i> Agenda
+                                </span>
+                                <form method="POST" action="{{ route('admin.agenda.approve', $agenda->id) }}" style="display: inline;">
                                     @csrf
-                                    <button class="btn btn-hijau" onclick="return confirm('Setujui agenda ini?')">
-                                        <i class="fas fa-check"></i> Setujui
+                                    <button type="submit" class="btn-icon approve" title="Setujui" onclick="return confirm('Setujui agenda ini?')">
+                                        <i class="fas fa-check-circle"></i>
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('admin.agenda.reject', $agenda->id) }}">
+                                <form method="POST" action="{{ route('admin.agenda.reject', $agenda->id) }}" style="display: inline;">
                                     @csrf
-                                    <button class="btn btn-merah" onclick="return confirm('Tolak agenda ini?')">
-                                        <i class="fas fa-times"></i> Tolak
+                                    <button type="submit" class="btn-icon reject" title="Tolak" onclick="return confirm('Tolak agenda ini?')">
+                                        <i class="fas fa-times-circle"></i>
                                     </button>
                                 </form>
                             </div>
                         </div>
                     @endforeach
                 @else
-                    <div class="kosong">
-                        <i class="fas fa-calendar-alt"></i>
-                        <p>✨ Tidak ada agenda yang menunggu</p>
+                    <div class="empty-state">
+                        <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                        <p>Tidak ada agenda yang menunggu review</p>
                     </div>
                 @endif
             </div>
@@ -795,74 +1116,133 @@
     </div>
 </div>
 
+{{-- Chart.js CDN --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Grafik Status (Donut Chart)
-    const ctx1 = document.getElementById('grafikStatus').getContext('2d');
-    new Chart(ctx1, {
-        type: 'doughnut',
-        data: {
-            labels: ['Disetujui', 'Berita Pending', 'Agenda Pending', 'Ditolak'],
-            datasets: [{
-                data: [{{ $jumlahSetuju }}, {{ $jumlahBerita }}, {{ $jumlahAgenda }}, {{ $jumlahTolak }}],
-                backgroundColor: ['#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
-                borderWidth: 0,
-                hoverOffset: 15
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `${context.label}: ${context.raw} konten`;
-                        }
-                    }
-                }
-            },
-            cutout: '60%'
-        }
-    });
 
-    // Grafik Perbandingan (Bar Chart)
-    const ctx2 = document.getElementById('grafikPerbandingan').getContext('2d');
-    new Chart(ctx2, {
-        type: 'bar',
-        data: {
-            labels: ['Berita', 'Agenda'],
-            datasets: [{
-                label: 'Menunggu Persetujuan',
-                data: [{{ $jumlahBerita }}, {{ $jumlahAgenda }}],
-                backgroundColor: ['#f59e0b', '#8b5cf6'],
-                borderRadius: 10,
-                barPercentage: 0.6
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return `Menunggu: ${context.raw} konten`;
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Donut Chart - Status Seluruh Konten
+        const ctx1 = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ['Disetujui', 'Berita Pending', 'Agenda Pending', 'Ditolak'],
+                datasets: [{
+                    data: [{{ $chartApproved }}, {{ $chartNews }}, {{ $chartAgenda }}, {{ $chartRejected }}],
+                    backgroundColor: ['#059669', '#2563eb', '#10b981', '#dc2626'],
+                    borderWidth: 0,
+                    hoverOffset: 15,
+                    hoverBorderWidth: 2,
+                    hoverBorderColor: 'white'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#cbd5e1',
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                const total = {{ $totalKonten }};
+                                const value = context.raw;
+                                const percentage = Math.round((value / total) * 100);
+                                return `${context.label}: ${value} konten (${percentage}%)`;
+                            }
                         }
                     }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: { stepSize: 1, precision: 0 }
+                },
+                cutout: '65%',
+                animation: {
+                    duration: 1500,
+                    easing: 'easeInOutQuart',
+                    animateRotate: true,
+                    animateScale: true
+                },
+                hover: {
+                    mode: 'index',
+                    intersect: false,
+                    animationDuration: 400
                 }
             }
-        }
+        });
+
+        // Bar Chart - Perbandingan Konten Pending
+        const ctx2 = document.getElementById('pendingChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ['Berita', 'Agenda'],
+                datasets: [{
+                    label: 'Menunggu Persetujuan',
+                    data: [{{ $pendingNews->count() }}, {{ $pendingAgenda->count() }}],
+                    backgroundColor: ['#2563eb', '#10b981'],
+                    borderRadius: 8,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.8,
+                    hoverBackgroundColor: ['#1d4ed8', '#059669']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#cbd5e1',
+                        padding: 10,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return `Menunggu: ${context.raw} konten`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9', drawBorder: false },
+                        ticks: { 
+                            stepSize: 1, 
+                            precision: 0,
+                            font: { size: 11, family: "'Inter', sans-serif" }
+                        },
+                        animation: {
+                            duration: 1000,
+                            easing: 'easeInOutQuart'
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { 
+                            font: { size: 12, weight: '600', family: "'Inter', sans-serif" }
+                        },
+                        animation: {
+                            duration: 1000,
+                            easing: 'easeInOutQuart'
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1200,
+                    easing: 'easeInOutQuart',
+                    delay: 300
+                },
+                hover: {
+                    mode: 'index',
+                    intersect: false,
+                    animationDuration: 400
+                }
+            }
+        });
     });
-});
 </script>
 @endsection

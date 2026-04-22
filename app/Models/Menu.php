@@ -23,15 +23,16 @@ class Menu extends Model
      * Catatan: tidak difilter is_active agar saat hapus parent,
      * seluruh child (aktif maupun nonaktif) ikut terhapus.
      */
-    public function children()
-    {
-        return $this->hasMany(Menu::class, 'parent_id')
-                    ->orderBy('order');
-    }
+public function children()
+{
+    return $this->hasMany(Menu::class, 'parent_id')->with('children');
+}
 
-    /**
-     * Sub-menu yang aktif saja — dipakai untuk render navigasi di frontend.
-     */
+    public function childrenAll()
+{
+    return $this->children()->with('childrenAll');
+}
+    
     public function activeChildren()
     {
         return $this->hasMany(Menu::class, 'parent_id')
@@ -48,4 +49,20 @@ class Menu extends Model
     {
         return $this->belongsTo(\App\Models\Page::class);
     }
+
+public function childrenRecursive()
+{
+    return $this->hasMany(Menu::class, 'parent_id')
+        ->with('childrenRecursive')
+        ->orderBy('order');
+}
+
+public function deleteWithChildren()
+{
+    foreach ($this->children as $child) {
+        $child->deleteWithChildren();
+    }
+
+    $this->delete();
+}
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ProfileController;
 use App\Models\News;
+use Carbon\Carbon;
 use App\Http\Controllers\Admin\PopupBannerController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\SurveyController;
@@ -24,14 +25,9 @@ use App\Http\Controllers\Admin\SpmiDocumentController as AdminSpmi;
 use App\Models\Survey;
 use App\Models\Page;
 
-
-
-
-
-
-
-
-
+Route::post('/upload-image', [NewsController::class, 'uploadImage'])
+    ->name('upload.image');
+    
 
 Route::get('/uraian-tugas', function () {
     return view('public.uraian-tugas');
@@ -87,7 +83,8 @@ Route::post('/spmi',
         Route::get('/news', [NewsController::class, 'staffIndex'])
             ->name('news.index');
 
-
+Route::delete('/news/{news}', [NewsController::class, 'destroy'])
+    ->name('news.destroy');
         Route::get('/news/create', [NewsController::class, 'create'])
             ->name('news.create');
 
@@ -99,9 +96,6 @@ Route::post('/spmi',
 
         Route::put('/news/{news}', [NewsController::class, 'update'])
             ->name('news.update');
-
-        Route::delete('/news/{news}', [NewsController::class, 'destroy'])
-            ->name('news.destroy');
 
 
     /* ================= MUTU EKSTERNAL (STAFF) ================= */
@@ -144,6 +138,8 @@ Route::post('/spmi',
 | DASHBOARD (SEMUA USER LOGIN)
 |--------------------------------------------------------------------------
 */
+
+
 Route::middleware('auth')->get('/dashboard', function () {
 
     $role = auth()->user()->role;
@@ -152,20 +148,39 @@ Route::middleware('auth')->get('/dashboard', function () {
         return redirect()->route('admin.dashboard');
     }
 
-    $myNews    = \App\Models\News::where('user_id', auth()->id())->latest()->get();
-    $myAgenda  = \App\Models\Agenda::where('user_id', auth()->id())->latest()->get();
-    $myVideos  = \App\Models\Video::where('user_id', auth()->id())->latest()->get();
-    $mySurveys = Survey::where('created_by', auth()->id())
-        ->latest()
-        ->get();
+    $userId = auth()->id();
+
+    $myNews   = \App\Models\News::where('user_id', $userId)->latest()->get();
+    $myAgenda = \App\Models\Agenda::where('user_id', $userId)->latest()->get();
+
+    $dates = collect();
+    for ($i = 29; $i >= 0; $i--) {
+        $dates->push(Carbon::now()->subDays($i)->format('Y-m-d'));
+    }
+
+    $pendingRaw = \App\Models\News::where('user_id', $userId)
+        ->where('status', 'pending')
+        ->whereDate('created_at', '>=', now()->subDays(30))
+        ->get()
+        ->groupBy(fn($item) => $item->created_at->format('Y-m-d'));
+
+    $approvedRaw = \App\Models\News::where('user_id', $userId)
+        ->where('status', 'approved')
+        ->whereDate('created_at', '>=', now()->subDays(30))
+        ->get()
+        ->groupBy(fn($item) => $item->created_at->format('Y-m-d'));
+
+    $pendingData = $dates->map(fn($date) => count($pendingRaw[$date] ?? []));
+    $approvedData = $dates->map(fn($date) => count($approvedRaw[$date] ?? []));
 
     return view('dashboard', compact(
         'myNews',
         'myAgenda',
-        'myVideos',
-        'mySurveys'
+        'pendingData',
+        'approvedData'
     ));
-})->name('dashboard');
+
+})->name('dashboard'); 
 
 /*
 |--------------------------------------------------------------------------
@@ -257,14 +272,25 @@ Route::get('/organization-structure/create',               [OrganizationStructur
 Route::post('/organization-structure',                     [OrganizationStructureController::class, 'store'])->name('organization-structure.store');
 Route::get('/organization-structure/{id}/edit',            [OrganizationStructureController::class, 'edit'])->name('organization-structure.edit');
 Route::put('/organization-structure/{id}',                 [OrganizationStructureController::class, 'update'])->name('organization-structure.update');
-Route::post('/organization-structure/{id}/toggle-active',  [OrganizationStructureController::class, 'toggleActive'])->name('organization-structure.toggle-active');
+Route::patch('/organization-structure/{id}/toggle-active',
+    [OrganizationStructureController::class, 'toggleActive']
+)->name('organization-structure.toggle-active');
 Route::delete('/organization-structure/{id}',              [OrganizationStructureController::class, 'destroy'])->name('organization-structure.destroy');
 
         /* ================= NEWS (ADMIN) ================= */
-        Route::post('/news/{news}/approve', [NewsController::class, 'approve'])
-            ->name('news.approve');
-        Route::post('/news/{news}/reject', [NewsController::class, 'reject'])
-            ->name('news.reject');
+Route::get('/news', [NewsController::class, 'adminIndex'])
+    ->name('news.index');
+
+// ACTIONS
+Route::post('/news/{news}/approve', [NewsController::class, 'approve'])
+    ->name('news.approve');
+
+Route::post('/news/{news}/reject', [NewsController::class, 'reject'])
+    ->name('news.reject');
+
+// DELETE
+Route::delete('/news/{news}', [NewsController::class, 'destroy'])
+    ->name('news.destroy');
 
         /* ================= AGENDA (ADMIN) ================= */
         Route::get('/agenda', [AgendaController::class, 'adminIndex'])

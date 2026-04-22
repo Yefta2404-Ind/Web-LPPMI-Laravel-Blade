@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin - @yield('title', 'LPMI')</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-v2.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -771,6 +772,11 @@
                         </a>
                     </div>
                 </div>
+                <a href="{{ route('admin.news.index') }}"
+   class="nav-item {{ request()->routeIs('admin.news.*') ? 'aktif' : '' }}">
+    <i class="fas fa-newspaper nav-ikon"></i>
+    <span class="nav-teks">Berita</span>
+</a>
 
                 <!-- Spanduk Utama -->
                 <a href="{{ route('admin.hero-banners.index') }}"

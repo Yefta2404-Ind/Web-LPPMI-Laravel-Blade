@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>@yield('title', 'LPPMI - Universitas Gunung Kidul')</title>
     <meta name="description" content="Lembaga Pengendalian dan Penjaminan Mutu Internal Universitas Gunung Kidul. Meningkatkan kualitas pendidikan melalui sistem penjaminan mutu berkelanjutan.">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo-v2.png') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -72,120 +73,13 @@
         /* ================= CONTAINERS ================= */
         .site-container,
         .survey-container,
-        .footer-container {
+        .footer-container,
+        .lpm-container {
             width: 100%;
             max-width: var(--container-max);
             margin: 0 auto;
             padding: 0 var(--container-pad);
         }
-
-        .main-footer {
-    background: #111;
-    color: #ddd;
-    padding: 60px 0 20px;
-    font-size: 14px;
-}
-
-.footer-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: auto;
-}
-
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
-}
-
-.footer-col h3 {
-    color: #fff;
-    margin-bottom: 15px;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.footer-logo img {
-    width: 55px;
-    height: 55px;
-    object-fit: contain;
-    background: #fff;
-    border-radius: 50%;
-    padding: 4px;
-}
-
-.footer-subtitle {
-    font-size: 12px;
-    color: #aaa;
-}
-
-.footer-desc {
-    margin-top: 10px;
-    line-height: 1.6;
-}
-
-.footer-links {
-    list-style: none;
-    padding: 0;
-}
-
-.footer-links li {
-    margin-bottom: 8px;
-}
-
-.footer-links a {
-    color: #ccc;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.footer-links a:hover {
-    color: gold;
-}
-
-.footer-col p {
-    margin: 8px 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.footer-col i {
-    color: gold;
-}
-
-.footer-social a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 35px;
-    height: 35px;
-    background: #222;
-    border-radius: 50%;
-    color: #fff;
-    margin-right: 8px;
-    transition: 0.3s;
-}
-
-.footer-social a:hover {
-    background: gold;
-    color: #000;
-}
-
-.footer-bottom {
-    text-align: center;
-    margin-top: 40px;
-    border-top: 1px solid #333;
-    padding-top: 15px;
-    font-size: 13px;
-    color: #aaa;
-}
-
 
         /* ================= TOP BAR ================= */
         .top-bar {
@@ -254,9 +148,10 @@
             background: var(--primary);
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 9999;
             width: 100%;
             box-shadow: 0 2px 20px rgba(0,0,0,0.25);
+            overflow: visible; /* PENTING: jangan hidden */
         }
 
         .site-header::before {
@@ -274,6 +169,7 @@
             padding: 10px 0;
             gap: 16px;
             width: 100%;
+            overflow: visible; /* PENTING: jangan hidden */
         }
 
         .logo-title-group {
@@ -341,129 +237,247 @@
         .menu-toggle:hover { background: rgba(255,255,255,0.18); }
 
         /* ================= NAVIGATION ================= */
-        .main-nav { display: flex; justify-content: flex-end; align-items: stretch; }
+        .main-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: stretch;
+            overflow: visible; /* PENTING */
+        }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            margin: 0; padding: 0;
-            gap: 0;
+            margin: 0;
+            padding: 0;
+            gap: 2px;
             align-items: stretch;
+            overflow: visible; /* PENTING */
         }
 
         .nav-menu > li {
             position: relative;
-            display: flex;
+            display: block;
             align-items: stretch;
+            justify-content: flex-end;
+            overflow: visible; /* PENTING */
         }
 
         .nav-link {
             color: rgba(255,255,255,0.88);
             text-decoration: none;
-            padding: 0 16px;
+            padding: 0 clamp(10px, 1.5vw, 18px);
             display: flex;
             align-items: center;
             gap: 6px;
             font-weight: 700;
-            font-size: 0.85rem;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            height: clamp(45px, 6vw, 60px);
+            transition: all 0.2s ease;
             white-space: nowrap;
             letter-spacing: 0.03em;
             background: transparent;
             border: none;
             border-bottom: 3px solid transparent;
             cursor: pointer;
-            position: relative;
             border-radius: 0;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--white);
-            background: rgba(255,255,255,0.10);
-            border-bottom-color: var(--gold-light);
+        .nav-link:hover {
+            color: var(--gold-light) !important;
+            background: transparent !important;
+            border-bottom-color: var(--gold) !important;
         }
 
-        .nav-link:focus,
-        .nav-link:active {
-            color: var(--white) !important;
-            background: rgba(255,255,255,0.10);
+        .nav-link.active {
+            color: var(--gold-light) !important;
+            border-bottom-color: var(--gold) !important;
         }
 
         .nav-link i {
-            font-size: 0.6rem;
-            transition: transform 0.2s;
-            margin-left: 2px;
+            font-size: 0.65rem;
+            transition: transform 0.25s ease;
+            margin-left: 4px;
+            opacity: 0.7;
         }
 
-        .nav-dropdown.open > .nav-link i { transform: rotate(180deg); }
-
-        .nav-dropdown.open > .nav-link{
-            color: var(--gold) !important;
-            background: rgba(255,255,255,0.10);
-            border-bottom-color: var(--gold);
+        .nav-link:hover i {
+            opacity: 1;
+            color: var(--gold-light);
         }
 
-        .nav-dropdown { position: relative; display: flex; align-items: stretch; }
+        .nav-dropdown {
+            position: relative;
+            display: block;
+            align-items: stretch;
+            overflow: visible; /* PENTING */
+        }
 
+        /* ========== LEVEL 2 SUBMENU ========== */
         .nav-submenu {
             position: absolute;
             top: 100%;
             left: 0;
             background: var(--primary-dark);
-            min-width: 240px;
+            min-width: 220px;
+            max-width: calc(100vw - 16px); /* tidak boleh lebih lebar dari layar */
             list-style: none;
-            padding: 0;
+            padding: 8px 0;
             margin: 0;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            border-radius: 0 0 4px 4px;
-            z-index: 2000;
+            border-radius: 0 0 8px 8px;
             border-top: 3px solid var(--gold);
-            border-left: 1px solid rgba(255,255,255,0.07);
-            border-right: 1px solid rgba(255,255,255,0.07);
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            box-shadow: var(--shadow-lg);
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-8px);
-            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
             pointer-events: none;
+            z-index: 10000;
+            margin-top: -2px;
+            /* Secara default rata kiri, JS akan tambah flip-left kalau perlu */
         }
 
-        .nav-dropdown.open > .nav-submenu {
+        /* Flip ke kanan-aligned jika mendekati tepi kanan */
+        .nav-submenu.flip-left {
+            left: auto;
+            right: 0;
+        }
+
+        .nav-dropdown:hover > .nav-submenu {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
-            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0s;
             pointer-events: auto;
         }
 
         .nav-submenu li {
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+            overflow: visible;
         }
 
         .nav-submenu li:last-child { border-bottom: none; }
 
         .nav-submenu li a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            color: rgba(255,255,255,0.78);
+            display: block;
+            padding: 12px 20px;
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
-            transition: background 0.15s, color 0.15s, padding-left 0.15s, border-color 0.15s;
-            font-size: 0.83rem;
-            font-weight: 400;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all var(--transition);
             border-left: 3px solid transparent;
+            white-space: nowrap;
         }
 
         .nav-submenu li a:hover {
-            color: var(--white);
-            background: rgba(255,255,255,0.08);
-            padding-left: 22px;
+            color: var(--gold-light);
+            background: rgba(201,168,76,0.1);
+            padding-left: 26px;
             border-left-color: var(--gold);
         }
 
-        /* ================= HERO ================= */
+        /* Arrow untuk parent dengan child level 3 */
+        .has-child > a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .has-child > a::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.7rem;
+            margin-left: 12px;
+            opacity: 0.6;
+            transition: transform var(--transition);
+        }
+
+        .has-child:hover > a::after {
+            transform: translateX(3px);
+            opacity: 1;
+            color: var(--gold-light);
+        }
+
+        /* ========== LEVEL 3 CHILD MENU ========== */
+        .child-menu {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            background: var(--primary-dark);
+            min-width: 220px;
+            max-width: calc(100vw - 16px);
+            list-style: none;
+            padding: 8px 0;
+            margin: 0;
+            margin-left: -2px;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+            z-index: 10100;
+            transform: translateY(10px);
+        }
+
+        /* Flip child menu ke kiri jika mendekati tepi kanan */
+        .child-menu.flip-left {
+            left: auto;
+            right: 100%;
+            margin-left: 0;
+            margin-right: -2px;
+            border-left: none;
+            border-right: 3px solid var(--gold);
+        }
+
+        .has-child:hover > .child-menu {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .child-menu li {
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .child-menu li:last-child { border-bottom: none; }
+
+        .child-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            transition: all var(--transition);
+        }
+
+        .child-menu li a:hover {
+            color: var(--gold-light);
+            background: rgba(201,168,76,0.1);
+            padding-left: 26px;
+        }
+
+        /* ========== TABLET: paksa semua dropdown rata kanan ========== */
+        /* Di 769px - 991px layar sudah sempit, aman paksa right-aligned */
+        @media (min-width: 769px) and (max-width: 991px) {
+            .nav-submenu {
+                left: auto;
+                right: 0;
+                min-width: 200px;
+            }
+            .child-menu {
+                left: auto;
+                right: 100%;
+                margin-left: 0;
+                margin-right: -2px;
+                border-left: none;
+                border-right: 3px solid var(--gold);
+            }
+        }
+
+        /* ================= HERO SECTION ================= */
         .hero-section {
             position: relative;
             overflow: hidden;
@@ -554,39 +568,6 @@
             background-clip: text;
         }
 
-        .hero-subtitle {
-            font-size: 1.05rem;
-            color: rgba(255,255,255,0.72);
-            max-width: 520px;
-            line-height: 1.75;
-        }
-
-        .hero-scroll {
-            position: absolute;
-            bottom: 36px; left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.55;
-        }
-
-        .hero-scroll span { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); }
-
-        .scroll-line {
-            width: 1px; height: 40px;
-            background: linear-gradient(to bottom, var(--white), transparent);
-            animation: scrollLine 1.8s ease-in-out infinite;
-        }
-
-        @keyframes scrollLine {
-            0% { transform: scaleY(0); transform-origin: top; opacity: 0; }
-            50% { transform: scaleY(1); transform-origin: top; opacity: 1; }
-            100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-        }
-
         /* ================= SECTION SHARED ================= */
         .section-label {
             display: inline-flex;
@@ -645,15 +626,11 @@
             letter-spacing: -0.02em;
         }
 
-        .agenda-title i { display: none; }
-
         .agenda-subtitle {
             font-size: 0.95rem;
             color: var(--text-light);
             margin-top: 6px;
         }
-
-        .agenda-horizontal-container { width: 100%; }
 
         .agenda-horizontal-wrapper {
             display: grid;
@@ -661,7 +638,6 @@
             gap: 28px;
         }
 
-        /* ===== AGENDA CARD ===== */
         .agenda-card-small {
             border-radius: var(--radius-lg);
             overflow: hidden;
@@ -681,7 +657,6 @@
             box-shadow: var(--shadow-xl);
         }
 
-        /* ===== AGENDA BACKGROUND IMAGE ===== */
         .agenda-card-bg {
             position: absolute;
             inset: 0;
@@ -693,21 +668,13 @@
             transition: transform 0.5s ease;
         }
 
-        .agenda-card-small:hover .agenda-card-bg {
-            transform: scale(1.06);
-        }
+        .agenda-card-small:hover .agenda-card-bg { transform: scale(1.06); }
 
-        /* overlay gelap di atas gambar agar teks tetap terbaca */
         .agenda-card-small::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                to bottom,
-                rgba(5,26,43,0.15) 0%,
-                rgba(5,26,43,0.35) 40%,
-                rgba(5,26,43,0.88) 100%
-            );
+            background: linear-gradient(to bottom, rgba(5,26,43,0.15) 0%, rgba(5,26,43,0.35) 40%, rgba(5,26,43,0.88) 100%);
             z-index: 1;
         }
 
@@ -757,8 +724,6 @@
             margin-top: 3px;
         }
 
-        .date-year-small { display: none; }
-
         .agenda-content-small {
             position: relative;
             z-index: 2;
@@ -792,13 +757,6 @@
 
         .meta-item-small i { color: var(--gold-light); font-size: 0.65rem; }
 
-        .agenda-status-small { display: none; }
-
-        .status-upcoming  { background: rgba(201,168,76,0.15); color: var(--gold-dark); border: 1px solid rgba(201,168,76,0.3); }
-        .status-ongoing   { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.25); }
-        .status-completed { background: var(--accent); color: var(--text-light); border: 1px solid var(--border); }
-
-        /* ================= SHARED BUTTON ================= */
         .view-all-btn,
         .view-all {
             display: inline-flex;
@@ -841,7 +799,7 @@
             justify-content: center;
             pointer-events: none;
             z-index: 1100;
-            padding: 0px;
+            padding: 16px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -850,12 +808,10 @@
 
         .agenda-modal-content {
             background: var(--white);
-            border-radius: 0;
+            border-radius: 20px;
             max-width: 600px;
             width: 100%;
-            max-height: 85vh;
-            margin : 0 ;
-            border-radius: 20px;
+            max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow-xl);
             position: relative;
@@ -863,10 +819,10 @@
 
         .modal-close {
             position: absolute;
-            top: 18px; right: 18px;
+            top: 14px; right: 14px;
             width: 36px; height: 36px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.3);
             font-size: 1.3rem;
             color: var(--white);
@@ -874,48 +830,32 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2;
+            z-index: 10;
+            transition: all 0.2s ease;
         }
 
-        /* ===== MODAL IMAGE ===== */
+        .modal-close:hover { background: rgba(0,0,0,0.5); transform: scale(1.1); }
+
         .modal-image-wrap {
             width: 100%;
             height: 220px;
             overflow: hidden;
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            border-radius: 20px 20px 0 0;
             position: relative;
         }
 
-        .modal-image-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .modal-image-wrap .modal-image-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                to bottom,
-                transparent 40%,
-                rgba(5,26,43,0.7) 100%
-            );
-        }
+        .modal-image-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         .modal-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: var(--white);
             padding: 36px 32px 30px;
             position: relative;
-            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            border-radius: 20px 20px 0 0;
             overflow: hidden;
         }
 
-        /* Saat ada gambar, header tidak perlu border-radius atas */
-        .modal-image-wrap + .modal-header {
-            border-radius: 0;
-        }
+        .modal-image-wrap + .modal-header { border-radius: 0; }
 
         .modal-header::before {
             content: '';
@@ -966,24 +906,24 @@
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: flex-end;
-            border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+            border-radius: 0 0 20px 20px;
         }
 
         .modal-status { padding: 6px 18px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; }
+        .status-upcoming  { background: rgba(201,168,76,0.15); color: var(--gold-dark); border: 1px solid rgba(201,168,76,0.3); }
+        .status-ongoing   { background: rgba(34,197,94,0.12); color: #16a34a; border: 1px solid rgba(34,197,94,0.25); }
+        .status-completed { background: var(--accent); color: var(--text-light); border: 1px solid var(--border); }
 
         /* ================= SURVEY ================= */
-.survey-section {
-    background: 
-        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-        url('/images/qr.jpg');
+        .survey-section {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/images/qr.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 96px 0;
+            color: white;
+        }
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    padding: 96px 0;
-    color: white;
-}
         .survey-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1033,9 +973,10 @@
 
         /* ================= FOOTER ================= */
         .main-footer {
-            background: var(--primary-dark);
-            color: var(--white);
-            padding: 70px 0 0;
+            background: var(--primary);
+            color: rgba(255,255,255,0.85);
+            padding: 60px 0 20px;
+            font-size: 14px;
             position: relative;
         }
 
@@ -1049,59 +990,50 @@
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 1.4fr 1fr 1fr;
-            gap: 60px;
-            margin-bottom: 56px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
         }
 
-        .footer-col h3 {
-            font-size: 0.78rem;
-            font-weight: 700;
-            margin-bottom: 22px;
-            padding-bottom: 14px;
-            position: relative;
-            color: var(--white);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
+        .footer-col h3 { color: var(--white); margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.06em; }
 
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 28px; height: 2px;
-            background: var(--gold);
-            border-radius: 2px;
-        }
+        .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
 
-        .footer-col p { margin-bottom: 10px; color: rgba(255,255,255,0.58); line-height: 1.75; font-size: 0.88rem; }
+        .footer-logo img { width: 55px; height: 55px; object-fit: contain; background: #fff; border-radius: 50%; padding: 4px; }
 
-        .footer-link {
-            display: flex;
+        .footer-desc { margin-top: 10px; line-height: 1.6; color: rgba(255,255,255,0.7); }
+
+        .footer-links { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 8px; }
+        .footer-links a { color: rgba(255,255,255,0.75); text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--gold-light); }
+
+        .footer-col p { margin: 8px 0; display: flex; align-items: flex-start; gap: 8px; color: rgba(255,255,255,0.7); font-size: 0.88rem; line-height: 1.6; }
+        .footer-col i { color: var(--gold-light); flex-shrink: 0; margin-top: 3px; }
+
+        .footer-social a {
+            display: inline-flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
-            color: rgba(255,255,255,0.58);
+            width: 35px; height: 35px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: #fff;
+            margin-right: 8px;
+            transition: 0.3s;
             text-decoration: none;
-            margin-bottom: 10px;
-            font-size: 0.88rem;
-            transition: all var(--transition);
         }
 
-        .footer-link i { color: var(--gold); font-size: 0.62rem; flex-shrink: 0; transition: transform var(--transition); }
-        .footer-link:hover { color: var(--white); }
-        .footer-link:hover i { transform: translateX(3px); }
+        .footer-social a:hover { background: var(--gold); color: #000; }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding: 22px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            flex-wrap: wrap;
+            text-align: center;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            padding-top: 15px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
         }
-
-        .copyright { font-size: 0.8rem; color: rgba(255,255,255,0.42); }
 
         /* ================= MAIN CONTAINER ================= */
         .main-container { margin: 0; padding: 0; }
@@ -1113,141 +1045,27 @@
         ::-webkit-scrollbar-thumb { background: #b0c4d8; border-radius: 8px; }
         ::-webkit-scrollbar-thumb:hover { background: #7a98b4; }
 
-        /* ===== TABLE DI HALAMAN KONTEN ===== */
-        .page-content table {
-            width: 100% !important;
-            border-collapse: collapse !important;
-            margin: 24px 0 !important;
-        }
+        /* ================= PAGE CONTENT ================= */
+        .page-content { max-width: 100%; overflow-x: hidden; word-wrap: break-word; }
+        .page-content * { max-width: 100%; }
+        .page-content pre, .page-content code { white-space: normal; word-wrap: break-word; overflow-x: auto; }
 
-        .page-content table td,
-        .page-content table th {
-            border: 1px solid #dee2e6 !important;
-            padding: 10px 14px !important;
-            vertical-align: top !important;
-        }
+        .page-content table { width: 100% !important; border-collapse: collapse !important; margin: 24px 0 !important; }
+        .page-content table td, .page-content table th { border: 1px solid #dee2e6 !important; padding: 10px 14px !important; vertical-align: top !important; }
+        .page-content table tbody tr:first-child td { background-color: #0a2a44 !important; color: #ffffff !important; font-weight: 600 !important; }
+        .page-content table tbody tr:nth-child(even) td { background-color: #f8f9fa !important; }
+        .page-content table tbody tr:first-child:hover td { background-color: #0a2a44 !important; }
+        .page-content table tbody tr:not(:first-child):hover td { background-color: #eef2f6 !important; }
 
-        .page-content table tbody tr:first-child td {
-            background-color: #0a2a44 !important;
-            color: #ffffff !important;
-            font-weight: 600 !important;
-        }
+        .page-content img, .page-content table, .page-content iframe, .page-content video { max-width: 100% !important; height: auto !important; }
 
-        .page-content table tbody tr:nth-child(even) td {
-            background-color: #f8f9fa !important;
-        }
-
-        .page-content table tbody tr:first-child:hover td {
-            background-color: #0a2a44 !important;
-        }
-
-        .page-content table tbody tr:not(:first-child):hover td {
-            background-color: #eef2f6 !important;
-        }
-
-        /* ================= RESPONSIVE KONTEN ================= */
-        .page-content {
-            max-width: 100%;
-            overflow-x: hidden;
-            word-wrap: break-word;
-        }
-
-        .page-content img,
-        .page-content table,
-        .page-content iframe,
-        .page-content video {
-            max-width: 100% !important;
-            height: auto !important;
-        }
-
-        .page-content .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-
-        .page-content table { min-width: 100%; width: 100% !important; border-collapse: collapse !important; }
-        .page-content table.wide-table { min-width: 800px; }
-
-       @media (max-width: 768px) {
-
-    /* ===== TABLE ===== */
-    .page-content table {
-        font-size: 14px;
-    }
-
-    .page-content table th,
-    .page-content table td {
-        padding: 8px 10px !important;
-        white-space: nowrap;
-    }
-
-    .page-content .table-responsive {
-        margin: 15px -10px;
-        width: calc(100% + 20px);
-    }
-
-    /* ===== MODAL OVERLAY ===== */
-    .agenda-modal-overlay {
-        padding: 8px; /* jangan 0 biar gak terlalu mepet layar */
-        align-items: center; /* jangan dari bawah biar gak kebesaran */
-    }
-
-    /* ===== MODAL CONTENT ===== */
-    .agenda-modal-content {
-        width: 100%;
-        max-height: 85vh; /* cukup tinggi tapi gak full */
-        border-radius: 16px;
-        margin: 0;
-        overflow-y: auto;
-    }
-
-    /* ===== HEADER ===== */
-    .modal-header {
-        padding: 20px 16px 18px;
-    }
-
-    /* FIX YANG KAMU MAU (biar gak dempet) */
-    .modal-date-box {
-        margin-bottom: 12px;
-        padding: 10px 14px;
-        gap: 10px;
-    }
-
-    .modal-title {
-        margin-top: 6px;
-        line-height: 1.4;
-    }
-
-    /* ===== BODY ===== */
-    .modal-body {
-        padding: 16px;
-    }
-
-    /* ===== FOOTER ===== */
-    .modal-footer {
-        padding: 14px 16px;
-    }
-
-    /* ===== IMAGE ===== */
-    .modal-image-wrap {
-        height: 170px;
-    }
-
-    /* ===== INFO GRID ===== */
-    .modal-info {
-        grid-template-columns: 1fr; /* biar gak sempit */
-    }
-}
+        .page-content .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 20px 0; border-radius: 8px; }
 
         .page-content h1 { font-size: clamp(1.5rem, 5vw, 2.2rem); }
         .page-content h2 { font-size: clamp(1.3rem, 4vw, 1.8rem); }
         .page-content h3 { font-size: clamp(1.1rem, 3.5vw, 1.4rem); }
         .page-content h4 { font-size: clamp(1rem, 3vw, 1.2rem); }
         .page-content p  { font-size: clamp(0.9rem, 2.5vw, 1rem); line-height: 1.6; }
-
         .page-content ul, .page-content ol { padding-left: clamp(20px, 4vw, 30px); }
         .page-content li { font-size: clamp(0.9rem, 2.5vw, 1rem); margin-bottom: 5px; }
         .page-content blockquote { padding: clamp(15px,3vw,25px) clamp(20px,4vw,30px); font-size: clamp(0.9rem,2.5vw,1rem); margin: 20px 0; }
@@ -1259,11 +1077,6 @@
         .sidebar-news-list li { padding: clamp(8px,1.5vw,12px) 0; }
         .page-layout { gap: clamp(20px,4vw,40px); }
 
-        @media (max-width: 991px) {
-            .page-layout { grid-template-columns: 1fr; }
-            .page-sidebar { margin-top: 20px; }
-        }
-
         .page-hero { min-height: clamp(200px,40vh,350px); padding: clamp(60px,10vh,100px) 0 clamp(30px,5vh,50px); }
         .page-hero-title { font-size: clamp(1.2rem,5vw,2rem); }
         .page-hero-title-wrap::before { min-height: clamp(24px,5vw,36px); width: clamp(3px,1vw,4px); }
@@ -1271,297 +1084,21 @@
 
         .py-5 { padding-top: clamp(1.5rem,5vh,3rem); padding-bottom: clamp(1.5rem,5vh,3rem); }
 
-        @media (max-width: 576px) {
-            .site-container { padding: 0 12px; }
-            .page-content { font-size: 0.95rem; }
-            .page-content h1 { margin-top: 20px; margin-bottom: 10px; }
-            .page-content h2 { margin-top: 20px; margin-bottom: 8px; }
-            .sidebar-news { padding: 12px; }
-            .sidebar-news-list a { font-size: 0.9rem; }
-            .sidebar-news-list li { padding: 8px 0; }
-        }
-
-        @media (max-width: 375px) {
-            .site-container { padding: 0 10px; }
-            .page-content { font-size: 0.9rem; }
-            .page-content h1 { font-size: 1.4rem; }
-            .page-content h2 { font-size: 1.3rem; }
-            .page-content h3 { font-size: 1.2rem; }
-            .page-hero-title { font-size: 1.2rem; }
-            .sidebar-title { font-size: 1rem; }
-            .sidebar-news-list a { font-size: 0.85rem; }
-        }
-
-        @media (max-height: 600px) and (orientation: landscape) {
-            .page-hero { min-height: 160px; padding: 40px 0 20px; }
-            .page-hero-title { font-size: 1.2rem; }
-            .page-hero-title-wrap::before { min-height: 24px; }
-        }
-
-        @media print {
-            .page-sidebar, .page-hero::before, .page-hero::after { display: none; }
-            .page-hero { background: none; min-height: auto; padding: 20px 0; }
-            .page-hero-title { color: var(--primary-dark) !important; text-shadow: none; }
-            .page-content { color: #000; }
-            .page-content a { text-decoration: none; color: #000; }
-            .page-layout { grid-template-columns: 1fr; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-        }
-
-        .page-content * { max-width: 100%; }
-        .page-content pre, .page-content code { white-space: normal; word-wrap: break-word; overflow-x: auto; }
-        .table-responsive, .page-content table { -webkit-overflow-scrolling: touch; }
-
-        /* ================================================
-           RESPONSIVE BREAKPOINTS
-        ================================================ */
-
-        @media (min-width: 1400px) {
-            .header-title h1 { font-size: 1.15rem; }
-            .nav-link { font-size: 0.9rem; padding: 0 18px; }
-            .hero-title { font-size: 4.4rem; }
-        }
-
-        @media (max-width: 1399px) { :root { --container-pad: 32px; } }
-
-        @media (max-width: 1199px) {
-            :root { --container-pad: 24px; }
-            .header-title h1 { font-size: 0.9rem; }
-            .header-title span { font-size: 0.68rem; }
-            .nav-link { font-size: 0.78rem; padding: 0 10px; }
-            .logo { width: 44px; height: 44px; }
-            .hero-title { font-size: 3.2rem; }
-            .survey-title { font-size: 2.2rem; }
-            .footer-grid { gap: 36px; }
-        }
-
-        @media (max-width: 991px) {
-            :root { --container-pad: 20px; }
-            .header-title h1 { font-size: 0.85rem; }
-            .header-title span { font-size: 0.64rem; }
-            .logo { width: 42px; height: 42px; }
-            .logo-title-group { gap: 10px; }
-            .header-container { min-height: 64px; padding: 8px 0; }
-            .nav-link { font-size: 0.72rem; padding: 0 9px; }
-            .top-bar-container { flex-direction: column; gap: 6px; }
-            .top-bar-left { justify-content: center; gap: 14px; }
-            .top-bar-right { justify-content: center; }
-            .hero-section { min-height: 64vh; }
-            .hero-title { font-size: 2.6rem; }
-            .agenda-horizontal-wrapper { grid-template-columns: repeat(2, 1fr); gap: 18px; }
-            .agenda-card-small { height: 280px; }
-            /* modal image responsive */
-            .modal-image-wrap { height: 180px; }
-            .survey-content { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-            .survey-right { justify-content: center; }
-            .survey-title { font-size: 2rem; }
-            .survey-label { justify-content: center; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-        }
-
-        @media (max-width: 767px) {
-            :root { --container-pad: 16px; }
-            .top-bar { padding: 6px 0; }
-            .top-bar-container { flex-direction: column; gap: 4px; }
-            .top-bar-left { flex-direction: column; gap: 3px; width: 100%; }
-            .top-bar-item { justify-content: center; font-size: 0.7rem; width: 100%; }
-            .top-bar-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
-            .top-bar-right { width: 100%; justify-content: center; }
-            .header-container { min-height: auto; padding: 8px 0; gap: 0; justify-content: space-between; }
-            .logo-title-group { flex: 1; min-width: 0; gap: 8px; overflow: hidden; }
-            .logo { width: 38px; height: 38px; flex-shrink: 0; }
-            .header-title { padding-left: 10px; min-width: 0; flex: 1; overflow: hidden; }
-            .header-title h1 { font-size: 0.78rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; margin-bottom: 1px; }
-            .header-title span { font-size: 0.6rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
-
-            .menu-toggle {
-                display: flex; align-items: center; justify-content: center;
-                flex-shrink: 0; width: 38px; height: 38px;
-                margin-left: 8px; font-size: 1rem;
-            }
-
-            .main-nav {
-                position: fixed;
-                top: 0; right: -100%;
-                width: 80%; max-width: 290px;
-                height: 100vh;
-                background: var(--primary);
-                transition: right 0.3s ease;
-                z-index: 1001;
-                box-shadow: -8px 0 30px rgba(0,0,0,0.3);
-                display: block;
-                overflow-y: auto;
-                align-items: unset;
-            }
-
-            .main-nav::before {
-                content: '';
-                display: block;
-                height: 3px;
-                background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
-                position: sticky; top: 0; z-index: 2;
-            }
-
-            .main-nav.active { right: 0; }
-
-            .nav-menu {
-                flex-direction: column;
-                padding: 8px 0 32px;
-                gap: 0; width: 100%; align-items: stretch;
-            }
-
-            .nav-menu > li { display: block; }
-
-            .nav-link {
-                padding: 13px 20px;
-                border-bottom: 1px solid rgba(255,255,255,0.07);
-                border-left: none; border-right: none; border-top: none;
-                border-bottom-color: rgba(255,255,255,0.07) !important;
-                font-size: 0.86rem; white-space: normal; border-radius: 0;
-                color: rgba(255,255,255,0.88);
-                justify-content: space-between; width: 100%; display: flex;
-            }
-
-            .nav-link:focus, .nav-link:active, .nav-link.active {
-                color: var(--white) !important;
-                background: rgba(255,255,255,0.07);
-                outline: none;
-            }
-
-            .nav-link:hover {
-                background: rgba(255,255,255,0.07);
-                color: var(--white);
-                border-bottom-color: rgba(255,255,255,0.07) !important;
-                padding-left: 24px;
-            }
-
-            .nav-dropdown.open > .nav-link { color: var(--gold) !important; }
-
-            .nav-dropdown > .nav-submenu {
-                position: static !important;
-                width: 100%; background: rgba(0,0,0,0.25);
-                box-shadow: none; border-radius: 0; border: none;
-                border-top: 2px solid var(--gold) !important;
-                min-width: unset;
-                opacity: 1 !important; visibility: visible !important;
-                transform: none !important; transition: none !important;
-                pointer-events: auto !important; display: none;
-            }
-
-            .nav-dropdown.open > .nav-submenu { display: block !important; }
-            .nav-dropdown.open > .nav-link i { transform: rotate(180deg); }
-
-            .nav-submenu li a {
-                padding: 11px 20px 11px 32px; font-size: 0.82rem;
-                color: rgba(255,255,255,0.72);
-                border-bottom: 1px solid rgba(255,255,255,0.04);
-                border-left: 3px solid transparent;
-            }
-
-            .nav-submenu li a:hover {
-                color: var(--white); background: rgba(255,255,255,0.06);
-                padding-left: 36px; border-left-color: var(--gold);
-            }
-
-            .menu-overlay {
-                display: none; position: fixed; inset: 0;
-                background: rgba(5,26,43,0.65); z-index: 999;
-                opacity: 0; backdrop-filter: blur(3px);
-                -webkit-backdrop-filter: blur(3px);
-            }
-
-            .menu-overlay.active { display: block; opacity: 1; }
-            body.menu-open { overflow: hidden; }
-
-            .hero-section { min-height: 50vh; }
-            .hero-overlay { padding: 70px 0 60px; }
-            .hero-title { font-size: 1.9rem; letter-spacing: -0.02em; }
-            .hero-subtitle { font-size: 0.88rem; }
-            .hero-eyebrow { font-size: 0.65rem; padding: 5px 12px; }
-            .hero-scroll { display: none; }
-
-            .agenda-section { padding: 56px 0; }
-            .agenda-header { flex-direction: column; align-items: center; gap: 10px; margin-bottom: 24px; }
-            .agenda-title { font-size: 1.7rem; }
-            .agenda-horizontal-wrapper { grid-template-columns: 1fr; gap: 16px; }
-            .agenda-card-small { height: 240px; }
-
-            /* modal image responsive */
-            .modal-image-wrap { height: 160px; }
-
-            .survey-section { padding: 52px 0; }
-            .survey-title { font-size: 1.6rem; }
-            .survey-description { font-size: 0.9rem; }
-            .survey-content { gap: 28px; }
-            .qr-image { width: 150px; height: 150px; }
-
-            .agenda-modal-content { border-radius: var(--radius-lg); margin: 0 8px; }
-            .modal-header { padding: 22px 18px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-            .modal-image-wrap { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-            .modal-image-wrap + .modal-header { border-radius: 0; }
-            .modal-body { padding: 18px; }
-            .modal-footer { padding: 14px 18px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
-            .modal-info { grid-template-columns: 1fr; gap: 10px; }
-            .modal-title { font-size: 1.1rem; }
-            .modal-day { font-size: 2rem; }
-
-            .page-content table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-            .main-footer { padding: 44px 0 0; }
-            .footer-grid { grid-template-columns: 1fr; gap: 22px; }
-            .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
-        }
-
-        @media (max-width: 480px) {
-            .logo { width: 34px; height: 34px; }
-            .header-title { padding-left: 8px; }
-            .header-title h1 { font-size: 0.72rem; }
-            .header-title span { font-size: 0.56rem; }
-            .menu-toggle { width: 36px; height: 36px; font-size: 0.95rem; }
-            .hero-title { font-size: 1.6rem; }
-            .hero-subtitle { font-size: 0.84rem; }
-            .agenda-title { font-size: 1.5rem; }
-            .agenda-card-small { height: 210px; }
-            .survey-title { font-size: 1.4rem; }
-            .qr-image { width: 130px; height: 130px; }
-            .view-all-btn, .view-all { font-size: 0.8rem; padding: 11px 22px; }
-            .top-bar-item span { max-width: 220px; }
-        }
-
-        @media (max-width: 360px) {
-            :root { --container-pad: 12px; }
-            .logo { width: 32px; height: 32px; }
-            .header-title h1 { font-size: 0.68rem; }
-            .header-title span { font-size: 0.52rem; }
-            .menu-toggle { width: 34px; height: 34px; }
-            .hero-title { font-size: 1.4rem; }
-            .agenda-title { font-size: 1.3rem; }
-            .survey-title { font-size: 1.25rem; }
-        }
-
-        /* ================= POPUP BANNER (DIPERBAIKI) ================= */
+        /* ================= POPUP BANNER ================= */
         #popup-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(5, 26, 43, 0.72);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: transparent;
             z-index: 99999;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: clamp(12px, 4vw, 32px);
             opacity: 0;
             animation: popupFadeIn 0.4s ease 0.3s forwards;
         }
 
-        @keyframes popupFadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
-
+        @keyframes popupFadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes popupSlideUp {
             from { opacity: 0; transform: translateY(30px) scale(0.96); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -1569,18 +1106,15 @@
 
         #popup-box {
             position: relative;
-            max-width: 600px; /* Ukuran popup diperkecil agar tidak terlalu besar */
-            width: 100%;
+            width: min(600px, 90vw);
+            max-height: min(90vh, 90dvh);
             animation: popupSlideUp 0.45s cubic-bezier(0.34,1.56,0.64,1) 0.4s both;
         }
 
-        /* Tombol X */
         #popup-close-btn {
             position: absolute;
-            top: -16px;
-            right: -16px;
-            width: 36px;
-            height: 36px;
+            top: clamp(8px, 1.5vw, -16px);
+            width: 36px; height: 36px;
             background: var(--gold);
             color: var(--white);
             border: none;
@@ -1597,40 +1131,236 @@
             transition: background var(--transition), transform var(--transition);
         }
 
-        #popup-close-btn:hover {
-            background: var(--gold-dark);
-            transform: scale(1.12) rotate(90deg);
-        }
+        #popup-close-btn:hover { background: var(--gold-dark); transform: scale(1.12) rotate(90deg); }
 
         #popup-img {
             width: 100%;
+            height: auto;
+            max-height: min(85vh, 85dvh);
             display: block;
+            object-fit: contain;
             border-radius: var(--radius-lg);
             box-shadow: 0 24px 60px rgba(0,0,0,0.45);
         }
 
-        /* Responsive popup */
-        @media (max-width: 767px) {
-            #popup-box { max-width: 90%; } /* Lebih kecil di mobile */
-            #popup-close-btn {
-                top: -12px;
-                right: -10px;
-                width: 30px;
-                height: 30px;
-                font-size: 16px;
+        /* ================= RESPONSIVE ================= */
+        @media (min-width: 1400px) {
+            .header-title h1 { font-size: 1.15rem; }
+            .nav-link { font-size: 0.9rem; padding: 0 18px; }
+            .hero-title { font-size: 4.4rem; }
+        }
+
+        @media (max-width: 1399px) { :root { --container-pad: 32px; } }
+
+        @media (max-width: 1199px) {
+            :root { --container-pad: 24px; }
+            .header-title h1 { font-size: 0.9rem; }
+            .header-title span { font-size: 0.68rem; }
+            .nav-link { font-size: 0.78rem; padding: 0 12px; }
+            .logo { width: 44px; height: 44px; }
+            .hero-title { font-size: 3.2rem; }
+            .survey-title { font-size: 2.2rem; }
+            .footer-grid { gap: 28px; }
+        }
+
+        @media (max-width: 991px) {
+            :root { --container-pad: 20px; }
+            .header-title h1 { font-size: 0.85rem; }
+            .header-title span { font-size: 0.64rem; }
+            .logo { width: 42px; height: 42px; }
+            .logo-title-group { gap: 10px; }
+            .header-container { min-height: 64px; padding: 8px 0; }
+            .nav-link { font-size: 0.72rem; padding: 0 10px; height: 50px; }
+            .top-bar-container { flex-direction: column; gap: 6px; }
+            .top-bar-left { justify-content: center; gap: 14px; }
+            .top-bar-right { justify-content: center; }
+            .hero-section { min-height: 64vh; }
+            .hero-title { font-size: 2.6rem; }
+            .agenda-horizontal-wrapper { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+            .agenda-card-small { height: 280px; }
+            .survey-content { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .survey-right { justify-content: center; }
+            .survey-title { font-size: 2rem; }
+            .survey-label { justify-content: center; }
+            .page-layout { grid-template-columns: 1fr !important; }
+            .page-sidebar { margin-top: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            :root { --container-pad: 16px; }
+
+            .top-bar { padding: 6px 0; }
+            .top-bar-container { flex-direction: column; gap: 4px; }
+            .top-bar-left { flex-direction: column; gap: 3px; width: 100%; }
+            .top-bar-item { justify-content: center; font-size: 0.7rem; width: 100%; }
+            .top-bar-item span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
+            .top-bar-right { width: 100%; justify-content: center; }
+
+            .header-container { min-height: auto; padding: 8px 0; gap: 0; justify-content: space-between; }
+            .logo-title-group { flex: 1; min-width: 0; gap: 8px; overflow: hidden; }
+            .logo { width: 38px; height: 38px; flex-shrink: 0; }
+            .header-title { padding-left: 10px; min-width: 0; flex: 1; overflow: hidden; }
+            .header-title h1 { font-size: 0.78rem; }
+            .header-title span { font-size: 0.6rem; }
+
+            .menu-toggle {
+                display: flex;
+                flex-shrink: 0;
+                width: 38px; height: 38px;
+                margin-left: 8px;
+                font-size: 1rem;
             }
+
+            .main-nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 85%;
+                max-width: 320px;
+                height: 100vh;
+                background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+                transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 10001;
+                box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
+                display: block;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .main-nav.active { right: 0; }
+
+            .nav-menu {
+                flex-direction: column;
+                padding: 20px 0;
+                gap: 0;
+                width: 100%;
+                align-items: stretch;
+            }
+
+            .nav-menu > li { display: block; width: 100%; }
+
+            .nav-link {
+                padding: 14px 20px;
+                border-bottom: 1px solid rgba(255,255,255,0.07) !important;
+                border-left: none;
+                border-right: none;
+                border-top: none;
+                border-radius: 0;
+                font-size: 0.9rem;
+                height: auto;
+                white-space: normal;
+                justify-content: space-between;
+                width: 100%;
+                display: flex;
+            }
+
+            .nav-link:hover {
+                background: rgba(201,168,76,0.08) !important;
+                padding-left: 26px;
+                color: var(--gold-light) !important;
+            }
+
+            .nav-link.active {
+                color: var(--gold) !important;
+                background: rgba(201,168,76,0.15) !important;
+                border-left: 3px solid var(--gold) !important;
+                border-bottom: none !important;
+            }
+
+            /* Mobile: semua submenu hidden by default */
+            .nav-submenu,
+            .child-menu {
+                position: static !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                display: none !important;
+                box-shadow: none;
+                border: none;
+                border-left: 2px solid var(--gold);
+                margin-left: 15px;
+                background: rgba(0,0,0,0.3);
+                pointer-events: auto;
+                width: auto;
+                min-width: unset;
+                transform: none !important;
+            }
+
+            /* Override flip-left di mobile (tidak perlu) */
+            .nav-submenu.flip-left,
+            .child-menu.flip-left {
+                left: auto !important;
+                right: auto !important;
+                margin-left: 15px !important;
+                margin-right: 0 !important;
+                border-left: 2px solid var(--gold) !important;
+                border-right: none !important;
+            }
+
+            .nav-dropdown.open > .nav-submenu,
+            .has-child.open > .child-menu { display: block !important; }
+
+            .has-child > a::after { content: '\f078'; }
+
+            .child-menu { margin-left: 0; }
+
+            .menu-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(5, 26, 43, 0.7);
+                z-index: 10000;
+                opacity: 0;
+                backdrop-filter: blur(4px);
+                transition: opacity 0.3s ease;
+            }
+
+            .menu-overlay.active { display: block; opacity: 1; }
+
+            body.menu-open { overflow: hidden; }
+
+            .hero-section { min-height: 50vh; }
+            .hero-overlay { padding: 70px 0 60px; }
+            .hero-title { font-size: 1.9rem; }
+            .hero-eyebrow { font-size: 0.65rem; padding: 5px 12px; }
+
+            .agenda-section { padding: 56px 0; }
+            .agenda-header { flex-direction: column; align-items: center; gap: 10px; margin-bottom: 24px; }
+            .agenda-title { font-size: 1.7rem; }
+            .agenda-horizontal-wrapper { grid-template-columns: 1fr; gap: 16px; }
+            .agenda-card-small { height: 240px; }
+
+            .survey-section { padding: 52px 0; }
+            .survey-title { font-size: 1.6rem; }
+            .survey-description { font-size: 0.9rem; }
+            .survey-content { gap: 28px; }
+            .qr-image { width: 150px; height: 150px; }
+
+            .main-footer { padding: 44px 0 0; }
+            .footer-grid { grid-template-columns: 1fr; gap: 22px; }
+            .footer-bottom { flex-direction: column; text-align: center; gap: 8px; }
         }
 
         @media (max-width: 480px) {
-            #popup-overlay { padding: 12px; }
-            #popup-box { max-width: 90vw; }
-            #popup-close-btn {
-                top: -8px;
-                right: -8px;
-                width: 28px;
-                height: 28px;
-                font-size: 14px;
-            }
+            .logo { width: 34px; height: 34px; }
+            .header-title { padding-left: 8px; }
+            .header-title h1 { font-size: 0.72rem; }
+            .header-title span { font-size: 0.56rem; }
+            .menu-toggle { width: 36px; height: 36px; font-size: 0.95rem; }
+            .hero-title { font-size: 1.6rem; }
+            .agenda-title { font-size: 1.5rem; }
+            .agenda-card-small { height: 210px; }
+            .survey-title { font-size: 1.4rem; }
+            .qr-image { width: 130px; height: 130px; }
+            .view-all-btn, .view-all { font-size: 0.8rem; padding: 11px 22px; }
+            .top-bar-item span { max-width: 220px; }
+            #popup-box { max-width: 90%; }
+            #popup-close-btn { top: -12px; right: -10px; width: 30px; height: 30px; font-size: 16px; }
+            .main-nav { width: 85%; max-width: 280px; }
+            .nav-link { font-size: 0.85rem; padding: 12px 16px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
         }
     </style>
 </head>
@@ -1692,45 +1422,61 @@
         <div class="site-container">
             <div class="header-container">
                 <div class="logo-title-group">
-                    <div class="logo">
-                        @if(!empty($settings->logo))
-                            <img src="{{ asset('storage/' . $settings->logo) }}"
-                                 alt="Logo"
-                                 style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));background:#ffffff;border-radius:50%;padding:3px;">
-                        @else
-                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="50" cy="50" r="45" fill="white" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-                                <image href="{{ asset('images/logo ugk.png') }}" x="15" y="15" width="70" height="70" preserveAspectRatio="xMidYMid meet"/>
-                            </svg>
-                        @endif
-                    </div>
+                    <a href="{{ url('/') }}" class="logo">
+    @if(!empty($settings->logo))
+        <img src="{{ asset('storage/' . $settings->logo) }}"
+             alt="Logo"
+             style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));background:#ffffff;border-radius:50%;padding:3px;">
+    @else
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" fill="white" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <image href="{{ asset('images/logo ugk.png') }}" x="15" y="15" width="70" height="70" preserveAspectRatio="xMidYMid meet"/>
+        </svg>
+    @endif
+</a>
                     <div class="header-title">
                         <h1>{{ strtoupper($settings->site_name) }}</h1>
                         <span>{{ strtoupper($settings->site_subtitle) }}</span>
                     </div>
                 </div>
 
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
 
-                <nav class="main-nav" id="mainNav">
+                <nav class="main-nav" id="mainNav" aria-label="Menu utama">
                     <ul class="nav-menu" id="navMenu">
                         @foreach($menus as $menu)
-                            @if($menu->children->count() > 0)
+                            @if($menu->children && $menu->children->count())
                                 <li class="nav-dropdown">
-                                    <a href="#" class="nav-link nav-toggle">
-                                        {{ strtoupper($menu->title) }}
+                                    <a href="#" class="nav-link" onclick="return false;">
+                                        {{ $menu->title }}
                                         <i class="fas fa-chevron-down"></i>
                                     </a>
                                     <ul class="nav-submenu">
                                         @foreach($menu->children as $child)
-                                            <li><a href="{{ menu_url($child) }}">{{ $child->title }}</a></li>
+                                            @if($child->children && $child->children->count())
+                                                <li class="has-child">
+                                                    <a href="{{ menu_url($child) }}">{{ $child->title }}</a>
+                                                    <ul class="child-menu">
+                                                        @foreach($child->children as $grandchild)
+                                                            <li><a href="{{ menu_url($grandchild) }}">{{ $grandchild->title }}</a></li>
+                                                        @endforeach
+                                                    </ul>
+                                                </li>
+                                            @else
+                                                <li><a href="{{ menu_url($child) }}">{{ $child->title }}</a></li>
+                                            @endif
                                         @endforeach
                                     </ul>
                                 </li>
                             @else
-                                <li><a href="{{ menu_url($menu) }}" class="nav-link">{{ strtoupper($menu->title) }}</a></li>
+                                <li>
+                                    <a href="{{ menu_url($menu) }}"
+                                       class="nav-link {{ request()->url() === menu_url($menu) ? 'active' : '' }}">
+                                        {{ $menu->title }}
+                                    </a>
+                                </li>
                             @endif
                         @endforeach
                     </ul>
@@ -1739,12 +1485,10 @@
         </div>
     </header>
 
-    <!-- Mobile Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
 
     @php use Illuminate\Support\Facades\Storage; @endphp
 
-    <!-- HERO -->
     @if(request()->is('/') && isset($heroBanners) && $heroBanners->count())
     <section class="hero-section" id="heroSection">
         <div class="hero-slider" id="heroSlider">
@@ -1765,12 +1509,10 @@
     </section>
     @endisset
 
-    <!-- MAIN CONTENT -->
     <main class="main-container">
         @yield('content')
     </main>
 
-    <!-- AGENDA -->
     @if(request()->is('/') && isset($agendas) && $agendas->count() > 0)
     <section class="agenda-section">
         <div class="lpm-container">
@@ -1792,19 +1534,14 @@
                         elseif ($agendaDate->isPast())    { $status = 'completed'; $statusText = 'Selesai'; }
                         else                              { $status = 'upcoming';  $statusText = 'Akan Datang'; }
                     @endphp
-                    <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}">
-
-                        {{-- GAMBAR LATAR BELAKANG CARD --}}
+                    <div class="agenda-card-small" data-agenda-id="{{ $agenda->id }}" role="button" tabindex="0" aria-label="Lihat detail: {{ $agenda->title }}">
                         @if(!empty($agenda->image))
-                            <img
-                                class="agenda-card-bg"
-                                src="{{ Storage::url($agenda->image) }}"
-                                alt="{{ $agenda->title }}"
-                                loading="lazy"
-                                onerror="this.style.display='none'"
-                            >
+                            <img class="agenda-card-bg"
+                                 src="{{ Storage::url($agenda->image) }}"
+                                 alt="{{ $agenda->title }}"
+                                 loading="lazy"
+                                 onerror="this.style.display='none'">
                         @endif
-
                         <div class="agenda-date-small">
                             <span class="date-day-small">{{ $agendaDate->format('d') }}</span>
                             <span class="date-month-small">{{ $agendaDate->translatedFormat('M') }}</span>
@@ -1830,17 +1567,13 @@
     </section>
     @endif
 
-    <!-- MODAL AGENDA -->
-    <div class="agenda-modal-overlay" id="agendaModal">
+    <div class="agenda-modal-overlay" id="agendaModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="agenda-modal-content">
-            <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
-
-            {{-- Gambar modal di-inject via JS --}}
+            <button class="modal-close" id="modalClose" aria-label="Tutup">&times;</button>
             <div class="modal-image-wrap" id="modalImageWrap" style="display:none;">
                 <img id="modalImage" src="" alt="">
                 <div class="modal-image-overlay"></div>
             </div>
-
             <div class="modal-header">
                 <div class="modal-date-box">
                     <span class="modal-day" id="modalDay"></span>
@@ -1861,7 +1594,6 @@
         </div>
     </div>
 
-    <!-- SURVEY -->
     @if(request()->is('/') && isset($activeSurvey) && $activeSurvey)
     <section class="survey-section">
         <div class="survey-container">
@@ -1889,305 +1621,341 @@
     </section>
     @endif
 
-    <!-- FOOTER -->
-<footer class="main-footer">
-    <div class="footer-container">
-        <div class="footer-grid">
-
-            <!-- LOGO + DESKRIPSI -->
-            <div class="footer-col">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        @if(!empty($settings->logo))
-                            <img src="{{ asset('storage/' . $settings->logo) }}" alt="Logo">
-                        @else
-                            <img src="{{ asset('images/logo ugk.png') }}" alt="Logo">
-                        @endif
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            @if(!empty($settings->logo))
+                                <img src="{{ asset('storage/' . $settings->logo) }}" alt="Logo">
+                            @else
+                                <img src="{{ asset('images/logo ugk.png') }}" alt="Logo">
+                            @endif
+                        </div>
+                        <div>
+                            <h3>{{ $settings->site_name }}</h3>
+                        </div>
                     </div>
-                    <div>
-                        <h3>{{ $settings->site_name }}</h3>
-                    </div>
+                    <p class="footer-desc">{{ $settings->footer_description }}</p>
                 </div>
 
-                <p class="footer-desc">
-                    {{ $settings->footer_description }}
-                </p>
+                <div class="footer-col">
+                    <h3>Menu</h3>
+                    <ul class="footer-links">
+                        @foreach($menus as $menu)
+                            <li>
+                                <a href="{{ menu_url($menu) }}">{{ $menu->title }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h3>Kontak</h3>
+                    <p><i class="fas fa-map-marker-alt"></i>{{ $settings->footer_address }}</p>
+                    <p><i class="fas fa-phone-alt"></i>{{ $settings->footer_phone }}</p>
+                    <p><i class="fas fa-envelope"></i>{{ $settings->footer_email }}</p>
+                    <p><i class="fas fa-globe"></i>{{ $settings->footer_website }}</p>
+                </div>
             </div>
 
-            <!-- MENU -->
-            <div class="footer-col">
-                <h3>Menu</h3>
-                <ul class="footer-links">
-                    @foreach($menus as $menu)
-                        <li>
-                            <a href="{{ menu_url($menu) }}">
-                                {{ $menu->title }}
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
+            <div class="footer-bottom">
+                <p>© {{ date('Y') }} {{ $settings->site_name }}. All rights reserved.</p>
             </div>
-
-            <!-- KONTAK -->
-            <div class="footer-col">
-                <h3>Kontak</h3>
-
-                <p>
-                    <i class="fas fa-map-marker-alt"></i>
-                    {{ $settings->footer_address }}
-                </p>
-
-                <p>
-                    <i class="fas fa-phone-alt"></i>
-                    {{ $settings->footer_phone }}
-                </p>
-
-                <p>
-                    <i class="fas fa-envelope"></i>
-                    {{ $settings->footer_email }}
-                </p>
-
-                <p>
-                    <i class="fas fa-globe"></i>
-                    {{ $settings->footer_website }}
-                </p>
-            </div>
-
-
         </div>
-
-        <!-- BOTTOM -->
-        <div class="footer-bottom">
-            <p>
-                © {{ date('Y') }} {{ $settings->site_name }}. All rights reserved.
-            </p>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>window.__agendaData = @json($agendas ?? []);</script>
+
     @yield('scripts')
 
     <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        /* ===== POPUP BANNER (DIPERBAIKI) ===== */
+        // ================= POPUP BANNER =================
         const popupOverlay = document.getElementById('popup-overlay');
-        const popupCloseBtn = document.getElementById('popup-close-btn');
-
         if (popupOverlay) {
-            // Fungsi untuk menutup popup
-            const closePopup = function() {
-                popupOverlay.style.animation = 'none';
+            const closePopup = function () {
+                popupOverlay.style.transition = 'opacity .3s ease';
                 popupOverlay.style.opacity = '0';
-                popupOverlay.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => {
-                    if(popupOverlay && popupOverlay.parentNode) popupOverlay.remove();
+                setTimeout(function() {
+                    if (popupOverlay.parentNode) popupOverlay.remove();
                 }, 300);
             };
-
-            // Tutup dengan tombol X
-            if(popupCloseBtn) {
-                popupCloseBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    closePopup();
-                });
-            }
-
-            // Tutup dengan klik di luar gambar (klik overlay)
-            popupOverlay.addEventListener('click', function (e) {
-                if (e.target === popupOverlay) {
-                    closePopup();
-                }
-            });
-
-            // Tutup dengan tombol Escape
+            const closeBtn = document.getElementById('popup-close-btn');
+            if (closeBtn) closeBtn.addEventListener('click', function (e) { e.stopPropagation(); closePopup(); });
+            popupOverlay.addEventListener('click', function (e) { if (e.target === popupOverlay) closePopup(); });
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && document.getElementById('popup-overlay')) {
-                    closePopup();
-                }
+                if (e.key === 'Escape' && document.getElementById('popup-overlay')) closePopup();
             });
         }
 
-        /* ===== HERO SLIDER ===== */
-        const slides = document.querySelectorAll('.hero-slide');
+        // ================= HERO SLIDER =================
+        var slides = document.querySelectorAll('.hero-slide');
         if (slides.length > 1) {
-            let current = 0;
-            setInterval(() => {
+            var current = 0;
+            setInterval(function() {
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;
                 slides[current].classList.add('active');
             }, 5000);
         }
 
-        /* ===== MOBILE NAVIGATION ===== */
-        const menuToggle  = document.getElementById('menuToggle');
-        const mainNav     = document.getElementById('mainNav');
+        // ================= MOBILE MENU =================
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
         const menuOverlay = document.getElementById('menuOverlay');
+
+        function isMobile() { return window.innerWidth <= 768; }
 
         function openMobileMenu() {
             mainNav.classList.add('active');
             menuOverlay.classList.add('active');
             document.body.classList.add('menu-open');
-            if (menuToggle) menuToggle.querySelector('i').className = 'fas fa-times';
+            menuToggle.innerHTML = '<i class="fas fa-times"></i>';
+            menuToggle.setAttribute('aria-expanded', 'true');
         }
 
         function closeMobileMenu() {
             mainNav.classList.remove('active');
             menuOverlay.classList.remove('active');
             document.body.classList.remove('menu-open');
-            if (menuToggle) menuToggle.querySelector('i').className = 'fas fa-bars';
-            document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
+            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            menuToggle.setAttribute('aria-expanded', 'false');
+            document.querySelectorAll('.nav-dropdown.open, .has-child.open').forEach(function(el) {
+                el.classList.remove('open');
+            });
         }
 
         if (menuToggle) {
-            menuToggle.onclick = function(e) {
+            menuToggle.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                mainNav.classList.contains('active') ? closeMobileMenu() : openMobileMenu();
-            };
+                if (mainNav.classList.contains('active')) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            });
         }
 
-        if (menuOverlay) menuOverlay.onclick = () => closeMobileMenu();
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', closeMobileMenu);
+        }
 
-        /* ===== DROPDOWN ===== */
-        const LEAVE_DELAY = 500;
+        // ================= MOBILE DROPDOWN TOGGLE =================
+        document.querySelectorAll('.nav-dropdown > .nav-link').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                if (!isMobile()) return;
+                e.preventDefault();
+                e.stopPropagation();
+                var parent = this.closest('.nav-dropdown');
+                if (parent) {
+                    document.querySelectorAll('.nav-dropdown.open').forEach(function(open) {
+                        if (open !== parent) open.classList.remove('open');
+                    });
+                    parent.classList.toggle('open');
+                }
+            });
+        });
 
+        document.querySelectorAll('.has-child > a').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                if (!isMobile()) return;
+                e.preventDefault();
+                e.stopPropagation();
+                var parent = this.closest('.has-child');
+                if (parent) {
+                    parent.classList.toggle('open');
+                }
+            });
+        });
+
+        window.addEventListener('resize', function() {
+            if (!isMobile()) {
+                if (mainNav.classList.contains('active')) closeMobileMenu();
+                document.querySelectorAll('.nav-dropdown.open, .has-child.open').forEach(function(el) {
+                    el.classList.remove('open');
+                });
+                checkAllDropdowns();
+            }
+        });
+
+        document.querySelectorAll('.nav-submenu a, .child-menu a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (isMobile()) setTimeout(closeMobileMenu, 150);
+            });
+        });
+
+        // ================= FIX DROPDOWN OVERFLOW (DESKTOP) =================
+        // Helper: ukur elemen yang tersembunyi dengan force-visible sementara
+        function measureHidden(el, callback) {
+            var prev = {
+                visibility:   el.style.visibility,
+                opacity:      el.style.opacity,
+                pointerEvents:el.style.pointerEvents,
+                display:      el.style.display,
+                position:     el.style.position
+            };
+            el.style.visibility    = 'hidden';
+            el.style.opacity       = '0';
+            el.style.pointerEvents = 'none';
+            el.style.display       = 'block';
+            // Harus tetap position absolute agar getBoundingClientRect akurat
+            var rect = el.getBoundingClientRect();
+            el.style.visibility    = prev.visibility;
+            el.style.opacity       = prev.opacity;
+            el.style.pointerEvents = prev.pointerEvents;
+            el.style.display       = prev.display;
+            callback(rect);
+        }
+
+        function fixSubmenuPosition(dropdown) {
+            var submenu = dropdown.querySelector(':scope > .nav-submenu');
+            if (!submenu) return;
+            submenu.classList.remove('flip-left');
+            measureHidden(submenu, function(rect) {
+                if (rect.right > (window.innerWidth - 4)) {
+                    submenu.classList.add('flip-left');
+                }
+            });
+        }
+
+        function fixChildMenuPosition(hasChildEl) {
+            var childMenu = hasChildEl.querySelector(':scope > .child-menu');
+            if (!childMenu) return;
+            childMenu.classList.remove('flip-left');
+            measureHidden(childMenu, function(rect) {
+                if (rect.right > (window.innerWidth - 4)) {
+                    childMenu.classList.add('flip-left');
+                }
+            });
+        }
+
+        // Jalankan sekali saat load untuk semua dropdown
+        function checkAllDropdowns() {
+            if (isMobile()) return;
+            document.querySelectorAll('.nav-dropdown').forEach(fixSubmenuPosition);
+            document.querySelectorAll('.has-child').forEach(fixChildMenuPosition);
+        }
+
+        checkAllDropdowns();
+
+        // Re-check saat hover (menangani zoom / perubahan viewport dinamis)
         document.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
-            let leaveTimer = null;
-
             dropdown.addEventListener('mouseenter', function() {
-                if (window.innerWidth <= 767) return;
-                clearTimeout(leaveTimer);
-                document.querySelectorAll('.nav-dropdown').forEach(d => { if (d !== dropdown) d.classList.remove('open'); });
-                dropdown.classList.add('open');
+                if (isMobile()) return;
+                fixSubmenuPosition(this);
             });
+        });
 
-            dropdown.addEventListener('mouseleave', function() {
-                if (window.innerWidth <= 767) return;
-                leaveTimer = setTimeout(() => dropdown.classList.remove('open'), LEAVE_DELAY);
+        document.querySelectorAll('.has-child').forEach(function(item) {
+            item.addEventListener('mouseenter', function() {
+                if (isMobile()) return;
+                fixChildMenuPosition(this);
             });
-
-            const submenu = dropdown.querySelector('.nav-submenu');
-            if (submenu) {
-                submenu.addEventListener('mouseenter', () => { if (window.innerWidth <= 767) return; clearTimeout(leaveTimer); });
-                submenu.addEventListener('mouseleave', () => {
-                    if (window.innerWidth <= 767) return;
-                    leaveTimer = setTimeout(() => dropdown.classList.remove('open'), LEAVE_DELAY);
-                });
-            }
-
-            const toggle = dropdown.querySelector('.nav-toggle');
-            if (toggle) {
-                toggle.addEventListener('click', function(e) {
-                    if (window.innerWidth > 767) return;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const isOpen = dropdown.classList.contains('open');
-                    document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
-                    if (!isOpen) dropdown.classList.add('open');
-                });
-            }
         });
 
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth <= 767) return;
-            if (!e.target.closest('.nav-dropdown')) {
-                document.querySelectorAll('.nav-dropdown').forEach(d => d.classList.remove('open'));
-            }
-        });
+        // ================= AGENDA MODAL =================
+        var agendaModal    = document.getElementById('agendaModal');
+        var modalClose     = document.getElementById('modalClose');
+        var modalImageWrap = document.getElementById('modalImageWrap');
+        var modalImageEl   = document.getElementById('modalImage');
+        var agendaData     = window.__agendaData || [];
 
-        document.querySelectorAll('.nav-submenu a').forEach(link => {
-            link.addEventListener('click', () => setTimeout(closeMobileMenu, 200));
-        });
-
-        window.addEventListener('resize', () => { if (window.innerWidth > 767) closeMobileMenu(); });
-
-        /* ===== AGENDA MODAL (dengan gambar) ===== */
-        const agendaModal     = document.getElementById('agendaModal');
-        const modalClose      = document.getElementById('modalClose');
-        const modalImageWrap  = document.getElementById('modalImageWrap');
-        const modalImageEl    = document.getElementById('modalImage');
-        const agendaCards     = document.querySelectorAll('.agenda-card-small');
-
-        // Data agenda dari Laravel (termasuk field image)
-        const agendaData = @json($agendas ?? []);
-
-        // Helper: bangun URL storage (mirroring Storage::url di JS)
         function storageUrl(path) {
             if (!path) return '';
-            const clean = path.replace(/^public\//, '');
-            return '/storage/' + clean;
+            return '/storage/' + path.replace(/^public\//, '');
         }
 
-        function formatModalDate(dateString) {
-            const date = new Date(dateString);
+        function formatDate(dateString) {
+            var d = new Date(dateString);
             return {
-                day:   date.getDate(),
-                month: date.toLocaleDateString('id-ID', { month: 'long' }),
-                year:  date.getFullYear()
+                day: d.getDate(),
+                month: d.toLocaleDateString('id-ID', { month: 'long' }),
+                year: d.getFullYear()
             };
         }
 
         function closeModal() {
-            agendaModal?.classList.remove('active');
+            if (agendaModal) agendaModal.classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        agendaCards.forEach(card => {
-            card.addEventListener('click', function () {
-                const agendaId = this.getAttribute('data-agenda-id');
-                const agenda   = agendaData.find(a => a.id == agendaId);
+        function setEl(id, val) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = val;
+        }
+
+        document.querySelectorAll('.agenda-card-small').forEach(function(card) {
+            function openAgenda() {
+                var agendaId = card.getAttribute('data-agenda-id');
+                var agenda = agendaData.find(function(a) { return String(a.id) === String(agendaId); });
                 if (!agenda) return;
 
-                const date       = formatModalDate(agenda.date);
-                const agendaDate = new Date(agenda.date);
-                const now        = new Date();
+                var date = formatDate(agenda.date);
+                var agendaDate = new Date(agenda.date);
+                var now = new Date();
 
-                let statusText  = 'Selesai';
-                let statusClass = 'status-completed';
+                var statusText = 'Selesai', statusClass = 'status-completed';
                 if (agendaDate.toDateString() === now.toDateString()) {
                     statusText = 'Berlangsung'; statusClass = 'status-ongoing';
                 } else if (agendaDate > now) {
                     statusText = 'Akan Datang'; statusClass = 'status-upcoming';
                 }
 
-                if (agenda.image) {
-                    const imgUrl = storageUrl(agenda.image);
-                    modalImageEl.src = imgUrl;
+                if (agenda.image && modalImageWrap && modalImageEl) {
+                    modalImageEl.src = storageUrl(agenda.image);
                     modalImageEl.alt = agenda.title;
                     modalImageWrap.style.display = 'block';
-                    modalImageEl.onerror = () => { modalImageWrap.style.display = 'none'; };
-                } else {
+                    modalImageEl.onerror = function() { modalImageWrap.style.display = 'none'; };
+                } else if (modalImageWrap) {
                     modalImageWrap.style.display = 'none';
-                    modalImageEl.src = '';
                 }
 
-                document.getElementById('modalDay').textContent       = date.day;
-                document.getElementById('modalMonthYear').textContent = `${date.month} ${date.year}`;
-                document.getElementById('modalTitle').textContent     = agenda.title;
-                document.getElementById('modalTime').textContent      = agenda.time;
-                document.getElementById('modalLocation').textContent  = agenda.location;
-                document.getElementById('modalDescription').innerHTML =
-                    agenda.description?.replace(/\n/g, '<br>') ||
-                    '<p style="color:var(--text-light);font-style:italic;">Tidak ada deskripsi tersedia.</p>';
+                setEl('modalDay', date.day);
+                setEl('modalMonthYear', date.month + ' ' + date.year);
+                setEl('modalTitle', agenda.title);
+                setEl('modalTime', agenda.time);
+                setEl('modalLocation', agenda.location);
 
-                const modalStatus       = document.getElementById('modalStatus');
-                modalStatus.textContent = statusText;
-                modalStatus.className   = `modal-status ${statusClass}`;
+                var desc = document.getElementById('modalDescription');
+                if (desc) {
+                    desc.innerHTML = agenda.description
+                        ? agenda.description.replace(/\n/g, '<br>')
+                        : '<p style="color:var(--text-light);font-style:italic;">Tidak ada deskripsi tersedia.</p>';
+                }
 
-                agendaModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                var modalStatusEl = document.getElementById('modalStatus');
+                if (modalStatusEl) {
+                    modalStatusEl.textContent = statusText;
+                    modalStatusEl.className = 'modal-status ' + statusClass;
+                }
+
+                if (agendaModal) {
+                    agendaModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            card.addEventListener('click', openAgenda);
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openAgenda(); }
             });
         });
 
-        modalClose?.addEventListener('click', closeModal);
-        agendaModal?.addEventListener('click', e => { if (e.target === agendaModal) closeModal(); });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && agendaModal?.classList.contains('active')) closeModal();
+        if (modalClose) modalClose.addEventListener('click', closeModal);
+        if (agendaModal) {
+            agendaModal.addEventListener('click', function(e) {
+                if (e.target === agendaModal) closeModal();
+            });
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && agendaModal && agendaModal.classList.contains('active')) closeModal();
         });
-
     });
     </script>
 </body>

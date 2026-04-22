@@ -11,12 +11,11 @@ class MenuController extends Controller
 {
 public function index()
 {
-    // Yang sekarang — tidak load url di children
-$menus = Menu::whereNull('parent_id')
-    ->where('is_active', true)
-    ->with('children')  // ← children tidak difilter is_active dan tidak load relasi lengkap
-    ->orderBy('order')
-    ->get();
+    $menus = Menu::with([
+    'childrenRecursive',
+    'page',
+    'parent'
+])->get();
 
     return view('admin.menus.index', compact('menus'));
 }
@@ -74,23 +73,15 @@ $menus = Menu::whereNull('parent_id')
         return redirect()->route('admin.menus.index')->with('success', 'Menu berhasil diupdate');
     }
 
-    public function destroy(Menu $menu)
-    {
-        $title         = $menu->title;
-        $childrenCount = $menu->children()->count();
+public function destroy(Menu $menu)
+{
+    $title = $menu->title;
 
-        if ($childrenCount > 0) {
-            $menu->children()->delete();
-        }
+    $menu->deleteWithChildren();
 
-        $menu->delete();
-
-        $message = $childrenCount > 0
-            ? "Menu \"{$title}\" beserta {$childrenCount} sub-menu berhasil dihapus."
-            : "Menu \"{$title}\" berhasil dihapus.";
-
-        return redirect()->route('admin.menus.index')->with('success', $message);
-    }
+    return redirect()->route('admin.menus.index')
+        ->with('success', "Menu \"{$title}\" dan semua sub-menu berhasil dihapus.");
+}
 
     /**
      * Toggle is_active via AJAX dari tabel langsung
