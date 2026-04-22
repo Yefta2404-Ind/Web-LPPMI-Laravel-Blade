@@ -751,6 +751,11 @@
                     <i class="fas fa-gauge-high nav-ikon"></i>
                     <span class="nav-teks">Dasbor</span>
                 </a>
+                <a href="{{ route('admin.profile.edit') }}"
+   class="nav-item {{ request()->routeIs('admin.profile.*') ? 'aktif' : '' }}">
+    <i class="fas fa-user nav-ikon"></i>
+    <span class="nav-teks">Profil Saya</span>
+</a>
 
                 <div class="nav-pemisah"></div>
 

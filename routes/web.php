@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\SpmiDocumentController as AdminSpmi;
 use App\Models\Survey;
+use App\Http\Controllers\Admin\AdminProfileController;
 use App\Models\Page;
 
 Route::post('/upload-image', [NewsController::class, 'uploadImage'])
@@ -239,6 +240,10 @@ Route::post('/surveys/{survey}/approve', [SurveyController::class, 'approve'])->
 Route::post('/surveys/{survey}/activate', [SurveyController::class, 'activate'])->name('surveys.activate'); // ← tambahkan ini
 Route::delete('/surveys/{survey}', [SurveyController::class, 'destroy'])->name('surveys.destroy');
 
+
+Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
+Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password');
 
 /* ================= MUTU EKSTERNAL (ADMIN) ================= */
 
