@@ -621,7 +621,7 @@ function uploadImageToServer(file) {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch('{{ route("upload.image") }}', {
+        fetch('{{ route("staff.upload.image") }}', {
             method: 'POST',
             body: formData,
             headers: {
@@ -667,7 +667,7 @@ document.addEventListener('DOMContentLoaded', function () {
         toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image media | table | code fullscreen',
         toolbar_mode: 'sliding',
         automatic_uploads: true,
-        images_upload_url: '{{ route("upload.image") }}',
+        images_upload_url: '{{ route("staff.upload.image") }}',
 
         images_upload_handler: function (blobInfo) {
             return uploadImageToServer(blobInfo.blob());

@@ -26,8 +26,7 @@ use App\Models\Survey;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Models\Page;
 
-Route::post('/upload-image', [NewsController::class, 'uploadImage'])
-    ->name('upload.image');
+
     
 
 Route::get('/uraian-tugas', function () {
@@ -70,6 +69,8 @@ Route::middleware(['auth', 'role:staff'])
     ->group(function () {
 
 
+
+
     /* ================= SPMI DOCUMENT (STAFF) ================= */
 Route::get('/spmi/create',
     [SpmiDocumentController::class, 'create']
@@ -97,6 +98,8 @@ Route::delete('/news/{news}', [NewsController::class, 'destroy'])
 
         Route::put('/news/{news}', [NewsController::class, 'update'])
             ->name('news.update');
+            Route::post('/upload-image', [NewsController::class, 'uploadImage'])
+    ->name('upload.image');
 
 
     /* ================= MUTU EKSTERNAL (STAFF) ================= */

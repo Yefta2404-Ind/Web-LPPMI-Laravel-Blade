@@ -1767,9 +1767,6 @@
                 </div>
             </div>
 
-            <div class="footer-bottom">
-                <p>© {{ date('Y') }} {{ $settings->site_name }}. All rights reserved.</p>
-            </div>
         </div>
     </footer>
 

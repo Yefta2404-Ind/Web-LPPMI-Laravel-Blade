@@ -216,57 +216,109 @@ public function showPublic(News $news)
         return view('news.edit', compact('news', 'categories'));
     }
 
-    public function update(Request $request, News $news)
-    {
-        if (
-            auth()->user()->role === 'staff' &&
-            ($news->user_id !== auth()->id() || $news->status !== 'pending')
-        ) {
-            abort(403);
+public function update(Request $request, News $news)
+{
+    // 🔐 Proteksi role (punyamu sudah benar, tetap dipakai)
+    if (
+        auth()->user()->role === 'staff' &&
+        ($news->user_id !== auth()->id() || $news->status !== 'pending')
+    ) {
+        abort(403);
+    }
+
+    // ✅ Validasi
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required',
+        'category_id' => 'required|exists:categories,id',
+        'images' => 'nullable|array',
+        'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        // =========================
+        // 🔹 UPDATE DATA UTAMA
+        // =========================
+        $news->update($request->only('title', 'content', 'category_id'));
+
+        // =========================
+        // 🔥 HAPUS GAMBAR YANG DITANDAI
+        // =========================
+        $deletedPaths = [];
+
+        if ($request->filled('removed_image_ids')) {
+
+            $ids = explode(',', $request->removed_image_ids);
+
+            $imagesToDelete = $news->images()
+                ->whereIn('id', $ids)
+                ->get();
+
+            foreach ($imagesToDelete as $image) {
+                // simpan path untuk cek thumbnail
+                $deletedPaths[] = $image->path;
+
+                // hapus file
+                Storage::disk('public')->delete($image->path);
+
+                // hapus dari database
+                $image->delete();
+            }
         }
 
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required',
-            'category_id' => 'required|exists:categories,id',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        // =========================
+        // 🔥 CEK & FIX THUMBNAIL
+        // =========================
+        if ($news->image && in_array($news->image, $deletedPaths)) {
+            $news->image = null;
+        }
 
-        DB::beginTransaction();
+        // =========================
+        // 🔥 UPLOAD GAMBAR BARU
+        // =========================
+        if ($request->hasFile('images')) {
 
-        try {
-            $news->update($request->only('title', 'content', 'category_id'));
+            foreach ($request->file('images') as $index => $file) {
 
-            $thumbnail = $news->image;
+                $path = $file->store('news', 'public');
 
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $file) {
-                    $path = $file->store('news', 'public');
-
-                    if (!$thumbnail) {
-                        $thumbnail = $path;
-                    }
-
-                    $news->images()->create([
-                        'path' => $path
-                    ]);
+                // kalau belum ada thumbnail → set dari gambar pertama
+                if (!$news->image && $index === 0) {
+                    $news->image = $path;
                 }
 
-                $news->update([
-                    'image' => $thumbnail
+                $news->images()->create([
+                    'path' => $path
                 ]);
             }
-
-            DB::commit();
-
-            return redirect()->route('dashboard');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'Gagal update');
         }
+
+        // =========================
+        // 🔥 FALLBACK THUMBNAIL (kalau kosong)
+        // =========================
+        if (!$news->image) {
+            $firstImage = $news->images()->first();
+            if ($firstImage) {
+                $news->image = $firstImage->path;
+            }
+        }
+
+        // simpan perubahan thumbnail
+        $news->save();
+
+        DB::commit();
+
+        return redirect()->route('staff.news.index')
+            ->with('success', 'Berita berhasil diperbarui');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return back()->with('error', 'Gagal update: ' . $e->getMessage());
     }
+}
 
 public function destroy(News $news)
 {
