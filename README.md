@@ -1,66 +1,168 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# LPM Campus CMS
 
-## About Laravel
+**A role-based Content Management System for LPM Universitas Gunung Kidul**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Built with Laravel · PHP 8 · MySQL · Blade · Bootstrap
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+[![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white)](https://php.net)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)](https://mysql.com)
+[![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=flat-square&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+[Live Demo](http://lpm.ugk.ac.id/) · [Report Bug](https://github.com/Yefta2404-Ind/lpm-campus-cms/issues) · [Request Feature](https://github.com/Yefta2404-Ind/lpm-campus-cms/issues)
 
-## Learning Laravel
+</div>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Overview
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+LPM Campus CMS is a web-based content management system built for the Quality Assurance unit (LPM) of Universitas Gunung Kidul. It enables administrators and staff to manage website content — news, gallery, pages, menus, and organizational structure — through a structured, role-controlled workflow without direct server or code access.
 
-## Laravel Sponsors
+> This project shares the same codebase architecture as [LPMI Campus CMS](https://github.com/Yefta2404-Ind/lpmi-campus-cms), adapted and deployed independently for LPM.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Features
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- **Role-Based Access Control** — Three distinct roles (Admin, Staff, Public) with policy-level enforcement
+- **News Approval Workflow** — Staff submits content, Admin reviews and publishes; nothing goes live without approval
+- **Dynamic Page & Menu Builder** — Create and manage static pages and navigation menus from the dashboard
+- **Organization Structure Manager** — Maintain and display the institutional org chart dynamically
+- **Gallery Management** — Upload and organize event photos tied to published content
+- **Responsive UI** — Mobile-friendly interface for both admin panel and public-facing site
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Architecture
 
-## Code of Conduct
+### Stack
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Layer | Technology |
+|---|---|
+| Backend Framework | Laravel 10.x (MVC) |
+| Language | PHP 8.1 |
+| Templating | Blade |
+| Styling | Bootstrap 5 / Tailwind CSS |
+| Database | MySQL |
+| Auth | Laravel built-in Auth |
 
-## Security Vulnerabilities
+### Application Flow
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+Browser Request
+      │
+      ▼
+ Laravel Router (routes/web.php)
+      │
+      ├── Middleware (Authenticate, CheckRole)
+      │
+      ▼
+ Controller Layer
+  ├── AuthController
+  ├── NewsController        ← submit / approve / publish
+  ├── GalleryController
+  ├── MenuController
+  ├── PageController
+  └── OrgStructureController
+      │
+      ▼
+ Eloquent ORM (Models)
+  ├── User          (with roles)
+  ├── News          (status: draft | pending | published)
+  ├── Gallery
+  ├── Menu
+  ├── Page
+  └── OrgStructure
+      │
+      ▼
+   MySQL Database
+      │
+      ├── Blade Views (Admin Panel)
+      └── Blade Views (Public Site)
+```
 
-## License
+### Role Access Matrix
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Feature | Admin | Staff | Public |
+|---|:-:|:-:|:-:|
+| View published content | ✓ | ✓ | ✓ |
+| Submit news / announcements | ✓ | ✓ | — |
+| Approve & publish content | ✓ | — | — |
+| Manage menus & pages | ✓ | — | — |
+| Manage organization structure | ✓ | — | — |
+| Manage gallery | ✓ | ✓ | — |
+| User & role management | ✓ | — | — |
+
+### Database Schema (ERD Overview)
+
+```
+users ──────────────── roles
+  │                      │
+  │ (has role)           │ (defines permission)
+  │                      │
+  ├──< news             ─┘
+  │      ├── status: draft | pending | published
+  │      └── approved_by → users.id (FK)
+  │
+  ├──< gallery
+  │
+  ├──< org_structures
+  │      └── parent_id (self-referential, for hierarchy)
+  │
+  ├──< menus
+  │      └── page_id (FK → pages)
+  │
+  └──< pages
+```
+
+> Full ERD diagram available in `/docs/erd.png` *(coming soon)*
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- PHP >= 8.1
+- Composer
+- MySQL
+- Node.js *(optional, for asset compilation)*
+
+### Installation
+
+```bash
+git clone https://github.com/Yefta2404-Ind/lpm-campus-cms.git
+cd lpm-campus-cms
+
+composer install
+
+cp .env.example .env
+php artisan key:generate
+
+# Configure DB_DATABASE, DB_USERNAME, DB_PASSWORD in .env
+php artisan migrate
+
+php artisan serve
+```
+
+Visit `http://localhost:8000`
+
+---
+
+## Related Projects
+
+| Project | Description | Live |
+|---|---|---|
+| [LPMI Campus CMS](https://github.com/Yefta2404-Ind/lpmi-campus-cms) | CMS for LPMI Universitas Gunung Kidul | [lpmi.ugk.ac.id](http://lpmi.ugk.ac.id/) |
+| LPM Campus CMS | CMS for LPM Universitas Gunung Kidul | [lpm.ugk.ac.id](http://lpm.ugk.ac.id/) |
+
+---
+
+## Author
+
+**Yefta Aditya**
+[github.com/Yefta2404-Ind](https://github.com/Yefta2404-Ind)
