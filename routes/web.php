@@ -6,6 +6,7 @@ use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\VideoController;
 use App\Http\Controllers\ProfileController;
 use App\Models\News;
+use App\Http\Controllers\Admin\MaintenanceController;
 use Carbon\Carbon;
 use App\Http\Controllers\Admin\PopupBannerController;
 use App\Http\Controllers\Admin\MenuController;
@@ -195,6 +196,13 @@ Route::middleware(['auth', 'role:admin,superadmin'])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
+
+    Route::post('/maintenance/down', [MaintenanceController::class, 'down'])
+    ->name('maintenance.down');
+    Route::post('/maintenance/up', [MaintenanceController::class, 'up'])
+    ->name('maintenance.up');
+
+    
 
         Route::resource('staff', StaffController::class);
 

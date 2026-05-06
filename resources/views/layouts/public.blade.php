@@ -18,25 +18,25 @@
     <style>
         /* ================= ROOT & RESET ================= */
         :root {
-            --primary:        #0a2a44;
-            --primary-light:  #1e3a5f;
-            --primary-dark:   #051a2b;
-            --primary-mid:    #123456;
+            --primary:        #11009E;
+            --primary-light:  #2d1ab5;
+            --primary-dark:   #0a0070;
+            --primary-mid:    #1a0fa8;
             --gold:           #c9a84c;
             --gold-light:     #e8c97a;
             --gold-dark:      #a07830;
             --secondary:      #f8f9fa;
             --accent:         #eef2f6;
             --accent2:        #e3ecf5;
-            --text-dark:      #1a2634;
-            --text-mid:       #3a4f65;
-            --text-light:     #55657b;
+            --text-dark:      #150080;
+            --text-mid:       #3a2da0;
+            --text-light:     #5050b0;
             --white:          #ffffff;
             --border:         #d8e4f0;
-            --shadow-sm:  0 2px 8px rgba(0,20,50,0.06);
-            --shadow-md:  0 8px 28px rgba(0,20,50,0.10);
-            --shadow-lg:  0 20px 50px rgba(0,20,50,0.13);
-            --shadow-xl:  0 32px 70px rgba(0,20,50,0.16);
+            --shadow-sm:  0 2px 8px rgba(10,0,110,0.06);
+            --shadow-md:  0 8px 28px rgba(10,0,110,0.10);
+            --shadow-lg:  0 20px 50px rgba(10,0,110,0.13);
+            --shadow-xl:  0 32px 70px rgba(10,0,110,0.16);
             --font-primary: 'Roboto', sans-serif;
             --font-roboto:  'Roboto', sans-serif;
             --font-heading: 'Roboto Slab', serif;
@@ -70,8 +70,8 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(5, 26, 43, 0.7);
-    z-index: 8999; /* turunkan, biar di bawah header */
+    background: rgba(10,0,110,0.7);
+    z-index: 8999;
     transition: opacity 0.3s ease;
 }
 
@@ -518,16 +518,25 @@
 
         .hero-slide.active { opacity: 1; }
 
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(135deg, rgba(5,26,43,0.78) 0%, rgba(10,42,68,0.52) 60%, transparent 100%),
-                linear-gradient(to top, rgba(5,26,43,0.65) 0%, transparent 55%);
-            z-index: 1;
-            pointer-events: none;
-        }
+.hero-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10, 0, 110, 0.22) 0%,
+            rgba(17, 0, 158, 0.12) 60%,
+            transparent 100%
+        ),
+        linear-gradient(
+            to top,
+            rgba(10, 0, 110, 0.08) 0%,
+            transparent 55%
+        );
+    z-index: 1;
+    pointer-events: none;
+}
 
         .hero-overlay {
             position: relative;
@@ -620,7 +629,7 @@
             top: -100px; right: -100px;
             width: 450px; height: 450px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(10,42,68,0.04) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(17,0,158,0.04) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -690,7 +699,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to bottom, rgba(5,26,43,0.15) 0%, rgba(5,26,43,0.35) 40%, rgba(5,26,43,0.88) 100%);
+            background: linear-gradient(to bottom, rgba(10,0,110,0.15) 0%, rgba(10,0,110,0.35) 40%, rgba(10,0,110,0.88) 100%);
             z-index: 1;
         }
 
@@ -712,8 +721,6 @@
             top: 18px; left: 18px;
             z-index: 2;
             background: rgba(255,255,255,0.13);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.2);
             padding: 10px 14px;
             border-radius: var(--radius-md);
@@ -799,7 +806,7 @@
             top: -60px; right: -60px;
             width: 200px; height: 200px;
             border-radius: 50%;
-            background: rgba(10,42,68,0.04);
+            background: rgba(17,0,158,0.04);
             pointer-events: none;
         }
 
@@ -899,20 +906,18 @@
 
         .agenda-footer { display: flex; justify-content: center; }
 
-        .agenda-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(5,26,43,0.62);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            padding: 16px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+.agenda-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,0,110,0.62);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    padding: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
 
         .agenda-modal-overlay.active { display: flex; opacity: 1; pointer-events: auto; }
 
@@ -1157,9 +1162,9 @@
 
         .page-content table { width: 100% !important; border-collapse: collapse !important; margin: 24px 0 !important; }
         .page-content table td, .page-content table th { border: 1px solid #dee2e6 !important; padding: 10px 14px !important; vertical-align: top !important; }
-        .page-content table tbody tr:first-child td { background-color: #0a2a44 !important; color: #ffffff !important; font-weight: 600 !important; }
+        .page-content table tbody tr:first-child td { background-color: #11009E !important; color: #ffffff !important; font-weight: 600 !important; }
         .page-content table tbody tr:nth-child(even) td { background-color: #f8f9fa !important; }
-        .page-content table tbody tr:first-child:hover td { background-color: #0a2a44 !important; }
+        .page-content table tbody tr:first-child:hover td { background-color: #11009E !important; }
         .page-content table tbody tr:not(:first-child):hover td { background-color: #eef2f6 !important; }
 
         .page-content img, .page-content table, .page-content iframe, .page-content video { max-width: 100% !important; height: auto !important; }
@@ -1191,7 +1196,6 @@
         #popup-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1200,10 +1204,10 @@
             animation: popupFadeIn 0.4s ease 0.3s forwards;
         }
 
-        @keyframes popupFadeIn { 
-            from { opacity: 0; background: transparent; }
-            to { opacity: 1; background: rgba(0,0,0,0.7); }
-        }
+@keyframes popupFadeIn { 
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
         @keyframes popupSlideUp {
             from { opacity: 0; transform: translateY(30px) scale(0.96); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
@@ -1250,7 +1254,6 @@
             display: block;
             object-fit: contain;
             border-radius: var(--radius-lg);
-            box-shadow: 0 24px 60px rgba(0,0,0,0.45);
         }
 
         @media (min-width: 1400px) {
@@ -1829,7 +1832,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* ===== DROPDOWN MOBILE ===== */
-    // Level 1 - klik chevron/nav-link parent
     document.querySelectorAll('.nav-dropdown > .nav-link').forEach(link => {
         link.addEventListener('click', function(e) {
             if (!isMobile()) return;
@@ -1839,16 +1841,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const parent = this.closest('.nav-dropdown');
             const isOpen = parent.classList.contains('open');
 
-            // Tutup semua dulu
             document.querySelectorAll('.nav-dropdown.open')
                 .forEach(el => el.classList.remove('open'));
 
-            // Buka yang diklik (jika sebelumnya tutup)
             if (!isOpen) parent.classList.add('open');
         });
     });
 
-    // Level 2 - klik has-child
     document.querySelectorAll('.has-child > a').forEach(link => {
         link.addEventListener('click', function(e) {
             if (!isMobile()) return;
@@ -1858,7 +1857,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Link biasa di dalam submenu — tutup menu setelah navigasi
     document.querySelectorAll('.nav-submenu a:not(.has-child > a), .child-menu a').forEach(link => {
         link.addEventListener('click', function() {
             if (!isMobile()) return;
@@ -1867,7 +1865,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Link top-level (bukan dropdown)
     document.querySelectorAll('.nav-menu > li:not(.nav-dropdown) > .nav-link').forEach(link => {
         link.addEventListener('click', function() {
             if (!isMobile()) return;
